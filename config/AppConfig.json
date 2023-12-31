@@ -1,0 +1,26 @@
+{
+  "TokenConfig": {
+    "client_id": "hamrobachat.client",
+    "client_secret": "hamrobachat",
+    "grant_type": "client_credentials"
+  },
+  "CompanyConfig": {
+    "CompanyId": 2,
+    "BranchId": 1,
+    "CompanyCode": "aainchopaincho",
+    "CompanyName": "Aaincho Paincho Saving and Credit",
+    "WalletName": "Aaincho Paincho",
+    "BaseUrl": "https://mobileapi.thefinmax.com/",
+    "AndroidAppUrl": "https://play.google.com/store/apps/details?id=com.graycode.aainchopainchosaccos&hl=en"
+  },
+  "ThemeConfig": {
+    "primaryColor": "#009D4B",
+    "secondoryColor": "#F7FAFC",
+    "defaultColor": "#009D4B",
+    "backGround": "#F5F5F5",
+    "primaryTextColor": "#BF232323"
+  },
+  "GeneralConfig": {
+    "IsAppForMultiple": false
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "expo": {
+    "name": "Personal Sales Tracker",
+    "slug": "aainchopainchosaccos",
+    "version": "4.3.2",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "platforms": ["ios", "android"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.graycode.aainchopainchosaccos",
+
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to let user put a photo in his profile page."
+      },
+      "buildNumber": "9"
+    },
+    "android": {
+      "package": "com.graycode.aainchopainchosaccos",
+      "permissions": ["CAMERA", "WRITE_EXTERNAL_STORAGE"],
+      "versionCode": 1502,
+      "googleServicesFile": "./google-services.json"
+    },
+    "plugins": [
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+        }
+      ],
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "Allow $(PRODUCT_NAME) to access your contacts."
+        }
+      ]
+    ],
+    "assetBundlePatterns": ["**/*"],
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": [
+        "expo.ts",
+        "expo.tsx",
+        "expo.js",
+        "expo.jsx",
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json",
+        "wasm",
+        "svg"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a318dfc7-68b2-4192-ae1a-115345f49d55"
+      }
+    },
+    "sdkVersion": "49.0.0",
+    "owner": "sushilsapkota"
+  }
+}
