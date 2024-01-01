@@ -72,7 +72,7 @@ export class TopUp extends React.Component {
   GetFavourite = async () => {
     var response = await (await request())
       .get(api.Favourite.TopUp)
-      .catch(function(error) {
+      .catch(function (error) {
         ToastMessage.Short("Error Ocurred Contact Support");
       });
     if (response != undefined) {
@@ -595,7 +595,7 @@ export class TopUpConfirmation extends React.Component {
 
     var response = await (await request())
       .post(api.BalanceTopup, data)
-      .catch(function(error) {
+      .catch(function (error) {
         ToastMessage.Short("Error Contact Support");
       });
     if (response != undefined) {

@@ -24,12 +24,13 @@ import Accounts from "../screens/cooperative/Accounts";
 import AccountStatement from "../screens/cooperative/AccountStatement";
 import IntrestRate from "../screens/cooperative/IntrestRate";
 import ChequeRequest from "../screens/cooperative/ChequeRequest";
-import Settings from "../screens/general/Settings"; 
+import Settings from "../screens/general/Settings";
 import ServiceList from "../screens/utilityPayment/ServiceList";
 import {
   LoadAccountList,
   LoadAccountSuccess,
 } from "../screens/transfer/LoadAccount";
+import AddParty from "../screens/utilityPayment/AddParty";
 import {
   TopUp,
   TopUpConfirmation,
@@ -273,7 +274,7 @@ const headerOptions = {
       var sendKey = key.replace(/\s/g, "");
       var response = await (await request())
         .get(api.BaseUrl + "api/v1/information/getbykey?key=" + sendKey)
-        .catch(function(error) {
+        .catch(function (error) {
           ToastMessage.Short("Error Ocurred Contact Support");
           console.log(error);
         });
@@ -289,7 +290,7 @@ const headerOptions = {
       } else {
         ToastMessage.Short("Error ocurred contact support !");
       }
-      
+
     };
     return (
       <>
@@ -307,7 +308,7 @@ const headerOptions = {
         <>
           <ModalPopUp
             visible={isVisible}
-            onPress={() => {}}
+            onPress={() => { }}
             onRequestClose={() => {
               setIsVisible(!isVisible);
             }}
@@ -415,6 +416,7 @@ function HomeStack(props) {
         options={headerOptions}
       />
       <Stack.Screen name="topup" component={TopUp} options={headerOptions} />
+      <Stack.Screen name="AddParty" component={AddParty} options={headerOptions} />
       <Stack.Screen name="ServiceList" component={ServiceList} options={headerOptions} />
 
       <Stack.Screen
