@@ -1183,7 +1183,7 @@ function BottomTabNavigator() {
                   color: focused ? Colors.primary : Colors.defaultBlack,
                 }}
               >
-                Share Qr
+                Share QR
               </Text>
             </View>
           ),

@@ -11,16 +11,16 @@ export const AccountCard = ({ data, navigation, callback, balanceError }) => {
   const [visible, setVisible] = useState(false);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, width: "100%" }}>
       <View style={styles.container}>
         <View>
           <View style={styles.accountInfo}>
             <View style={styles.left}>
               <View style={styles.accountType}>
-                <Text style={styles.accountInfoText}>{data.AccType} Visits</Text>
+                <Text style={styles.accountInfoText}>Visits: 444</Text>
               </View>
               <View style={styles.accountNumber}>
-              <Text style={styles.amountText}>
+              <Text style={[styles.amountText, {fontSize:11}]}>
                 Order: 555
               </Text>
                 <Text style={styles.accountInfoText}>{data.AccNum}</Text>
