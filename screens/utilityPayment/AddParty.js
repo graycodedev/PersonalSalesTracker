@@ -14,6 +14,12 @@ import ImagePicker from 'react-native-image-picker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Colors } from "../style/Theme";
 import { TextInput } from "react-native-gesture-handler";
+import { RegularInputText, AmountInputText } from "../../components/Input";
+import PageStyle from "../style/pageStyle";
+import { SearchableList } from "../../components/SearchableList";
+import DropDownPicker from "react-native-dropdown-picker";
+
+
 
 const { width, height } = Dimensions.get("screen");
 
@@ -23,6 +29,28 @@ const AddParty = (navigation, props) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
+    const [partyName, setPartyName]= useState("");
+    const [showPartyList, setShowPartyList]= useState(false);
+    const [parties, setParties]= useState([
+      {
+        id:0, 
+        name:"Party A"
+      }, 
+      {
+        id:1, 
+        name:"Party B"
+      }, 
+      {
+        id:0, 
+        name:"Party C"
+      }, 
+      {
+        id:0, 
+        name:"Party D"
+      }, 
+    ]); 
+    const [selectedParty, setSelectedParty]= useState(""); 
+
 
   const openPicker = () => {
     setModalVisible(true);
@@ -37,6 +65,10 @@ const AddParty = (navigation, props) => {
     closePicker();
   };
 
+  const updateSelectedParty =(item)=>{
+setSelectedParty(item.name)
+  }
+
   return (
     <ScrollView
       nestedScrollEnabled={true}
@@ -44,156 +76,97 @@ const AddParty = (navigation, props) => {
       style={{ width: "100%", backgroundColor: "#eee" }}
       contentContainerStyle={{ flexGrow: 1 }}
     >
-      <View style={styles.container}>
+      <View style={PageStyle.container}>
         <View>
-          <TextInput
-            style={styles.partyName}
-            placeholder="Party Name"
-          //value={partyName}
-          //onChangeText={handlePartyNameChange}
-          />
-        </View>
-        <View>
-          <Text style={{ marginTop: 30, fontSize: 20, opacity: 0.4, }}>Set Business Type</Text>
-          <TouchableOpacity style={{ marginBottom: -10, width: 400, height: 50 }} onPress={openPicker}>
-            <View style={{ borderWidth: 1, borderColor: '#ccc', padding: 5 }}>
-              <Text style={{ fontSize: 20 }}>***Select business***: {selectedOption}</Text>
+               <RegularInputText
+                  key="partyName"
+                  placeholder="Party Name"
+                  onChangeText={(text) => {
+                   setPartyName(text)
+                  }}
+                  value={partyName}
+                />
             </View>
-          </TouchableOpacity>
-
-          <Modal
-            transparent={true}
-            animationType="slide"
-            visible={modalVisible}
-            onRequestClose={closePicker}
-          >
-            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-              <TouchableOpacity
-                style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-                onPress={closePicker}
-              />
-              <View style={{ backgroundColor: '#fff' }}>
-                <Picker
-                  selectedValue={selectedOption}
-                  onValueChange={handleOptionChange}
-                >
-                  <Picker.Item label="Option 1" value="option1" />
-                  <Picker.Item label="Option 2" value="option2" />
-                  <Picker.Item label="Option 3" value="option3" />
-                </Picker>
+            <TouchableOpacity onPress={()=>setShowPartyList(true)}>
+        <Text>Show Parties List</Text>
+      </TouchableOpacity>
+      <View style={{zIndex: 99}}>
+            {/* <DropDownPicker
+              containerStyle={{ height: 50 }}
+              dropDownMaxHeight={500}
+              style={{
+                backgroundColor: "#fff",
+                color: "red",
+                borderRadius: 10,
+                fontFamily: "Regular",
+                borderColor: "#fff",
+                borderWidth: 0,
+              }}
+              itemStyle={{
+                justifyContent: "flex-start",
+                fontFamily: "Medium",
+                color: "red",
+              }}
+              labelStyle={{
+                fontFamily: "Medium",
+                color: "#9A9A9A",
+              }}
+              arrowColor={"#9A9A9A"}
+              defaultValue={"Group- a"}
+              value={this.state.fromaccountNo}
+              items={this.state.accountList}
+              controller={(instance) => (this.controller = instance)}
+              onChangeList={(items, callback) => {
+                this.setState(
+                  {
+                    items,
+                  },
+                  callback
+                );
+              }}
+              onChangeItem={(item) =>
+                this.setState({
+                  fromAccountNo: item.value,
+                })
+              }
+            />
+            {!!this.state.fromAccountNoError && (
+              <Text style={{ color: "red" }}>
+                {this.state.fromAccountNoError}
+              </Text>
+            )} */}
+          </View>
+      {showPartyList && (
+          <SearchableList
+            items={parties}
+            noItemFoundText={"No partes found"}
+            searchablePlaceholder="Search Party"
+            itemSelected={updateSelectedParty}
+            filterBy={"name"}
+            visible={showPartyList}
+            onClose={()=>setShowPartyList(false)}
+            renderItem={(item) => (
+              <View style={{marginTop: 20}}>
+                <Text style={{ marginLeft: 18 }}>{item.name}</Text>
               </View>
-            </View>
-          </Modal>
-        </View>
-        <View>
-          <TextInput
-            style={styles.partyName}
-            placeholder="Contact Person Name"
-          //value={partyName}
-          //onChangeText={handlePartyNameChange}
+            )}
           />
-        </View>
-
-        <View>
-          <TextInput
-            style={styles.partyName}
-            placeholder="Website (eg www.abc.com)"
-          //value={partyName}
-          //onChangeText={handlePartyNameChange}
-          />
-        </View>
-        <View>
-          <TextInput
-            style={styles.partyName}
-            placeholder="Email"
-          //value={partyName}
-          //onChangeText={handlePartyNameChange}
-          />
-        </View>
-        <View>
-          <TouchableOpacity style={styles.button}>
-            <Text style={{ fontSize: 20, color: 'white' }}>Choose Location</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
-          <Text style={{ fontSize: 18, marginRight: 10, marginTop: 3 }}>City</Text>
-          <TouchableOpacity style={{ marginBottom: -10, width: 350, height: 50 }} onPress={openPicker}>
-            <View style={{ borderWidth: 1, borderColor: '#ccc', padding: 5 }}>
-              <Text style={{ fontSize: 20 }}> {selectedOption}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TextInput
-            style={styles.partyName}
-            placeholder="Address Line 1"
-          //value={partyName}
-          //onChangeText={handlePartyNameChange}
-          />
-        </View>
-        <View>
-          <TextInput
-            style={styles.partyName}
-            placeholder="Address Line 2"
-          //value={partyName}
-          //onChangeText={handlePartyNameChange}
-          />
-        </View>
-        <View>
-          <TextInput
-            style={styles.partyName}
-            placeholder="Mobile Number"
-          //value={partyName}
-          //onChangeText={handlePartyNameChange}
-          />
-        </View>
-        <View>
-          <TextInput
-            style={styles.partyName}
-            placeholder="Phone"
-          //value={partyName}
-          //onChangeText={handlePartyNameChange}
-          />
-        </View>
-        <View>
-          <TextInput
-            style={styles.partyName}
-            placeholder="Pan"
-          //value={partyName}
-          //onChangeText={handlePartyNameChange}
-          />
-        </View>
-        <View>
-          <TextInput
-            style={styles.noteInput}
-            placeholder="Note"
-          //value={partyName}
-          //onChangeText={handlePartyNameChange}
-          />
-        </View>
+        )}
       </View>
+      
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "column",
     flex: 1,
     margin: 10,
     padding: 10,
     alignContent: "center",
-    alignItems: 'center',
     justifyContent: 'flex-start'
   },
-  partyName: {
-    marginTop: 30,
-    height: 30,
-    width: 400,
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
-    fontSize: 20
-  },
+  
   button: {
     marginTop: 20,
     height: 40,
