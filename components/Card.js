@@ -17,14 +17,12 @@ export const AccountCard = ({ data, navigation, callback, balanceError }) => {
           <View style={styles.accountInfo}>
             <View style={styles.left}>
               <View style={styles.accountType}>
-                <Text style={styles.accountInfoText}>{data.AccType} A/C</Text>
+                <Text style={styles.accountInfoText}>{data.AccType} Visits</Text>
               </View>
               <View style={styles.accountNumber}>
-                <Ionicons
-                  name="ios-wallet-outline"
-                  size={15}
-                  style={{ color: "#555555", marginRight: 5 }}
-                />
+              <Text style={styles.amountText}>
+                Order: 555
+              </Text>
                 <Text style={styles.accountInfoText}>{data.AccNum}</Text>
               </View>
             </View>
@@ -32,7 +30,7 @@ export const AccountCard = ({ data, navigation, callback, balanceError }) => {
           <View style={styles.amount}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={styles.amountText}>
-                Actual: {visible ? data.Balance : "XXXX.XX"}
+                Collection: 666
               </Text>
               {visible ? (
                 <TouchableOpacity onPress={() => setVisible(!visible)}>
@@ -89,7 +87,7 @@ export const AccountCard = ({ data, navigation, callback, balanceError }) => {
                 color: Colors.primary,
               }}
             >
-              Add Money
+             Receive Payment
             </Text>
           </View>
           {/* <TouchableOpacity onPress={() => navigation.navigate("Scan")}>

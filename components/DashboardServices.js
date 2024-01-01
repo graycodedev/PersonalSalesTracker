@@ -209,61 +209,62 @@ export const DashBoardServices = ({ navigation }) => {
 
   var arrServices = [
     {
-      name: "Bank Transfer",
-      icon: BankingIcons.BankIcon,
+      name: "Parties",
+      icon: BankingIcons.TransferIcon,
       navigation: "BankTransfer",
     },
-    { name: "Topup", icon: BankingIcons.TopupIcon, navigation: "topup" },
+    { name: "Collection", icon: BankingIcons.ChequeIcon, navigation: "topup" },
     {
-      name: "Internet",
+      name: "Order",
       icon: BankingIcons.InternetIcon,
       ServiceCategoryId: 8,
       navigation: "Internet",
     },
     {
-      name: "Electricity",
+      name: "Visits",
       icon: BankingIcons.ElectricityIcon,
       navigation: "electricity",
     },
     {
-      name: "ADSL/Landline",
+      name: "Attendance",
       icon: BankingIcons.TelephoneIcon,
       navigation: "Landline",
     },
     {
-      name: "Insurance",
-      icon: BankingIcons.InsuranceIcon,
+      name: "Notes",
+      icon: BankingIcons.StatementIcon,
       navigation: "Insurance",
       ServiceCategoryId: 10,
     },
     {
-      name: "Television",
+      name: "Odometer",
       icon: BankingIcons.TvIcon,
       navigation: "Television",
       ServiceCategoryId: 9,
     },
     {
-      name: "Water",
+      name: "Leave",
       icon: BankingIcons.WaterIcon,
       navigation: "khanepani",
       ServiceCategoryId: 7,
     },
-    { name: "Account", icon: BankingIcons.AccoungIcon, navigation: "Accounts" },
+    { name: "Returns", icon: BankingIcons.AccoungIcon, navigation: "Accounts" },
     {
-      name: "Cheque",
-      icon: BankingIcons.ChequeIcon,
-      navigation: "ChequeRequest",
-    },
-    {
-      name: "Transactions",
+      name: "Advance",
       icon: BankingIcons.StatementIcon,
       navigation: "TransactionList",
     },
     {
-      name: "Interest rate",
+      name: "Products",
       icon: BankingIcons.InterestIcon,
       navigation: "IntrestRate",
     },
+    {
+      name: "EOD Report",
+      icon: BankingIcons.ChequeIcon,
+      navigation: "ChequeRequest",
+    },
+   
     // {
     //   name: "Interest rate",
     //   icon: BankingIcons.InterestIcon,
@@ -369,7 +370,7 @@ export const DashBoardServices = ({ navigation }) => {
       )}
 
       <View>
-        {!showAllIcons && (
+        {/* {!showAllIcons && (
           <TouchableOpacity
             style={styles.viewMore}
             title=""
@@ -386,15 +387,12 @@ export const DashBoardServices = ({ navigation }) => {
             >
               VIEW MORE
             </Text>
-            {/* <Image
-              source={IMAGES.expandBelow}
-              style={{ alignSelf: "center" }}
-            /> */}
+          
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <BankingIcons.DownArrow fill={Colors.primary} />
             </View>
           </TouchableOpacity>
-        )}
+        )} */}
         {showAllIcons && (
           <TouchableOpacity
             style={styles.viewLess}
