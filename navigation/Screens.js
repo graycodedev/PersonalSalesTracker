@@ -32,6 +32,7 @@ import {
 } from "../screens/transfer/LoadAccount";
 import AddParty from "../screens/utilityPayment/AddParty";
 import PartyList from "../screens/utilityPayment/PartyList";
+import PartyDetails from "../screens/utilityPayment/PartyDetails";
 import {
   TopUp,
   TopUpConfirmation,
@@ -418,6 +419,7 @@ function HomeStack(props) {
       />
       <Stack.Screen name="topup" component={TopUp} options={headerOptions} />
       <Stack.Screen name="Party List" component={PartyList} options={headerOptions} />
+      <Stack.Screen name="Party Details" component={PartyDetails} options={headerOptions} />
       <Stack.Screen name="Add Party" component={AddParty} options={headerOptions} />
       <Stack.Screen name="ServiceList" component={ServiceList} options={headerOptions} />
 

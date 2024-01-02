@@ -59,6 +59,9 @@ const AddParty = (navigation, props) => {
       label: "Group D"
     },
   ]);
+
+
+
   const [selectedGroup, setSelectedGroup] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
