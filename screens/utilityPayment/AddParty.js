@@ -31,25 +31,25 @@ const AddParty = (navigation, props) => {
   const [selectedOption, setSelectedOption] = useState('');
     const [partyName, setPartyName]= useState("");
     const [showPartyList, setShowPartyList]= useState(false);
-    const [parties, setParties]= useState([
+    const [groups, setGroups]= useState([
       {
-        id:0, 
-        name:"Party A"
+        value:0, 
+        label:"Group A"
       }, 
       {
-        id:1, 
-        name:"Party B"
-      }, 
+        value:1, 
+        label:"Group B"
+      },  
       {
-        id:0, 
-        name:"Party C"
-      }, 
+        value:2, 
+        label:"Group C"
+      },  
       {
-        id:0, 
-        name:"Party D"
+        value:3, 
+        label:"Group D"
       }, 
     ]); 
-    const [selectedParty, setSelectedParty]= useState(""); 
+    const [selectedGroup, setSelectedGroup]= useState(""); 
 
 
   const openPicker = () => {
@@ -60,14 +60,9 @@ const AddParty = (navigation, props) => {
     setModalVisible(false);
   };
 
-  const handleOptionChange = (itemValue) => {
-    setSelectedOption(itemValue);
-    closePicker();
-  };
+  
 
-  const updateSelectedParty =(item)=>{
-setSelectedParty(item.name)
-  }
+
 
   return (
     <ScrollView
@@ -87,11 +82,8 @@ setSelectedParty(item.name)
                   value={partyName}
                 />
             </View>
-            <TouchableOpacity onPress={()=>setShowPartyList(true)}>
-        <Text>Show Parties List</Text>
-      </TouchableOpacity>
-      <View style={{zIndex: 99}}>
-            {/* <DropDownPicker
+      <View style={{zIndex: 1}}>
+            <DropDownPicker
               containerStyle={{ height: 50 }}
               dropDownMaxHeight={500}
               style={{
@@ -112,46 +104,16 @@ setSelectedParty(item.name)
                 color: "#9A9A9A",
               }}
               arrowColor={"#9A9A9A"}
-              defaultValue={"Group- a"}
-              value={this.state.fromaccountNo}
-              items={this.state.accountList}
+              defaultValue={groups[0].value}
+              value={selectedGroup}
+              items={groups}
               controller={(instance) => (this.controller = instance)}
-              onChangeList={(items, callback) => {
-                this.setState(
-                  {
-                    items,
-                  },
-                  callback
-                );
-              }}
               onChangeItem={(item) =>
-                this.setState({
-                  fromAccountNo: item.value,
-                })
+                setSelectedGroup(item.value)
               }
             />
-            {!!this.state.fromAccountNoError && (
-              <Text style={{ color: "red" }}>
-                {this.state.fromAccountNoError}
-              </Text>
-            )} */}
           </View>
-      {showPartyList && (
-          <SearchableList
-            items={parties}
-            noItemFoundText={"No partes found"}
-            searchablePlaceholder="Search Party"
-            itemSelected={updateSelectedParty}
-            filterBy={"name"}
-            visible={showPartyList}
-            onClose={()=>setShowPartyList(false)}
-            renderItem={(item) => (
-              <View style={{marginTop: 20}}>
-                <Text style={{ marginLeft: 18 }}>{item.name}</Text>
-              </View>
-            )}
-          />
-        )}
+     
       </View>
       
     </ScrollView>
