@@ -214,7 +214,7 @@ export const DashBoardServices = ({ navigation }) => {
       navigation: "BankTransfer",
     },
 
-    { name: "Party", icon: BankingIcons.ChequeIcon, navigation: "AddParty" },
+    { name: "Party", icon: BankingIcons.ChequeIcon, navigation: "Add Party" },
 
     {
       name: "Order",
@@ -266,7 +266,7 @@ export const DashBoardServices = ({ navigation }) => {
       icon: BankingIcons.ChequeIcon,
       navigation: "ChequeRequest",
     },
-   
+
     // {
     //   name: "Interest rate",
     //   icon: BankingIcons.InterestIcon,

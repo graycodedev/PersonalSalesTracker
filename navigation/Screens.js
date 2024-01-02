@@ -416,7 +416,7 @@ function HomeStack(props) {
         options={headerOptions}
       />
       <Stack.Screen name="topup" component={TopUp} options={headerOptions} />
-      <Stack.Screen name="AddParty" component={AddParty} options={headerOptions} />
+      <Stack.Screen name="Add Party" component={AddParty} options={headerOptions} />
       <Stack.Screen name="ServiceList" component={ServiceList} options={headerOptions} />
 
       <Stack.Screen
