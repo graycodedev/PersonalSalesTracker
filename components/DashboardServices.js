@@ -213,7 +213,9 @@ export const DashBoardServices = ({ navigation }) => {
       icon: BankingIcons.TransferIcon,
       navigation: "BankTransfer",
     },
-    { name: "Collection", icon: BankingIcons.ChequeIcon, navigation: "topup" },
+
+    { name: "Party", icon: BankingIcons.ChequeIcon, navigation: "AddParty" },
+
     {
       name: "Order",
       icon: BankingIcons.InternetIcon,
@@ -298,27 +300,30 @@ export const DashBoardServices = ({ navigation }) => {
     if (item.navigation != "TV" && item.navigation != "khanepani") {
       navigation.navigate(item.navigation);
     } else {
-      if(item.navigation == "khanepani"){
-        navigation.navigate("ServiceList", {items: [
-          {
+      if (item.navigation == "khanepani") {
+        navigation.navigate("ServiceList", {
+          items: [
+            {
               navigation: "CommunityWaterPayment",
               name: "Community Khanepani",
               imgSource: {
                 uri: Api.ServerImages.Insurance.Reliance,
               },
-              svg:   <BankingIcons.KhanepaniSVG
-              fill={Colors.primary}
-              height="80"
-              width="80"
-            />
+              svg: <BankingIcons.KhanepaniSVG
+                fill={Colors.primary}
+                height="80"
+                width="80"
+              />
             }
-      ], title: "Water"})
+          ], title: "Water"
+        })
       }
-      else{
-      navigation.navigate(`dynamicmerchant`, {
-        Name: item.name,
-        ServiceCategoryId: item.ServiceCategoryId,
-      });}
+      else {
+        navigation.navigate(`dynamicmerchant`, {
+          Name: item.name,
+          ServiceCategoryId: item.ServiceCategoryId,
+        });
+      }
     }
   };
   return (
