@@ -73,9 +73,6 @@ export class BankTransfer extends React.Component {
       note: "",
       noteError: "",
     };
-    this.GetAccountList();
-    this.GetBankList();
-    this.GetFavourite();
   }
   GetFavourite = async () => {
     var response = await (await request())
@@ -97,24 +94,8 @@ export class BankTransfer extends React.Component {
       ToastMessage.Short("Error ocurred contact support !");
     }
   };
-  GetAccountList = async () => {
-    const arr = await helpers.GetBankAccoutList();
-    this.state.fromAccountNo = arr[0].value;
-    this.setState({ accountList: arr });
-  };
-  GetBankList = async () => {
-    const resp = await TransferService.GetBankList();
-    if (resp.Code == 200) {
-      const bankArr = [];
-      for (let a of resp.Data) {
-        const obj = { label: a.name, value: a.idx };
-        bankArr.push(obj);
-      }
-      this.setState({ bankList: bankArr });
-    } else {
-      ToastMessage.Short("Could not list banks");
-    }
-  };
+  
+ 
   updateSelectedItem(value, label) {
     this.setState({
       toBankId: value,

@@ -159,7 +159,6 @@ this.subscription;
           this.setState({ accountList: accList });
         }
       }
-      await this.getAccountList();
       await this.getCooperativeBalance();
       await this.getRecentTransactions();
       await this.checkUserHasPin();
@@ -399,37 +398,15 @@ this.subscription;
               )}
             </TouchableOpacity>
           </View>
-          <View style={styles.swiper}>
-            <Swiper
-              activeDotColor={Colors.primary}
-              paginationStyle={{
-                bottom: -15,
-              }}
-              key={this.state.accountList.length}
-            >
-              {this.state.accountList.length > 0 ? (
-                this.state.accountList.map((item, index) => {
-                  if (item.AccType != "Loan") {
-                    return (
-                      <AccountCard
-                        navigation={this.props.navigation}
-                        key={item.AccNum}
-                        data={item}
-                        callback={()=>this.getAccountList()}
-                        balanceError={this.state.balanceError}
-                      />
-                    );
-                  }
-                })
-              ) : (
-                <AccountCard
-                  data={"blank"}
-                  navigation={this.props.navigation}
-                  callback={()=>this.getAccountList()}
-                />
-              )}
-            </Swiper>
-          </View>
+            <View style={styles.swiper}>
+                        <AccountCard
+                          navigation={this.props.navigation}
+                          data={"blank"}
+                          callback={()=>this.getAccountList()}
+                        />
+            
+            
+            </View>
         </View>
 
         <DashBoardServices navigation={this.props.navigation} />
@@ -539,7 +516,7 @@ const styles = StyleSheet.create({
   },
   swiper: {
     marginTop: 80,
-    height: 130,
+    height: 100,
     width: "100%",
     alignItems: "center",
     borderRadius: 10,
@@ -634,10 +611,10 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginTop: 40,
-        marginBottom: 120,
+        marginBottom: 90,
       },
       android: {
-        marginBottom: 120,
+        marginBottom: 90,
       },
     }),
   },

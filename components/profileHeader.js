@@ -90,15 +90,14 @@ const ProfileHeader = (props) => {
           </TouchableOpacity>
           {/* navigation.navigate("LoadAccountList"); */}
           <TouchableOpacity
-            style={styles.boxes}
+            style={styles.checkIn}
             onPress={() =>
               props.navigation.navigate("LoadAccountList")
             }
           >
-            {/* <Image source={IMAGES.ticketsIcon} style={{marginLeft: 22.4, marginRight: 12}} /> */}
-            <BankingIcons.purseIcon height={23} width={23} fill={Colors.primary}/>
-            <Text style={{ fontFamily: "SemiBold", fontSize: 12 }}>
-            Add Money
+           
+            <Text style={{ fontFamily: "SemiBold", fontSize: 14, color: "white" }}>
+            Check In
             </Text>
           </TouchableOpacity>
         </View>
@@ -144,6 +143,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent:"space-around"
   },
+  checkIn:{
+backgroundColor:"#5BC236", 
+width: 126,
+height: 36,
+borderRadius: 4,
+borderWidth: 2,
+borderColor: "#EEEEEE",
+flexDirection: "row",
+alignItems: "center",
+justifyContent:"space-around"
+  }, 
   notificationAndProfile: {
     position: "absolute",
     marginTop: 25,

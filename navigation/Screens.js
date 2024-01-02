@@ -1146,7 +1146,7 @@ function BottomTabNavigator() {
                   color: focused ? Colors.primary : Colors.defaultBlack,
                 }}
               >
-                History
+                Orders
               </Text>
             </View>
           ),
@@ -1185,7 +1185,7 @@ function BottomTabNavigator() {
                   color: focused ? Colors.primary : Colors.defaultBlack,
                 }}
               >
-                Scan
+                Share QR
               </Text>
             </View>
           ),
@@ -1217,7 +1217,7 @@ function BottomTabNavigator() {
                   color: focused ? Colors.primary : Colors.defaultBlack,
                 }}
               >
-                Transfer
+                Parties
               </Text>
             </View>
           ),

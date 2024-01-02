@@ -5,16 +5,16 @@
     "grant_type": "client_credentials"
   },
   "CompanyConfig": {
-    "CompanyId": 2,
+    "CompanyId": 1,
     "BranchId": 1,
     "CompanyCode": "aainchopaincho",
-    "CompanyName": "Aaincho Paincho Saving and Credit",
+    "CompanyName": "GrayCode Technology",
     "WalletName": "Aaincho Paincho",
     "BaseUrl": "https://mobileapi.thefinmax.com/",
     "AndroidAppUrl": "https://play.google.com/store/apps/details?id=com.graycode.aainchopainchosaccos&hl=en"
   },
   "ThemeConfig": {
-    "primaryColor": "#009D4B",
+    "primaryColor": "#AE529B",
     "secondoryColor": "#F7FAFC",
     "defaultColor": "#009D4B",
     "backGround": "#F5F5F5",
