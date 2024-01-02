@@ -21,6 +21,6 @@
     "primaryTextColor": "#BF232323"
   },
   "GeneralConfig": {
-    "IsAppForMultiple": false
+    "IsAppForMultiple": true
   }
 }

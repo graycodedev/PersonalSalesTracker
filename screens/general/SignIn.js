@@ -106,6 +106,7 @@ class SignIn extends React.Component {
       companyChooseError: "",
       dropDownCompanySelected: false,
       alertMessage: "",
+      companyCode: "", 
     };
   }
   getAppVersion = async () => {
@@ -461,13 +462,7 @@ class SignIn extends React.Component {
     } else {
       this.setState(() => ({ passwordError: "" }));
     }
-    if (this.state.dropDownCompanySelected == false) {
-      isvalid = false;
-      this.setState(() => ({
-        companyChooseError:
-          "Choose the cooperative, type at least three letters of your cooperative !!!",
-      }));
-    }
+   
     return isvalid;
   }
   //TransferMoneyImage,SecurityImage,MobileImage,FinanceImage
@@ -597,27 +592,16 @@ class SignIn extends React.Component {
           >
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <View style={{ height: 150, width: 350 }}>
-                {!api.IsAppForMultiple ? (
-                  <Image
-                    style={{
-                      marginTop: 10,
-                      alignContent: "center",
-                      flex: 1,
-                      resizeMode: "contain",
-                    }}
-                    source={{ uri: `${api.BaseUrl}${this.state.logoPath}` }}
-                  />
-                ) : (
+           
                   <Image
                     style={{
                       height: "100%",
                       width: "100%",
-                      marginTop: 10,
+                      marginTop: 20,
                       alignContent: "center",
                     }}
                     source={require("../../assets/finmax_logo.png")}
                   />
-                )}
               </View>
               <View style={{ alignItems: "center" }}>
                 <Text
@@ -844,26 +828,18 @@ class SignIn extends React.Component {
               </TouchableOpacity>
             </View> */}
             <View style={{ marginHorizontal: 24 }}>
-              {this.state.companiesDetailList.length > 0 &&
-                this.state.showdropDown && (
-                  <View
-                    style={{ flex: 1, justifyContent: "center", zIndex: 1 }}
-                  >
-                    <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
-                      Choose your cooperative
-                    </Text>
-                    <Autocomplete
-                      items={this.state.companiesDetailList}
-                      minChars={3}
-                      textForAutocomplete={"Name"}
-                      callback={this.setSelectedCompany}
-                      onClear={this.onClearDropDown}
-                    />
-                    <Text style={{ color: "red" }}>
-                      {this.state.companyChooseError}
-                    </Text>
-                  </View>
-                )}
+              
+            <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
+                Company Code
+              </Text>
+              <View>
+                <InputText
+                  placeholder=""
+                  style={styles.input}
+                  maxLength={10}
+                  onChangeText={(text) => this.setState({ companyCode: text })}
+                />
+              </View>
               <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
                 Mobile No
               </Text>
@@ -1155,7 +1131,7 @@ class SignIn extends React.Component {
                       fontFamily: "SemiBold",
                     }}
                   >
-                    Request mobile banking
+                    Request a demo
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -1323,30 +1299,9 @@ class SignIn extends React.Component {
 
   SignIn = async () => {
     this.setState({ isLoading: true });
-    if (!this.state.savedCompanyDetail) {
-      this.setState({
-        IosCompanyId: this.state.selectedCooperativeDetail.CompanyId,
-        IosCompanyCode: this.state.selectedCooperativeDetail.CompanyCode,
-        IosWalletName: this.state.selectedCooperativeDetail.Name,
-        IosAppstoreUrl: this.state.selectedCooperativeDetail.AppStoreUrl,
-        IosPrimaryColor: this.state.selectedCooperativeDetail.PrimaryColor,
-      });
-    }
+
     var data;
-    if (api.IsAppForMultiple) {
-      data = qs.stringify({
-        clientId: this.state.IosCompanyId,
-        CompanyId: !this.state.savedCompanyDetail
-          ? this.state.selectedCooperativeDetail.CompanyId
-          : this.state.IosCompanyId,
-        CompanyCode: this.state.IosCompanyCode,
-        SecretKey: api.SecretKey,
-        Username: this.state.email,
-        Password: this.state.password,
-        Device: this.state.device,
-        FcmToken: this.state.fcmToken,
-      });
-    } else {
+
       data = qs.stringify({
         clientId: api.CompanyId,
         CompanyId: api.CompanyId,
@@ -1357,7 +1312,6 @@ class SignIn extends React.Component {
         Device: this.state.device,
         FcmToken: this.state.fcmToken,
       });
-    }
     var response = await (await request())
       .post(api.Login, data)
       .catch(function(error) {

@@ -212,10 +212,8 @@ class Register extends React.Component {
         <View style={styles.headerBackGround} />
         <View style={styles.circle} />
         <View style={styles.box}>
-          <View style={styles.registerText}>
-            <Text style={{ fontSize: 24, fontFamily: "Bold" }}>Register</Text>
-          </View>
-          <View style={{ marginBottom: 31 }}>
+         
+          <View style={{ marginBottom: 31, marginTop: 20 }}>
             <View style={styles.ringingBackGround}></View>
             <BankingIcons.MobileIcon fill={Colors.primary} />
           </View>
@@ -230,21 +228,24 @@ class Register extends React.Component {
               />
               <Text style={{ color: "red" }}>{this.state.fullNameError}</Text>
             </View> */}
+         
           <View
             style={{
-              marginLeft: 51,
-              marginRight: 45,
+              flexDirection: "row",
               marginBottom: 10,
-              alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <Text style={{ fontSize: 14, fontFamily: "Regular" }}>
-              Insert Phone Number to continue
-            </Text>
-            <Text style={{ fontSize: 14, fontFamily: "Regular" }}>
-              the registration
-            </Text>
+            {/* <View style={styles.flagContainer}>
+                    <Image style = {{marginLeft: 7, width: 16, height: 16}} source={IMAGES.nepalFlagIcon} />
+                    <Text style = {{marginLeft: 5, fontSize: 13}}>+977</Text>
+                </View> */}
+            <TextInput
+              style={styles.fullNameContainer}
+              placeholder="Company Name"
+              onChangeText={(fullName) => this.setState({ fullName })}
+              value={this.state.fullName}
+            />
           </View>
           <View
             style={{
@@ -259,7 +260,25 @@ class Register extends React.Component {
                 </View> */}
             <TextInput
               style={styles.fullNameContainer}
-              placeholder="Full Name"
+              placeholder="Contact Person Name"
+              onChangeText={(fullName) => this.setState({ fullName })}
+              value={this.state.fullName}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              marginBottom: 10,
+              justifyContent: "center",
+            }}
+          >
+            {/* <View style={styles.flagContainer}>
+                    <Image style = {{marginLeft: 7, width: 16, height: 16}} source={IMAGES.nepalFlagIcon} />
+                    <Text style = {{marginLeft: 5, fontSize: 13}}>+977</Text>
+                </View> */}
+            <TextInput
+              style={styles.fullNameContainer}
+              placeholder="Email"
               onChangeText={(fullName) => this.setState({ fullName })}
               value={this.state.fullName}
             />
@@ -300,6 +319,7 @@ class Register extends React.Component {
               flexDirection: "row",
               alignItems: "center",
               marginTop: 20,
+              marginBottom: 4
             }}
           >
             <CheckBox
@@ -329,7 +349,7 @@ class Register extends React.Component {
               </Text>
             </TouchableOpacity>
           </View>
-          <View
+          {/* <View
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -363,7 +383,7 @@ class Register extends React.Component {
                 Cooperative Terms
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
           {this.state.termsError != "" && (
             <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
               {this.state.termsError}
@@ -388,7 +408,7 @@ class Register extends React.Component {
                   color: "#FFFFFF",
                 }}
               >
-                Register
+                Request a demo
               </Text>
             </View>
             <ActivityIndicator
@@ -404,24 +424,6 @@ class Register extends React.Component {
               })
             }
           > */}
-          <TouchableOpacity
-            onPress={() => {
-              if (this.validateNumber()) {
-                this.goToOTP();
-              }
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "SemiBold",
-                color: Colors.primary,
-                textAlign: "center",
-                paddingTop: 5,
-              }}
-            >
-              Already have a code
-            </Text>
-          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("SignIn")}
           >
