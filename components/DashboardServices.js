@@ -214,7 +214,7 @@ export const DashBoardServices = ({ navigation }) => {
       navigation: "BankTransfer",
     },
 
-    { name: "Party", icon: BankingIcons.ChequeIcon, navigation: "Add Party" },
+    { name: "Party", icon: BankingIcons.ChequeIcon, navigation: "Party List" },
 
     {
       name: "Order",
