@@ -30,9 +30,14 @@ import {
   LoadAccountList,
   LoadAccountSuccess,
 } from "../screens/transfer/LoadAccount";
-import AddParty from "../screens/utilityPayment/AddParty";
-import PartyList from "../screens/utilityPayment/PartyList";
-import PartyDetails from "../screens/utilityPayment/PartyDetails";
+import AddParty from "../screens/utilityPayment/PartyScreens/AddParty";
+import PartyList from "../screens/utilityPayment/PartyScreens/PartyList";
+import PartyDetails from "../screens/utilityPayment/PartyScreens/PartyDetails";
+import CollectionList from "../screens/utilityPayment/CollectionScreens/CollectionLists";
+import CollectionDetails from "../screens/utilityPayment/CollectionScreens/CollectionDetails";
+import AddCollection from "../screens/utilityPayment/CollectionScreens/AddCollection";
+import Notes from "../screens/utilityPayment/Notes";
+import NoteInfo from "../screens/utilityPayment/NoteInfo";
 import {
   TopUp,
   TopUpConfirmation,
@@ -421,7 +426,16 @@ function HomeStack(props) {
       <Stack.Screen name="Party List" component={PartyList} options={headerOptions} />
       <Stack.Screen name="Party Details" component={PartyDetails} options={headerOptions} />
       <Stack.Screen name="Add Party" component={AddParty} options={headerOptions} />
+      <Stack.Screen name="Notes" component={Notes} options={headerOptions} />
+      <Stack.Screen name="Note Info" component={NoteInfo} options={headerOptions} />
+      <Stack.Screen name="Collection List" component={CollectionList} options={headerOptions} />
+      <Stack.Screen name="Collection Details" component={CollectionDetails} options={headerOptions} />
+      <Stack.Screen name="Add Collection" component={AddCollection} options={headerOptions} />
+
+
+
       <Stack.Screen name="ServiceList" component={ServiceList} options={headerOptions} />
+
 
       <Stack.Screen
         name="Confirmation"

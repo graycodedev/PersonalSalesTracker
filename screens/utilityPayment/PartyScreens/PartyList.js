@@ -7,8 +7,8 @@ import {
     TouchableOpacity,
     ActivityIndicator
 } from "react-native";
-import PageStyle from "../style/pageStyle";
-import { ButtonPrimary } from "../../components/Button";
+import PageStyle from "../../style/pageStyle";
+import { ButtonPrimary } from "../../../components/Button";
 
 
 const PartyList = ({ navigation }) => {
@@ -23,7 +23,10 @@ const PartyList = ({ navigation }) => {
             email: "email1@gmail.com",
             address: "address 1",
             mobile: "mobile 1",
-            note: "note"
+            note: "note 1",
+            amount: "amount 1",
+            date: "date 1",
+            mode: "mode 1"
         },
         {
             value: 1,
@@ -35,7 +38,10 @@ const PartyList = ({ navigation }) => {
             email: "email2@gmail.com",
             address: "address 2",
             mobile: "mobile 2",
-            note: "note"
+            note: "note 2",
+            amount: "amount 2",
+            date: "date 2",
+            mode: "mode 2"
         },
         {
             value: 2,
@@ -47,7 +53,10 @@ const PartyList = ({ navigation }) => {
             email: "email1@gmail.com",
             address: "address 3",
             mobile: "mobile 3",
-            note: "note"
+            note: "note 3",
+            amount: "amount 3",
+            date: "date 3",
+            mode: "mode 3"
         },
         {
             value: 3,
@@ -59,7 +68,10 @@ const PartyList = ({ navigation }) => {
             email: "email1@gmail.com",
             address: "address 4",
             mobile: "mobile 4",
-            note: "note"
+            note: "note 4",
+            amount: "amount 4",
+            date: "date 4",
+            mode: "mode 4"
         },
         {
             value: 4,
@@ -71,7 +83,10 @@ const PartyList = ({ navigation }) => {
             email: "email1@gmail.com",
             address: "address 5",
             mobile: "mobile 5",
-            note: "note"
+            note: "note 5",
+            amount: "amount 5",
+            date: "date 5",
+            mode: "mode 5"
         },
     ]);
 
@@ -143,7 +158,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     circle: {
-        backgroundColor: "#ffa500",
+        backgroundColor: "#AE529B",
         width: 60,
         height: 60,
         position: 'absolute',
@@ -151,6 +166,9 @@ const styles = StyleSheet.create({
         right: 20,
         borderRadius: 50,
         zIndex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 2,
     }
 });
 

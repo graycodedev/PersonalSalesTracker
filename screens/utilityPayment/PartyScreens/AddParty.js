@@ -12,13 +12,13 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { Modal } from "react-native";
 import ImagePicker from 'react-native-image-picker';
-import { ButtonPrimary } from "../../components/Button";
+import { ButtonPrimary } from "../../../components/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Colors } from "../style/Theme";
+import { Colors } from "../../style/Theme";
 import { TextInput } from "react-native-gesture-handler";
-import { RegularInputText, AmountInputText } from "../../components/Input";
-import PageStyle from "../style/pageStyle";
-import { SearchableList } from "../../components/SearchableList";
+import { RegularInputText, AmountInputText } from "../../../components/Input";
+import PageStyle from "../../style/pageStyle";
+import { SearchableList } from "../../../components/SearchableList";
 import DropDownPicker from "react-native-dropdown-picker";
 
 

@@ -1,5 +1,3 @@
-// PartyDetails.js
-
 import React from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -48,10 +46,26 @@ const OrdersScreen = () => (
     </View>
 );
 
-const CollectionsScreen = () => (
-    <View style={styles.tabContent}>
-        {/* Collections details go here */}
-    </View>
+const CollectionsScreen = ({ parties }) => (
+    <ScrollView
+        nestedScrollEnabled={true}
+        showsVerticalScrollIndicator={false}
+        style={{ width: "100%", backgroundColor: "#eee" }}
+        contentContainerStyle={{ flexGrow: 1 }}
+    >
+        <View style={styles.container}>
+            <View style={styles.itemContainer}>
+                {parties.map((party, index) => (
+                    <View key={index} style={styles.partyItem}>
+                        <Text style={styles.detail}>{party.label}</Text>
+                        <View style={styles.labelContainer}>
+                            <Text style={styles.data}>{party.data}</Text>
+                        </View>
+                    </View>
+                ))}
+            </View>
+        </View>
+    </ScrollView>
 );
 
 const VisitsScreen = () => (
@@ -62,13 +76,19 @@ const VisitsScreen = () => (
 
 const PartyDetails = ({ route, navigation }) => {
     const { party } = route.params;
-
+    const parties = [
+        { label: "Party Name:", data: party.name },
+        { label: "Recieved Amount", data: party.amount },
+        { label: "Recieved Date", data: party.date },
+        { label: "Payment Mode", data: party.mode },
+        { label: "Note", data: party.note },
+    ];
 
     return (
         <Tab.Navigator>
             <Tab.Screen name="Overview" component={() => <OverviewScreen party={party} />} />
             <Tab.Screen name="Orders" component={OrdersScreen} />
-            <Tab.Screen name="Collections" component={CollectionsScreen} />
+            <Tab.Screen name="Collections" component={() => <CollectionsScreen parties={parties} />} />
             <Tab.Screen name="Visits" component={VisitsScreen} />
         </Tab.Navigator>
     );
