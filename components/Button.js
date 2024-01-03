@@ -67,10 +67,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ButtonPrimary = ({ title, style }) => {
+export const ButtonPrimary = ({ title, style, icon }) => {
   const btnStyles = [ButtonViewStyle.Primary, { ...style }];
 
-  return <View style={btnStyles}><Text style={{fontFamily: "Regular",
+  return <View style={btnStyles}>
+    {icon && icon}
+    <Text style={{fontFamily: "Regular",
   textAlign: "center",
   fontSize: 16,  color: "#fff",}}>{title}</Text></View>;
 };

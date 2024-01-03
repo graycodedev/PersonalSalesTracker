@@ -7,8 +7,8 @@ import {
     TouchableOpacity,
     ActivityIndicator
 } from "react-native";
-import PageStyle from "../style/pageStyle";
-import { ButtonPrimary } from "../../components/Button";
+import PageStyle from "../../style/pageStyle";
+import { ButtonPrimary } from "../../../components/Button";
 
 const Notes = ({ navigation }) => {
 
@@ -26,7 +26,7 @@ const Notes = ({ navigation }) => {
     ]);
 
     const handleReadMore = (note) => {
-        navigation.navigate("Note Info", { note });
+        navigation.navigate("NoteInfo", { note });
     };
 
 

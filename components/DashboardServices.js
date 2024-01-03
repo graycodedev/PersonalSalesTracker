@@ -211,13 +211,13 @@ export const DashBoardServices = ({ navigation }) => {
     {
       name: "Parties",
       icon: BankingIcons.TransferIcon,
-      navigation: "Party List",
+      navigation: "PartyList",
     },
 
-    { name: "Collections", icon: BankingIcons.ChequeIcon, navigation: "Collection List" },
+    { name: "Collections", icon: BankingIcons.ChequeIcon, navigation: "CollectionList" },
 
     {
-      name: "Order",
+      name: "Orders",
       icon: BankingIcons.InternetIcon,
       ServiceCategoryId: 8,
       navigation: "Internet",

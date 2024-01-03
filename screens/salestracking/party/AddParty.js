@@ -18,16 +18,19 @@ import { Colors } from "../../style/Theme";
 import { TextInput } from "react-native-gesture-handler";
 import { RegularInputText, AmountInputText } from "../../../components/Input";
 import PageStyle from "../../style/pageStyle";
-import { SearchableList } from "../../../components/SearchableList";
-import DropDownPicker from "react-native-dropdown-picker";
+import * as SvgIcons from "../../../components/BankingIcons"
 
 
 
 const { width, height } = Dimensions.get("screen");
 
-const AddParty = (navigation, props) => {
-  useEffect(() => {
-  }, []);
+const AddParty = (props) => {
+  
+  useEffect(()=>{
+    props.navigation.setOptions({
+      title:"Add Party"
+    })
+      }, []);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
@@ -73,6 +76,9 @@ const AddParty = (navigation, props) => {
   const closePicker = () => {
     setModalVisible(false);
   };
+
+
+ 
 
 
 
@@ -168,7 +174,7 @@ const AddParty = (navigation, props) => {
               setIsLoading(true);
             }}
           >
-            <ButtonPrimary title={"Choose Location"} />
+            <ButtonPrimary title={"Choose Location"} icon={<SvgIcons.checkInIcon fill="white"/>} style={{alignItems:"center", justifyContent:"center", flexDirection:"row"}}/>
             <ActivityIndicator
               animating={isLoading}
               color="#ffa500"
