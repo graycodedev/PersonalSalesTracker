@@ -1,37 +1,46 @@
 import React, { useEffect, useState } from "react";
 import {
     View,
-    Image,
+    Text,
     ScrollView,
     StyleSheet,
     Dimensions,
     TouchableOpacity,
     ActivityIndicator,
-    Text,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Picker } from "@react-native-picker/picker";
-import { Modal } from "react-native";
-import ImagePicker from 'react-native-image-picker';
-import { ButtonPrimary } from "../../../components/Button";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import DropDownPicker from "react-native-dropdown-picker";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Colors } from "../../style/Theme";
-import { TextInput } from "react-native-gesture-handler";
-import { RegularInputText, AmountInputText } from "../../../components/Input";
+import { RegularInputText } from "../../../components/Input";
+import { ButtonPrimary } from "../../../components/Button";
 import PageStyle from "../../style/pageStyle";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
-const { width, height } = Dimensions.get("screen");
+
+
+const { width } = Dimensions.get("screen");
 
 const AddVisit = ({ route }) => {
-
     const parties = route.params.parties || [];
-
     const navigation = useNavigation();
-
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOption, setSelectedOption] = useState('existingParty'); // Set initial state to 'existingParty'
+    const [location, setLocation] = useState("");
+    const [remark, setRemark] = useState("");
+
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const onChangeDate = (event, selectedDate) => {
+        const currentDate = selectedDate || selectedDate;
+        setShowDatePicker(false);
+        setSelectedDate(currentDate);
+    };
+
+    const formattedDate = selectedDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    });
 
     const renderAdditionalComponent = () => {
         if (selectedOption === 'existingParty') {
@@ -65,23 +74,19 @@ const AddVisit = ({ route }) => {
             );
         } else if (selectedOption === 'addParty') {
             return (
-                <View style={{ margin: 30 }}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate('AddParty')
+                <View>
+                    <RegularInputText
+                        key="title"
+                        placeholder="Location"
+                        onChangeText={(text) => {
+                            setLocation(text)
                         }}
-                    >
-                        <ButtonPrimary title={"Add Party"} />
-                        <ActivityIndicator
-                            animating={isLoading}
-                            color="#ffa500"
-                            style={styles.activityIndicator}
-                        ></ActivityIndicator>
-                    </TouchableOpacity>
+                        value={location}
+                    />
                 </View>
             );
         }
-        return null; // Return null if no additional component should be rendered
+        return null;
     };
 
     return (
@@ -92,7 +97,6 @@ const AddVisit = ({ route }) => {
             contentContainerStyle={{ flexGrow: 1 }}
         >
             <View style={PageStyle.container}>
-
                 <View style={{ marginBottom: 15, zIndex: 99 }}>
                     <Text style={{ fontFamily: "Medium", color: "#9A9A9A", }}>Existing Party?</Text>
                     <DropDownPicker
@@ -121,10 +125,50 @@ const AddVisit = ({ route }) => {
                             { label: 'No', value: 'addParty' },
                         ]}
                         onChangeItem={(item) => setSelectedOption(item.value)}
+                        defaultValue={'existingParty'}
                     />
                 </View>
 
+
+
                 {renderAdditionalComponent()}
+
+                <View>
+                    <Text style={{ fontFamily: "Medium", color: "#9A9A9A", }}>Visited Date</Text>
+                    <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                        <RegularInputText
+                            key="date"
+                            placeholder="Visited Date"
+                            value={formattedDate}
+                            editable={false}
+                        />
+                    </TouchableOpacity>
+
+                    {showDatePicker && (
+                        <DateTimePicker
+                            value={selectedDate}
+                            mode="date"
+                            is24Hour={true}
+                            display="default"
+                            onChange={onChangeDate}
+                        />
+                    )}
+                </View>
+
+                <View>
+                    <RegularInputText
+                        key="remark"
+                        placeholder="Remarks:"
+                        onChangeText={(text) => {
+                            setRemark(text)
+                        }}
+                        value={remark}
+                        multiline={true}
+                        numberOfLines={5}
+                        style={{ height: 100, alignItems: 'flex-start', borderWidth: 0 }}
+
+                    />
+                </View>
 
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
@@ -140,7 +184,6 @@ const AddVisit = ({ route }) => {
                         ></ActivityIndicator>
                     </TouchableOpacity>
                 </View>
-
             </View>
         </ScrollView>
     );

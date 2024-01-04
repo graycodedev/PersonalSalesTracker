@@ -28,14 +28,6 @@ const AddNote = () => {
 
     const navigation = useNavigation();
 
-    const handlePartySelection = (itemValue) => {
-        if (itemValue === 'existingParty') {
-            navigation.navigate('PartyList');
-        } else if (itemValue === 'addParty') {
-            navigation.navigate('AddParty');
-        }
-    };
-
     const [title, setTitle] = useState("");
     const [note, setNote] = useState("");
 
