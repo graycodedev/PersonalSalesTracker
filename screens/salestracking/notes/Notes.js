@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import PageStyle from "../../style/pageStyle";
 import { ButtonPrimary } from "../../../components/Button";
+import * as BankingIcons from "../../../components/BankingIcons";
+import { Colors } from "../../style/Theme";
 
 const Notes = ({ navigation }) => {
 
@@ -53,6 +55,18 @@ const Notes = ({ navigation }) => {
                     </View>
                 ))}
             </View>
+
+            <View>
+                <TouchableOpacity
+                    style={styles.circle}
+                    onPress={() => {
+                        navigation.navigate('AddNote');
+                    }}
+                >
+                    <BankingIcons.plus fill="white" />
+                </TouchableOpacity>
+            </View>
+
         </ScrollView>
     );
 };
@@ -85,6 +99,18 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "#333",
     },
+    circle: {
+        backgroundColor: Colors.primary,
+        width: 50,
+        height: 50,
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+        borderRadius: 50,
+        zIndex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    }
 });
 
 export default Notes;

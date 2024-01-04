@@ -1,17 +1,14 @@
 import React, { useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet } from "react-native";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { useLayoutEffect } from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 
-const CollectionDetails = ({ route, navigation }) => {
-
-    const { party } = route.params;
-
+const VisitDetails = ({ route, navigation }) => {
     useEffect(() => {
         navigation.setOptions({
-            title: party.name,
+            title: visit.name,
         });
     }, [])
+
+    const { visit } = route.params;
 
     return (
         <ScrollView
@@ -23,39 +20,44 @@ const CollectionDetails = ({ route, navigation }) => {
             <View style={styles.container}>
                 <View style={styles.itemContainer}>
                     <View style={styles.item}>
-                        <Text style={styles.partyInfo}>Party Name:</Text>
+                        <Text style={styles.visitInfo}>Party Name:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.partyData}>{party.name}</Text>
+                            <Text style={styles.visitData}>{visit.name}</Text>
                         </View>
                     </View>
+
                     <View style={styles.item}>
-                        <Text style={styles.partyInfo}>Recieved Amount:</Text>
+                        <Text style={styles.visitInfo}>Location:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.partyData}>{party.amount}</Text>
+                            <Text style={styles.visitData}>{visit.location}</Text>
                         </View>
                     </View>
+
                     <View style={styles.item}>
-                        <Text style={styles.partyInfo}>Recieved Date:</Text>
+                        <Text style={styles.visitInfo}>Visit Date:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.partyData}>{party.date}</Text>
+                            <Text style={styles.visitData}>{visit.date}</Text>
                         </View>
                     </View>
+
                     <View style={styles.item}>
-                        <Text style={styles.partyInfo}>Recieved Mode:</Text>
+                        <Text style={styles.visitInfo}>Visit Added:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.partyData}>{party.mode}</Text>
+                            <Text style={styles.visitData}>{visit.date2}</Text>
                         </View>
                     </View>
+
                     <View style={styles.item}>
-                        <Text style={styles.partyInfo}>Note:</Text>
+                        <Text style={styles.visitInfo}>Remarks:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.partyData}>{party.note}</Text>
+                            <Text style={styles.visitData}>{visit.remark}</Text>
                         </View>
                     </View>
+
                 </View>
             </View>
         </ScrollView>
-    )
+    );
 };
 
 const styles = StyleSheet.create({
@@ -76,17 +78,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 10,
     },
-    partyInfo: {
+    visitInfo: {
         fontSize: 20,
     },
     dataView: {
         width: '50%'
     },
-    partyData: {
+    visitData: {
         fontSize: 20,
         textAlign: 'right'
     },
 });
 
-
-export default CollectionDetails;
+export default VisitDetails;

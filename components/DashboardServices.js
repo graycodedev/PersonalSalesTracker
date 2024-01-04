@@ -225,7 +225,7 @@ export const DashBoardServices = ({ navigation }) => {
     {
       name: "Visits",
       icon: BankingIcons.ElectricityIcon,
-      navigation: "electricity",
+      navigation: "Visits",
     },
     {
       name: "Attendance",

@@ -248,6 +248,10 @@ import CollectionDetails from "../screens/salestracking/collection/CollectionDet
 import AddCollection from "../screens/salestracking/collection/AddCollection";
 import NoteInfo from "../screens/salestracking/notes/NoteInfo";
 import AddParty from "../screens/salestracking/party/AddParty";
+import AddNote from "../screens/salestracking/notes/AddNote";
+import Visits from "../screens/salestracking/Visits/Visits";
+import AddVisit from "../screens/salestracking/visits/AddVisit";
+import VisitDetails from "../screens/salestracking/visits/VisitDetails";
 
 const { width } = Dimensions.get("screen");
 const Stack = createStackNavigator();
@@ -429,10 +433,15 @@ function HomeStack(props) {
       <Stack.Screen name="AddParty" component={AddParty} options={headerOptions} />
       <Stack.Screen name="Notes" component={Notes} options={headerOptions} />
       <Stack.Screen name="NoteInfo" component={NoteInfo} options={headerOptions} />
+      <Stack.Screen name="AddNote" component={AddNote} options={headerOptions} />
       <Stack.Screen name="CollectionList" component={CollectionList} options={headerOptions} />
       <Stack.Screen name="CollectionDetails" component={CollectionDetails} options={headerOptions} />
       <Stack.Screen name="AddCollection" component={AddCollection} options={headerOptions} />
       <Stack.Screen name="ServiceList" component={ServiceList} options={headerOptions} />
+      <Stack.Screen name="Visits" component={Visits} options={headerOptions} />
+      <Stack.Screen name="AddVisit" component={AddVisit} options={headerOptions} />
+      <Stack.Screen name="VisitDetails" component={VisitDetails} options={headerOptions} />
+
 
 
       <Stack.Screen

@@ -7,9 +7,9 @@ import { Colors } from "../../style/Theme";
 const Tab = createMaterialTopTabNavigator();
 
 const OverviewScreen = ({ party }) => {
- 
 
-   
+
+
 
     return (
         <ScrollView
@@ -20,56 +20,56 @@ const OverviewScreen = ({ party }) => {
         >
             <View style={styles.container}>
                 <View style={styles.itemContainer}>
-                  
-                        <View  style={styles.partyItem}>
-                            <Text style={styles.detail}>Party Name: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{party.name}</Text>
-                            </View>
+
+                    <View style={styles.partyItem}>
+                        <Text style={styles.detail}>Party Name: </Text>
+                        <View style={styles.labelContainer}>
+                            <Text style={styles.data}>{party.name}</Text>
                         </View>
-                        <View  style={styles.partyItem}>
-                            <Text style={styles.detail}>Contact Person: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{party.person}</Text>
-                            </View>
+                    </View>
+                    <View style={styles.partyItem}>
+                        <Text style={styles.detail}>Contact Person: </Text>
+                        <View style={styles.labelContainer}>
+                            <Text style={styles.data}>{party.person}</Text>
                         </View>
-                        <View  style={styles.partyItem}>
-                            <Text style={styles.detail}>Phone: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{party.phone}</Text>
-                            </View>
+                    </View>
+                    <View style={styles.partyItem}>
+                        <Text style={styles.detail}>Phone: </Text>
+                        <View style={styles.labelContainer}>
+                            <Text style={styles.data}>{party.phone}</Text>
                         </View>
-                        <View  style={styles.partyItem}>
-                            <Text style={styles.detail}>PartyCode: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{party.code}</Text>
-                            </View>
+                    </View>
+                    <View style={styles.partyItem}>
+                        <Text style={styles.detail}>PartyCode: </Text>
+                        <View style={styles.labelContainer}>
+                            <Text style={styles.data}>{party.code}</Text>
                         </View>
-                        <View  style={styles.partyItem}>
-                            <Text style={styles.detail}>Mobile: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{party.mobile}</Text>
-                            </View>
+                    </View>
+                    <View style={styles.partyItem}>
+                        <Text style={styles.detail}>Mobile: </Text>
+                        <View style={styles.labelContainer}>
+                            <Text style={styles.data}>{party.mobile}</Text>
                         </View>
-                        <View  style={styles.partyItem}>
-                            <Text style={styles.detail}>Address: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{party.address}</Text>
-                            </View>
+                    </View>
+                    <View style={styles.partyItem}>
+                        <Text style={styles.detail}>Address: </Text>
+                        <View style={styles.labelContainer}>
+                            <Text style={styles.data}>{party.address}</Text>
                         </View>
-                        <View  style={styles.partyItem}>
-                            <Text style={styles.detail}>Email: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{party.email}</Text>
-                            </View>
+                    </View>
+                    <View style={styles.partyItem}>
+                        <Text style={styles.detail}>Email: </Text>
+                        <View style={styles.labelContainer}>
+                            <Text style={styles.data}>{party.email}</Text>
                         </View>
-                        <View  style={styles.partyItem}>
-                            <Text style={styles.detail}>Website: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{party.website}</Text>
-                            </View>
+                    </View>
+                    <View style={styles.partyItem}>
+                        <Text style={styles.detail}>Website: </Text>
+                        <View style={styles.labelContainer}>
+                            <Text style={styles.data}>{party.website}</Text>
                         </View>
-              
+                    </View>
+
                 </View>
             </View>
         </ScrollView>
@@ -114,23 +114,23 @@ const VisitsScreen = () => (
 const PartyDetails = (props) => {
     const { party } = props.route.params;
     console.log(props)
-    useEffect(()=>{
+    useEffect(() => {
         props.navigation.setOptions({
             title: party.name,
-          });
+        });
     }, [])
 
 
     return (
         <Tab.Navigator
-        screenOptions={{
-            tabBarScrollEnabled: true,
-            tabBarIndicatorStyle:{color:"red"}, 
-            tabBarPressColor: Colors.primary
-          }}>
-            <Tab.Screen name="Overview" component={()=> <OverviewScreen party={party} />} />
+            screenOptions={{
+                tabBarScrollEnabled: true,
+                tabBarIndicatorStyle: { color: "red" },
+                tabBarPressColor: Colors.primary
+            }}>
+            <Tab.Screen name="Overview" component={() => <OverviewScreen party={party} />} />
             <Tab.Screen name="Orders" component={OrdersScreen} />
-            <Tab.Screen name="Collections" component={() => <CollectionsScreen  />} />
+            <Tab.Screen name="Collections" component={() => <CollectionsScreen />} />
             <Tab.Screen name="Visits" component={VisitsScreen} />
         </Tab.Navigator>
     );
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
 
     },
     itemContainer: {
-        padding:2, 
+        padding: 2,
         backgroundColor: "#fff",
         elevation: 2,
         borderRadius: 8,
@@ -158,11 +158,11 @@ const styles = StyleSheet.create({
     },
     detail: {
         fontSize: 16,
-        fontFamily:"Regular"
+        fontFamily: "Regular"
     },
     data: {
         fontSize: 16,
-        textAlign:'right'
+        textAlign: 'right'
 
     },
     labelContainer: {
