@@ -11,7 +11,7 @@
     "CompanyName": "GrayCode Technology",
     "WalletName": "Aaincho Paincho",
     "BaseUrl": "https://mobileapi.thefinmax.com/",
-    "AndroidAppUrl": "https://play.google.com/store/apps/details?id=com.graycode.aainchopainchosaccos&hl=en"
+    "AndroidAppUrl": ""
   },
   "ThemeConfig": {
     "primaryColor": "#AE529B",
