@@ -249,7 +249,8 @@ import AddCollection from "../screens/salestracking/collection/AddCollection";
 import NoteInfo from "../screens/salestracking/notes/NoteInfo";
 import AddParty from "../screens/salestracking/party/AddParty";
 import AddNote from "../screens/salestracking/notes/AddNote";
-import Visits from "../screens/salestracking/Visits/Visits";
+
+import Visits from "../screens/salestracking/visits/Visits";
 import AddVisit from "../screens/salestracking/visits/AddVisit";
 import VisitDetails from "../screens/salestracking/visits/VisitDetails";
 
