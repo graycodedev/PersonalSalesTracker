@@ -8,7 +8,7 @@ const BaseUrl = AppConfig.CompanyConfig.BaseUrl;
 const AndroidAppUrl = AppConfig.CompanyConfig.AndroidAppUrl;
 const BranchId = AppConfig.CompanyConfig.BranchId;
 const IsAppForMultiple = AppConfig.GeneralConfig.IsAppForMultiple;
-const Login = BaseUrl + "api/v1/mobilebanking/user/login";
+const Login = BaseUrl + "api/v1/user/login";
 const MobileBankingActivation =
   BaseUrl + "api/v1/mobilebankingactivationrequest/register";
 const MobileBankingVerification = BaseUrl + "api/v1/otp/verifyotp";
@@ -188,6 +188,13 @@ const ServerImages = {
   },
 };
 
+const Notes={
+  List:BaseUrl +"api/v1/st_notes/list", 
+  Details:BaseUrl +"api/v1/st_notes/details", 
+  Save:BaseUrl +"api/v1/st_notes/save",
+  Delete:BaseUrl +"api/v1/st_notes/delete"
+}
+
 export default {
   CompanyId,
   CompanyCode,
@@ -257,6 +264,7 @@ export default {
   IsAppForMultiple,
   TransactionDetailByUniqueId,
   LoadAccountFromBank,
+  Notes
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

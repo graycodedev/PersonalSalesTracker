@@ -10,7 +10,7 @@
     "CompanyCode": "aainchopaincho",
     "CompanyName": "GrayCode Technology",
     "WalletName": "Aaincho Paincho",
-    "BaseUrl": "https://mobileapi.thefinmax.com/",
+    "BaseUrl": "https://api.graycode.com.np/",
     "AndroidAppUrl": ""
   },
   "ThemeConfig": {

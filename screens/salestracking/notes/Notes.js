@@ -11,25 +11,39 @@ import PageStyle from "../../style/pageStyle";
 import { ButtonPrimary } from "../../../components/Button";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
+import request from "../../../config/RequestManager";
+import ToastMessage from "../../../components/Toast/Toast";
+import Api from "../../../constants/Api";
 
 const Notes = ({ navigation }) => {
 
-    const [notes, setNotes] = useState([
-        {
-            value: 0,
-            title: "Note 1 Title",
-            note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        },
-        {
-            value: 1,
-            title: "Note 2 Title",
-            note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        },
-    ]);
+    const [notes, setNotes] = useState([]);
 
     const handleReadMore = (note) => {
         navigation.navigate("NoteInfo", { note });
     };
+    useEffect(()=>{
+        getList();
+    }, [])
+
+
+    const getList = async () => {
+        var response = await (await request())
+          .get(Api.Notes.List)
+          .catch(function(error) {
+            // console.log(error);
+            ToastMessage.Short("Error! Contact Support");
+          });
+        if (response != undefined) {
+          if (response.data.Code == 200) {
+            setNotes(response.data.Data);
+          } else {
+            ToastMessage.Short("Error Loading Notes");
+          }
+        } else {
+          ToastMessage.Short("Error Loading Notes");
+        }
+      };
 
 
     return (
@@ -40,11 +54,11 @@ const Notes = ({ navigation }) => {
             contentContainerStyle={{ flexGrow: 1 }}
         >
             <View style={styles.container}>
-                {notes.map((note) => (
+                {notes.length>0 && notes.map((note) => (
                     <View key={note.value} style={styles.noteContainer}>
-                        <Text style={styles.noteHead}>{note.title}</Text>
+                        <Text style={styles.noteHead}>{note.NoteTitle}</Text>
                         <View style={styles.noteView}>
-                            <Text style={styles.noteText}>{note.note}</Text>
+                            <Text style={styles.noteText} numberOfLines={4}>{note.Note}</Text>
                         </View>
                         <TouchableOpacity
                             style={{ marginTop: 10, }}
@@ -89,11 +103,11 @@ const styles = StyleSheet.create({
 
     },
     noteHead: {
-        fontSize: 24,
+        fontSize: 16,
         fontWeight: '700',
     },
     noteView: {
-        marginTop: 15
+        marginTop: 8
     },
     noteText: {
         fontSize: 16,

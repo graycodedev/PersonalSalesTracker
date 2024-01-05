@@ -21,8 +21,12 @@ import { Colors } from "../../style/Theme";
 import { TextInput } from "react-native-gesture-handler";
 import { RegularInputText, AmountInputText } from "../../../components/Input";
 import PageStyle from "../../style/pageStyle";
+import request from "../../../config/RequestManager";
+import ToastMessage from "../../../components/Toast/Toast";
+import Api from "../../../constants/Api";
 
 const { width, height } = Dimensions.get("screen");
+
 
 const AddNote = () => {
 
@@ -32,6 +36,41 @@ const AddNote = () => {
     const [note, setNote] = useState("");
 
     const [isLoading, setIsLoading] = useState(false);
+
+
+    const saveNote=async()=>{
+       
+        let data= {
+            Id: 0,
+            NoteTitle:title, 
+            Note:note, 
+            IsActive:true, 
+            CompanyId: 1
+        }
+        console.log(note,title, Api.Notes.Save, data)
+        setIsLoading(true);
+        var response = await (await request())
+        .post(Api.Notes.Save, data)
+        .catch(function(error) {
+            setIsLoading(false);
+          ToastMessage.Short("Error Occurred Contact Support");
+        });
+        console.log("RE", response.data)
+      if (response != undefined) {
+        if (response.data.Code == 200) {
+          return response.data.Data;
+        } else {
+          ToastMessage.Short(response.data.Message);
+        }
+      } else {
+        ToastMessage.Short("Error Occurred Contact Support");
+      }
+      setIsLoading(false);
+
+    }
+
+
+
 
     return (
         <ScrollView
@@ -71,7 +110,7 @@ const AddNote = () => {
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
                         onPress={() => {
-                            setIsLoading(true);
+                           saveNote()
                         }}
                     >
                         <ButtonPrimary title={"Save"} />

@@ -1263,6 +1263,8 @@ class SignIn extends React.Component {
       .catch(function(error) {
         this.setState({ alertMessage: "Error Ocurred Contact Support" });
       });
+
+     
     if (response != undefined) {
       if (response.data.Code == 200) {
         var userInfo = {
@@ -1318,6 +1320,7 @@ class SignIn extends React.Component {
         this.setState({ isLoading: false });
         ToastMessage.Short("Error Ocurred Contact Support");
       });
+      console.log("Response", response.data)
     if (response != undefined && response.data != undefined) {
       if (response.data.Code == 200) {
         var userCache = await helpers.GetUserInfo();
