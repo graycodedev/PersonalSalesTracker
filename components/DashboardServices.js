@@ -241,25 +241,25 @@ export const DashBoardServices = ({ navigation }) => {
     {
       name: "Odometer",
       icon: BankingIcons.TvIcon,
-      navigation: "Television",
+      navigation: "OdometerList",
       ServiceCategoryId: 9,
     },
     {
       name: "Leave",
       icon: BankingIcons.WaterIcon,
-      navigation: "khanepani",
+      navigation: "AddLeave",
       ServiceCategoryId: 7,
     },
     { name: "Returns", icon: BankingIcons.AccoungIcon, navigation: "Accounts" },
     {
       name: "Advance",
       icon: BankingIcons.StatementIcon,
-      navigation: "TransactionList",
+      navigation: "GetAdvance",
     },
     {
       name: "Products",
       icon: BankingIcons.InterestIcon,
-      navigation: "IntrestRate",
+      navigation: "Products",
     },
     {
       name: "EOD Report",

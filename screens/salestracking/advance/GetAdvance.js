@@ -4,36 +4,31 @@ import {
     Text,
     ScrollView,
     StyleSheet,
-    Dimensions,
     TouchableOpacity,
-    ActivityIndicator,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import DropDownPicker from "react-native-dropdown-picker";
-import { RegularInputText } from "../../../components/Input";
-import { ButtonPrimary } from "../../../components/Button";
-import PageStyle from "../../style/pageStyle";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { ActivityIndicator } from "react-native";
+import { ButtonPrimary } from "../../../components/Button";
+import { useNavigation } from "@react-navigation/native";
+import { RegularInputText } from "../../../components/Input";
+import DropDownPicker from "react-native-dropdown-picker";
 
+const GetAdvance = () => {
 
-
-const { width } = Dimensions.get("screen");
-
-const AddVisit = ({ route }) => {
-
+    const navigation = useNavigation();
     useEffect(() => {
         navigation.setOptions({
-            title: 'Add Visit',
+            title: "Get Advance",
         });
-    }, []);
+    }, [])
 
-
-    const parties = route.params.parties || [];
-    const navigation = useNavigation();
-    const [isLoading, setIsLoading] = useState(false);
-    const [selectedOption, setSelectedOption] = useState('existingParty'); // Set initial state to 'existingParty'
-    const [location, setLocation] = useState("");
     const [remark, setRemark] = useState("");
+    const [amount, setAmount] = useState("");
+
+    const [showFromDatePicker, setShowFromDatePicker] = useState(false);
+    const [showToDatePicker, setShowToDatePicker] = useState(false);
+    const [selectedFromDate, setSelectedFromDate] = useState(new Date());
+    const [selectedToDate, setSelectedToDate] = useState(new Date());
 
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -44,58 +39,17 @@ const AddVisit = ({ route }) => {
         setSelectedDate(currentDate);
     };
 
-    const formattedDate = selectedDate.toLocaleDateString("en-UK", {
+    const formattedDate = selectedDate.toLocaleDateString("en-US", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
     });
 
-    const renderAdditionalComponent = () => {
-        if (selectedOption === 'existingParty') {
-            return (
-                <View style={{ marginBottom: 15, zIndex: 98 }}>
-                    <Text style={{ fontFamily: "Medium", color: "#9A9A9A", }}>Choose Party</Text>
-                    <DropDownPicker
-                        containerStyle={{ height: 50 }}
-                        style={{
-                            backgroundColor: "#fff",
-                            borderRadius: 10,
-                            fontFamily: "Regular",
-                            borderColor: "#fff",
-                            borderWidth: 0,
-                        }}
-                        itemStyle={{
-                            justifyContent: "flex-start",
-                            fontFamily: "Medium",
-                            color: "red",
-                        }}
-                        labelStyle={{
-                            fontFamily: "Medium",
-                            color: "#9A9A9A",
-                        }}
-                        arrowColor={"#9A9A9A"}
-                        placeholder="Select Party"
-                        label="Select Party"
-                        items={parties.map((party) => ({ label: party.name, value: party.name }))}
-                    />
-                </View>
-            );
-        } else if (selectedOption === 'addParty') {
-            return (
-                <View>
-                    <RegularInputText
-                        key="title"
-                        placeholder="Location"
-                        onChangeText={(text) => {
-                            setLocation(text)
-                        }}
-                        value={location}
-                    />
-                </View>
-            );
-        }
-        return null;
-    };
+    useEffect(() => {
+    }, [selectedDate]);
+
+    const [isLoading, setIsLoading] = useState(false);
+
 
     return (
         <ScrollView
@@ -104,9 +58,9 @@ const AddVisit = ({ route }) => {
             style={{ width: "100%", backgroundColor: "#eee" }}
             contentContainerStyle={{ flexGrow: 1 }}
         >
-            <View style={PageStyle.container}>
-                <View style={{ marginBottom: 15, zIndex: 99 }}>
-                    <Text style={{ fontFamily: "Medium", color: "#9A9A9A", }}>Existing Party?</Text>
+            <View style={styles.container}>
+
+                <View style={{ marginBottom: 10 }}>
                     <DropDownPicker
                         containerStyle={{ height: 50 }}
                         style={{
@@ -126,27 +80,22 @@ const AddVisit = ({ route }) => {
                             color: "#9A9A9A",
                         }}
                         arrowColor={"#9A9A9A"}
-                        placeholder="Select Party"
-                        label="Select Party"
+                        placeholder="Purpose"
+                        label="Purpose"
                         items={[
-                            { label: 'Yes', value: 'existingParty' },
-                            { label: 'No', value: 'addParty' },
+                            { label: 'purpose 1', value: '0' },
+                            { label: 'purpose 2', value: '1' },
+                            { label: 'purpose 3', value: '2' },
                         ]}
-                        onChangeItem={(item) => setSelectedOption(item.value)}
-                        defaultValue={'existingParty'}
                     />
                 </View>
 
-
-
-                {renderAdditionalComponent()}
-
                 <View>
-                    <Text style={{ fontFamily: "Medium", color: "#9A9A9A", }}>Visited Date</Text>
+                    <Text style={{ fontFamily: "Medium", color: "#9A9A9A", }}>Date:</Text>
                     <TouchableOpacity onPress={() => setShowDatePicker(true)}>
                         <RegularInputText
                             key="date"
-                            placeholder="Visited Date"
+                            placeholder="Received Date"
                             value={formattedDate}
                             editable={false}
                         />
@@ -165,8 +114,20 @@ const AddVisit = ({ route }) => {
 
                 <View>
                     <RegularInputText
+                        key="amount"
+                        placeholder="Amount"
+                        onChangeText={(text) => {
+                            setAmount(text)
+                        }}
+                        value={amount}
+                        keyboardType="numeric"
+                    />
+                </View>
+
+                <View>
+                    <RegularInputText
                         key="remark"
-                        placeholder="Remarks:"
+                        placeholder="Remarks"
                         onChangeText={(text) => {
                             setRemark(text)
                         }}
@@ -174,7 +135,6 @@ const AddVisit = ({ route }) => {
                         multiline={true}
                         numberOfLines={5}
                         style={{ height: 100, alignItems: 'flex-start', borderWidth: 0 }}
-
                     />
                 </View>
 
@@ -192,6 +152,7 @@ const AddVisit = ({ route }) => {
                         ></ActivityIndicator>
                     </TouchableOpacity>
                 </View>
+
             </View>
         </ScrollView>
     );
@@ -207,4 +168,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddVisit;
+export default GetAdvance;

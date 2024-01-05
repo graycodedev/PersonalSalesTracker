@@ -249,6 +249,13 @@ import AddCollection from "../screens/salestracking/collection/AddCollection";
 import NoteInfo from "../screens/salestracking/notes/NoteInfo";
 import AddParty from "../screens/salestracking/party/AddParty";
 import AddNote from "../screens/salestracking/notes/AddNote";
+import Products from "../screens/salestracking/products/Products";
+import ProductDetails from "../screens/salestracking/products/ProductDetails";
+import OdometerList from "../screens/salestracking/odometer/OdometerList";
+import StartTrip from "../screens/salestracking/odometer/StartTrip";
+import EndTrip from "../screens/salestracking/odometer/EndTrip";
+import AddLeave from "../screens/salestracking/leave/AddLeave";
+import GetAdvance from "../screens/salestracking/advance/GetAdvance";
 
 import Visits from "../screens/salestracking/visits/Visits";
 import AddVisit from "../screens/salestracking/visits/AddVisit";
@@ -442,7 +449,13 @@ function HomeStack(props) {
       <Stack.Screen name="Visits" component={Visits} options={headerOptions} />
       <Stack.Screen name="AddVisit" component={AddVisit} options={headerOptions} />
       <Stack.Screen name="VisitDetails" component={VisitDetails} options={headerOptions} />
-
+      <Stack.Screen name="Products" component={Products} options={headerOptions} />
+      <Stack.Screen name="ProductDetails" component={ProductDetails} options={headerOptions} />
+      <Stack.Screen name="OdometerList" component={OdometerList} options={headerOptions} />
+      <Stack.Screen name="StartTrip" component={StartTrip} options={headerOptions} />
+      <Stack.Screen name="EndTrip" component={EndTrip} options={headerOptions} />
+      <Stack.Screen name="AddLeave" component={AddLeave} options={headerOptions} />
+      <Stack.Screen name="GetAdvance" component={GetAdvance} options={headerOptions} />
 
 
       <Stack.Screen
