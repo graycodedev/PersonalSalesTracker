@@ -26,7 +26,6 @@ const OrderDetails = ({ navigation }) => {
             price: "Rs. 150",
             type: "Clothing",
         },
-        // Add more orders as needed
     ]);
 
     const [isLoading, setIsLoading] = useState(false);

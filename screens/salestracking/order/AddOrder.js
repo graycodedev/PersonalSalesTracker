@@ -32,6 +32,9 @@ const AddOrder = ({ navigation, route }) => {
 
     const [selectedProducts, setSelectedProducts] = useState([]);
 
+    const [selectedDiscount, setSelectedDiscount] = useState(null);
+    const [applyVAT, setApplyVAT] = useState(false);
+
     const handleSubmit = () => {
 
         if (selectedProductName && selectedProductPrice && quantity) {
@@ -48,7 +51,6 @@ const AddOrder = ({ navigation, route }) => {
             setQuantity('');
         }
 
-        // Close the modal
         setModalVisible(false);
     };
 
@@ -110,9 +112,9 @@ const AddOrder = ({ navigation, route }) => {
                     <Text style={{ marginBottom: 10 }}>Products</Text>
                     <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
                         {selectedProducts.map((product, index) => (
-                            <View key={index} style={styles.productItem}>
+                            <View key={index} style={styles.orderItem}>
                                 <Text style={styles.orderName}>{product.name}</Text>
-                                <Text style={styles.orderInfo}>{`Price: Rs. ${product.price}`}</Text>
+                                <Text style={styles.orderInfo}>{product.quantity} at Rs.{product.price}</Text>
                             </View>
                         ))}
                         {selectedProducts.length === 0 && (
@@ -196,6 +198,8 @@ const AddOrder = ({ navigation, route }) => {
                         </View>
                     </Modal>
                 </View>
+
+
             </View>
         </ScrollView>
     );
@@ -230,10 +234,21 @@ const styles = StyleSheet.create({
         height: 350,
         width: 350,
     },
-    productItem: {
-        borderBottomWidth: 1,
-        paddingVertical: 10,
-        paddingHorizontal: 5,
+    orderItem: {
+        backgroundColor: "#fff",
+        borderRadius: 8,
+        padding: 15,
+        marginBottom: 10,
+        elevation: 2,
+        alignItems: 'flex-start',
+    },
+    orderName: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginBottom: 5,
+    },
+    orderInfo: {
+        fontSize: 16,
     },
 });
 
