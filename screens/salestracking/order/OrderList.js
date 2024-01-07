@@ -28,7 +28,6 @@ const OrdersList = ({ navigation }) => {
             price: "98000",
             type: "Gaming (HP)",
             image: require("../../../assets/imgs/khalti.png"),
-            quantity: "per PC",
         },
         {
             value: 1,
@@ -36,7 +35,6 @@ const OrdersList = ({ navigation }) => {
             price: "120000",
             type: "Gaming (HP)",
             image: require("../../../assets/imgs/adslLogo.png"),
-            quantity: "per PC",
         },
         {
             value: 2,
@@ -44,7 +42,6 @@ const OrdersList = ({ navigation }) => {
             price: "70000",
             type: "Notebook (HP)",
             image: require("../../../assets/imgs/adslLogo.png"),
-            quantity: "per PC",
         },
         {
             value: 3,
@@ -52,7 +49,6 @@ const OrdersList = ({ navigation }) => {
             price: "129000",
             type: "Notebook (HP)",
             image: require("../../../assets/imgs/adslLogo.png"),
-            quantity: "per PC",
         },
         {
             value: 4,
@@ -60,7 +56,6 @@ const OrdersList = ({ navigation }) => {
             price: "30000",
             type: "Notebook (Lenovo)",
             image: require("../../../assets/imgs/adslLogo.png"),
-            quantity: "per PC",
         },
         {
             value: 5,
@@ -68,7 +63,6 @@ const OrdersList = ({ navigation }) => {
             price: "50000",
             type: "Notebook (Lenovo)",
             image: require("../../../assets/imgs/adslLogo.png"),
-            quantity: "per PC",
         },
     ]);
 
@@ -95,7 +89,7 @@ const OrdersList = ({ navigation }) => {
                                 <Image source={order.image} style={styles.orderImage} />
                                 <View>
                                     <Text style={styles.orderName}>{order.name}</Text>
-                                    <Text style={styles.orderInfo}>{`Price: Rs. ${order.price}`}</Text>
+                                    <Text style={styles.orderInfo}>{`Price: Rs. ${order.price} (per PC)`}</Text>
                                     <Text style={styles.orderInfo}>{`Type: ${order.type}`}</Text>
                                 </View>
                             </TouchableOpacity>
