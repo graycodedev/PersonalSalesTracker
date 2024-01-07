@@ -256,6 +256,10 @@ import StartTrip from "../screens/salestracking/odometer/StartTrip";
 import EndTrip from "../screens/salestracking/odometer/EndTrip";
 import AddLeave from "../screens/salestracking/leave/AddLeave";
 import GetAdvance from "../screens/salestracking/advance/GetAdvance";
+import Attendance from "../screens/salestracking/attendance/Attendance";
+import OrderList from "../screens/salestracking/order/OrderList";
+import AddOrder from "../screens/salestracking/order/AddOrder";
+import OrderDetails from "../screens/salestracking/order/OrderDetails";
 
 import Visits from "../screens/salestracking/visits/Visits";
 import AddVisit from "../screens/salestracking/visits/AddVisit";
@@ -456,6 +460,10 @@ function HomeStack(props) {
       <Stack.Screen name="EndTrip" component={EndTrip} options={headerOptions} />
       <Stack.Screen name="AddLeave" component={AddLeave} options={headerOptions} />
       <Stack.Screen name="GetAdvance" component={GetAdvance} options={headerOptions} />
+      <Stack.Screen name="Attendance" component={Attendance} options={headerOptions} />
+      <Stack.Screen name="OrderList" component={OrderList} options={headerOptions} />
+      <Stack.Screen name="AddOrder" component={AddOrder} options={headerOptions} />
+      <Stack.Screen name="OrderDetails" component={OrderDetails} options={headerOptions} />
 
 
       <Stack.Screen

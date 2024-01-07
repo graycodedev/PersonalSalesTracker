@@ -77,7 +77,7 @@ export class BankTransfer extends React.Component {
   GetFavourite = async () => {
     var response = await (await request())
       .get(api.Favourite.BANKTRANSFER)
-      .catch(function(error) {
+      .catch(function (error) {
         ToastMessage.Short("Error Ocurred Contact Support");
       });
     if (response != undefined) {
@@ -94,8 +94,8 @@ export class BankTransfer extends React.Component {
       ToastMessage.Short("Error ocurred contact support !");
     }
   };
-  
- 
+
+
   updateSelectedItem(value, label) {
     this.setState({
       toBankId: value,
@@ -254,7 +254,7 @@ export class BankTransfer extends React.Component {
               From Account
             </Text>
           </View>
-          <View style={{zIndex: 99}}>
+          <View style={{ zIndex: 99 }}>
             <DropDownPicker
               containerStyle={{ height: 50 }}
               dropDownMaxHeight={500}
@@ -501,7 +501,7 @@ export class BankTransfer extends React.Component {
               <Text style={{ color: "red" }}>{this.state.amountError}</Text>
             )}
           </View>
-          <View style={{ flex: 1, flexDirection: "row", marginBottom: 15, alignItems:"center"}}>
+          <View style={{ flex: 1, flexDirection: "row", marginBottom: 15, alignItems: "center" }}>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={this.state.isFavourite ? "#f5dd4b" : "#f4f3f4"}
@@ -782,7 +782,7 @@ export class BankTransferSuccess extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {}
+  componentDidMount() { }
   render() {
     const { data, logId } = this.props.route.params;
     const { item, horizontal, full, style, ctaColor, imageStyle } = this.props;
