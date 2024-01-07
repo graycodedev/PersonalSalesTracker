@@ -214,7 +214,7 @@ export const DashBoardServices = ({ navigation }) => {
       navigation: "PartyList",
     },
 
-    { name: "Collections", icon: BankingIcons.ChequeIcon, navigation: "CollectionList" },
+    { name: "Collections", icon: BankingIcons.collection, navigation: "CollectionList" },
 
     {
       name: "Orders",
@@ -224,13 +224,13 @@ export const DashBoardServices = ({ navigation }) => {
     },
     {
       name: "Visits",
-      icon: BankingIcons.ElectricityIcon,
+      icon: BankingIcons.visits,
       navigation: "Visits",
     },
     {
       name: "Attendance",
-      icon: BankingIcons.TelephoneIcon,
-      navigation: "Attendance",
+      icon: BankingIcons.attendancereport,
+      navigation: "Landline",
     },
     {
       name: "Notes",
@@ -246,11 +246,11 @@ export const DashBoardServices = ({ navigation }) => {
     },
     {
       name: "Leave",
-      icon: BankingIcons.WaterIcon,
+      icon: BankingIcons.leave,
       navigation: "AddLeave",
       ServiceCategoryId: 7,
     },
-    { name: "Returns", icon: BankingIcons.AccoungIcon, navigation: "Accounts" },
+    { name: "Returns", icon: BankingIcons.productreturn, navigation: "Accounts" },
     {
       name: "Advance",
       icon: BankingIcons.StatementIcon,
@@ -258,12 +258,12 @@ export const DashBoardServices = ({ navigation }) => {
     },
     {
       name: "Products",
-      icon: BankingIcons.InterestIcon,
-      navigation: "BankTransfer",
+      icon: BankingIcons.product,
+      navigation: "Products",
     },
     {
       name: "EOD Report",
-      icon: BankingIcons.ChequeIcon,
+      icon: BankingIcons.attendancereport,
       navigation: "ChequeRequest",
     },
 

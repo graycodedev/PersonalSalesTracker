@@ -24,41 +24,43 @@ import PageStyle from "../../style/pageStyle";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
+import qs from "qs"
 
-const { width, height } = Dimensions.get("screen");
 
 
-const AddNote = () => {
-
-    const navigation = useNavigation();
-
-    const [title, setTitle] = useState("");
-    const [note, setNote] = useState("");
-
+const AddNote = (props) => {
+    const update= props.route.params?.update;
+    const notes= props.route.params?.note;
+    const [title, setTitle] = useState(notes?.NoteTitle);
+    const [note, setNote] = useState(notes?.Note);
     const [isLoading, setIsLoading] = useState(false);
+
+    const goToNotesList=()=>{
+        props.navigation.goBack();
+    }
 
 
     const saveNote=async()=>{
-       
-        let data= {
-            Id: 0,
+        let strData= qs.stringify({
+            Id:update?notes.Id:0,
             NoteTitle:title, 
             Note:note, 
             IsActive:true, 
             CompanyId: 1
-        }
-        console.log(note,title, Api.Notes.Save, data)
+        })
         setIsLoading(true);
         var response = await (await request())
-        .post(Api.Notes.Save, data)
+        .post(Api.Notes.Save, strData)
         .catch(function(error) {
             setIsLoading(false);
           ToastMessage.Short("Error Occurred Contact Support");
         });
-        console.log("RE", response.data)
       if (response != undefined) {
         if (response.data.Code == 200) {
+            setIsLoading(false);
+            goToNotesList();
           return response.data.Data;
+         
         } else {
           ToastMessage.Short(response.data.Message);
         }
@@ -102,8 +104,8 @@ const AddNote = () => {
                         }}
                         value={note}
                         multiline={true}
-                        numberOfLines={5}
-                        style={{ height: 100, alignItems: 'flex-start', borderWidth: 0 }}
+                        numberOfLines={15}
+                        style={{ alignItems: 'flex-start', borderWidth: 0,height: 150 }}
                     />
                 </View>
 
@@ -113,7 +115,7 @@ const AddNote = () => {
                            saveNote()
                         }}
                     >
-                        <ButtonPrimary title={"Save"} />
+                        <ButtonPrimary title={update?"Update":"Save"} />
                         <ActivityIndicator
                             animating={isLoading}
                             color="#ffa500"

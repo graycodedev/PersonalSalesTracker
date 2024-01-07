@@ -5,8 +5,10 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    ActivityIndicator
+    ActivityIndicator, 
+    RefreshControl
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import PageStyle from "../../style/pageStyle";
 import { ButtonPrimary } from "../../../components/Button";
 import * as BankingIcons from "../../../components/BankingIcons";
@@ -15,9 +17,23 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
 
+
+const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
 const Notes = ({ navigation }) => {
 
     const [notes, setNotes] = useState([]);
+    const [refreshing, setRefreshing] = useState(false); 
+    
+    const onRefresh = () => {
+        wait(2000).then(() => {
+            setRefreshing(false);
+            getList();
+        }
+       );
+    
+  };
 
     const handleReadMore = (note) => {
         navigation.navigate("NoteInfo", { note });
@@ -27,11 +43,11 @@ const Notes = ({ navigation }) => {
     }, [])
 
 
+
     const getList = async () => {
         var response = await (await request())
           .get(Api.Notes.List)
           .catch(function(error) {
-            // console.log(error);
             ToastMessage.Short("Error! Contact Support");
           });
         if (response != undefined) {
@@ -45,16 +61,28 @@ const Notes = ({ navigation }) => {
         }
       };
 
+      useFocusEffect(
+        React.useCallback(() => {
+          getList();
+          return () => {
+            // Cleanup function (optional)
+            // Additional cleanup logic (if needed)
+          };
+        }, [])
+      );
 
-    return (
+
+    return (<>
+        {notes.length>0 ? <View>
         <ScrollView
             nestedScrollEnabled={true}
             showsVerticalScrollIndicator={false}
             style={{ width: "100%", backgroundColor: "#eee" }}
             contentContainerStyle={{ flexGrow: 1 }}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         >
             <View style={styles.container}>
-                {notes.length>0 && notes.map((note) => (
+                {notes.map((note) => (
                     <View key={note.value} style={styles.noteContainer}>
                         <Text style={styles.noteHead}>{note.NoteTitle}</Text>
                         <View style={styles.noteView}>
@@ -67,10 +95,15 @@ const Notes = ({ navigation }) => {
                             <Text style={{ fontSize: 16, fontWeight: '500', color: "#AE529B" }}>Read More ➔</Text>
                         </TouchableOpacity>
                     </View>
-                ))}
+                ))
+                
+                }
             </View>
 
-            <View>
+          
+
+        </ScrollView>
+        <View>
                 <TouchableOpacity
                     style={styles.circle}
                     onPress={() => {
@@ -80,8 +113,12 @@ const Notes = ({ navigation }) => {
                     <BankingIcons.plus fill="white" />
                 </TouchableOpacity>
             </View>
-
-        </ScrollView>
+        </View>:
+               
+        <View style={styles.spinnercontainer}>
+          <ActivityIndicator size="large" color={Colors.primary} />
+        </View>}
+        </>
     );
 };
 
@@ -122,9 +159,17 @@ const styles = StyleSheet.create({
         right: 20,
         borderRadius: 50,
         zIndex: 1,
+        justifyContent:"center",
+        alignItems:"center"
+    }, 
+    spinnercontainer: {
+        flex: 1,
         justifyContent: "center",
-        alignItems: "center"
-    }
+        margin: 20,
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10,
+      }
 });
 
 export default Notes;

@@ -73,8 +73,8 @@ class SignIn extends React.Component {
     super(props);
     this.state = {
       isLoading: false,
-      email: "",
-      password: "",
+      email: "9825181111",
+      password: "salestracking",
       rememberMe: false,
       emailError: "",
       passwordError: "",

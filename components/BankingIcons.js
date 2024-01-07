@@ -18,6 +18,7 @@ import QrInBlackIcon from "../assets/bankingsvg/qrInBlack.svg";
 import ArrowUpIcon from "../assets/bankingsvg/arrowUp.svg";
 import ArrowDownIcon from "../assets/bankingsvg/arrowDown.svg";
 import DeleteIcon from "../assets/bankingsvg/delete.svg";
+import Edit from "../assets/bankingsvg/edit.svg";
 
 import Airplane from "../assets/bankingsvg/airplane.svg";
 import ProfileSingle from "../assets/bankingsvg/profileSingle.svg";
@@ -81,6 +82,26 @@ import tick from "../assets/bankingsvg/tick.svg"
 import tickMark from "../assets/bankingsvg/tickMark.svg"
 import close from "../assets/bankingsvg/close.svg"
 import plus from "../assets/bankingsvg/plus.svg"
+
+//dashboard
+import collection from "../assets/bankingsvg/collection.svg";
+import product from "../assets/bankingsvg/product.svg";
+import productreturn from "../assets/bankingsvg/productreturn.svg";
+import attendancereport from "../assets/bankingsvg/attendancereport.svg";
+import calendar from "../assets/bankingsvg/calendar.svg";
+import checkInOut from "../assets/bankingsvg/checkin-checkout.svg";
+import leave from "../assets/bankingsvg/leave.svg";
+import visits from "../assets/bankingsvg/visits.svg"; 
+import writing from "../assets/bankingsvg/writing.svg"; 
+
+
+//confirmation
+// import tickMark from "../assets/bankingsvg/confirmation/tickMark.svg"; 
+// import tick from "../assets/bankingsvg/confirmation/tick.svg"; 
+// import warning from "../assets/bankingsvg/confirmation/warning.svg"; 
+// import close from "../assets/bankingsvg/confirmation/close.svg"; 
+
+
 
 
 export {
@@ -154,5 +175,14 @@ export {
   tick, 
   tickMark, 
   close, 
-  plus
+  plus,
+  collection, product, 
+  productreturn, 
+  attendancereport,
+  calendar,
+checkInOut,
+leave,
+visits,
+writing,
+Edit
 };
