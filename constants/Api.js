@@ -194,6 +194,12 @@ const Notes={
   Save:BaseUrl +"api/v1/st_notes/save",
   Delete:BaseUrl +"api/v1/st_notes/delete"
 }
+const Parties={
+  List:BaseUrl +"api/v1/st_parties/list", 
+  Details:BaseUrl +"api/v1/st_parties/details", 
+  Save:BaseUrl +"api/v1/st_parties/save",
+  Delete:BaseUrl +"api/v1/st_parties/delete"
+}
 
 export default {
   CompanyId,
@@ -264,7 +270,8 @@ export default {
   IsAppForMultiple,
   TransactionDetailByUniqueId,
   LoadAccountFromBank,
-  Notes
+  Notes, 
+  Parties
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN
