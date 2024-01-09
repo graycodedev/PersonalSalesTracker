@@ -25,12 +25,12 @@ import * as SvgIcons from "../../../components/BankingIcons"
 const { width, height } = Dimensions.get("screen");
 
 const AddParty = (props) => {
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     props.navigation.setOptions({
-      title:"Add Party"
+      title: "Add Party"
     })
-      }, []);
+  }, []);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
@@ -78,7 +78,7 @@ const AddParty = (props) => {
   };
 
 
- 
+
 
 
 
@@ -174,7 +174,7 @@ const AddParty = (props) => {
               setIsLoading(true);
             }}
           >
-            <ButtonPrimary title={"Choose Location"} icon={<SvgIcons.checkInIcon fill="white"/>} style={{alignItems:"center", justifyContent:"center", flexDirection:"row"}}/>
+            <ButtonPrimary title={"Choose Location"} icon={<SvgIcons.checkInIcon fill="white" />} style={{ alignItems: "center", justifyContent: "center", flexDirection: "row" }} />
             <ActivityIndicator
               animating={isLoading}
               color="#ffa500"
