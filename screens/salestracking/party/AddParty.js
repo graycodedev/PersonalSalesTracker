@@ -15,6 +15,12 @@ import Api from "../../../constants/Api";
 import qs from "qs";
 
 const AddParty = (props) => {
+  useEffect(() => {
+    props.navigation.setOptions({
+      title: "Add Party",
+    });
+  }, []);
+
   const update = props.route.params?.update;
   const party = props.route.params?.party;
   const [partyName, setPartyName] = useState(party?.PartyName);

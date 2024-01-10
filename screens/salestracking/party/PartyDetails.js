@@ -101,20 +101,17 @@ const VisitsScreen = () => (
 );
 
 const PartyDetails = (props) => {
+    useEffect(() => {
+        props.navigation.setOptions({
+            title: partyDetails ? partyDetails.PartyName : party.partyName,
+        });
+    }, [partyDetails]);
+
     const { party } = props.route.params;
     const [partyDetails, setPartyDetails] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            getDetail();
-            return () => {
-                // Cleanup function (optional)
-                // Additional cleanup logic (if needed)
-            };
-        }, [])
-    );
 
     useEffect(() => {
         getDetail();
@@ -130,6 +127,11 @@ const PartyDetails = (props) => {
         if (response != undefined) {
             if (response.data.Code == 200) {
                 setPartyDetails(response.data.Data);
+
+                props.navigation.setOptions({
+                    title: response.data.Data.PartyName,
+                });
+
             } else {
                 ToastMessage.Short("Error Loading Party Detail");
             }

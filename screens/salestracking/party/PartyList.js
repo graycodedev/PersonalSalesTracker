@@ -21,6 +21,12 @@ const wait = (timeout) => {
 };
 
 const PartyList = ({ navigation }) => {
+    useEffect(() => {
+        navigation.setOptions({
+            title: "Party List",
+        });
+    }, [])
+
     const [parties, setParties] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);

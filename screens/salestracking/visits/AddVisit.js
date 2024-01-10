@@ -14,12 +14,15 @@ import { RegularInputText } from "../../../components/Input";
 import { ButtonPrimary } from "../../../components/Button";
 import PageStyle from "../../style/pageStyle";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
+import { AutoCompleteList } from "../../../components/AutoCompleteList";
+import Api from "../../../constants/Api";
 
 
 const { width } = Dimensions.get("screen");
 
 const AddVisit = ({ route }) => {
+
+    const [selectedParty, setSelectedParty] = useState();
 
     useEffect(() => {
         navigation.setOptions({
@@ -31,7 +34,7 @@ const AddVisit = ({ route }) => {
     const parties = route.params.parties || [];
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedOption, setSelectedOption] = useState('existingParty'); // Set initial state to 'existingParty'
+    const [selectedOption, setSelectedOption] = useState('existingParty');
     const [location, setLocation] = useState("");
     const [remark, setRemark] = useState("");
 
@@ -50,34 +53,45 @@ const AddVisit = ({ route }) => {
         day: "2-digit",
     });
 
+    const [showPartiesList, setShowPartiesList] = useState(false);
+    const updateSelectedParty = (item) => {
+        setSelectedParty(item);
+        setShowPartiesList(false);
+    }
+
+
+    const onClose = () => {
+        setShowPartiesList(false);
+    }
+
     const renderAdditionalComponent = () => {
         if (selectedOption === 'existingParty') {
             return (
                 <View style={{ marginBottom: 15, zIndex: 98 }}>
-                    <Text style={{ fontFamily: "Medium", color: "#9A9A9A", }}>Choose Party</Text>
-                    <DropDownPicker
-                        containerStyle={{ height: 50 }}
-                        style={{
-                            backgroundColor: "#fff",
-                            borderRadius: 10,
-                            fontFamily: "Regular",
-                            borderColor: "#fff",
-                            borderWidth: 0,
-                        }}
-                        itemStyle={{
-                            justifyContent: "flex-start",
-                            fontFamily: "Medium",
-                            color: "red",
-                        }}
-                        labelStyle={{
-                            fontFamily: "Medium",
-                            color: "#9A9A9A",
-                        }}
-                        arrowColor={"#9A9A9A"}
-                        placeholder="Select Party"
-                        label="Select Party"
-                        items={parties.map((party) => ({ label: party.name, value: party.name }))}
-                    />
+                    <TouchableOpacity onPress={() => setShowPartiesList(true)} style={{ paddingLeft: 10, paddingVertical: 14, backgroundColor: "white", borderRadius: 5 }}>
+
+                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedParty ? "Add Party" : selectedParty.PartyName}</Text>
+
+                    </TouchableOpacity>
+
+
+                    {showPartiesList && (
+                        <AutoCompleteList
+                            autocompleteurl={Api.Parties.List}
+                            noItemFoundText={"No parties found!"}
+                            searchablePlaceholder="Search Party"
+                            itemSelected={updateSelectedParty}
+                            visible={showPartiesList}
+                            onClose={() => onClose()}
+                            renderItem={(item) => (
+                                <View style={styles.item}>
+                                    <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>{item.PartyName}</Text>
+                                    <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>{item.ContactPersonName}</Text>
+                                    <Text style={{ fontFamily: "Regular", fontSize: 14 }}>{item.Email}</Text>
+                                </View>
+                            )}
+                        />
+                    )}
                 </View>
             );
         } else if (selectedOption === 'addParty') {
@@ -204,6 +218,14 @@ const styles = StyleSheet.create({
         padding: 10,
         alignContent: "center",
         justifyContent: "flex-start",
+    },
+    item: {
+        padding: 8,
+        borderBottomColor: "#e2e2e2",
+        borderBottomWidth: 1,
+        marginBottom: 5,
+        backgroundColor: "#fff",
+        paddingLeft: 18
     },
 });
 
