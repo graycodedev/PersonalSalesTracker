@@ -1,87 +1,82 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Image,
   ScrollView,
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   ActivityIndicator,
-  Text,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import { Modal } from "react-native";
-import ImagePicker from 'react-native-image-picker';
 import { ButtonPrimary } from "../../../components/Button";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Colors } from "../../style/Theme";
-import { TextInput } from "react-native-gesture-handler";
-import { RegularInputText, AmountInputText } from "../../../components/Input";
+import { RegularInputText } from "../../../components/Input";
 import PageStyle from "../../style/pageStyle";
-import * as SvgIcons from "../../../components/BankingIcons"
-
-
-
-const { width, height } = Dimensions.get("screen");
+import request from "../../../config/RequestManager";
+import ToastMessage from "../../../components/Toast/Toast";
+import Api from "../../../constants/Api";
+import qs from "qs";
 
 const AddParty = (props) => {
-
-  useEffect(() => {
-    props.navigation.setOptions({
-      title: "Add Party"
-    })
-  }, []);
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('');
-  const [partyName, setPartyName] = useState("");
-  const [personName, setPersonName] = useState("");
-  const [website, setWebsite] = useState("");
-  const [address1, setAddress1] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [phone, setPhone] = useState("");
-  const [pan, setPan] = useState("");
-  const [note, setNote] = useState("");
-  const [email, setEmail] = useState("");
-  const [showPartyList, setShowPartyList] = useState(false);
-  const [groups, setGroups] = useState([
-    {
-      value: 0,
-      label: "Group A"
-    },
-    {
-      value: 1,
-      label: "Group B"
-    },
-    {
-      value: 2,
-      label: "Group C"
-    },
-    {
-      value: 3,
-      label: "Group D"
-    },
-  ]);
-
-
-
-  const [selectedGroup, setSelectedGroup] = useState("");
-
+  const update = props.route.params?.update;
+  const party = props.route.params?.party;
+  const [partyName, setPartyName] = useState(party?.PartyName);
+  const [partyCode, setPartyCode] = useState(party?.PartyCode);
+  const [contactPersonName, setContactPersonName] = useState(party?.ContactPersonName);
+  const [website, setWebsite] = useState(party?.Website);
+  const [email, setEmail] = useState(party?.Email);
+  const [vatOrPanNo, setVatOrPanNo] = useState(party?.VatOrPanNo);
+  const [address, setAddress] = useState(party?.Address);
+  const [city, setCity] = useState(party?.City);
   const [isLoading, setIsLoading] = useState(false);
 
-  const openPicker = () => {
-    setModalVisible(true);
-  };
+  const goToPartyList = () => {
+    props.navigation.goBack();
+  }
 
-  const closePicker = () => {
-    setModalVisible(false);
-  };
+  const saveParty = async () => {
+    const companyId = 1;
+    const groupId = 1234;
 
+    let strData = qs.stringify({
+      Id: update ? party.Id : 0,
+      CompanyId: companyId,
+      PartyName: partyName,
+      PartyCode: partyCode,
+      GroupId: groupId,
+      ContactPersonName: contactPersonName,
+      Website: website,
+      Email: email,
+      Latitude: "233",
+      Longitude: "233",
+      State: 4,
+      City: city,
+      Address: address,
+      AddedBy: 0,
+      AddedOn: new Date().toISOString(),
+      ModifiedBy: 0,
+      ModifiedOn: new Date().toISOString(),
+      IsActive: true,
+      IsDeleted: false,
+      DeletedBy: null,
+      DeletedOn: null,
+      VatOrPan: "v",
+      VatOrPanNo: vatOrPanNo,
+    });
 
+    setIsLoading(true);
 
+    try {
+      const response = await (await request()).post(Api.Parties.Save, strData);
 
-
-
+      if (response.data.Code === 200) {
+        setIsLoading(false);
+        goToPartyList();
+      } else {
+        ToastMessage.Short(response.data.Message);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      ToastMessage.Short("Error Occurred. Contact Support");
+    }
+  }
 
 
   return (
@@ -96,63 +91,52 @@ const AddParty = (props) => {
           <RegularInputText
             key="partyName"
             placeholder="Party Name"
-            onChangeText={(text) => {
-              setPartyName(text)
-            }}
+            onChangeText={(text) => setPartyName(text)}
             value={partyName}
           />
         </View>
-        {/* <View style={{ zIndex: 1 }}>
-          <DropDownPicker
-            containerStyle={{ height: 50 }}
-            dropDownMaxHeight={500}
-            style={{
-              backgroundColor: "#fff",
-              color: "red",
-              borderRadius: 10,
-              fontFamily: "Regular",
-              borderColor: "#fff",
-              borderWidth: 0,
-            }}
-            itemStyle={{
-              justifyContent: "flex-start",
-              fontFamily: "Medium",
-              color: "red",
-            }}
-            labelStyle={{
-              fontFamily: "Medium",
-              color: "#9A9A9A",
-            }}
-            arrowColor={"#9A9A9A"}
-            defaultValue={groups[0].value}
-            value={selectedGroup}
-            items={groups}
-            controller={(instance) => (this.controller = instance)}
-            onChangeItem={(item) =>
-              setSelectedGroup(item.value)
-            }
-          />
-        </View>
-          */}
 
         <View>
           <RegularInputText
-            key="personName"
+            key="partyCode"
+            placeholder="Party Code"
+            onChangeText={(text) => setPartyCode(text)}
+            value={partyCode}
+          />
+        </View>
+
+        <View>
+          <RegularInputText
+            key="contactPersonName"
             placeholder="Contact Person Name"
-            onChangeText={(text) => {
-              setPersonName(text)
-            }}
-            value={personName}
+            onChangeText={(text) => setContactPersonName(text)}
+            value={contactPersonName}
+          />
+        </View>
+
+        <View>
+          <RegularInputText
+            key="city"
+            placeholder="City"
+            onChangeText={(text) => setCity(text)}
+            value={city}
+          />
+        </View>
+
+        <View>
+          <RegularInputText
+            key="address"
+            placeholder="Address"
+            onChangeText={(text) => setAddress(text)}
+            value={address}
           />
         </View>
 
         <View>
           <RegularInputText
             key="website"
-            placeholder="Website (eg www.abc.com)"
-            onChangeText={(text) => {
-              setWebsite(text)
-            }}
+            placeholder="Website"
+            onChangeText={(text) => setWebsite(text)}
             value={website}
           />
         </View>
@@ -161,90 +145,25 @@ const AddParty = (props) => {
           <RegularInputText
             key="email"
             placeholder="Email"
-            onChangeText={(text) => {
-              setEmail(text)
-            }}
+            onChangeText={(text) => setEmail(text)}
             value={email}
           />
         </View>
 
-        <View style={{ margin: 30, marginBottom: -10 }}>
-          <TouchableOpacity
-            onPress={() => {
-              setIsLoading(true);
-            }}
-          >
-            <ButtonPrimary title={"Choose Location"} icon={<SvgIcons.checkInIcon fill="white" />} style={{ alignItems: "center", justifyContent: "center", flexDirection: "row" }} />
-            <ActivityIndicator
-              animating={isLoading}
-              color="#ffa500"
-              style={styles.activityIndicator}
-            ></ActivityIndicator>
-          </TouchableOpacity>
-        </View>
-
         <View>
           <RegularInputText
-            key="address1"
-            placeholder="Address Line 1"
-            onChangeText={(text) => {
-              setAddress1(text)
-            }}
-            value={address1}
-          />
-        </View>
-
-        <View>
-          <RegularInputText
-            key="mobile"
-            placeholder="Mobile Number"
-            onChangeText={(text) => {
-              setMobile(text)
-            }}
-            value={mobile}
-          />
-        </View>
-
-        <View>
-          <RegularInputText
-            key="phone"
-            placeholder="Phone"
-            onChangeText={(text) => {
-              setPhone(text)
-            }}
-            value={phone}
-          />
-        </View>
-
-        <View>
-          <RegularInputText
-            key="pan"
-            placeholder="Pan"
-            onChangeText={(text) => {
-              setPan(text)
-            }}
-            value={pan}
-          />
-        </View>
-
-        <View>
-          <RegularInputText
-            key="note"
-            placeholder="Note"
-            onChangeText={(text) => {
-              setNote(text)
-            }}
-            value={note}
+            key="vatOrPanNo"
+            placeholder="VAT or PAN No"
+            onChangeText={(text) => setVatOrPanNo(text)}
+            value={vatOrPanNo}
           />
         </View>
 
         <View style={{ margin: 30 }}>
           <TouchableOpacity
-            onPress={() => {
-              setIsLoading(true);
-            }}
+            onPress={() => saveParty()}
           >
-            <ButtonPrimary title={"Save"} />
+            <ButtonPrimary title={update ? "Update" : "Save"} />
             <ActivityIndicator
               animating={isLoading}
               color="#ffa500"
@@ -252,9 +171,7 @@ const AddParty = (props) => {
             ></ActivityIndicator>
           </TouchableOpacity>
         </View>
-
       </View>
-
     </ScrollView>
   );
 };
@@ -265,26 +182,8 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     alignContent: "center",
-    justifyContent: 'flex-start'
+    justifyContent: "flex-start",
   },
-
-  button: {
-    marginTop: 20,
-    height: 40,
-    width: 350,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'grey',
-    borderRadius: 25,
-  },
-  noteInput: {
-    marginTop: 30,
-    height: 80,
-    width: 400,
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
-    fontSize: 20
-  }
 });
 
 export default AddParty;

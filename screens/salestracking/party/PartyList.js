@@ -16,7 +16,6 @@ import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
 
-
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -34,19 +33,23 @@ const PartyList = ({ navigation }) => {
     };
 
     const getList = async () => {
-        var response = await (await request())
-            .get(Api.Parties.List)
-            .catch(function (error) {
-                ToastMessage.Short("Error! Contact Support");
-            });
-        if (response != undefined) {
-            if (response.data.Code == 200) {
-                setParties(response.data.Data);
+        try {
+            var response = await (await request())
+                .get(Api.Parties.List)
+                .catch(function (error) {
+                    ToastMessage.Short("Error! Contact Support");
+                });
+            if (response != undefined) {
+                if (response.data.Code == 200) {
+                    setParties(response.data.Data);
+                } else {
+                    ToastMessage.Short("Error Loading Notes");
+                }
             } else {
                 ToastMessage.Short("Error Loading Notes");
             }
-        } else {
-            ToastMessage.Short("Error Loading Notes");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -65,51 +68,45 @@ const PartyList = ({ navigation }) => {
     );
 
     return (
-        <>
+        <View style={styles.container}>
             {isLoading ? (
                 <View style={styles.spinnerContainer}>
                     <ActivityIndicator size="large" color={Colors.primary} />
                 </View>
             ) : (
-                <View>
-                    <ScrollView
-                        nestedScrollEnabled={true}
-                        showsVerticalScrollIndicator={false}
-                        style={{ width: "100%", backgroundColor: "#eee" }}
-                        contentContainerStyle={{ flexGrow: 1 }}
-                        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                    >
-                        <View style={styles.container}>
-                            {parties.map((party) => (
-                                <TouchableOpacity
-                                    key={party.value}
-                                    style={styles.partyItem}
-                                    onPress={() => navigation.navigate("PartyDetails", { party })}
-                                >
-                                    <Text style={styles.partyName}>{party.PartyName}</Text>
-                                    <Text style={styles.partyInfo}>{`${party.ContactPersonName}`}</Text>
-                                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                        <Text style={styles.partyInfo}>{`Address: ${party.Address}`}</Text>
-                                        <Text style={styles.partyInfo}>{`Code: ${party.PartyCode}`}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            ))}
-                        </View>
-                    </ScrollView>
-                    <View>
+                <ScrollView
+                    nestedScrollEnabled={true}
+                    showsVerticalScrollIndicator={false}
+                    style={{ width: "100%", backgroundColor: "#eee", flex: 1 }}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                >
+                    {parties.map((party) => (
                         <TouchableOpacity
-                            style={styles.circle}
-                            onPress={() => {
-                                navigation.navigate("AddParty");
-                            }}
+                            key={party.value}
+                            style={styles.partyItem}
+                            onPress={() => navigation.navigate("PartyDetails", { party })}
                         >
-                            {/* Assuming you have a plus icon component */}
-                            <BankingIcons.plus fill="white" />
+                            <Text style={styles.partyName}>{party.PartyName}</Text>
+                            <Text style={styles.partyInfo}>{`${party.ContactPersonName}`}</Text>
+                            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                <Text style={styles.partyInfo}>{`Address: ${party.Address}`}</Text>
+                                <Text style={styles.partyInfo}>{`Code: ${party.PartyCode}`}</Text>
+                            </View>
                         </TouchableOpacity>
-                    </View>
-                </View>
+                    ))}
+                </ScrollView>
             )}
-        </>
+
+            <TouchableOpacity
+                style={styles.circle}
+                onPress={() => {
+                    navigation.navigate("AddParty");
+                }}
+            >
+                <BankingIcons.plus fill="white" />
+            </TouchableOpacity>
+        </View>
     );
 };
 
