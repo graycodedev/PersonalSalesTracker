@@ -89,7 +89,7 @@ const Favourite = {
 const UnFavourite = BaseUrl + "api/v1/unfavourite";
 
 const LoadAccountFromBank = {
- BankingList:
+  BankingList:
     BaseUrl + "api/v1/paymentgateway/khalti/bankinglist",
   InitiateTransfer: BaseUrl + "api/v1/paymentgateway",
   LookUp: BaseUrl + "api/v1/paymentgateway",
@@ -188,17 +188,28 @@ const ServerImages = {
   },
 };
 
-const Notes={
-  List:BaseUrl +"api/v1/st_notes/list", 
-  Details:BaseUrl +"api/v1/st_notes/details", 
-  Save:BaseUrl +"api/v1/st_notes/save",
-  Delete:BaseUrl +"api/v1/st_notes/delete"
+const Notes = {
+  List: BaseUrl + "api/v1/st_notes/list",
+  Details: BaseUrl + "api/v1/st_notes/details",
+  Save: BaseUrl + "api/v1/st_notes/save",
+  Delete: BaseUrl + "api/v1/st_notes/delete"
 }
-const Parties={
-  List:BaseUrl +"api/v1/st_parties/list", 
-  Details:BaseUrl +"api/v1/st_parties/details", 
-  Save:BaseUrl +"api/v1/st_parties/save",
-  Delete:BaseUrl +"api/v1/st_parties/delete"
+const Parties = {
+  List: BaseUrl + "api/v1/st_parties/list",
+  ActiveList: BaseUrl + "/api/v1/st_parties/list/active",
+  Details: BaseUrl + "api/v1/st_parties/details",
+  Save: BaseUrl + "api/v1/st_parties/save",
+  SaveByUser: BaseUrl + "/api/v1/st_parties/save/byuser",
+  Delete: BaseUrl + "api/v1/st_parties/delete"
+}
+const Visits = {
+  List: BaseUrl + "/api/v1/st_visits/list",
+  ActiveList: BaseUrl + "/api/v1/st_visits/list/active",
+  ListByUser: BaseUrl + "/api/v1/st_visits/list/byuser",
+  Details: BaseUrl + "/api/v1/st_visits/details",
+  Save: BaseUrl + "/api/v1/st_visits/save",
+  SaveByUser: BaseUrl + "/api/v1/st_visits/save/byuser",
+  Delete: BaseUrl + "/api/v1/st_visits/delete"
 }
 
 export default {
@@ -270,8 +281,9 @@ export default {
   IsAppForMultiple,
   TransactionDetailByUniqueId,
   LoadAccountFromBank,
-  Notes, 
-  Parties
+  Notes,
+  Parties,
+  Visits,
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

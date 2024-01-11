@@ -29,45 +29,45 @@ import qs from "qs"
 
 
 const AddNote = (props) => {
-    const update= props.route.params?.update;
-    const notes= props.route.params?.note;
+    const update = props.route.params?.update;
+    const notes = props.route.params?.note;
     const [title, setTitle] = useState(notes?.NoteTitle);
     const [note, setNote] = useState(notes?.Note);
     const [isLoading, setIsLoading] = useState(false);
 
-    const goToNotesList=()=>{
+    const goToNotesList = () => {
         props.navigation.goBack();
     }
 
 
-    const saveNote=async()=>{
-        let strData= qs.stringify({
-            Id:update?notes.Id:0,
-            NoteTitle:title, 
-            Note:note, 
-            IsActive:true, 
+    const saveNote = async () => {
+        let strData = qs.stringify({
+            Id: update ? notes.Id : 0,
+            NoteTitle: title,
+            Note: note,
+            IsActive: true,
             CompanyId: 1
         })
         setIsLoading(true);
         var response = await (await request())
-        .post(Api.Notes.Save, strData)
-        .catch(function(error) {
-            setIsLoading(false);
-          ToastMessage.Short("Error Occurred Contact Support");
-        });
-      if (response != undefined) {
-        if (response.data.Code == 200) {
-            setIsLoading(false);
-            goToNotesList();
-          return response.data.Data;
-         
+            .post(Api.Notes.Save, strData)
+            .catch(function (error) {
+                setIsLoading(false);
+                ToastMessage.Short("Error Occurred Contact Support");
+            });
+        if (response != undefined) {
+            if (response.data.Code == 200) {
+                setIsLoading(false);
+                goToNotesList();
+                return response.data.Data;
+
+            } else {
+                ToastMessage.Short(response.data.Message);
+            }
         } else {
-          ToastMessage.Short(response.data.Message);
+            ToastMessage.Short("Error Occurred Contact Support");
         }
-      } else {
-        ToastMessage.Short("Error Occurred Contact Support");
-      }
-      setIsLoading(false);
+        setIsLoading(false);
 
     }
 
@@ -105,17 +105,17 @@ const AddNote = (props) => {
                         value={note}
                         multiline={true}
                         numberOfLines={15}
-                        style={{ alignItems: 'flex-start', borderWidth: 0,height: 150 }}
+                        style={{ alignItems: 'flex-start', borderWidth: 0, height: 150 }}
                     />
                 </View>
 
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
                         onPress={() => {
-                           saveNote()
+                            saveNote()
                         }}
                     >
-                        <ButtonPrimary title={update?"Update":"Save"} />
+                        <ButtonPrimary title={update ? "Update" : "Save"} />
                         <ActivityIndicator
                             animating={isLoading}
                             color="#ffa500"
@@ -141,3 +141,4 @@ const styles = StyleSheet.create({
 });
 
 export default AddNote;
+

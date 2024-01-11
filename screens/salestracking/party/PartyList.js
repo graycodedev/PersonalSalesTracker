@@ -41,18 +41,19 @@ const PartyList = ({ navigation }) => {
     const getList = async () => {
         try {
             var response = await (await request())
-                .get(Api.Parties.List)
+                .get(Api.Parties.ActiveList)
                 .catch(function (error) {
                     ToastMessage.Short("Error! Contact Support");
                 });
+
             if (response != undefined) {
                 if (response.data.Code == 200) {
                     setParties(response.data.Data);
                 } else {
-                    ToastMessage.Short("Error Loading Notes");
+                    ToastMessage.Short("Error Loading Parties");
                 }
             } else {
-                ToastMessage.Short("Error Loading Notes");
+                ToastMessage.Short("Error Loading Parties");
             }
         } finally {
             setIsLoading(false);

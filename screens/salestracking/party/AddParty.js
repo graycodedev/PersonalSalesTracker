@@ -65,12 +65,13 @@ const AddParty = (props) => {
       DeletedOn: null,
       VatOrPan: "v",
       VatOrPanNo: vatOrPanNo,
+      MobileNumber: "mobile",
     });
 
     setIsLoading(true);
 
     try {
-      const response = await (await request()).post(Api.Parties.Save, strData);
+      const response = await (await request()).post(Api.Parties.SaveByUser, strData);
 
       if (response.data.Code === 200) {
         setIsLoading(false);
