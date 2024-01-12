@@ -196,20 +196,20 @@ const Notes = {
 }
 const Parties = {
   List: BaseUrl + "api/v1/st_parties/list",
-  ActiveList: BaseUrl + "/api/v1/st_parties/list/active",
+  ActiveList: BaseUrl + "api/v1/st_parties/list/active",
   Details: BaseUrl + "api/v1/st_parties/details",
   Save: BaseUrl + "api/v1/st_parties/save",
-  SaveByUser: BaseUrl + "/api/v1/st_parties/save/byuser",
+  SaveByUser: BaseUrl + "api/v1/st_parties/save/byuser",
   Delete: BaseUrl + "api/v1/st_parties/delete"
 }
 const Visits = {
-  List: BaseUrl + "/api/v1/st_visits/list",
-  ActiveList: BaseUrl + "/api/v1/st_visits/list/active",
-  ListByUser: BaseUrl + "/api/v1/st_visits/list/byuser",
-  Details: BaseUrl + "/api/v1/st_visits/details",
-  Save: BaseUrl + "/api/v1/st_visits/save",
-  SaveByUser: BaseUrl + "/api/v1/st_visits/save/byuser",
-  Delete: BaseUrl + "/api/v1/st_visits/delete"
+  List: BaseUrl + "api/v1/st_visits/list",
+  ActiveList: BaseUrl + "api/v1/st_visits/list/active",
+  ListByUser: BaseUrl + "api/v1/st_visits/list/byuser",
+  Details: BaseUrl + "api/v1/st_visits/details",
+  Save: BaseUrl + "api/v1/st_visits/save",
+  SaveByUser: BaseUrl + "api/v1/st_visits/save/byuser",
+  Delete: BaseUrl + "api/v1/st_visits/delete"
 }
 
 export default {

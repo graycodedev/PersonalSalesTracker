@@ -38,15 +38,13 @@ const AddParty = (props) => {
   }
 
   const saveParty = async () => {
+    alert(1)
     const companyId = 1;
     const groupId = 1234;
 
     let strData = qs.stringify({
       Id: update ? party.Id : 0,
-      CompanyId: companyId,
       PartyName: partyName,
-      PartyCode: partyCode,
-      GroupId: groupId,
       ContactPersonName: contactPersonName,
       Website: website,
       Email: email,
@@ -55,23 +53,16 @@ const AddParty = (props) => {
       State: 4,
       City: city,
       Address: address,
-      AddedBy: 0,
-      AddedOn: new Date().toISOString(),
-      ModifiedBy: 0,
-      ModifiedOn: new Date().toISOString(),
-      IsActive: true,
-      IsDeleted: false,
-      DeletedBy: null,
-      DeletedOn: null,
       VatOrPan: "v",
       VatOrPanNo: vatOrPanNo,
-      MobileNumber: "mobile",
+      MobileNumber: "1234",
     });
 
     setIsLoading(true);
 
     try {
       const response = await (await request()).post(Api.Parties.SaveByUser, strData);
+      console.log(response.data)
 
       if (response.data.Code === 200) {
         setIsLoading(false);
@@ -80,6 +71,7 @@ const AddParty = (props) => {
         ToastMessage.Short(response.data.Message);
       }
     } catch (error) {
+      alert(3)
       setIsLoading(false);
       ToastMessage.Short("Error Occurred. Contact Support");
     }

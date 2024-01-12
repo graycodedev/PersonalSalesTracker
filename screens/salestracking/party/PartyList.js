@@ -46,6 +46,8 @@ const PartyList = ({ navigation }) => {
                     ToastMessage.Short("Error! Contact Support");
                 });
 
+                console.log(response.data);
+
             if (response != undefined) {
                 if (response.data.Code == 200) {
                     setParties(response.data.Data);

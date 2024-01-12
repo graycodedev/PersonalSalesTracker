@@ -22,7 +22,7 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 const Notes = ({ navigation }) => {
-
+  const [isLoading, setIsLoading]=useState(true);
   const [notes, setNotes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -45,24 +45,31 @@ const Notes = ({ navigation }) => {
 
 
   const getList = async () => {
+    
     var response = await (await request())
       .get(Api.Notes.List)
       .catch(function (error) {
+    setIsLoading(false)
+
         ToastMessage.Short("Error! Contact Support");
       });
+      console.log(response.data)
     if (response != undefined) {
       if (response.data.Code == 200) {
         setNotes(response.data.Data);
+
       } else {
-        ToastMessage.Short("Error Loading Notes");
+        ToastMessage.Short(response.data.Message);
       }
     } else {
       ToastMessage.Short("Error Loading Notes");
     }
+    setIsLoading(false)
   };
 
   useFocusEffect(
     React.useCallback(() => {
+      setIsLoading(true)
       getList();
       return () => {
         // Cleanup function (optional)
@@ -73,7 +80,7 @@ const Notes = ({ navigation }) => {
 
 
   return (<>
-    {notes.length > 0 ? <View>
+    {!isLoading ? <View style={{height:"100%"}}>
       <ScrollView
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
@@ -99,11 +106,8 @@ const Notes = ({ navigation }) => {
 
           }
         </View>
-
-
-
       </ScrollView>
-      <View>
+      <View >
         <TouchableOpacity
           style={styles.circle}
           onPress={() => {
