@@ -240,7 +240,7 @@ export const DashBoardServices = ({ navigation }) => {
     },
     {
       name: "Odometer",
-      icon: BankingIcons.TvIcon,
+      icon: BankingIcons.odometer,
       navigation: "OdometerList",
       ServiceCategoryId: 9,
     },

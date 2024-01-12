@@ -93,6 +93,7 @@ import checkInOut from "../assets/bankingsvg/checkin-checkout.svg";
 import leave from "../assets/bankingsvg/leave.svg";
 import visits from "../assets/bankingsvg/visits.svg"; 
 import writing from "../assets/bankingsvg/writing.svg"; 
+import odometer from "../assets/bankingsvg/odometer.svg"; 
 
 
 //confirmation
@@ -184,5 +185,6 @@ checkInOut,
 leave,
 visits,
 writing,
-Edit
+Edit, 
+odometer
 };

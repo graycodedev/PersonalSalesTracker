@@ -38,7 +38,7 @@ const AddParty = (props) => {
   }
 
   const saveParty = async () => {
-    alert(1)
+    
     const companyId = 1;
     const groupId = 1234;
 
@@ -62,7 +62,6 @@ const AddParty = (props) => {
 
     try {
       const response = await (await request()).post(Api.Parties.SaveByUser, strData);
-      console.log(response.data)
 
       if (response.data.Code === 200) {
         setIsLoading(false);
@@ -71,7 +70,7 @@ const AddParty = (props) => {
         ToastMessage.Short(response.data.Message);
       }
     } catch (error) {
-      alert(3)
+  
       setIsLoading(false);
       ToastMessage.Short("Error Occurred. Contact Support");
     }
