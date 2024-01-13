@@ -254,13 +254,16 @@ import ProductDetails from "../screens/salestracking/products/ProductDetails";
 import OdometerList from "../screens/salestracking/odometer/OdometerList";
 import StartTrip from "../screens/salestracking/odometer/StartTrip";
 import EndTrip from "../screens/salestracking/odometer/EndTrip";
-import AddLeave from "../screens/salestracking/leave/AddLeave";
-import GetAdvance from "../screens/salestracking/advance/GetAdvance";
+import RequestLeave from "../screens/salestracking/leave/RequestLeave";
+import LeaveList from "../screens/salestracking/leave/LeaveList";
+import LeaveDetails from "../screens/salestracking/leave/LeaveDetails";
+import RequestAdvance from "../screens/salestracking/advance/RequestAdvance";
+import AdvanceList from "../screens/salestracking/advance/AdvanceList";
+import AdvanceDetails from "../screens/salestracking/advance/AdvanceDetails";
 import Attendance from "../screens/salestracking/attendance/Attendance";
 import OrderList from "../screens/salestracking/order/OrderList";
 import AddOrder from "../screens/salestracking/order/AddOrder";
 import OrderDetails from "../screens/salestracking/order/OrderDetails";
-
 import Visits from "../screens/salestracking/visits/Visits";
 import AddVisit from "../screens/salestracking/visits/AddVisit";
 import VisitDetails from "../screens/salestracking/visits/VisitDetails";
@@ -458,8 +461,12 @@ function HomeStack(props) {
       <Stack.Screen name="OdometerList" component={OdometerList} options={headerOptions} />
       <Stack.Screen name="StartTrip" component={StartTrip} options={headerOptions} />
       <Stack.Screen name="EndTrip" component={EndTrip} options={headerOptions} />
-      <Stack.Screen name="AddLeave" component={AddLeave} options={headerOptions} />
-      <Stack.Screen name="GetAdvance" component={GetAdvance} options={headerOptions} />
+      <Stack.Screen name="RequestLeave" component={RequestLeave} options={headerOptions} />
+      <Stack.Screen name="LeaveList" component={LeaveList} options={headerOptions} />
+      <Stack.Screen name="LeaveDetails" component={LeaveDetails} options={headerOptions} />
+      <Stack.Screen name="RequestAdvance" component={RequestAdvance} options={headerOptions} />
+      <Stack.Screen name="AdvanceList" component={AdvanceList} options={headerOptions} />
+      <Stack.Screen name="AdvanceDetails" component={AdvanceDetails} options={headerOptions} />
       <Stack.Screen name="Attendance" component={Attendance} options={headerOptions} />
       <Stack.Screen name="OrderList" component={OrderList} options={headerOptions} />
       <Stack.Screen name="AddOrder" component={AddOrder} options={headerOptions} />

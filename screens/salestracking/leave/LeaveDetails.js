@@ -13,7 +13,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { ActivityIndicator } from "react-native";
 import { ButtonPrimary } from "../../../components/Button";
 
-const AddLeave = () => {
+const LeaveDetails = () => {
 
     const navigation = useNavigation();
     useEffect(() => {
@@ -182,4 +182,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddLeave;
+export default LeaveDetails;

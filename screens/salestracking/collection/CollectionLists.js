@@ -7,146 +7,86 @@ import {
     TouchableOpacity,
     ActivityIndicator
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import PageStyle from "../../style/pageStyle";
 import { ButtonPrimary } from "../../../components/Button";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
-
+import request from "../../../config/RequestManager";
+import ToastMessage from "../../../components/Toast/Toast";
+import Api from "../../../constants/Api";
 
 const CollectionList = ({ navigation }) => {
-    const [parties, setParties] = useState([
-        {
-            value: 0,
-            name: "Graycode Technology Pvt. Ltd.",
-            person: "Sushil Sapkota",
-            phone: "9851181209",
-            address: "address 1",
-            note: "note",
-            amount: "Rs. 20000",
-            date: "2080/12/12",
-            mode: "cash",
-        },
-        {
-            value: 1,
-            name: "Party 2",
-            person: "Person 2",
-            phone: "Phone 2",
-            address: "address 2",
-            note: "note 2",
-            amount: "amount 2",
-            date: "date 2",
-            mode: "mode 2"
-        },
-        {
-            value: 2,
-            name: "Party 3",
-            person: "Person 3",
-            phone: "Phone 3",
-            address: "address 3",
-            note: "note 3",
-            amount: "amount 3",
-            date: "date 3",
-            mode: "mode 3"
-        },
-        {
-            value: 3,
-            name: "Party 4",
-            person: "Person 4",
-            phone: "Phone 4",
-            address: "address 4",
-            note: "note 4",
-            amount: "amount 4",
-            date: "date 4",
-            mode: "mode 4"
-        },
-        {
-            value: 4,
-            name: "Party 5",
-            person: "Person 5",
-            phone: "Phone 5",
-            address: "address 5",
-            note: "note 5",
-            amount: "amount 5",
-            date: "date 5",
-            mode: "mode 5"
-        },
-        {
-            value: 5,
-            name: "Party 5",
-            person: "Person 5",
-            phone: "Phone 5",
-            address: "address 5",
-            note: "note 5",
-            amount: "amount 5",
-            date: "date 5",
-            mode: "mode 5"
-        },
-        {
-            value: 6,
-            name: "Party 5",
-            person: "Person 5",
-            phone: "Phone 5",
-            address: "address 5",
-            note: "note 5",
-            amount: "amount 5",
-            date: "date 5",
-            mode: "mode 5"
-        },
-        {
-            value: 7,
-            name: "Party 5",
-            person: "Person 5",
-            phone: "Phone 5",
-            address: "address 5",
-            note: "note 5",
-            amount: "amount 5",
-            date: "date 5",
-            mode: "mode 5"
-        },
-        {
-            value: 8,
-            name: "Party 5",
-            person: "Person 5",
-            phone: "Phone 5",
-            address: "address 5",
-            note: "note 5",
-            amount: "amount 5",
-            date: "date 5",
-            mode: "mode 5"
-        },
-    ]);
+    const [parties, setParties] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const [isLoading, setIsLoading] = useState(false);
+    const getList = async () => {
+        setIsLoading(true);
+        try {
+            var response = await (await request())
+                .get(Api.Collections.List)
+                .catch(function (error) {
+                    ToastMessage.Short("Error! Contact Support");
+                });
 
+            if (response != undefined) {
+                if (response.data.Code == 200) {
+                    setParties(response.data.Data);
+                } else {
+                    ToastMessage.Short("Error Loading Parties");
+                }
+            } else {
+                ToastMessage.Short("Error Loading Parties");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getList();
+    }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getList();
+            return () => {
+                // Cleanup function (optional)
+                // Additional cleanup logic (if needed)
+            };
+        }, [])
+    );
 
     return (
         <View>
-            <ScrollView
-                nestedScrollEnabled={true}
-                showsVerticalScrollIndicator={false}
-                style={{ width: "100%", backgroundColor: "#eee" }}
-                contentContainerStyle={{ flexGrow: 1 }}
-            >
-                <View style={styles.container}>
-                    <View>
-                        {parties.map((party) => (
-                            <TouchableOpacity
-                                key={party.value}
-                                style={styles.partyItem}
-                                onPress={() =>
-                                    navigation.navigate("CollectionDetails", { party })
-                                }
-                            >
-                                <Text style={styles.partyName}>{party.name}</Text>
-                                <Text style={styles.partyInfo}>{`Recieved Amount: ${party.amount}`}</Text>
-                                <Text style={styles.partyInfo}>{`Recieved Date: ${party.date}`}</Text>
-                            </TouchableOpacity>
-                        ))}
+            {isLoading ? (
+                <ActivityIndicator size="large" color={Colors.primary} />
+            ) : (
+                <ScrollView
+                    nestedScrollEnabled={true}
+                    showsVerticalScrollIndicator={false}
+                    style={{ width: "100%", backgroundColor: "#eee" }}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                >
+                    <View style={styles.container}>
+                        <View>
+                            {parties.map((party) => (
+                                <TouchableOpacity
+                                    key={party.value}
+                                    style={styles.partyItem}
+                                    onPress={() =>
+                                        navigation.navigate("CollectionDetails", { party })
+                                    }
+                                >
+                                    <Text style={styles.partyName}>{party.name}</Text>
+                                    <Text style={styles.partyInfo}>{`Recieved Amount: ${party.amount}`}</Text>
+                                    <Text style={styles.partyInfo}>{`Recieved Date: ${party.date}`}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
                     </View>
-
-                </View>
-
-            </ScrollView>
+                </ScrollView>
+            )}
 
             <View>
                 <TouchableOpacity
@@ -158,7 +98,6 @@ const CollectionList = ({ navigation }) => {
                     <BankingIcons.plus fill="white" />
                 </TouchableOpacity>
             </View>
-
         </View>
     );
 };

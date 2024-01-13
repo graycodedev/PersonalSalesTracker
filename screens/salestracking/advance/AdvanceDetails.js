@@ -11,9 +11,9 @@ import ToastMessage from "../../../components/Toast/Toast";
 import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
 
-const VisitDetails = ({ route, navigation }) => {
-    const { visit } = route.params;
-    const [visitDetails, setVisitDetails] = useState();
+const AdvanceDetails = ({ route, navigation }) => {
+    const { advance } = route.params;
+    const [advanceDetails, setAdvanceDetails] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
@@ -31,27 +31,27 @@ const VisitDetails = ({ route, navigation }) => {
 
     const getDetail = async () => {
         var response = await (await request())
-            .get(Api.Visits.Details + "?id=" + visit.Id)
+            .get(Api.Advance.Details + "?id=" + advance.Id)
             .catch(function (error) {
                 ToastMessage.Short("Error! Contact Support");
             });
         if (response != undefined) {
             if (response.data.Code == 200) {
-                setVisitDetails(response.data.Data);
+                setAdvanceDetails(response.data.Data);
             } else {
-                ToastMessage.Short("Error Loading Visit Detail");
+                ToastMessage.Short("Error Loading Advance Detail");
             }
         } else {
-            ToastMessage.Short("Error Loading Visit Detail");
+            ToastMessage.Short("Error Loading Advance Detail");
         }
     };
 
-    const deleteVisit = async () => {
+    const deleteAdvance = async () => {
         let data = qs.stringify({
-            id: visit.Id,
+            id: advance.Id,
         });
         var response = await (await request())
-            .post(Api.Visits.Delete, data)
+            .post(Api.Advance.Delete, data)
             .catch(function (error) {
                 ToastMessage.Short("Error! Contact Support");
             });
@@ -61,15 +61,15 @@ const VisitDetails = ({ route, navigation }) => {
                 ToastMessage.Short(response.data.Message);
                 navigation.goBack();
             } else {
-                ToastMessage.Short("Error deleting the visit");
+                ToastMessage.Short("Error deleting the advance");
             }
         } else {
-            ToastMessage.Short("Error deleting the visit");
+            ToastMessage.Short("Error deleting the advance");
         }
     };
 
-    const updateVisit = () => {
-        navigation.navigate('AddVisit', { update: true, visit: visitDetails });
+    const updateAdvance = () => {
+        navigation.navigate('RequestAdvance', { update: true, advance: advanceDetails });
     };
 
     return (
@@ -82,23 +82,23 @@ const VisitDetails = ({ route, navigation }) => {
             <View style={styles.container}>
                 <View style={styles.itemContainer}>
                     <View style={styles.item}>
-                        <Text style={styles.visitInfo}>Name:</Text>
+                        <Text style={styles.advanceInfo}>Amount:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.visitData}>{visit.PartyName ? visit.PartyName : visit.LocationName}</Text>
+                            <Text style={styles.advanceData}>Rs. {advance.Amount}</Text>
                         </View>
                     </View>
 
                     <View style={styles.item}>
-                        <Text style={styles.visitInfo}>Visit Date:</Text>
+                        <Text style={styles.advanceInfo}>For:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.visitData}>{visit.VisitDate}</Text>
+                            <Text style={styles.advanceData}>{advance.ForDate}</Text>
                         </View>
                     </View>
 
                     <View style={styles.item}>
-                        <Text style={styles.visitInfo}>Remarks:</Text>
+                        <Text style={styles.advanceInfo}>Remarks:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.visitData}>{visit.Remarks}</Text>
+                            <Text style={styles.advanceData}>{advance.Remarks}</Text>
                         </View>
                     </View>
                 </View>
@@ -108,7 +108,7 @@ const VisitDetails = ({ route, navigation }) => {
                 <TouchableOpacity
                     style={[styles.circle, { marginBottom: 8, backgroundColor: Colors.primary }]}
                     onPress={() => {
-                        updateVisit()
+                        updateAdvance()
                     }}
                 >
                     <BankingIcons.Edit fill={"white"} height={25} width={25} />
@@ -124,9 +124,9 @@ const VisitDetails = ({ route, navigation }) => {
             </View>
             {showConfirmDelete && (
                 <WarningModal
-                    text1={"Delete Visit?"}
-                    text2={"Are you sure you want to delete the visit?"}
-                    onConfirm={deleteVisit}
+                    text1={"Delete Advance?"}
+                    text2={"Are you sure you want to delete the advance?"}
+                    onConfirm={deleteAdvance}
                     onCancel={() => {
                         setShowConfirmDelete(false)
                     }}
@@ -155,13 +155,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 10,
     },
-    visitInfo: {
+    advanceInfo: {
         fontSize: 20,
     },
     dataView: {
         width: '50%'
     },
-    visitData: {
+    advanceData: {
         fontSize: 20,
         textAlign: 'right'
     },
@@ -181,4 +181,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default VisitDetails;
+export default AdvanceDetails;

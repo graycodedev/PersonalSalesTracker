@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
+    Image,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
@@ -15,12 +16,17 @@ import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 
-
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
 const Visits = ({ navigation }) => {
+    useEffect(() => {
+        navigation.setOptions({
+            title: "Visits List",
+        });
+    }, [])
+
     const [visits, setVisits] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -28,7 +34,7 @@ const Visits = ({ navigation }) => {
     const onRefresh = () => {
         wait(2000).then(() => {
             setRefreshing(false);
-            getVisits();
+            getList();
         });
     };
 
@@ -69,43 +75,50 @@ const Visits = ({ navigation }) => {
     );
 
     return (
-        <ScrollView
-            nestedScrollEnabled={true}
-            showsVerticalScrollIndicator={false}
-            style={{ width: "100%", backgroundColor: "#eee" }}
-            contentContainerStyle={{ flexGrow: 1 }}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        >
-            <View style={styles.container}>
-                {isLoading ? (
-                    <View style={styles.spinnerContainer}>
-                        <ActivityIndicator size="large" color={Colors.primary} />
-                    </View>
-                ) : (
-                    <>
-                        {visits.map((visit) => (
-                            <TouchableOpacity
-                                key={visit.value}
-                                style={styles.visitItem}
-                                onPress={() => navigation.navigate("VisitDetails", { visit })}
-                            >
-                                <Text style={styles.visitName}>{visit.name}</Text>
-                                <Text style={styles.visitText}>{visit.location}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </>
-                )}
-            </View>
+        <View style={styles.container}>
+            {isLoading ? (
+                <View style={styles.spinnerContainer}>
+                    <ActivityIndicator size="large" color={Colors.primary} />
+                </View>
+            ) : (
+                <ScrollView
+                    nestedScrollEnabled={true}
+                    showsVerticalScrollIndicator={false}
+                    style={{ width: "100%", backgroundColor: "#eee", flex: 1 }}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                >
+                    {visits.map((visit) => (
+                        <TouchableOpacity
+                            key={visit.Id}
+                            style={styles.visitItem}
+                            onPress={() => navigation.navigate("VisitDetails", { visit })}
+                        >
+                            {visit.PartyName && (
+
+                                <BankingIcons.tickMark fill='green'
+                                    style={styles.imageStyle} />
+                            )}
+                            <View>
+                                <Text style={styles.visitName}>{visit.PartyName ? visit.PartyName : visit.LocationName}</Text>
+                                <Text style={styles.visitText}>{visit.VisitDate}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    ))}
+
+
+                </ScrollView>
+            )}
 
             <TouchableOpacity
                 style={styles.circle}
                 onPress={() => {
-                    navigation.navigate("AddVisit", { parties: visits });
+                    navigation.navigate("AddVisit");
                 }}
             >
                 <BankingIcons.plus fill="white" />
             </TouchableOpacity>
-        </ScrollView>
+        </View>
     );
 };
 
@@ -119,11 +132,13 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
     },
     visitItem: {
+        flexDirection: 'row',
         backgroundColor: "#fff",
         borderRadius: 8,
         padding: 15,
         marginBottom: 10,
         elevation: 2,
+        alignItems: 'center',
     },
     visitName: {
         fontSize: 20,
@@ -132,6 +147,9 @@ const styles = StyleSheet.create({
     visitText: {
         fontSize: 16,
         color: "#333",
+    },
+    imageStyle: {
+        marginRight: 10,
     },
     circle: {
         backgroundColor: Colors.primary,

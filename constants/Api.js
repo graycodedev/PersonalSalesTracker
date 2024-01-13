@@ -211,6 +211,32 @@ const Visits = {
   SaveByUser: BaseUrl + "api/v1/st_visits/save/byuser",
   Delete: BaseUrl + "api/v1/st_visits/delete"
 }
+const Collections = {
+  List: BaseUrl + "api/v1/st_collections/list",
+  Details: BaseUrl + "api/v1/st_collections/details",
+  Save: BaseUrl + "api/v1/st_collections/save",
+  Delete: BaseUrl + "api/v1/st_collections/delete"
+}
+const Advance = {
+  ListByUser: BaseUrl + "api/v1/st_advancerequest/list/byuser",
+  ActiveList: BaseUrl + "api/v1/st_advancerequest/list/active",
+  List: BaseUrl + "api/v1/st_advancerequest/list",
+  Request: BaseUrl + "api/v1/st_advancerequest/request",
+  Save: BaseUrl + "api/v1/st_advancerequest/save",
+  Details: BaseUrl + "api/v1/st_advancerequest/details",
+  Approve: BaseUrl + "api/v1/st_advancerequest/approve",
+  Cancel: BaseUrl + "api/v1/st_advancerequest/cancel",
+}
+const Leave = {
+  ListByUser: BaseUrl + "api/v1/st_leave/list/byuser",
+  ActiveList: BaseUrl + "api/v1/st_leave/list/active",
+  List: BaseUrl + "api/v1/st_leave/list",
+  Apply: BaseUrl + "api/v1/st_leave/apply",
+  Save: BaseUrl + "api/v1/st_leave/save",
+  Details: BaseUrl + "api/v1/st_leave/details",
+  Approve: BaseUrl + "api/v1/st_leave/approve",
+  Cancel: BaseUrl + "api/v1/st_leave/cancel",
+}
 
 export default {
   CompanyId,
@@ -284,6 +310,9 @@ export default {
   Notes,
   Parties,
   Visits,
+  Collections,
+  Advance,
+  Leave,
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
+    Image,
     StyleSheet,
     ScrollView,
     TouchableOpacity,
@@ -9,25 +10,24 @@ import {
     RefreshControl,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import PageStyle from "../../style/pageStyle";
-import { Colors } from "../../style/Theme";
-import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
+import { Colors } from "../../style/Theme";
+import request from "../../../config/RequestManager";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-const PartyList = ({ navigation }) => {
+const AdvanceList = ({ navigation }) => {
     useEffect(() => {
         navigation.setOptions({
-            title: "Party List",
+            title: "Advance List",
         });
     }, [])
 
-    const [parties, setParties] = useState([]);
+    const [advances, setAdvances] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -41,19 +41,19 @@ const PartyList = ({ navigation }) => {
     const getList = async () => {
         try {
             var response = await (await request())
-                .get(Api.Parties.ActiveList)
+                .get(Api.Advance.ListByUser)
                 .catch(function (error) {
                     ToastMessage.Short("Error! Contact Support");
                 });
 
             if (response != undefined) {
                 if (response.data.Code == 200) {
-                    setParties(response.data.Data);
+                    setAdvances(response.data.Data);
                 } else {
-                    ToastMessage.Short("Error Loading Parties");
+                    ToastMessage.Short("Error Loading Advances");
                 }
             } else {
-                ToastMessage.Short("Error Loading Parties");
+                ToastMessage.Short("Error Loading Advances");
             }
         } finally {
             setIsLoading(false);
@@ -88,17 +88,17 @@ const PartyList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {parties.map((party) => (
+                    {advances.map((advance) => (
                         <TouchableOpacity
-                            key={party.value}
-                            style={styles.partyItem}
-                            onPress={() => navigation.navigate("PartyDetails", { party })}
+                            key={advance.Id}
+                            style={styles.advanceItem}
+                            onPress={() => navigation.navigate("AdvanceDetails", { advance })}
                         >
-                            <Text style={styles.partyName}>{party.PartyName}</Text>
-                            <Text style={styles.partyInfo}>{`${party.ContactPersonName}`}</Text>
-                            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                <Text style={styles.partyInfo}>{`Address: ${party.Address}`}</Text>
-                                <Text style={styles.partyInfo}>{`Code: ${party.PartyCode}`}</Text>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View>
+                                    <Text style={styles.advanceName}>Rs. {advance.Amount}</Text>
+                                    <Text style={styles.advanceText}>For: {advance.ForDate}</Text>
+                                </View>
                             </View>
                         </TouchableOpacity>
                     ))}
@@ -108,7 +108,7 @@ const PartyList = ({ navigation }) => {
             <TouchableOpacity
                 style={styles.circle}
                 onPress={() => {
-                    navigation.navigate("AddParty");
+                    navigation.navigate("RequestAdvance");
                 }}
             >
                 <BankingIcons.plus fill="white" />
@@ -116,6 +116,7 @@ const PartyList = ({ navigation }) => {
         </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     container: {
@@ -125,41 +126,38 @@ const styles = StyleSheet.create({
         alignContent: "center",
         justifyContent: "flex-start",
     },
-    partyItem: {
+    advanceItem: {
+        flexDirection: 'row',
         backgroundColor: "#fff",
         borderRadius: 8,
         padding: 15,
         marginBottom: 10,
         elevation: 2,
+        alignItems: 'center',
     },
-    partyName: {
-        fontSize: 18,
-        fontWeight: "bold",
-        marginBottom: 5,
+    advanceName: {
+        fontSize: 20,
+        fontWeight: '700',
     },
-    partyInfo: {
+    advanceText: {
         fontSize: 16,
+        color: "#333",
+    },
+    imageStyle: {
+        marginRight: 10,
     },
     circle: {
         backgroundColor: Colors.primary,
         width: 50,
         height: 50,
-        position: "absolute",
+        position: 'absolute',
         bottom: 20,
         right: 20,
         borderRadius: 50,
         zIndex: 1,
         justifyContent: "center",
-        alignItems: "center",
-    },
-    spinnerContainer: {
-        flex: 1,
-        justifyContent: "center",
-        margin: 20,
-        flexDirection: "row",
-        justifyContent: "space-around",
-        padding: 10,
-    },
+        alignItems: "center"
+    }
 });
 
-export default PartyList;
+export default AdvanceList;

@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-    View,
-    Text,
-    ScrollView,
-    StyleSheet,
-    Dimensions,
-    TouchableOpacity,
-    ActivityIndicator,
-} from "react-native";
+import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { RegularInputText } from "../../../components/Input";
@@ -16,30 +8,35 @@ import PageStyle from "../../style/pageStyle";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AutoCompleteList } from "../../../components/AutoCompleteList";
 import Api from "../../../constants/Api";
-
+import qs from "qs";
+import request from "../../../config/RequestManager";
+import ToastMessage from "../../../components/Toast/Toast";
+import * as Location from 'expo-location';
 
 const { width } = Dimensions.get("screen");
 
-const AddVisit = ({ route }) => {
-
-    const [selectedParty, setSelectedParty] = useState();
+const AddVisit = (props, route) => {
+    const update = props.route.params?.update;
+    const visits = props.route.params?.visit;
+    const navigation = useNavigation();
+    const [isLoading, setIsLoading] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('existingParty');
+    const [location, setLocation] = useState(null);
+    const [locationName, setLocationName] = useState("");
+    const [remark, setRemark] = useState("");
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [showPartiesList, setShowPartiesList] = useState(false);
+    const [selectedParty, setSelectedParty] = useState(null);
 
     useEffect(() => {
         navigation.setOptions({
             title: 'Add Visit',
         });
+        getLocation();
     }, []);
 
-
-    const parties = route.params.parties || [];
-    const navigation = useNavigation();
-    const [isLoading, setIsLoading] = useState(false);
-    const [selectedOption, setSelectedOption] = useState('existingParty');
-    const [location, setLocation] = useState("");
-    const [remark, setRemark] = useState("");
-
-    const [showDatePicker, setShowDatePicker] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const parties = route.params ? route.params.parties || [] : [];
 
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || selectedDate;
@@ -53,16 +50,25 @@ const AddVisit = ({ route }) => {
         day: "2-digit",
     });
 
-    const [showPartiesList, setShowPartiesList] = useState(false);
     const updateSelectedParty = (item) => {
         setSelectedParty(item);
         setShowPartiesList(false);
     }
 
-
     const onClose = () => {
         setShowPartiesList(false);
     }
+
+    const getLocation = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            alert('Permission to access location was denied');
+            return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+    };
 
     const renderAdditionalComponent = () => {
         if (selectedOption === 'existingParty') {
@@ -73,8 +79,6 @@ const AddVisit = ({ route }) => {
                         <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedParty ? "Add Party" : selectedParty.PartyName}</Text>
 
                     </TouchableOpacity>
-
-
                     {showPartiesList && (
                         <AutoCompleteList
                             autocompleteurl={Api.Parties.List}
@@ -98,18 +102,74 @@ const AddVisit = ({ route }) => {
             return (
                 <View>
                     <RegularInputText
-                        key="title"
+                        key="location"
                         placeholder="Location"
                         onChangeText={(text) => {
-                            setLocation(text)
+                            setLocationName(text)
                         }}
-                        value={location}
+                        value={locationName}
                     />
+                    <ActivityIndicator
+                        animating={isLoading}
+                        color="#ffa500"
+                        style={styles.activityIndicator}
+                    ></ActivityIndicator>
                 </View>
             );
         }
         return null;
     };
+
+    const goToVisits = () => {
+        navigation.goBack();
+    }
+
+
+    const saveVisit = async () => {
+        const companyId = 1;
+        let partyId = 0;
+        let partyName = null;
+        let locationNameToSave = null;
+
+        if (selectedOption === 'existingParty') {
+            partyId = selectedParty ? selectedParty.Id : null;
+            partyName = selectedParty ? selectedParty.PartyName : null;
+        } else if (selectedOption === 'addParty') {
+            locationNameToSave = locationName;
+        }
+
+        const remarks = remark;
+
+        let visitData = qs.stringify({
+            Id: update ? visits.Id : 0,
+            CompanyId: companyId,
+            IsParty: true,
+            PartyId: partyId,
+            PartyName: partyName,
+            LocationName: locationNameToSave,
+            Remarks: remarks,
+            Latitude: location ? location.coords.latitude : null,
+            Longitude: location ? location.coords.longitude : null,
+            IsActive: true,
+        });
+
+        setIsLoading(true);
+
+        try {
+            const response = await (await request()).post(Api.Visits.SaveByUser, visitData);
+
+            if (response.data.Code === 200) {
+                setIsLoading(false);
+                goToVisits();
+            } else {
+                ToastMessage.Short(response.data.Message);
+            }
+        } catch (error) {
+            console.log('API error', error);
+            setIsLoading(false);
+            ToastMessage.Short("Error Occurred. Contact Support");
+        }
+    }
 
     return (
         <ScrollView
@@ -146,12 +206,17 @@ const AddVisit = ({ route }) => {
                             { label: 'Yes', value: 'existingParty' },
                             { label: 'No', value: 'addParty' },
                         ]}
-                        onChangeItem={(item) => setSelectedOption(item.value)}
+                        onChangeItem={(item) => {
+                            setSelectedOption(item.value);
+                            if (item.value === 'existingParty') {
+                                setLocationName("");
+                            } else {
+                                setSelectedParty(null);
+                            }
+                        }}
                         defaultValue={'existingParty'}
                     />
                 </View>
-
-
 
                 {renderAdditionalComponent()}
 
@@ -193,12 +258,8 @@ const AddVisit = ({ route }) => {
                 </View>
 
                 <View style={{ margin: 30 }}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            setIsLoading(true);
-                        }}
-                    >
-                        <ButtonPrimary title={"Save"} />
+                    <TouchableOpacity onPress={saveVisit}>
+                        <ButtonPrimary title={update ? "Update" : "Save"} />
                         <ActivityIndicator
                             animating={isLoading}
                             color="#ffa500"
@@ -206,10 +267,13 @@ const AddVisit = ({ route }) => {
                         ></ActivityIndicator>
                     </TouchableOpacity>
                 </View>
+
             </View>
         </ScrollView>
     );
 };
+
+
 
 const styles = StyleSheet.create({
     container: {

@@ -9,25 +9,24 @@ import {
     RefreshControl,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import PageStyle from "../../style/pageStyle";
-import { Colors } from "../../style/Theme";
-import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
+import { Colors } from "../../style/Theme";
+import request from "../../../config/RequestManager";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-const PartyList = ({ navigation }) => {
+const LeaveList = ({ navigation }) => {
     useEffect(() => {
         navigation.setOptions({
-            title: "Party List",
+            title: "Leave List",
         });
     }, [])
 
-    const [parties, setParties] = useState([]);
+    const [leaves, setLeaves] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -41,19 +40,19 @@ const PartyList = ({ navigation }) => {
     const getList = async () => {
         try {
             var response = await (await request())
-                .get(Api.Parties.ActiveList)
+                .get(Api.Leave.ListByUser)
                 .catch(function (error) {
                     ToastMessage.Short("Error! Contact Support");
                 });
 
             if (response != undefined) {
                 if (response.data.Code == 200) {
-                    setParties(response.data.Data);
+                    setLeaves(response.data.Data);
                 } else {
-                    ToastMessage.Short("Error Loading Parties");
+                    ToastMessage.Short("Error Loading Leaves");
                 }
             } else {
-                ToastMessage.Short("Error Loading Parties");
+                ToastMessage.Short("Error Loading Leaves");
             }
         } finally {
             setIsLoading(false);
@@ -88,17 +87,18 @@ const PartyList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {parties.map((party) => (
+                    {leaves.map((leave) => (
                         <TouchableOpacity
-                            key={party.value}
-                            style={styles.partyItem}
-                            onPress={() => navigation.navigate("PartyDetails", { party })}
+                            key={leave.Id}
+                            style={styles.leaveItem}
+                            onPress={() => navigation.navigate("LeaveDetails", { leave })}
                         >
-                            <Text style={styles.partyName}>{party.PartyName}</Text>
-                            <Text style={styles.partyInfo}>{`${party.ContactPersonName}`}</Text>
-                            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                <Text style={styles.partyInfo}>{`Address: ${party.Address}`}</Text>
-                                <Text style={styles.partyInfo}>{`Code: ${party.PartyCode}`}</Text>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View>
+                                    <Text style={styles.leaveType}>{leave.LeaveType}</Text>
+                                    <Text style={styles.leaveDate}>From: {leave.FromDate} To: {leave.ToDate}</Text>
+                                    <Text style={styles.leaveRemarks}>Remarks: {leave.Remarks}</Text>
+                                </View>
                             </View>
                         </TouchableOpacity>
                     ))}
@@ -108,7 +108,7 @@ const PartyList = ({ navigation }) => {
             <TouchableOpacity
                 style={styles.circle}
                 onPress={() => {
-                    navigation.navigate("AddParty");
+                    navigation.navigate("RequestLeave");
                 }}
             >
                 <BankingIcons.plus fill="white" />
@@ -120,46 +120,42 @@ const PartyList = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 10,
-        padding: 10,
-        alignContent: "center",
-        justifyContent: "flex-start",
-    },
-    partyItem: {
-        backgroundColor: "#fff",
-        borderRadius: 8,
-        padding: 15,
-        marginBottom: 10,
-        elevation: 2,
-    },
-    partyName: {
-        fontSize: 18,
-        fontWeight: "bold",
-        marginBottom: 5,
-    },
-    partyInfo: {
-        fontSize: 16,
-    },
-    circle: {
-        backgroundColor: Colors.primary,
-        width: 50,
-        height: 50,
-        position: "absolute",
-        bottom: 20,
-        right: 20,
-        borderRadius: 50,
-        zIndex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        backgroundColor: Colors.background,
     },
     spinnerContainer: {
         flex: 1,
         justifyContent: "center",
-        margin: 20,
-        flexDirection: "row",
-        justifyContent: "space-around",
-        padding: 10,
+    },
+    leaveItem: {
+        backgroundColor: Colors.white,
+        padding: 15,
+        marginVertical: 10,
+        marginHorizontal: 20,
+        borderRadius: 10,
+    },
+    leaveType: {
+        fontSize: 18,
+        fontWeight: "bold",
+    },
+    leaveDate: {
+        fontSize: 16,
+        color: Colors.textSecondary,
+    },
+    leaveRemarks: {
+        fontSize: 14,
+        color: Colors.textSecondary,
+    },
+    circle: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: Colors.primary,
+        position: "absolute",
+        bottom: 30,
+        right: 30,
+        justifyContent: "center",
+        alignItems: "center",
     },
 });
 
-export default PartyList;
+export default LeaveList;
