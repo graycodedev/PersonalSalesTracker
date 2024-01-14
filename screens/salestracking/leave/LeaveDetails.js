@@ -1,59 +1,77 @@
-import React, { useEffect, useState } from "react";
-import {
-    View,
-    Text,
-    ScrollView,
-    StyleSheet,
-    TouchableOpacity,
-} from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { useNavigation } from "@react-navigation/native";
-import { RegularInputText } from "../../../components/Input";
-import DropDownPicker from "react-native-dropdown-picker";
-import { ActivityIndicator } from "react-native";
-import { ButtonPrimary } from "../../../components/Button";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import qs from "qs"
 
-const LeaveDetails = () => {
+import Api from "../../../constants/Api";
+import Spinner from "react-native-loading-spinner-overlay";
+import { Colors } from "../../style/Theme";
+import request from "../../../config/RequestManager";
+import ToastMessage from "../../../components/Toast/Toast";
+import * as BankingIcons from "../../../components/BankingIcons";
+import WarningModal from "../../../components/WarningModal";
 
-    const navigation = useNavigation();
+const LeaveDetails = ({ route, navigation }) => {
+    const { leave } = route.params;
+    const [leaveDetails, setLeaveDetails] = useState();
+    const [isLoading, setIsLoading] = useState(true);
+    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getDetail();
+            return () => { };
+        }, [])
+    );
+
     useEffect(() => {
-        navigation.setOptions({
-            title: "Add Leave",
+        getDetail();
+        setIsLoading(false);
+    }, []);
+
+    const getDetail = async () => {
+        var response = await (await request())
+            .get(Api.Leave.Details + "?id=" + leave.Id)
+            .catch(function (error) {
+                ToastMessage.Short("Error! Contact Support");
+            });
+        if (response != undefined) {
+            if (response.data.Code == 200) {
+                setLeaveDetails(response.data.Data);
+            } else {
+                ToastMessage.Short("Error Loading Leave Detail");
+            }
+        } else {
+            ToastMessage.Short("Error Loading Leave Detail");
+        }
+    };
+
+    const deleteLeave = async () => {
+        let data = qs.stringify({
+            id: leave.Id,
         });
-    }, [])
-
-    const [remark, setRemark] = useState("");
-
-    const [showFromDatePicker, setShowFromDatePicker] = useState(false);
-    const [showToDatePicker, setShowToDatePicker] = useState(false);
-    const [selectedFromDate, setSelectedFromDate] = useState(new Date());
-    const [selectedToDate, setSelectedToDate] = useState(new Date());
-
-    const onChangeFromDate = (event, selectedDate) => {
-        const currentDate = selectedDate || selectedFromDate;
-        setShowFromDatePicker(false);
-        setSelectedFromDate(currentDate);
+        var response = await (await request())
+            .post(Api.Leave.Delete, data)
+            .catch(function (error) {
+                console.log(error);
+                ToastMessage.Short("Error! Contact Support");
+            });
+        if (response != undefined) {
+            if (response.data.Code == 200) {
+                setShowConfirmDelete(false);
+                ToastMessage.Short(response.data.Message);
+                navigation.goBack();
+            } else {
+                ToastMessage.Short("Error deleting the leave");
+            }
+        } else {
+            ToastMessage.Short("Error deleting the leave");
+        }
     };
 
-    const onChangeToDate = (event, selectedDate) => {
-        const currentDate = selectedDate || selectedToDate;
-        setShowToDatePicker(false);
-        setSelectedToDate(currentDate);
+    const updateLeave = () => {
+        navigation.navigate('RequestLeave', { update: true, leave: leaveDetails });
     };
-
-    const formattedFromDate = selectedFromDate.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-    });
-
-    const formattedToDate = selectedToDate.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-    });
-
-    const [isLoading, setIsLoading] = useState(false);
 
     return (
         <ScrollView
@@ -63,110 +81,75 @@ const LeaveDetails = () => {
             contentContainerStyle={{ flexGrow: 1 }}
         >
             <View style={styles.container}>
+                <View style={styles.itemContainer}>
+                    <View style={styles.item}>
+                        <Text style={styles.leaveInfo}>Leave Type:</Text>
+                        <View style={styles.dataView}>
+                            <Text style={styles.leaveData}>{leave.LeaveType}</Text>
+                        </View>
+                    </View>
 
-                <View style={{ marginBottom: 10 }}>
-                    <DropDownPicker
-                        containerStyle={{ height: 50 }}
-                        style={{
-                            backgroundColor: "#fff",
-                            borderRadius: 10,
-                            fontFamily: "Regular",
-                            borderColor: "#fff",
-                            borderWidth: 0,
-                        }}
-                        itemStyle={{
-                            justifyContent: "flex-start",
-                            fontFamily: "Medium",
-                            color: "red",
-                        }}
-                        labelStyle={{
-                            fontFamily: "Medium",
-                            color: "#9A9A9A",
-                        }}
-                        arrowColor={"#9A9A9A"}
-                        placeholder="Leave Type"
-                        label="Leave Type"
-                        items={[
-                            { label: 'Sick Leave', value: '0' },
-                            { label: 'Personal Leave', value: '1' },
-                            { label: 'Others', value: '2' },
-                        ]}
-                    />
+                    <View style={styles.item}>
+                        <Text style={styles.leaveInfo}>From:</Text>
+                        <View style={styles.dataView}>
+                            <Text style={styles.leaveData}>{leave.FromDate}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.item}>
+                        <Text style={styles.leaveInfo}>To:</Text>
+                        <View style={styles.dataView}>
+                            <Text style={styles.leaveData}>{leave.ToDate}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.item}>
+                        <Text style={styles.leaveInfo}>Remarks:</Text>
+                        <View style={styles.dataView}>
+                            <Text style={styles.leaveData}>{leave.Remarks}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.item}>
+                        <Text style={styles.leaveInfo}>Status:</Text>
+                        <View style={styles.dataView}>
+                            {leave.IsApproved && <Text style={styles.leaveData}>Approved</Text>}
+                            {leave.IsCancelled && <Text style={styles.leaveData}>Cancelled</Text>}
+                            {!leave.IsApproved && !leave.IsCancelled && <Text style={styles.leaveData}>Pending</Text>}
+                        </View>
+                    </View>
+
                 </View>
 
-                <View>
-                    <Text style={{ fontFamily: "Medium" }}>From:</Text>
-                    <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
-                        <RegularInputText
-                            key="from"
-                            placeholder="From Date"
-                            value={formattedFromDate}
-                            editable={false}
-                        />
-                    </TouchableOpacity>
-
-                    {showFromDatePicker && (
-                        <DateTimePicker
-                            value={selectedFromDate}
-                            mode="date"
-                            is24Hour={true}
-                            display="default"
-                            onChange={onChangeFromDate}
-                        />
-                    )}
-                </View>
-
-                <View>
-                    <Text style={{ fontFamily: "Medium" }}>To:</Text>
-                    <TouchableOpacity onPress={() => setShowToDatePicker(true)}>
-                        <RegularInputText
-                            key="to"
-                            placeholder="To Date"
-                            value={formattedToDate}
-                            editable={false}
-                        />
-                    </TouchableOpacity>
-
-                    {showToDatePicker && (
-                        <DateTimePicker
-                            value={selectedToDate}
-                            mode="date"
-                            is24Hour={true}
-                            display="default"
-                            onChange={onChangeToDate}
-                        />
-                    )}
-                </View>
-
-                <View>
-                    <RegularInputText
-                        key="remark"
-                        placeholder="Remarks"
-                        onChangeText={(text) => {
-                            setRemark(text)
-                        }}
-                        value={remark}
-                        multiline={true}
-                        numberOfLines={5}
-                        style={{ height: 100, alignItems: 'flex-start', borderWidth: 0 }}
-                    />
-                </View>
-
-                <View style={{ margin: 30 }}>
+                <View style={styles.buttons}>
                     <TouchableOpacity
+                        style={[styles.circle, { marginBottom: 8, backgroundColor: Colors.primary }]}
                         onPress={() => {
-                            setIsLoading(true);
+                            updateLeave()
                         }}
                     >
-                        <ButtonPrimary title={"Save"} />
-                        <ActivityIndicator
-                            animating={isLoading}
-                            color="#ffa500"
-                            style={styles.activityIndicator}
-                        ></ActivityIndicator>
+                        <BankingIcons.Edit fill={"white"} height={25} width={25} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.circle, { backgroundColor: "#FF5F7F" }]}
+                        onPress={() => {
+                            setShowConfirmDelete(true)
+                        }}
+                    >
+                        <BankingIcons.DeleteIcon fill="white" />
                     </TouchableOpacity>
                 </View>
-
+                {showConfirmDelete && (
+                    <WarningModal
+                        text1={"Delete Leave?"}
+                        text2={"Are you sure you want to delete the leave?"}
+                        onConfirm={deleteLeave}
+                        onCancel={() => {
+                            setShowConfirmDelete(false)
+                        }}
+                        warning
+                    />
+                )}
             </View>
         </ScrollView>
     );
@@ -180,6 +163,40 @@ const styles = StyleSheet.create({
         alignContent: "center",
         justifyContent: "flex-start",
     },
+    itemContainer: {
+        backgroundColor: 'white',
+        elevation: 2,
+    },
+    item: {
+        flexDirection: 'row',
+        backgroundColor: "#fff",
+        justifyContent: 'space-between',
+        padding: 10,
+    },
+    leaveInfo: {
+        fontSize: 20,
+    },
+    dataView: {
+        width: '50%'
+    },
+    leaveData: {
+        fontSize: 20,
+        textAlign: 'right'
+    },
+    circle: {
+        backgroundColor: "white",
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    buttons: {
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+        zIndex: 1,
+    }
 });
 
 export default LeaveDetails;

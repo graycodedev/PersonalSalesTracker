@@ -29,7 +29,7 @@ const RequestLeave = (props) => {
     const navigation = useNavigation();
     useEffect(() => {
         navigation.setOptions({
-            title: update ? "Update Leave" : "Add Leave",
+            title: update ? "Update Leave" : "Request Leave",
         });
     }, [])
 
@@ -131,6 +131,7 @@ const RequestLeave = (props) => {
                             { label: 'Personal Leave', value: '1' },
                             { label: 'Others', value: '2' },
                         ]}
+                        onChangeItem={item => setLeaveType(item.value)}
                     />
                 </View>
 
@@ -196,7 +197,7 @@ const RequestLeave = (props) => {
                             saveLeave()
                         }}
                     >
-                        <ButtonPrimary title={"Save"} />
+                        <ButtonPrimary title={update ? "Update" : "Save"} />
                         <ActivityIndicator
                             animating={isLoading}
                             color="#ffa500"

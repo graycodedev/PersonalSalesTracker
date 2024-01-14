@@ -101,6 +101,16 @@ const AdvanceDetails = ({ route, navigation }) => {
                             <Text style={styles.advanceData}>{advance.Remarks}</Text>
                         </View>
                     </View>
+
+                    <View style={styles.item}>
+                        <Text style={styles.advanceInfo}>Status:</Text>
+                        <View style={styles.dataView}>
+                            {advance.IsApproved && <Text style={styles.advanceData}>Approved</Text>}
+                            {advance.IsCancelled && <Text style={styles.advanceData}>Cancelled</Text>}
+                            {!advance.IsApproved && !advance.IsCancelled && <Text style={styles.advanceData}>Pending</Text>}
+                        </View>
+                    </View>
+
                 </View>
             </View>
 

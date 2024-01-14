@@ -88,20 +88,31 @@ const AdvanceList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {advances.map((advance) => (
-                        <TouchableOpacity
-                            key={advance.Id}
-                            style={styles.advanceItem}
-                            onPress={() => navigation.navigate("AdvanceDetails", { advance })}
-                        >
-                            <View style={{ flexDirection: 'row' }}>
+                    {advances.map((advance) => {
+                        const forDate = new Date(advance.ForDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+                        return (
+                            <TouchableOpacity
+                                key={advance.Id}
+                                style={styles.advanceItem}
+                                onPress={() => navigation.navigate("AdvanceDetails", { advance })}
+                            >
                                 <View>
-                                    <Text style={styles.advanceName}>Rs. {advance.Amount}</Text>
-                                    <Text style={styles.advanceText}>For: {advance.ForDate}</Text>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <Text style={styles.advanceName}>Rs. {advance.Amount}</Text>
+                                        {advance.IsApproved && <BankingIcons.tickMark fill='green' />}
+                                        {advance.IsCancelled && <BankingIcons.tickMark fill='red' />}
+                                        {!advance.IsApproved && !advance.IsCancelled && <BankingIcons.tickMark fill='orange' />}
+                                    </View>
+                                    <View>
+                                        <Text style={styles.advanceText}>For: {forDate}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
+                            </TouchableOpacity>
+                        );
+                    })}
+
+
                 </ScrollView>
             )}
 
@@ -127,13 +138,11 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
     },
     advanceItem: {
-        flexDirection: 'row',
         backgroundColor: "#fff",
         borderRadius: 8,
         padding: 15,
         marginBottom: 10,
         elevation: 2,
-        alignItems: 'center',
     },
     advanceName: {
         fontSize: 20,
@@ -142,9 +151,6 @@ const styles = StyleSheet.create({
     advanceText: {
         fontSize: 16,
         color: "#333",
-    },
-    imageStyle: {
-        marginRight: 10,
     },
     circle: {
         backgroundColor: Colors.primary,

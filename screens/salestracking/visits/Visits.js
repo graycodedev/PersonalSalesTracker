@@ -88,23 +88,32 @@ const Visits = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {visits.map((visit) => (
-                        <TouchableOpacity
-                            key={visit.Id}
-                            style={styles.visitItem}
-                            onPress={() => navigation.navigate("VisitDetails", { visit })}
-                        >
-                            {visit.PartyName && (
+                    {visits.map((visit) => {
+                        const visitDate = new Date(visit.VisitDate);
+                        const date = visitDate.toLocaleDateString();
 
-                                <BankingIcons.tickMark fill='green'
-                                    style={styles.imageStyle} />
-                            )}
-                            <View>
-                                <Text style={styles.visitName}>{visit.PartyName ? visit.PartyName : visit.LocationName}</Text>
-                                <Text style={styles.visitText}>{visit.VisitDate}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
+                        return (
+                            <TouchableOpacity
+                                key={visit.Id}
+                                style={styles.visitItem}
+                                onPress={() => navigation.navigate("VisitDetails", { visit })}
+                            >
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View>
+                                        <Text style={styles.visitName}>{visit.PartyName ? visit.PartyName : visit.LocationName}</Text>
+                                        <Text style={styles.visitText}>{date}</Text>
+                                    </View>
+                                    {visit.PartyName && (
+                                        <BankingIcons.tickMark fill='green' style={styles.imageStyle} />
+                                    )}
+                                </View>
+                            </TouchableOpacity>
+                        );
+                    })}
+
+
+
+
 
 
                 </ScrollView>
@@ -132,13 +141,11 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
     },
     visitItem: {
-        flexDirection: 'row',
         backgroundColor: "#fff",
         borderRadius: 8,
         padding: 15,
         marginBottom: 10,
         elevation: 2,
-        alignItems: 'center',
     },
     visitName: {
         fontSize: 20,

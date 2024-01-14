@@ -21,9 +21,10 @@ import request from "../../../config/RequestManager";
 const RequestAdvance = (props) => {
     const update = props.route.params?.update;
     const advance = props.route.params?.advance;
-    const [amount, setAmount] = useState(advance?.Amount);
+    const [amount, setAmount] = useState(advance?.Amount || '');
     const [remarks, setRemarks] = useState(advance?.Remarks);
-    const [forDate, setForDate] = useState(new Date(advance?.ForDate) || new Date());
+    const isValidDate = Date.parse(advance?.ForDate);
+    const [forDate, setForDate] = useState(isValidDate ? new Date(advance?.ForDate) : new Date());
     const [addedOn, setAddedOn] = useState(advance?.AddedOn || new Date());
     const [isLoading, setIsLoading] = useState(false);
     const [showDatePicker, setShowDatePicker] = useState(false);

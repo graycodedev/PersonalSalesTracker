@@ -73,6 +73,13 @@ const LeaveList = ({ navigation }) => {
         }, [])
     );
 
+    const leaveTypeMapping = {
+        0: 'Sick Leave',
+        1: 'Personal Reasons',
+        2: 'Other'
+    };
+
+
     return (
         <View style={styles.container}>
             {isLoading ? (
@@ -87,23 +94,38 @@ const LeaveList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {leaves.map((leave) => (
-                        <TouchableOpacity
-                            key={leave.Id}
-                            style={styles.leaveItem}
-                            onPress={() => navigation.navigate("LeaveDetails", { leave })}
-                        >
-                            <View style={{ flexDirection: 'row' }}>
+                    {leaves.map((leave) => {
+                        const fromDate = new Date(leave.FromDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                        const toDate = new Date(leave.ToDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+                        return (
+                            <TouchableOpacity
+                                key={leave.Id}
+                                style={styles.leaveItem}
+                                onPress={() => navigation.navigate("LeaveDetails", { leave })}
+                            >
                                 <View>
-                                    <Text style={styles.leaveType}>{leave.LeaveType}</Text>
-                                    <Text style={styles.leaveDate}>From: {leave.FromDate} To: {leave.ToDate}</Text>
-                                    <Text style={styles.leaveRemarks}>Remarks: {leave.Remarks}</Text>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                                        <Text style={styles.leaveTitle}>{leaveTypeMapping[leave.LeaveType]}</Text>
+                                        {leave.IsApproved && <BankingIcons.tickMark fill='green' />}
+                                        {leave.IsCancelled && <BankingIcons.tickMark fill='red' />}
+                                        {!leave.IsApproved && !leave.IsCancelled && <BankingIcons.tickMark fill='orange' />}
+                                    </View>
+                                    <View>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Text style={styles.leaveText}>From: {fromDate}</Text>
+                                            <Text style={styles.leaveText}>To: {toDate}</Text>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
+                            </TouchableOpacity>
+                        );
+                    })}
+
+
                 </ScrollView>
-            )}
+            )
+            }
 
             <TouchableOpacity
                 style={styles.circle}
@@ -113,37 +135,39 @@ const LeaveList = ({ navigation }) => {
             >
                 <BankingIcons.plus fill="white" />
             </TouchableOpacity>
-        </View>
+        </View >
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.background,
+        margin: 10,
+        padding: 10,
+        alignContent: "center",
+        justifyContent: "flex-start",
     },
     spinnerContainer: {
         flex: 1,
         justifyContent: "center",
     },
     leaveItem: {
-        backgroundColor: Colors.white,
+        backgroundColor: "#fff",
+        borderRadius: 8,
         padding: 15,
-        marginVertical: 10,
-        marginHorizontal: 20,
-        borderRadius: 10,
+        marginBottom: 10,
+        elevation: 2,
     },
-    leaveType: {
+    leaveTitle: {
         fontSize: 18,
         fontWeight: "bold",
+        marginBottom: 5,
     },
-    leaveDate: {
+    leaveText: {
         fontSize: 16,
-        color: Colors.textSecondary,
     },
     leaveRemarks: {
         fontSize: 14,
-        color: Colors.textSecondary,
     },
     circle: {
         width: 60,
