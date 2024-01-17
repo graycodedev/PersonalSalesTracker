@@ -266,6 +266,11 @@ export const DashBoardServices = ({ navigation }) => {
       icon: BankingIcons.attendancereport,
       navigation: "ChequeRequest",
     },
+    {
+      name: "Expenses",
+      icon: BankingIcons.ChequeIcon,
+      navigation: "ExpenseList",
+    },
 
     // {
     //   name: "Interest rate",

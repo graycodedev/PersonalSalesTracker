@@ -16,6 +16,7 @@ import Api from "../../../constants/Api";
 import qs from "qs";
 import * as Location from 'expo-location';
 import DropDownPicker from 'react-native-dropdown-picker';
+import * as BankingIcons from "../../../components/BankingIcons";
 
 
 const AddParty = (props) => {
@@ -31,11 +32,9 @@ const AddParty = (props) => {
   const [partyCode, setPartyCode] = useState(party?.PartyCode);
   const [contactPersonName, setContactPersonName] = useState(party?.ContactPersonName);
   const [mobileNumber, setMobileNumber] = useState(party?.MobileNumber);
-  const [website, setWebsite] = useState(party?.Website);
   const [email, setEmail] = useState(party?.Email);
   const [vatOrPanNo, setVatOrPanNo] = useState(party?.VatOrPanNo);
   const [address, setAddress] = useState(party?.Address);
-  const [city, setCity] = useState(party?.City);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -67,12 +66,10 @@ const AddParty = (props) => {
       PartyName: partyName,
       PartyCode: partyCode,
       ContactPersonName: contactPersonName,
-      Website: website,
       Email: email,
       Latitude: latitude,
       Longitude: longitude,
       State: 4,
-      City: city,
       Address: address,
       VatOrPan: selectedOption === 'Vat or Pan' ? 'p' : 'v',
       VatOrPanNo: vatOrPanNo,
@@ -133,13 +130,15 @@ const AddParty = (props) => {
           />
         </View>
 
-        <View>
-          <RegularInputText
-            key="city"
-            placeholder="City"
-            onChangeText={(text) => setCity(text)}
-            value={city}
-          />
+        <View style={{ margin: 30, marginBottom: -10 }}>
+          <TouchableOpacity onPress={getLocation}>
+            <ButtonPrimary title="Location" />
+            <ActivityIndicator
+              animating={isLoading}
+              color="#ffa500"
+              style={styles.activityIndicator}
+            ></ActivityIndicator>
+          </TouchableOpacity>
         </View>
 
         <View>
@@ -153,15 +152,6 @@ const AddParty = (props) => {
 
         <View>
           <RegularInputText
-            key="website"
-            placeholder="Website"
-            onChangeText={(text) => setWebsite(text)}
-            value={website}
-          />
-        </View>
-
-        <View>
-          <RegularInputText
             key="email"
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
@@ -169,8 +159,7 @@ const AddParty = (props) => {
           />
         </View>
 
-        <View style={{ marginBottom: 15, zIndex: 99 }}>
-          <Text style={{ fontFamily: "Medium", color: "#9A9A9A", }}>Vat or Pan:</Text>
+        <View style={{ marginBottom: 10, marginTop: 10, zIndex: 99 }}>
           <DropDownPicker
             containerStyle={{ height: 50 }}
             style={{
@@ -210,17 +199,6 @@ const AddParty = (props) => {
             value={vatOrPanNo}
             keyboardType="numeric"
           />
-        </View>
-
-        <View style={{ margin: 30 }}>
-          <TouchableOpacity onPress={getLocation}>
-            <ButtonPrimary title="Location" />
-            <ActivityIndicator
-              animating={isLoading}
-              color="#ffa500"
-              style={styles.activityIndicator}
-            ></ActivityIndicator>
-          </TouchableOpacity>
         </View>
 
         <View style={{ margin: 30 }}>

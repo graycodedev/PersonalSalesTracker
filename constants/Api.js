@@ -237,6 +237,27 @@ const Leave = {
   Approve: BaseUrl + "api/v1/st_leave/approve",
   Cancel: BaseUrl + "api/v1/st_leave/cancel",
 }
+const Products = {
+  ListByUser: BaseUrl + "api/v1/st_product/list/byuser",
+  ActiveList: BaseUrl + "api/v1/st_product/list/active",
+  List: BaseUrl + "api/v1/st_product/list",
+  Request: BaseUrl + "api/v1/st_product/request",
+  Save: BaseUrl + "api/v1/st_product/save",
+  Details: BaseUrl + "api/v1/st_product/details",
+  Approve: BaseUrl + "api/v1/st_product/approve",
+  Cancel: BaseUrl + "api/v1/st_product/cancel",
+}
+const Expenses = {
+  ListByUser: BaseUrl + "api/v1/st_expenses/list/byuser",
+  ActiveList: BaseUrl + "api/v1/st_expenses/list/active",
+  List: BaseUrl + "api/v1/st_expenses/list",
+  Request: BaseUrl + "api/v1/st_expenses/request",
+  Save: BaseUrl + "api/v1/st_expenses/save",
+  Details: BaseUrl + "api/v1/st_expenses/details",
+  Approve: BaseUrl + "api/v1/st_expenses/approve",
+  Cancel: BaseUrl + "api/v1/st_expenses/cancel",
+}
+
 
 export default {
   CompanyId,
@@ -313,6 +334,8 @@ export default {
   Collections,
   Advance,
   Leave,
+  Products,
+  Expenses
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

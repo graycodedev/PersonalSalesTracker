@@ -100,9 +100,7 @@ const AdvanceList = ({ navigation }) => {
                                 <View>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                         <Text style={styles.advanceName}>Rs. {advance.Amount}</Text>
-                                        {advance.IsApproved && <BankingIcons.tickMark fill='green' />}
-                                        {advance.IsCancelled && <BankingIcons.tickMark fill='red' />}
-                                        {!advance.IsApproved && !advance.IsCancelled && <BankingIcons.tickMark fill='orange' />}
+                                        {advance.IsApproved == true ? <Text style={[styles.advanceText, { color: 'green' }]}>Approved</Text> : advance.IsCancelled ? <Text style={[styles.advanceText, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.advanceText, { color: 'orange' }]}>Pending</Text>}
                                     </View>
                                     <View>
                                         <Text style={styles.advanceText}>For: {forDate}</Text>

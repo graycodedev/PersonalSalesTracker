@@ -22,8 +22,8 @@ const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-const Products = ({ navigation }) => {
-    const [products, setProducts] = useState([]);
+const ExpenseList = ({ navigation }) => {
+    const [expenses, setExpenses] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -37,20 +37,19 @@ const Products = ({ navigation }) => {
     const getList = async () => {
         try {
             var response = await (await request())
-                .get(Api.Products.ActiveList)
+                .get(Api.Expenses.List)
                 .catch(function (error) {
                     ToastMessage.Short("Error! Contact Support");
                 });
 
-
             if (response != undefined) {
                 if (response.data.Code == 200) {
-                    setProducts(response.data.Data);
+                    setExpenses(response.data.Data);
                 } else {
-                    ToastMessage.Short("Error Loading Products");
+                    ToastMessage.Short("Error Loading Expenses");
                 }
             } else {
-                ToastMessage.Short("Error Loading Products");
+                ToastMessage.Short("Error Loading Expenses");
             }
         } finally {
             setIsLoading(false);
@@ -85,27 +84,25 @@ const Products = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {products.map((product) => (
+                    {expenses.map((expense) => (
                         <TouchableOpacity
-                            key={product.id}
-                            style={styles.productItem}
-                            onPress={() => navigation.navigate("ProductDetails", { product })}
+                            key={expense.id}
+                            style={styles.expenseItem}
+                            onPress={() => navigation.navigate("ExpenseDetails", { expense })}
                         >
-                            <Image source={product.productImagePath} style={styles.productImage} />
                             <View>
-                                <Text style={styles.productName}>{product.ProductName}</Text>
-                                <Text style={styles.productInfo}>Product Code: {product.ProductCode}</Text>
-                                <Text style={styles.productInfo}>Marked Price: Rs.{product.MaximumSellingPrice}</Text>
-                                <Text style={styles.productInfo}>Selling Price: Rs.{product.PreferedSellingPrice}</Text>
+                                <Text style={styles.expenseName}>{expense.Remarks}</Text>
+                                <Text style={styles.expenseInfo}>Expense Code: {expense.ExpensesTypeId}</Text>
+                                <Text style={styles.expenseInfo}>Expense Amount: Rs.{expense.Amount}</Text>
                             </View>
                         </TouchableOpacity>
                     ))}
                 </ScrollView>
             )}
-
         </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     container: {
@@ -115,7 +112,7 @@ const styles = StyleSheet.create({
         alignContent: "center",
         justifyContent: "flex-start",
     },
-    productItem: {
+    expenseItem: {
         backgroundColor: "#fff",
         borderRadius: 8,
         padding: 15,
@@ -124,15 +121,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    productImage: {
-        height: 60,
-        width: 60,
-    },
-    productName: {
+    expenseName: {
         fontSize: 20,
         fontWeight: '700',
     },
-    productInfo: {
+    expenseInfo: {
         fontSize: 16,
         color: "#333",
     },
@@ -158,4 +151,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Products;
+export default ExpenseList;

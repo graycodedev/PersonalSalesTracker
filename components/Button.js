@@ -72,8 +72,10 @@ export const ButtonPrimary = ({ title, style, icon }) => {
 
   return <View style={btnStyles}>
     {icon && icon}
-    <Text style={{fontFamily: "Regular",
-  textAlign: "center",
-  fontSize: 16,  color: "#fff",}}>{title}</Text></View>;
+    <Text style={{
+      fontFamily: "Regular",
+      textAlign: "center",
+      fontSize: 16, color: "#fff",
+    }}>{title}</Text></View>;
 };
 export default ArButton;

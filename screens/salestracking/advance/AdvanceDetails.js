@@ -15,7 +15,7 @@ const AdvanceDetails = ({ route, navigation }) => {
     const { advance } = route.params;
     const [advanceDetails, setAdvanceDetails] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+    const forDate = new Date(advance.ForDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
     useFocusEffect(
         React.useCallback(() => {
@@ -46,28 +46,6 @@ const AdvanceDetails = ({ route, navigation }) => {
         }
     };
 
-    const deleteAdvance = async () => {
-        let data = qs.stringify({
-            id: advance.Id,
-        });
-        var response = await (await request())
-            .post(Api.Advance.Delete, data)
-            .catch(function (error) {
-                ToastMessage.Short("Error! Contact Support");
-            });
-        if (response != undefined) {
-            if (response.data.Code == 200) {
-                setShowConfirmDelete(false);
-                ToastMessage.Short(response.data.Message);
-                navigation.goBack();
-            } else {
-                ToastMessage.Short("Error deleting the advance");
-            }
-        } else {
-            ToastMessage.Short("Error deleting the advance");
-        }
-    };
-
     const updateAdvance = () => {
         navigation.navigate('RequestAdvance', { update: true, advance: advanceDetails });
     };
@@ -91,7 +69,7 @@ const AdvanceDetails = ({ route, navigation }) => {
                     <View style={styles.item}>
                         <Text style={styles.advanceInfo}>For:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.advanceData}>{advance.ForDate}</Text>
+                            <Text style={styles.advanceData}>{forDate}</Text>
                         </View>
                     </View>
 
@@ -105,9 +83,7 @@ const AdvanceDetails = ({ route, navigation }) => {
                     <View style={styles.item}>
                         <Text style={styles.advanceInfo}>Status:</Text>
                         <View style={styles.dataView}>
-                            {advance.IsApproved && <Text style={styles.advanceData}>Approved</Text>}
-                            {advance.IsCancelled && <Text style={styles.advanceData}>Cancelled</Text>}
-                            {!advance.IsApproved && !advance.IsCancelled && <Text style={styles.advanceData}>Pending</Text>}
+                            {advance.IsApproved == true ? <Text style={[styles.advanceData, { color: 'green' }]}>Approved</Text> : advance.IsCancelled ? <Text style={[styles.advanceData, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.advanceData, { color: 'orange' }]}>Pending</Text>}
                         </View>
                     </View>
 
@@ -123,26 +99,8 @@ const AdvanceDetails = ({ route, navigation }) => {
                 >
                     <BankingIcons.Edit fill={"white"} height={25} width={25} />
                 </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.circle, { backgroundColor: "#FF5F7F" }]}
-                    onPress={() => {
-                        setShowConfirmDelete(true)
-                    }}
-                >
-                    <BankingIcons.DeleteIcon fill="white" />
-                </TouchableOpacity>
+
             </View>
-            {showConfirmDelete && (
-                <WarningModal
-                    text1={"Delete Advance?"}
-                    text2={"Are you sure you want to delete the advance?"}
-                    onConfirm={deleteAdvance}
-                    onCancel={() => {
-                        setShowConfirmDelete(false)
-                    }}
-                    warning
-                />
-            )}
         </ScrollView>
     );
 };

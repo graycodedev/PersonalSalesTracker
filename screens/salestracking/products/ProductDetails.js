@@ -16,7 +16,7 @@ import { Colors } from "../../style/Theme";
 const ProductDetails = ({ navigation, route }) => {
     useEffect(() => {
         navigation.setOptions({
-            title: product.name,
+            title: product.ProductName,
         });
     }, [])
 
@@ -34,41 +34,48 @@ const ProductDetails = ({ navigation, route }) => {
 
                 <View style={styles.itemContainer}>
                     <View style={{ alignItems: 'center' }}>
-                        <Image source={product.image} style={styles.productImage} />
+                        <Image source={product.image} style={styles.ProductImage} />
                     </View>
 
                     <View style={styles.item}>
                         <Text style={styles.productInfo}>Product Name:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.productData}>{product.name}</Text>
+                            <Text style={styles.productData}>{product.ProductName}</Text>
                         </View>
                     </View>
 
                     <View style={styles.item}>
                         <Text style={styles.productInfo}>Product Code:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.productData}>{product.code}</Text>
+                            <Text style={styles.productData}>{product.ProductCode}</Text>
                         </View>
                     </View>
 
                     <View style={styles.item}>
-                        <Text style={styles.productInfo}>Marked price:</Text>
+                        <Text style={styles.productInfo}>Min. Selling Price:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.productData}>Rs.{product.MP}</Text>
+                            <Text style={styles.productData}>Rs.{product.MinimumSellingPrice}</Text>
                         </View>
                     </View>
 
                     <View style={styles.item}>
-                        <Text style={styles.productInfo}>Selling Price:</Text>
+                        <Text style={styles.productInfo}>Max. Selling Price:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.productData}>Rs.{product.SP}</Text>
+                            <Text style={styles.productData}>Rs.{product.MaximumSellingPrice}</Text>
                         </View>
                     </View>
 
                     <View style={styles.item}>
-                        <Text style={styles.productInfo}>Remarks:</Text>
+                        <Text style={styles.productInfo}>Prefered Selling Price:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.productData}>{product.remark}</Text>
+                            <Text style={styles.productData}>Rs.{product.PreferedSellingPrice}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.item}>
+                        <Text style={styles.productInfo}>Note:</Text>
+                        <View style={styles.dataView}>
+                            <Text style={styles.productData}>{product.Note}</Text>
                         </View>
                     </View>
 

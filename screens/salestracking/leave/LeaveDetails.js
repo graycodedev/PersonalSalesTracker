@@ -15,7 +15,8 @@ const LeaveDetails = ({ route, navigation }) => {
     const { leave } = route.params;
     const [leaveDetails, setLeaveDetails] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+    const fromDate = new Date(leave.FromDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const toDate = new Date(leave.ToDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
     useFocusEffect(
         React.useCallback(() => {
@@ -46,28 +47,6 @@ const LeaveDetails = ({ route, navigation }) => {
         }
     };
 
-    const deleteLeave = async () => {
-        let data = qs.stringify({
-            id: leave.Id,
-        });
-        var response = await (await request())
-            .post(Api.Leave.Delete, data)
-            .catch(function (error) {
-                console.log(error);
-                ToastMessage.Short("Error! Contact Support");
-            });
-        if (response != undefined) {
-            if (response.data.Code == 200) {
-                setShowConfirmDelete(false);
-                ToastMessage.Short(response.data.Message);
-                navigation.goBack();
-            } else {
-                ToastMessage.Short("Error deleting the leave");
-            }
-        } else {
-            ToastMessage.Short("Error deleting the leave");
-        }
-    };
 
     const updateLeave = () => {
         navigation.navigate('RequestLeave', { update: true, leave: leaveDetails });
@@ -92,14 +71,14 @@ const LeaveDetails = ({ route, navigation }) => {
                     <View style={styles.item}>
                         <Text style={styles.leaveInfo}>From:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.leaveData}>{leave.FromDate}</Text>
+                            <Text style={styles.leaveData}>{fromDate}</Text>
                         </View>
                     </View>
 
                     <View style={styles.item}>
                         <Text style={styles.leaveInfo}>To:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.leaveData}>{leave.ToDate}</Text>
+                            <Text style={styles.leaveData}>{toDate}</Text>
                         </View>
                     </View>
 
@@ -113,9 +92,7 @@ const LeaveDetails = ({ route, navigation }) => {
                     <View style={styles.item}>
                         <Text style={styles.leaveInfo}>Status:</Text>
                         <View style={styles.dataView}>
-                            {leave.IsApproved && <Text style={styles.leaveData}>Approved</Text>}
-                            {leave.IsCancelled && <Text style={styles.leaveData}>Cancelled</Text>}
-                            {!leave.IsApproved && !leave.IsCancelled && <Text style={styles.leaveData}>Pending</Text>}
+                            {leave.IsApproved == true ? <Text style={[styles.leaveData, { color: 'green' }]}>Approved</Text> : leave.IsCancelled ? <Text style={[styles.leaveData, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.leaveData, { color: 'orange' }]}>Pending</Text>}
                         </View>
                     </View>
 
@@ -130,26 +107,7 @@ const LeaveDetails = ({ route, navigation }) => {
                     >
                         <BankingIcons.Edit fill={"white"} height={25} width={25} />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.circle, { backgroundColor: "#FF5F7F" }]}
-                        onPress={() => {
-                            setShowConfirmDelete(true)
-                        }}
-                    >
-                        <BankingIcons.DeleteIcon fill="white" />
-                    </TouchableOpacity>
                 </View>
-                {showConfirmDelete && (
-                    <WarningModal
-                        text1={"Delete Leave?"}
-                        text2={"Are you sure you want to delete the leave?"}
-                        onConfirm={deleteLeave}
-                        onCancel={() => {
-                            setShowConfirmDelete(false)
-                        }}
-                        warning
-                    />
-                )}
             </View>
         </ScrollView>
     );

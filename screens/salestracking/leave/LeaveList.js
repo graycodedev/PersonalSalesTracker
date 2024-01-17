@@ -107,9 +107,7 @@ const LeaveList = ({ navigation }) => {
                                 <View>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
                                         <Text style={styles.leaveTitle}>{leaveTypeMapping[leave.LeaveType]}</Text>
-                                        {leave.IsApproved && <BankingIcons.tickMark fill='green' />}
-                                        {leave.IsCancelled && <BankingIcons.tickMark fill='red' />}
-                                        {!leave.IsApproved && !leave.IsCancelled && <BankingIcons.tickMark fill='orange' />}
+                                        {leave.IsApproved == true ? <Text style={[styles.leaveText, { color: 'green' }]}>Approved</Text> : leave.IsCancelled ? <Text style={[styles.leaveText, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.leaveText, { color: 'orange' }]}>Pending</Text>}
                                     </View>
                                     <View>
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
