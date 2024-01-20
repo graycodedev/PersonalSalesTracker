@@ -4,37 +4,36 @@ import {
     Image,
     ScrollView,
     StyleSheet,
-    Dimensions,
     TouchableOpacity,
     ActivityIndicator,
     Text,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Picker } from "@react-native-picker/picker";
-import { Modal } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { ButtonPrimary } from "../../../components/Button";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import DropDownPicker from "react-native-dropdown-picker";
-import * as BankingIcons from "../../../components/BankingIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Colors } from "../../style/Theme";
 import { TextInput } from "react-native-gesture-handler";
 import { RegularInputText, AmountInputText } from "../../../components/Input";
 import PageStyle from "../../style/pageStyle";
+import * as Location from 'expo-location';
+import qs from "qs";
+import Api from "../../../constants/Api";
+import request from "../../../config/RequestManager";
+import ToastMessage from "../../../components/Toast/Toast";
 
 const StartTrip = () => {
-
     const navigation = useNavigation();
+    const [isLoading, setIsLoading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [startOdometer, setStartOdometer] = useState('');
+    const [location, setLocation] = useState(null);
+
     useEffect(() => {
         navigation.setOptions({
             title: "Start Trip",
         });
     }, [])
-
-    const [isLoading, setIsLoading] = useState(false);
-
-    const [selectedImage, setSelectedImage] = useState(null);
 
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -44,12 +43,59 @@ const StartTrip = () => {
             quality: 1,
         });
 
-        if (!result.cancelled) {
+        if (!result.canceled) {
             setSelectedImage(result.uri);
         }
     };
 
-    const [start, setStart] = useState('')
+    const getLocation = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            ToastMessage.Short('Permission to access location was denied');
+            return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+    };
+
+    const saveTrip = async () => {
+        if (!location) {
+            ToastMessage.Short('Location not available');
+            return;
+        }
+
+        let strData = qs.stringify({
+            Id: 0,
+            SalesPersonUserId: 1,
+            VehicleNo: 1,
+            StartLatitude: location.coords.latitude,
+            StartLongitude: location.coords.longitude,
+            StartOdometer: startOdometer,
+            StartDate: new Date(),
+            StartOdometerImage: selectedImage,
+        })
+        setIsLoading(true);
+        var response = await (await request())
+            .post(Api.Odometers.Start, strData)
+            .catch(function (error) {
+                setIsLoading(false);
+                ToastMessage.Short("Error Occurred Contact Support");
+            });
+        if (response != undefined) {
+            if (response.data.Code == 200) {
+                setIsLoading(false);
+                navigation.goBack();
+                return response.data.Data;
+            } else {
+                console.log('Server response:', response.data);
+                ToastMessage.Short(response.data.Message || "An error occurred");
+            }
+        } else {
+            ToastMessage.Short("Error Occurred. Contact Support");
+        }
+        setIsLoading(false);
+    }
 
     return (
         <ScrollView
@@ -59,47 +105,22 @@ const StartTrip = () => {
             contentContainerStyle={{ flexGrow: 1 }}
         >
             <View style={styles.container}>
-
-                <View style={{ marginBottom: 15, zIndex: 99 }}>
-                    <DropDownPicker
-                        containerStyle={{ height: 50 }}
-                        style={{
-                            backgroundColor: "#fff",
-                            borderRadius: 10,
-                            fontFamily: "Regular",
-                            borderColor: "#fff",
-                            borderWidth: 0,
+                <View>
+                    <RegularInputText
+                        key="startOdometer"
+                        placeholder="Start Odometer"
+                        onChangeText={(text) => {
+                            setStartOdometer(text)
                         }}
-                        itemStyle={{
-                            justifyContent: "flex-start",
-                            fontFamily: "Medium",
-                            color: "red",
-                        }}
-                        labelStyle={{
-                            fontFamily: "Medium",
-                            color: "#9A9A9A",
-                        }}
-                        arrowColor={"#9A9A9A"}
-                        placeholder="Purpose"
-                        label="Purpose"
-                        items={[
-                            { label: 'vacation', value: '0' },
-                            { label: 'collection', value: '1' },
-                        ]}
+                        value={startOdometer}
+                        keyboardType="numeric"
                     />
                 </View>
 
-                <View>
-                    <RegularInputText
-                        key="start"
-                        placeholder="Start KM"
-                        onChangeText={(text) => {
-                            setStart(text)
-                        }}
-                        value={start}
-                        multiline={true}
-                        numberOfLines={5}
-                    />
+                <View style={{ margin: 30 }}>
+                    <TouchableOpacity onPress={getLocation}>
+                        <ButtonPrimary title={"Get Location"} />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{ marginTop: 20 }}>
@@ -117,9 +138,7 @@ const StartTrip = () => {
 
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
-                        onPress={() => {
-                            setIsLoading(true);
-                        }}
+                        onPress={saveTrip}
                     >
                         <ButtonPrimary title={"Start Trip"} />
                         <ActivityIndicator
@@ -129,7 +148,6 @@ const StartTrip = () => {
                         ></ActivityIndicator>
                     </TouchableOpacity>
                 </View>
-
             </View>
         </ScrollView>
     )

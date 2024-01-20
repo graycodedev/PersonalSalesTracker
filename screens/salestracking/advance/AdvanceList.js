@@ -15,6 +15,7 @@ import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
+import DateDisplay from "../../../components/DateDisplay";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -89,8 +90,6 @@ const AdvanceList = ({ navigation }) => {
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
                     {advances.map((advance) => {
-                        const forDate = new Date(advance.ForDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
                         return (
                             <TouchableOpacity
                                 key={advance.Id}
@@ -103,12 +102,13 @@ const AdvanceList = ({ navigation }) => {
                                         {advance.IsApproved == true ? <Text style={[styles.advanceText, { color: 'green' }]}>Approved</Text> : advance.IsCancelled ? <Text style={[styles.advanceText, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.advanceText, { color: 'orange' }]}>Pending</Text>}
                                     </View>
                                     <View>
-                                        <Text style={styles.advanceText}>For: {forDate}</Text>
+                                        <Text style={styles.advanceText}>For: <DateDisplay date={advance.ForDate} /></Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>
                         );
                     })}
+
 
 
                 </ScrollView>

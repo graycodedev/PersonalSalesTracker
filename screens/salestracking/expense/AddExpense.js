@@ -17,33 +17,32 @@ import Api from "../../../constants/Api";
 import ToastMessage from "../../../components/Toast/Toast";
 import request from "../../../config/RequestManager";
 
-const RequestLeave = (props) => {
+const AddExpense = (props) => {
     const update = props.route.params?.update;
-    const leave = props.route.params?.leave;
-    const [remark, setRemark] = useState(leave?.Remarks);
-    const [leaveType, setLeaveType] = useState(leave?.LeaveType);
-    const [fromDate, setFromDate] = useState(leave ? new Date(leave.FromDate) : new Date());
-    const [toDate, setToDate] = useState(leave ? new Date(leave.ToDate) : new Date());
+    const expense = props.route.params?.expense;
+    const [remark, setRemark] = useState(expense?.Remarks);
+    const [expenseType, setExpenseType] = useState(expense?.ExpenseTypeName);
+    const [amount, setAmount] = useState(expense?.Amount);
     const [isLoading, setIsLoading] = useState(false);
-    const [leaveTypes, setLeaveTypes] = useState([]);
+    const [expenseTypes, setExpenseTypes] = useState([]);
 
     const navigation = useNavigation();
     useEffect(() => {
         navigation.setOptions({
-            title: update ? "Update Leave" : "Request Leave",
+            title: update ? "Update Expense" : "Add Expense",
         });
-        fetchLeaveTypes();
+        fetchExpenseTypes();
     }, []);
 
-    const fetchLeaveTypes = async () => {
+    const fetchExpenseTypes = async () => {
         var response = await (await request())
-            .get(Api.LeaveTypes.List)
+            .get(Api.ExpenseTypes.ActiveList)
             .catch(function (error) {
                 ToastMessage.Short("Error! Contact Support");
             });
         if (response != undefined) {
             if (response.data.Code == 200) {
-                setLeaveTypes(response.data.Data);
+                setExpenseTypes(response.data.Data);
             } else {
                 ToastMessage.Short(response.data.Message);
             }
@@ -52,23 +51,21 @@ const RequestLeave = (props) => {
         }
     };
 
-    const saveLeave = async () => {
+    const saveExpense = async () => {
         let strData = qs.stringify({
-            Id: update ? leave.Id : 0,
+            Id: update ? expense.Id : 0,
             CompanyId: 1,
             UserId: 0,
-            LeaveType: leaveType,
-            FromDate: fromDate,
-            ToDate: toDate,
+            ExpenseType: expenseType,
+            Amount: amount,
             Remarks: remark,
             AddedBy: 0,
             AddedOn: new Date(),
-            IsApproved: false,
-            IsCancelled: false,
+            IsActive: true,
         })
         setIsLoading(true);
         var response = await (await request())
-            .post(Api.Leave.Apply, strData)
+            .post(Api.Expenses.Save, strData)
             .catch(function (error) {
                 setIsLoading(false);
                 ToastMessage.Short("Error! Contact Support");
@@ -86,33 +83,6 @@ const RequestLeave = (props) => {
         }
         setIsLoading(false);
     }
-
-    const onChangeFromDate = (event, selectedDate) => {
-        const currentDate = selectedDate || fromDate;
-        setShowFromDatePicker(false);
-        setFromDate(currentDate);
-    };
-
-    const onChangeToDate = (event, selectedDate) => {
-        const currentDate = selectedDate || toDate;
-        setShowToDatePicker(false);
-        setToDate(currentDate);
-    };
-
-    const formattedFromDate = fromDate.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-    });
-
-    const formattedToDate = toDate.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-    });
-
-    const [showFromDatePicker, setShowFromDatePicker] = useState(false);
-    const [showToDatePicker, setShowToDatePicker] = useState(false);
 
     return (
         <ScrollView
@@ -142,56 +112,26 @@ const RequestLeave = (props) => {
                             color: "#9A9A9A",
                         }}
                         arrowColor={"#9A9A9A"}
-                        placeholder="Leave Type"
-                        label="Leave Type"
-                        items={leaveTypes.map((leaveType) => ({
-                            label: leaveType.LeaveTypeName,
-                            value: leaveType.Id,
+                        placeholder="Expense Type"
+                        label="Expense Type"
+                        items={expenseTypes.map((expenseType) => ({
+                            label: expenseType.ExpenseTypeName,
+                            value: expenseType.Id,
                         }))}
-                        onChangeItem={item => setLeaveType(item.value)}
+                        onChangeItem={item => setExpenseType(item.value)}
                     />
                 </View>
 
                 <View>
-                    <Text style={{ fontFamily: "Medium", color: "#9A9A9A", }}>From:</Text>
-                    <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
-                        <RegularInputText
-                            key="from"
-                            placeholder="From Date"
-                            value={formattedFromDate}
-                            editable={false}
-                        />
-                    </TouchableOpacity>
-                    {showFromDatePicker && (
-                        <DateTimePicker
-                            value={fromDate}
-                            mode="date"
-                            is24Hour={true}
-                            display="default"
-                            onChange={onChangeFromDate}
-                        />
-                    )}
-                </View>
-
-                <View>
-                    <Text style={{ fontFamily: "Medium", color: "#9A9A9A", }}>To:</Text>
-                    <TouchableOpacity onPress={() => setShowToDatePicker(true)}>
-                        <RegularInputText
-                            key="to"
-                            placeholder="To Date"
-                            value={formattedToDate}
-                            editable={false}
-                        />
-                    </TouchableOpacity>
-                    {showToDatePicker && (
-                        <DateTimePicker
-                            value={toDate}
-                            mode="date"
-                            is24Hour={true}
-                            display="default"
-                            onChange={onChangeToDate}
-                        />
-                    )}
+                    <RegularInputText
+                        key="amount"
+                        placeholder="Amount"
+                        onChangeText={(text) => {
+                            setAmount(text)
+                        }}
+                        value={amount}
+                        keyboardType="numeric"
+                    />
                 </View>
 
                 <View>
@@ -211,7 +151,7 @@ const RequestLeave = (props) => {
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
                         onPress={() => {
-                            saveLeave()
+                            saveExpense()
                         }}
                     >
                         <ButtonPrimary title={update ? "Update" : "Save"} />
@@ -238,4 +178,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RequestLeave;
+export default AddExpense;

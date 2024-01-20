@@ -237,6 +237,13 @@ const Leave = {
   Approve: BaseUrl + "api/v1/st_leave/approve",
   Cancel: BaseUrl + "api/v1/st_leave/cancel",
 }
+const LeaveTypes = {
+  List: BaseUrl + "api/v1/st_leavetype/list",
+  ActiveList: BaseUrl + "api/v1/st_leavetype/list/active",
+  Details: BaseUrl + "api/v1/st_leavetype/details",
+  Save: BaseUrl + "api/v1/st_leavetype/save",
+  Delete: BaseUrl + "api/v1/st_leavetype/delete"
+}
 const Products = {
   ListByUser: BaseUrl + "api/v1/st_product/list/byuser",
   ActiveList: BaseUrl + "api/v1/st_product/list/active",
@@ -256,6 +263,29 @@ const Expenses = {
   Details: BaseUrl + "api/v1/st_expenses/details",
   Approve: BaseUrl + "api/v1/st_expenses/approve",
   Cancel: BaseUrl + "api/v1/st_expenses/cancel",
+}
+const ExpenseTypes = {
+  List: BaseUrl + "api/v1/st_expensetype/list",
+  ActiveList: BaseUrl + "api/v1/st_expensetype/list/active",
+  Details: BaseUrl + "api/v1/st_expensetype/details",
+  Save: BaseUrl + "api/v1/st_expensetype/save",
+  Delete: BaseUrl + "api/v1/st_expensetype/delete"
+}
+const Odometers = {
+  List: BaseUrl + "api/v1/st_odometer/list",
+  Start: BaseUrl + "api/v1/st_odometer/start",
+  End: BaseUrl + "api/v1/st_odometer/end",
+  Details: BaseUrl + "api/v1/st_odometer/details",
+  Save: BaseUrl + "api/v1/st_odometer/save",
+}
+const Attendances = {
+  List: BaseUrl + "api/v1/st_attendance/list",
+  ActiveList: BaseUrl + "api/v1/st_attendance/list/active",
+  Save: BaseUrl + "api/v1/st_attendance/save",
+  Details: BaseUrl + "api/v1/st_attendance/details",
+  Approve: BaseUrl + "api/v1/st_attendance/approve",
+  CheckIn: BaseUrl + "api/v1/st_attendance/checkin",
+  CheckOut: BaseUrl + "api/v1/st_attendance/checkout"
 }
 
 
@@ -335,7 +365,11 @@ export default {
   Advance,
   Leave,
   Products,
-  Expenses
+  Expenses,
+  LeaveTypes,
+  ExpenseTypes,
+  Odometers,
+  Attendances
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

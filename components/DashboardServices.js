@@ -230,7 +230,7 @@ export const DashBoardServices = ({ navigation }) => {
     {
       name: "Attendance",
       icon: BankingIcons.attendancereport,
-      navigation: "Landline",
+      navigation: "Attendance",
     },
     {
       name: "Notes",

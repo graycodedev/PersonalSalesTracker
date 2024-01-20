@@ -10,6 +10,7 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
+import DateDisplay from "../../../components/DateDisplay";
 
 const AdvanceDetails = ({ route, navigation }) => {
     const { advance } = route.params;

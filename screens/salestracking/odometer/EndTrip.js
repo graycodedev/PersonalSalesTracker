@@ -4,37 +4,36 @@ import {
     Image,
     ScrollView,
     StyleSheet,
-    Dimensions,
     TouchableOpacity,
     ActivityIndicator,
     Text,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Picker } from "@react-native-picker/picker";
-import { Modal } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { ButtonPrimary } from "../../../components/Button";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import DropDownPicker from "react-native-dropdown-picker";
-import * as BankingIcons from "../../../components/BankingIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Colors } from "../../style/Theme";
 import { TextInput } from "react-native-gesture-handler";
 import { RegularInputText, AmountInputText } from "../../../components/Input";
 import PageStyle from "../../style/pageStyle";
+import * as Location from 'expo-location';
+import qs from "qs";
+import Api from "../../../constants/Api";
+import request from "../../../config/RequestManager";
+import ToastMessage from "../../../components/Toast/Toast";
 
 const EndTrip = () => {
-
     const navigation = useNavigation();
+    const [isLoading, setIsLoading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [endOdometer, setEndOdometer] = useState('');
+    const [location, setLocation] = useState(null);
+
     useEffect(() => {
         navigation.setOptions({
             title: "End Trip",
         });
     }, [])
-
-    const [isLoading, setIsLoading] = useState(false);
-
-    const [selectedImage, setSelectedImage] = useState(null);
 
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -44,12 +43,59 @@ const EndTrip = () => {
             quality: 1,
         });
 
-        if (!result.cancelled) {
+        if (!result.canceled) {
             setSelectedImage(result.uri);
         }
     };
 
-    const [end, setEnd] = useState('')
+    const getLocation = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            ToastMessage.Short('Permission to access location was denied');
+            return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+    };
+
+    const saveTrip = async () => {
+        if (!location) {
+            ToastMessage.Short('Location not available');
+            return;
+        }
+
+        let strData = qs.stringify({
+            Id: 0,
+            SalesPersonUserId: 1,
+            VehicleNo: 1,
+            EndLatitude: location.coords.latitude,
+            EndLongitude: location.coords.longitude,
+            EndOdometer: endOdometer,
+            EndDate: new Date(),
+            EndOdometerImage: selectedImage,
+        })
+        setIsLoading(true);
+        var response = await (await request())
+            .post(Api.Odometers.End, strData)
+            .catch(function (error) {
+                setIsLoading(false);
+                ToastMessage.Short("Error Occurred Contact Support");
+            });
+        if (response != undefined) {
+            if (response.data.Code == 200) {
+                setIsLoading(false);
+                navigation.goBack();
+                return response.data.Data;
+            } else {
+                console.log('Server response:', response.data);
+                ToastMessage.Short(response.data.Message || "An error occurred");
+            }
+        } else {
+            ToastMessage.Short("Error Occurred. Contact Support");
+        }
+        setIsLoading(false);
+    }
 
     return (
         <ScrollView
@@ -59,18 +105,22 @@ const EndTrip = () => {
             contentContainerStyle={{ flexGrow: 1 }}
         >
             <View style={styles.container}>
-
                 <View>
                     <RegularInputText
-                        key="end"
-                        placeholder="End KM"
+                        key="endOdometer"
+                        placeholder="End Odometer"
                         onChangeText={(text) => {
-                            setEnd(text)
+                            setEndOdometer(text)
                         }}
-                        value={end}
-                        multiline={true}
-                        numberOfLines={5}
+                        value={endOdometer}
+                        keyboardType="numeric"
                     />
+                </View>
+
+                <View style={{ margin: 30 }}>
+                    <TouchableOpacity onPress={getLocation}>
+                        <ButtonPrimary title={"Get Location"} />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{ marginTop: 20 }}>
@@ -88,9 +138,7 @@ const EndTrip = () => {
 
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
-                        onPress={() => {
-                            setIsLoading(true);
-                        }}
+                        onPress={saveTrip}
                     >
                         <ButtonPrimary title={"End Trip"} />
                         <ActivityIndicator
@@ -100,7 +148,6 @@ const EndTrip = () => {
                         ></ActivityIndicator>
                     </TouchableOpacity>
                 </View>
-
             </View>
         </ScrollView>
     )

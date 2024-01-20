@@ -37,7 +37,7 @@ const ExpenseList = ({ navigation }) => {
     const getList = async () => {
         try {
             var response = await (await request())
-                .get(Api.Expenses.List)
+                .get(Api.Expenses.ActiveList)
                 .catch(function (error) {
                     ToastMessage.Short("Error! Contact Support");
                 });
@@ -99,6 +99,14 @@ const ExpenseList = ({ navigation }) => {
                     ))}
                 </ScrollView>
             )}
+            <TouchableOpacity
+                style={styles.circle}
+                onPress={() => {
+                    navigation.navigate("AddExpense");
+                }}
+            >
+                <BankingIcons.plus fill="white" />
+            </TouchableOpacity>
         </View>
     );
 };

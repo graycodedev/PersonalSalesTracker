@@ -269,6 +269,7 @@ import AddVisit from "../screens/salestracking/visits/AddVisit";
 import VisitDetails from "../screens/salestracking/visits/VisitDetails";
 import ExpenseList from "../screens/salestracking/expense/ExpenseList";
 import ExpenseDetails from "../screens/salestracking/expense/ExpenseDetails";
+import AddExpense from "../screens/salestracking/expense/AddExpense";
 
 const { width } = Dimensions.get("screen");
 const Stack = createStackNavigator();
@@ -474,6 +475,7 @@ function HomeStack(props) {
       <Stack.Screen name="AddOrder" component={AddOrder} options={headerOptions} />
       <Stack.Screen name="OrderDetails" component={OrderDetails} options={headerOptions} />
       <Stack.Screen name="ExpenseList" component={ExpenseList} options={headerOptions} />
+      <Stack.Screen name="AddExpense" component={AddExpense} options={headerOptions} />
       <Stack.Screen name="ExpenseDetails" component={ExpenseDetails} options={headerOptions} />
 
 

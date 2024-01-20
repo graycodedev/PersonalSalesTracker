@@ -5,7 +5,6 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    Image,
     ActivityIndicator
 } from "react-native";
 import PageStyle from "../../style/pageStyle";
@@ -13,32 +12,43 @@ import { useNavigation } from "@react-navigation/native";
 import { ButtonPrimary } from "../../../components/Button";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
+import request from "../../../config/RequestManager";
+import ToastMessage from "../../../components/Toast/Toast";
+import Api from "../../../constants/Api";
 
 const OdometerList = () => {
-
     const navigation = useNavigation();
+    const [isLoading, setIsLoading] = useState(true);
+    const [odometers, setOdometers] = useState([]);
+
     useEffect(() => {
         navigation.setOptions({
             title: "Odometer List",
         });
+        getList();
     }, [])
 
-    const [trips, setTrips] = useState([
-        {
-            id: "1",
-            name: "Baglung Trip",
-            date: "2021-01-01",
-            start: "2300 KM",
-            end: undefined,
-        },
-        {
-            id: "2",
-            name: "Syangja Trip",
-            date: "2021-01-01",
-            start: "2250 KM",
-            end: "2260 KM",
-        },
-    ])
+    const getList = async () => {
+        try {
+            var response = await (await request())
+                .get(Api.Odometers.List)
+                .catch(function (error) {
+                    ToastMessage.Short("Error! Contact Support");
+                });
+
+            if (response != undefined) {
+                if (response.data.Code == 200) {
+                    setOdometers(response.data.Data);
+                } else {
+                    ToastMessage.Short("Error Loading Odometers");
+                }
+            } else {
+                ToastMessage.Short("Error Loading Odometers");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <ScrollView
@@ -48,51 +58,51 @@ const OdometerList = () => {
             contentContainerStyle={{ flexGrow: 1 }}
         >
             <View style={styles.container}>
-
-                <View>
-                    {trips.map((trip) => (
-                        <TouchableOpacity key={trip.id} style={styles.tripItem}
-                            onPress={() =>
-                                navigation.navigate("StartTrip", { trip })
-                            }
-                        >
-                            <Image source={trip.image} style={styles.tripImage} />
-                            <View>
-                                <Text style={styles.tripName}>{trip.name}</Text>
-                                <Text style={styles.tripInfo}>{trip.date}</Text>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <Text style={styles.tripInfo}>{trip.start} - {trip.end || ''}</Text>
-                                    {trip.end === undefined && (
-                                        <TouchableOpacity
-                                            style={styles.endTripButton}
-                                            onPress={() => navigation.navigate('EndTrip')}
-                                        >
-                                            <Text style={styles.endTripButtonText}>End Trip</Text>
-                                        </TouchableOpacity>
-                                    )}
+                {isLoading ? (
+                    <View style={styles.spinnerContainer}>
+                        <ActivityIndicator size="large" color={Colors.primary} />
+                    </View>
+                ) : (
+                    <View>
+                        {odometers.map((odometer) => (
+                            <TouchableOpacity key={odometer.Id} style={styles.tripItem}
+                                onPress={() =>
+                                    navigation.navigate("StartTrip", { odometer })
+                                }
+                            >
+                                <View>
+                                    <Text style={styles.tripName}>{odometer.StartDate}</Text>
+                                    <Text style={styles.tripInfo}>Start Odometer: {odometer.StartOdometer}</Text>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <Text style={styles.tripInfo}>End Odometer: {odometer.EndOdometer || ''}</Text>
+                                        {odometer.EndOdometer == undefined && (
+                                            <TouchableOpacity
+                                                style={styles.endTripButton}
+                                                onPress={() => navigation.navigate('EndTrip')}
+                                            >
+                                                <Text style={styles.endTripButtonText}>End Trip</Text>
+                                            </TouchableOpacity>
+                                        )}
+                                    </View>
                                 </View>
-
-                            </View>
-                        </TouchableOpacity>
-                    ))}
-                </View>
-
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                )}
             </View>
 
-            <View>
-                <TouchableOpacity
-                    style={styles.circle}
-                    onPress={() => {
-                        navigation.navigate('StartTrip');
-                    }}
-                >
-                    <BankingIcons.plus fill="white" />
-                </TouchableOpacity>
-            </View>
-
+            <TouchableOpacity
+                style={styles.circle}
+                onPress={() => {
+                    navigation.navigate('StartTrip');
+                }}
+            >
+                <BankingIcons.plus fill="white" />
+            </TouchableOpacity>
         </ScrollView>
     )
 };
+
 
 const styles = StyleSheet.create({
     container: {

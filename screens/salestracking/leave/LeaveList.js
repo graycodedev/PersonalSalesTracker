@@ -73,11 +73,7 @@ const LeaveList = ({ navigation }) => {
         }, [])
     );
 
-    const leaveTypeMapping = {
-        0: 'Sick Leave',
-        1: 'Personal Reasons',
-        2: 'Other'
-    };
+
 
 
     return (
@@ -106,7 +102,7 @@ const LeaveList = ({ navigation }) => {
                             >
                                 <View>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                                        <Text style={styles.leaveTitle}>{leaveTypeMapping[leave.LeaveType]}</Text>
+                                        <Text style={styles.leaveTitle}>{leave.LeaveType}</Text>
                                         {leave.IsApproved == true ? <Text style={[styles.leaveText, { color: 'green' }]}>Approved</Text> : leave.IsCancelled ? <Text style={[styles.leaveText, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.leaveText, { color: 'orange' }]}>Pending</Text>}
                                     </View>
                                     <View>
