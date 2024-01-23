@@ -106,7 +106,7 @@ class SignIn extends React.Component {
       companyChooseError: "",
       dropDownCompanySelected: false,
       alertMessage: "",
-      companyCode: "", 
+      companyCode: "",
     };
   }
   getAppVersion = async () => {
@@ -138,7 +138,7 @@ class SignIn extends React.Component {
           ]
         );
       }
-    } catch (e) {}
+    } catch (e) { }
   };
 
   getLogoPath = async () => {
@@ -228,8 +228,8 @@ class SignIn extends React.Component {
         isBiometricEnabled == null
           ? false
           : isBiometricEnabled == "true"
-          ? true
-          : false,
+            ? true
+            : false,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
     var user = await helpers.GetUserInfo();
@@ -255,7 +255,7 @@ class SignIn extends React.Component {
       : api.CompanyId;
     var response = await (await request())
       .get(api.ListMblBankingSettings + companyId)
-      .catch(function(error) {
+      .catch(function (error) {
         ToastMessage.Short("Error! Contact Support");
       });
     if (response != undefined) {
@@ -291,7 +291,7 @@ class SignIn extends React.Component {
   getOffers = async () => {
     var response = await (await request())
       .get(api.Offers.SignIn)
-      .catch(function(error) {
+      .catch(function (error) {
         ToastMessage.Short("Error! Contact Support");
       });
     if (response != undefined) {
@@ -307,7 +307,7 @@ class SignIn extends React.Component {
   getNotice = async () => {
     var response = await (await request())
       .get(api.Offers.Modal)
-      .catch(function(error) {
+      .catch(function (error) {
         ToastMessage.Short("Error! Contact Support");
       });
     if (response != undefined) {
@@ -333,7 +333,7 @@ class SignIn extends React.Component {
           password: myJson.password,
         };
       }
-    } catch (e) {}
+    } catch (e) { }
   };
 
   secureStoreSave = async () => {
@@ -343,7 +343,7 @@ class SignIn extends React.Component {
       await SecureStore.setItemAsync("mbuser", JSON.stringify(credentials));
 
       this.setState({ email: "", password: "" });
-    } catch (e) {}
+    } catch (e) { }
   };
 
   clearSecureStore = async () => {
@@ -364,7 +364,7 @@ class SignIn extends React.Component {
         [
           {
             text: "Cancel",
-            onPress: () => {},
+            onPress: () => { },
             style: "cancel",
           },
           {
@@ -430,7 +430,7 @@ class SignIn extends React.Component {
           failedCount: this.state.failedCount + 1,
         });
       }
-    } catch (e) {}
+    } catch (e) { }
   };
   _onDone = async () => {
     // After user finished the intro slides. Show real app through
@@ -462,7 +462,7 @@ class SignIn extends React.Component {
     } else {
       this.setState(() => ({ passwordError: "" }));
     }
-   
+
     return isvalid;
   }
   //TransferMoneyImage,SecurityImage,MobileImage,FinanceImage
@@ -592,16 +592,17 @@ class SignIn extends React.Component {
           >
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <View style={{ height: 150, width: 350 }}>
-           
-                  <Image
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      marginTop: 20,
-                      alignContent: "center",
-                    }}
-                    source={require("../../assets/finmax_logo.png")}
-                  />
+
+                <Image
+                  style={{
+                    height: "50%",
+                    width: "50%",
+                    marginTop: 20,
+                    justifyContent: 'center',
+                    alignSelf: "center",
+                  }}
+                  source={require("../../assets/AppLogo.png")}
+                />
               </View>
               <View style={{ alignItems: "center" }}>
                 <Text
@@ -828,8 +829,8 @@ class SignIn extends React.Component {
               </TouchableOpacity>
             </View> */}
             <View style={{ marginHorizontal: 24 }}>
-              
-            <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
+
+              <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
                 Company Code
               </Text>
               <View>
@@ -1260,11 +1261,11 @@ class SignIn extends React.Component {
 
     var response = await (await request())
       .post(api.Login, data)
-      .catch(function(error) {
+      .catch(function (error) {
         this.setState({ alertMessage: "Error Ocurred Contact Support" });
       });
 
-     
+
     if (response != undefined) {
       if (response.data.Code == 200) {
         var userInfo = {
@@ -1304,23 +1305,23 @@ class SignIn extends React.Component {
 
     var data;
 
-      data = qs.stringify({
-        clientId: api.CompanyId,
-        CompanyId: api.CompanyId,
-        CompanyCode: api.CompanyCode,
-        SecretKey: api.SecretKey,
-        Username: this.state.email,
-        Password: this.state.password,
-        Device: this.state.device,
-        FcmToken: this.state.fcmToken,
-      });
+    data = qs.stringify({
+      clientId: api.CompanyId,
+      CompanyId: api.CompanyId,
+      CompanyCode: api.CompanyCode,
+      SecretKey: api.SecretKey,
+      Username: this.state.email,
+      Password: this.state.password,
+      Device: this.state.device,
+      FcmToken: this.state.fcmToken,
+    });
     var response = await (await request())
       .post(api.Login, data)
-      .catch(function(error) {
+      .catch(function (error) {
         this.setState({ isLoading: false });
         ToastMessage.Short("Error Ocurred Contact Support");
       });
-      console.log("Response", response.data)
+    console.log("Response", response.data)
     if (response != undefined && response.data != undefined) {
       if (response.data.Code == 200) {
         var userCache = await helpers.GetUserInfo();

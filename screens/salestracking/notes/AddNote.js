@@ -71,8 +71,7 @@ const AddNote = (props) => {
 
     }
 
-
-
+    const isFormFilled = title && note;
 
     return (
         <ScrollView
@@ -112,8 +111,11 @@ const AddNote = (props) => {
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
                         onPress={() => {
-                            saveNote()
+                            if (isFormFilled) {
+                                saveNote();
+                            }
                         }}
+                        disabled={!isFormFilled}
                     >
                         <ButtonPrimary title={update ? "Update" : "Save"} />
                         <ActivityIndicator

@@ -51,13 +51,13 @@ const OdometerList = () => {
     };
 
     return (
-        <ScrollView
-            nestedScrollEnabled={true}
-            showsVerticalScrollIndicator={false}
-            style={{ width: "100%", backgroundColor: "#eee" }}
-            contentContainerStyle={{ flexGrow: 1 }}
-        >
-            <View style={styles.container}>
+        <View style={styles.container}>
+            <ScrollView
+                nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
+                style={{ width: "100%", backgroundColor: "#eee" }}
+                contentContainerStyle={{ flexGrow: 1 }}
+            >
                 {isLoading ? (
                     <View style={styles.spinnerContainer}>
                         <ActivityIndicator size="large" color={Colors.primary} />
@@ -67,7 +67,7 @@ const OdometerList = () => {
                         {odometers.map((odometer) => (
                             <TouchableOpacity key={odometer.Id} style={styles.tripItem}
                                 onPress={() =>
-                                    navigation.navigate("StartTrip", { odometer })
+                                    navigation.navigate("OdometerDetails", { odometer })
                                 }
                             >
                                 <View>
@@ -89,8 +89,7 @@ const OdometerList = () => {
                         ))}
                     </View>
                 )}
-            </View>
-
+            </ScrollView>
             <TouchableOpacity
                 style={styles.circle}
                 onPress={() => {
@@ -99,8 +98,8 @@ const OdometerList = () => {
             >
                 <BankingIcons.plus fill="white" />
             </TouchableOpacity>
-        </ScrollView>
-    )
+        </View>
+    );
 };
 
 

@@ -280,12 +280,19 @@ const Odometers = {
 }
 const Attendances = {
   List: BaseUrl + "api/v1/st_attendance/list",
-  ActiveList: BaseUrl + "api/v1/st_attendance/list/active",
+  MonthlyList: BaseUrl + "api/v1/st_attendance/list/monthly",
   Save: BaseUrl + "api/v1/st_attendance/save",
   Details: BaseUrl + "api/v1/st_attendance/details",
   Approve: BaseUrl + "api/v1/st_attendance/approve",
   CheckIn: BaseUrl + "api/v1/st_attendance/checkin",
   CheckOut: BaseUrl + "api/v1/st_attendance/checkout"
+}
+const Orders = {
+  List: BaseUrl + "api/v1/st_order/list",
+  Cancel: BaseUrl + "api/v1/st_order/cancel",
+  Details: BaseUrl + "api/v1/st_order/details",
+  Save: BaseUrl + "api/v1/st_order/save",
+  Delete: BaseUrl + "api/v1/st_order/delete"
 }
 
 
@@ -369,7 +376,8 @@ export default {
   LeaveTypes,
   ExpenseTypes,
   Odometers,
-  Attendances
+  Attendances,
+  Orders
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

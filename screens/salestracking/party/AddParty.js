@@ -94,6 +94,8 @@ const AddParty = (props) => {
     }
   }
 
+  const isFormFilled = partyName && contactPersonName && mobileNumber && email && vatOrPanNo && address && latitude && longitude;
+
   return (
     <ScrollView
       nestedScrollEnabled={true}
@@ -203,7 +205,12 @@ const AddParty = (props) => {
 
         <View style={{ margin: 30 }}>
           <TouchableOpacity
-            onPress={() => saveParty()}
+            onPress={() => {
+              if (isFormFilled) {
+                saveParty();
+              }
+            }}
+            disabled={!isFormFilled}
           >
             <ButtonPrimary title={update ? "Update" : "Save"} />
             <ActivityIndicator

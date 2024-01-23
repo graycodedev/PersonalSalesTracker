@@ -113,6 +113,7 @@ const RequestLeave = (props) => {
 
     const [showFromDatePicker, setShowFromDatePicker] = useState(false);
     const [showToDatePicker, setShowToDatePicker] = useState(false);
+    const isFormFilled = remark && leaveType && fromDate && toDate;
 
     return (
         <ScrollView
@@ -211,8 +212,11 @@ const RequestLeave = (props) => {
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
                         onPress={() => {
-                            saveLeave()
+                            if (isFormFilled) {
+                                saveLeave();
+                            }
                         }}
+                        disabled={!isFormFilled}
                     >
                         <ButtonPrimary title={update ? "Update" : "Save"} />
                         <ActivityIndicator

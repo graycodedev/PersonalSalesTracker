@@ -97,6 +97,8 @@ const StartTrip = () => {
         setIsLoading(false);
     }
 
+    const isFormFilled = startOdometer && location && selectedImage;
+
     return (
         <ScrollView
             nestedScrollEnabled={true}
@@ -138,7 +140,12 @@ const StartTrip = () => {
 
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
-                        onPress={saveTrip}
+                        onPress={() => {
+                            if (isFormFilled) {
+                                saveTrip();
+                            }
+                        }}
+                        disabled={!isFormFilled}
                     >
                         <ButtonPrimary title={"Start Trip"} />
                         <ActivityIndicator

@@ -1,30 +1,72 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Calendar } from "react-native-calendars";
+import request from "../../../config/RequestManager";
+import Api from "../../../constants/Api";
 
 const Attendance = () => {
-    const [markedDates, setMarkedDates] = useState({
-        // Absent days
-        "2024-01-11": { marked: true, dotColor: "red" },
-        "2024-01-21": { marked: true, dotColor: "red" },
-        // Saturdays
-        "2024-01-06": { marked: true, dotColor: "#f39b11" },
-        "2024-01-13": { marked: true, dotColor: "#f39b11" },
-        "2024-01-20": { marked: true, dotColor: "#f39b11" },
-        "2024-01-27": { marked: true, dotColor: "#f39b11" },
-    });
+    const [markedDates, setMarkedDates] = useState({});
 
-    const startDate = new Date("2024-01-01");
-    const endDate = new Date("2024-01-31");
-    let currentDate = startDate;
-    while (currentDate <= endDate) {
-        const dateString = currentDate.toISOString().split("T")[0];
-        if (!markedDates[dateString]) {
+    useEffect(() => {
+        fetchAttendance();
+    }, []);
 
-            markedDates[dateString] = { marked: true, dotColor: "green" };
+    const fetchAttendance = async () => {
+        var response = await (await request())
+            .get(Api.Attendances.List)
+            .catch(function (error) {
+                console.log("Error! Contact Support");
+            });
+
+        if (response != undefined) {
+            if (response.data.Code == 200) {
+                const attendanceData = response.data.Data;
+                const newMarkedDates = {};
+
+                attendanceData.forEach((attendance) => {
+                    const date = attendance.AttendanceDate.split("T")[0];
+                    const dateObj = new Date(date);
+                    const dayOfWeek = dateObj.getDay();
+
+                    // Mark all Saturdays as holidays
+                    if (dayOfWeek === 6) { // 6 is Saturday in JavaScript Date
+                        newMarkedDates[date] = {
+                            marked: true,
+                            dotColor: "#f39b11", // color for holidays
+                        };
+                    } else {
+                        newMarkedDates[date] = {
+                            marked: true,
+                            dotColor: attendance.IsCheckIn ? "green" : "red",
+                        };
+                    }
+                });
+
+                // Additional loop to mark all Saturdays in the month as holidays
+                const year = new Date().getFullYear();
+                const month = new Date().getMonth();
+                for (let i = 1; i <= 31; i++) {
+                    const date = new Date(Date.UTC(year, month, i));
+                    if (date.getMonth() !== month) break;  // Month has ended
+                    if (date.getUTCDay() === 6) {  // 6 is Saturday
+                        const dateString = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
+                        newMarkedDates[dateString] = {
+                            marked: true,
+                            dotColor: "#f39b11", // color for holidays
+                        };
+                    }
+                }
+
+                setMarkedDates(newMarkedDates);
+            } else {
+                console.log(response.data.Message);
+            }
+        } else {
+            console.log("Error Loading Attendance");
         }
-        currentDate.setDate(currentDate.getDate() + 1);
-    }
+    };
+
+
 
     const renderDay = (day) => {
         const isMarked = markedDates[day.dateString];
@@ -73,7 +115,7 @@ const Attendance = () => {
                                 { backgroundColor: "red", color: "white" },
                             ]}
                         >
-                            2
+                            {Object.keys(markedDates).filter((date) => markedDates[date].dotColor === "red").length}
                         </Text>
                     </View>
                     <View style={styles.countItem}>
@@ -84,7 +126,7 @@ const Attendance = () => {
                                 { backgroundColor: "#f39b11", color: "white" },
                             ]}
                         >
-                            4
+                            {Object.keys(markedDates).filter((date) => markedDates[date].dotColor === "#f39b11").length}
                         </Text>
                     </View>
                 </View>
@@ -101,36 +143,36 @@ const styles = StyleSheet.create({
         alignContent: "center",
         justifyContent: "flex-start",
     },
+    dayContainer: {
+        width: 32,
+        height: 32,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 16,
+    },
+    dayText: {
+        fontSize: 16,
+    },
     countContainer: {
         flexDirection: "row",
-        justifyContent: "space-around",
-        marginTop: 20,
+        justifyContent: "space-between",
+        marginHorizontal: 16,
+        marginTop: 32,
     },
     countItem: {
         alignItems: "center",
     },
     countText: {
         fontSize: 16,
+        color: "#777777",
     },
     countValue: {
-        fontSize: 18,
+        fontSize: 24,
         fontWeight: "bold",
-        marginTop: 5,
-        height: 50,
-        width: 50,
-        borderRadius: 25,
-        textAlign: "center",
-        textAlignVertical: "center",
-    },
-    dayContainer: {
-        alignItems: "center",
-        justifyContent: "center",
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-    },
-    dayText: {
-        fontSize: 16,
+        marginTop: 8,
+        paddingHorizontal: 16,
+        paddingVertical: 4,
+        borderRadius: 16,
     },
 });
 

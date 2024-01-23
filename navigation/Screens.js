@@ -252,6 +252,7 @@ import AddNote from "../screens/salestracking/notes/AddNote";
 import Products from "../screens/salestracking/products/Products";
 import ProductDetails from "../screens/salestracking/products/ProductDetails";
 import OdometerList from "../screens/salestracking/odometer/OdometerList";
+import OdometerDetails from "../screens/salestracking/odometer/OdometerDetails";
 import StartTrip from "../screens/salestracking/odometer/StartTrip";
 import EndTrip from "../screens/salestracking/odometer/EndTrip";
 import RequestLeave from "../screens/salestracking/leave/RequestLeave";
@@ -462,6 +463,7 @@ function HomeStack(props) {
       <Stack.Screen name="Products" component={Products} options={headerOptions} />
       <Stack.Screen name="ProductDetails" component={ProductDetails} options={headerOptions} />
       <Stack.Screen name="OdometerList" component={OdometerList} options={headerOptions} />
+      <Stack.Screen name="OdometerDetails" component={OdometerDetails} options={headerOptions} />
       <Stack.Screen name="StartTrip" component={StartTrip} options={headerOptions} />
       <Stack.Screen name="EndTrip" component={EndTrip} options={headerOptions} />
       <Stack.Screen name="RequestLeave" component={RequestLeave} options={headerOptions} />

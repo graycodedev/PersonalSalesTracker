@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -17,6 +17,10 @@ import ThemedListItem from "react-native-elements/dist/list/ListItem";
 import Api from "../constants/Api";
 import { Profile } from "./IconsAll";
 import * as SVG from "../components/BankingIcons"
+import * as Location from 'expo-location';
+import axios from 'axios';
+import qs from "qs";
+import { ActivityIndicator } from "react-native";
 
 const ProfileHeader = (props) => {
   const [userId, setUserId] = useState();
@@ -24,6 +28,8 @@ const ProfileHeader = (props) => {
   const [memberId, setMemberId] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePicture, setProfilePicture] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const GetUserInfo = async () => {
     const u = await helpers.GetUserInfo();
@@ -36,6 +42,40 @@ const ProfileHeader = (props) => {
     }
   };
   GetUserInfo();
+
+  const checkIn = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Permission to access location was denied');
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    let latitude = location.coords.latitude;
+    let longitude = location.coords.longitude;
+
+    let date = new Date();
+    let attendanceDate = date.toISOString().split('T')[0];
+    let attendanceTime = date.toTimeString().split(' ')[0];
+
+    let data = {
+      Latitude: latitude,
+      Longitude: longitude,
+      AttendanceDate: attendanceDate,
+      AttendanceTime: attendanceTime
+    };
+
+    axios.post(Api.Attendances.CheckIn, data)
+      .then(response => {
+        console.log(response.data);
+
+        AsyncStorage.setItem('checkInInfo', JSON.stringify(data));
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   return (
     <View>
       <View style={styles.container}>
@@ -91,13 +131,10 @@ const ProfileHeader = (props) => {
           {/* navigation.navigate("LoadAccountList"); */}
           <TouchableOpacity
             style={styles.checkIn}
-            onPress={() =>
-              props.navigation.navigate("LoadAccountList")
-            }
+            onPress={checkIn}
           >
-           
             <Text style={{ fontFamily: "SemiBold", fontSize: 14, color: "white" }}>
-            Check In
+              Check In
             </Text>
           </TouchableOpacity>
         </View>
@@ -141,19 +178,19 @@ const styles = StyleSheet.create({
     borderColor: "#EEEEEE",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent:"space-around"
+    justifyContent: "space-around"
   },
-  checkIn:{
-backgroundColor:"#5BC236", 
-width: 126,
-height: 36,
-borderRadius: 4,
-borderWidth: 2,
-borderColor: "#EEEEEE",
-flexDirection: "row",
-alignItems: "center",
-justifyContent:"space-around"
-  }, 
+  checkIn: {
+    backgroundColor: "#5BC236",
+    width: 126,
+    height: 36,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: "#EEEEEE",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around"
+  },
   notificationAndProfile: {
     position: "absolute",
     marginTop: 25,

@@ -17,6 +17,7 @@ import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
+import DateDisplay from "../../../components/DateDisplay";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -49,7 +50,7 @@ const OrderList = ({ navigation }) => {
                 });
             if (response != undefined) {
                 if (response.data.Code == 200) {
-                    setParties(response.data.Data);
+                    setOrders(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Notes");
                 }
@@ -97,9 +98,9 @@ const OrderList = ({ navigation }) => {
                         >
                             <Image source={order.image} style={styles.orderImage} />
                             <View>
-                                <Text style={styles.orderName}>{order.name}</Text>
-                                <Text style={styles.orderInfo}>{`Price: Rs. ${order.price} (per PC)`}</Text>
-                                <Text style={styles.orderInfo}>{`Type: ${order.type}`}</Text>
+                                <Text style={styles.orderName}>Product Name</Text>
+                                <Text style={styles.orderInfo}>Order Date: <DateDisplay date={order.OrderDate} /></Text>
+                                <Text style={styles.orderInfo}>Estimated Delivery:<DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
                             </View>
                         </TouchableOpacity>
                     ))}
