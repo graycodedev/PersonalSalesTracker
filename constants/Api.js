@@ -294,6 +294,21 @@ const Orders = {
   Save: BaseUrl + "api/v1/st_order/save",
   Delete: BaseUrl + "api/v1/st_order/delete"
 }
+const Returns = {
+  ListByUser: BaseUrl + "api/v1/st_orderreturn/list/byUser",
+  ListToBeVerified: BaseUrl + "api/v1/st_orderreturn/list/toBeVerified",
+  List: BaseUrl + "api/v1/st_orderreturn/list",
+  Verified: BaseUrl + "api/v1/st_orderreturn/verified",
+  Save: BaseUrl + "api/v1/st_orderreturn/save",
+  Details: BaseUrl + "api/v1/st_orderreturn/details",
+}
+const ReturnReasons = {
+  ListByUser: BaseUrl + "api/v1/st_OrderReturnReason/list/active",
+  List: BaseUrl + "api/v1/st_OrderReturnReason/list",
+  Delete: BaseUrl + "api/v1/st_OrderReturnReason/delete",
+  Save: BaseUrl + "api/v1/st_OrderReturnReason/save",
+  Details: BaseUrl + "api/v1/st_OrderReturnReason/details",
+}
 
 
 export default {
@@ -377,7 +392,9 @@ export default {
   ExpenseTypes,
   Odometers,
   Attendances,
-  Orders
+  Orders,
+  Returns,
+  ReturnReasons
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

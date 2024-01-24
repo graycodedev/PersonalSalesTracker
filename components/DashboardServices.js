@@ -250,7 +250,7 @@ export const DashBoardServices = ({ navigation }) => {
       navigation: "LeaveList",
       ServiceCategoryId: 7,
     },
-    { name: "Returns", icon: BankingIcons.productreturn, navigation: "Accounts" },
+    { name: "Returns", icon: BankingIcons.productreturn, navigation: "ReturnList" },
     {
       name: "Advance",
       icon: BankingIcons.StatementIcon,
