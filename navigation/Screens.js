@@ -26,6 +26,8 @@ import IntrestRate from "../screens/cooperative/IntrestRate";
 import ChequeRequest from "../screens/cooperative/ChequeRequest";
 import Settings from "../screens/general/Settings";
 import ServiceList from "../screens/utilityPayment/ServiceList";
+import { ProfileIcon } from "../components/IconsAll";
+
 import {
   LoadAccountList,
   LoadAccountSuccess,
@@ -1204,8 +1206,10 @@ function BottomTabNavigator() {
                 width: 50,
               }}
             >
-              <BankingIcons.HistoryIcon
+              <BankingIcons.visits
                 fill={focused ? Colors.primary : Colors.defaultBlack}
+                height={30}
+                width={30}
               />
               <Text
                 style={{
@@ -1214,7 +1218,7 @@ function BottomTabNavigator() {
                   color: focused ? Colors.primary : Colors.defaultBlack,
                 }}
               >
-                Orders
+               Visit
               </Text>
             </View>
           ),
@@ -1244,7 +1248,7 @@ function BottomTabNavigator() {
                   borderColor: "white",
                 }}
               >
-                <BankingIcons.QrOnlyIcon style={{ height: 70, width: 70 }} />
+                <BankingIcons.order style={{ height: 70, width: 70 }} fill="white"/>
               </View>
               <Text
                 style={{
@@ -1253,7 +1257,7 @@ function BottomTabNavigator() {
                   color: focused ? Colors.primary : Colors.defaultBlack,
                 }}
               >
-                Share QR
+              Place Order
               </Text>
             </View>
           ),
@@ -1275,7 +1279,7 @@ function BottomTabNavigator() {
                 width: 50,
               }}
             >
-              <BankingIcons.SendMoneyIcon
+              <BankingIcons.TransferIcon
                 fill={focused ? Colors.primary : Colors.defaultBlack}
               />
               <Text
@@ -1306,9 +1310,11 @@ function BottomTabNavigator() {
                 width: 50,
               }}
             >
-              <BankingIcons.ProfileIcon
+              <BankingIcons.profile1
                 fill={focused ? Colors.primary : Colors.defaultBlack}
+                style={{ height: 30, width: 30 }}
               />
+
               <Text
                 style={{
                   fontFamily: "SemiBold",

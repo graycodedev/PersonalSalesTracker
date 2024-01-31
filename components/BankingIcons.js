@@ -54,7 +54,7 @@ import TelephoneIcon from "../assets/bankingsvg/TelephoneIcon.svg";
 import TicketIcon from "../assets/bankingsvg/ticket.svg";
 import TopBarIcon from "../assets/bankingsvg/topbar.svg";
 import TopupIcon from "../assets/bankingsvg/topup.svg";
-import TransferIcon from "../assets/bankingsvg/transfer.svg";
+import TransferIcon from "../assets/bankingsvg/parties2.svg";
 import TvIcon from "../assets/bankingsvg/TvIcon.svg";
 import WaterIcon from "../assets/bankingsvg/water.svg";
 import ArrowIcon from "../assets/bankingsvg/arrow.svg";
@@ -87,13 +87,20 @@ import plus from "../assets/bankingsvg/plus.svg"
 import collection from "../assets/bankingsvg/collection.svg";
 import product from "../assets/bankingsvg/product.svg";
 import productreturn from "../assets/bankingsvg/productreturn.svg";
-import attendancereport from "../assets/bankingsvg/attendancereport.svg";
+import attendancereport from "../assets/bankingsvg/attendance2.svg";
 import calendar from "../assets/bankingsvg/calendar.svg";
 import checkInOut from "../assets/bankingsvg/checkin-checkout.svg";
 import leave from "../assets/bankingsvg/leave.svg";
 import visits from "../assets/bankingsvg/visits.svg"; 
 import writing from "../assets/bankingsvg/writing.svg"; 
-import odometer from "../assets/bankingsvg/odometer.svg"; 
+import odometer from "../assets/bankingsvg/odometer5.svg"; 
+import kpireport from "../assets/bankingsvg/kpireport.svg"; 
+import salesreport from "../assets/bankingsvg/salesreport1.svg"; 
+import visitreport from "../assets/bankingsvg/visitreport4.svg"; 
+import eodreport from "../assets/bankingsvg/eodreport7.svg"; 
+import order from "../assets/bankingsvg/eodreport2.svg"; 
+import profile1 from "../assets/bankingsvg/profile1.svg"; 
+
 
 
 //confirmation
@@ -186,5 +193,11 @@ leave,
 visits,
 writing,
 Edit, 
-odometer
+odometer, 
+kpireport, 
+salesreport, 
+visitreport, 
+eodreport, 
+order,
+profile1
 };

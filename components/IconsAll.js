@@ -19,7 +19,7 @@ import FingerPrint from "../assets/svg/fingerprint.svg";
 import WalletIcon from "../assets/svg/wallet.svg";
 import IntraBankIcon from "../assets/svg/intrabank.svg";
 import AirPlaneIcon from "../assets/svg/airplane.svg";
-import Profile from "../assets/svg/profile.svg";
+import ProfileIcon from "../assets/svg/profile.svg";
 export {
   TopBackgroundIcon,
   TickIcon,
@@ -34,7 +34,7 @@ export {
   VaultIcon,
   WalkThoughBg,
   WalletImage,
-  Profile,
+  ProfileIcon,
   TransferMoneyImage,
   SecurityImage,
   MobileImage,

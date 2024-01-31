@@ -28,7 +28,7 @@ import { Colors } from "./style/Theme";
 import ImgSlider from "../components/ImgSlider";
 import IMAGES from "../constants/newImages";
 import * as BankingIcons from "../components/BankingIcons";
-import { Profile } from "../components/IconsAll";
+import { ProfileIcon } from "../components/IconsAll";
 import * as SVG from "../components/BankingIcons";
 class Home extends React.Component {
   constructor(props) {
@@ -367,9 +367,7 @@ this.subscription;
               style={{ fontSize: 12, color: "white", fontFamily: "Regular" }}
             >
               WELCOME TO{" "}
-              {api.IsAppForMultiple
-                ? this.state.IosCompanyName
-                : api.CompanyName}
+              {api.CompanyName}
             </Text>
           </View>
           <View style={styles.notificationAndProfile}>
@@ -394,7 +392,7 @@ this.subscription;
                 />
               ) : (
                 // <Image source={IMAGES.profile} />
-                <Profile height={25} width={25} fill={"white"} />
+                <ProfileIcon height={25} width={25} fill={"white"} />
               )}
             </TouchableOpacity>
           </View>

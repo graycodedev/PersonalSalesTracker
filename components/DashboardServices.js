@@ -218,7 +218,7 @@ export const DashBoardServices = ({ navigation }) => {
 
     {
       name: "Orders",
-      icon: BankingIcons.InternetIcon,
+      icon: BankingIcons.order,
       ServiceCategoryId: 8,
       navigation: "OrderList",
     },
@@ -262,14 +262,29 @@ export const DashBoardServices = ({ navigation }) => {
       navigation: "Products",
     },
     {
-      name: "EOD Report",
-      icon: BankingIcons.attendancereport,
-      navigation: "ChequeRequest",
-    },
-    {
       name: "Expenses",
       icon: BankingIcons.ChequeIcon,
       navigation: "ExpenseList",
+    },
+    {
+      name: "EOD Report",
+      icon: BankingIcons.eodreport,
+      navigation: "ChequeRequest",
+    },
+    {
+      name: "Sales Report",
+      icon: BankingIcons.salesreport,
+      navigation: "ChequeRequest",
+    },
+    {
+      name: "Visit Report",
+      icon: BankingIcons.visitreport,
+      navigation: "ChequeRequest",
+    },
+    {
+      name: "KPI Report",
+      icon: BankingIcons.kpireport,
+      navigation: "ChequeRequest",
     },
 
     // {

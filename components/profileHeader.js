@@ -15,7 +15,7 @@ import helpers from "../constants/Helpers";
 import * as BankingIcons from "./BankingIcons";
 import ThemedListItem from "react-native-elements/dist/list/ListItem";
 import Api from "../constants/Api";
-import { Profile } from "./IconsAll";
+import { ProfileIcon } from "./IconsAll";
 import * as SVG from "../components/BankingIcons"
 import * as Location from 'expo-location';
 import axios from 'axios';
@@ -93,7 +93,7 @@ const ProfileHeader = (props) => {
           //   style={{ width: 60, height: 60, marginBottom: 12 }}
           //   source={IMAGES.profile}
           // />
-          <Profile height={80} width={80} fill={"gray"} />
+          <ProfileIcon height={80} width={80} fill={"gray"} />
         )}
         <Text style={{ fontSize: 16, fontFamily: "Bold" }}>{fullName}</Text>
         <Text
