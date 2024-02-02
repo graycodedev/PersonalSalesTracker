@@ -1312,7 +1312,7 @@ function BottomTabNavigator() {
             >
               <BankingIcons.profile1
                 fill={focused ? Colors.primary : Colors.defaultBlack}
-                style={{ height: 30, width: 30 }}
+                style={{ height: 27, width: 27 }}
               />
 
               <Text

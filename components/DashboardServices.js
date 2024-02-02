@@ -253,7 +253,7 @@ export const DashBoardServices = ({ navigation }) => {
     { name: "Returns", icon: BankingIcons.productreturn, navigation: "ReturnList" },
     {
       name: "Advance",
-      icon: BankingIcons.StatementIcon,
+      icon: BankingIcons.advance,
       navigation: "AdvanceList",
     },
     {

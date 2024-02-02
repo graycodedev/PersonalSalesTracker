@@ -86,7 +86,7 @@ import plus from "../assets/bankingsvg/plus.svg"
 //dashboard
 import collection from "../assets/bankingsvg/collection.svg";
 import product from "../assets/bankingsvg/product.svg";
-import productreturn from "../assets/bankingsvg/productreturn.svg";
+import productreturn from "../assets/bankingsvg/return3.svg";
 import attendancereport from "../assets/bankingsvg/attendance2.svg";
 import calendar from "../assets/bankingsvg/calendar.svg";
 import checkInOut from "../assets/bankingsvg/checkin-checkout.svg";
@@ -96,10 +96,11 @@ import writing from "../assets/bankingsvg/writing.svg";
 import odometer from "../assets/bankingsvg/odometer5.svg"; 
 import kpireport from "../assets/bankingsvg/kpireport.svg"; 
 import salesreport from "../assets/bankingsvg/salesreport1.svg"; 
-import visitreport from "../assets/bankingsvg/visitreport4.svg"; 
+import visitreport from "../assets/bankingsvg/visitreport0.svg"; 
 import eodreport from "../assets/bankingsvg/eodreport7.svg"; 
-import order from "../assets/bankingsvg/eodreport2.svg"; 
+import order from "../assets/bankingsvg/order.svg"; 
 import profile1 from "../assets/bankingsvg/profile1.svg"; 
+import advance from "../assets/bankingsvg/advance.svg"; 
 
 
 
@@ -199,5 +200,6 @@ salesreport,
 visitreport, 
 eodreport, 
 order,
-profile1
+profile1, 
+advance
 };
