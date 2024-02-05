@@ -591,15 +591,14 @@ class SignIn extends React.Component {
             contentContainerStyle={{ paddingBottom: 15 }}
           >
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <View style={{ height: 150, width: 350 }}>
+              <View style={{height:180, width:180}}>
 
                 <Image
                   style={{
-                    height: "50%",
-                    width: "50%",
                     marginTop: 20,
-                    justifyContent: 'center',
                     alignSelf: "center",
+                    resizeMode:"contain", 
+                    height:180, width:180
                   }}
                   source={require("../../assets/AppLogo.png")}
                 />

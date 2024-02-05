@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   question: {
-    height: 50,
     width: "100%",
     padding: 8,
   },

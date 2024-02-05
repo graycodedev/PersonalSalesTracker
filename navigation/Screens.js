@@ -1206,7 +1206,7 @@ function BottomTabNavigator() {
                 width: 50,
               }}
             >
-              <BankingIcons.visits
+              <BankingIcons.addVisit
                 fill={focused ? Colors.primary : Colors.defaultBlack}
                 height={30}
                 width={30}
@@ -1279,7 +1279,7 @@ function BottomTabNavigator() {
                 width: 50,
               }}
             >
-              <BankingIcons.TransferIcon
+              <BankingIcons.addParties
                 fill={focused ? Colors.primary : Colors.defaultBlack}
               />
               <Text

@@ -101,6 +101,8 @@ import eodreport from "../assets/bankingsvg/eodreport7.svg";
 import order from "../assets/bankingsvg/order.svg"; 
 import profile1 from "../assets/bankingsvg/profile1.svg"; 
 import advance from "../assets/bankingsvg/advance.svg"; 
+import addVisit from "../assets/bankingsvg/addVisit.svg"; 
+import addParties from "../assets/bankingsvg/addParties.svg"; 
 
 
 
@@ -201,5 +203,7 @@ visitreport,
 eodreport, 
 order,
 profile1, 
-advance
+advance, 
+addVisit, 
+addParties
 };

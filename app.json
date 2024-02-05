@@ -2,7 +2,7 @@
   "expo": {
     "name": "Personal Sales Tracker",
     "slug": "aainchopainchosaccos",
-    "version": "4.3.2",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
