@@ -269,7 +269,7 @@ export const DashBoardServices = ({ navigation }) => {
     {
       name: "EOD Report",
       icon: BankingIcons.eodreport,
-      navigation: "ChequeRequest",
+      navigation: "EODReport",
     },
     {
       name: "Sales Report",

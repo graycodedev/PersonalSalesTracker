@@ -276,6 +276,7 @@ import AddExpense from "../screens/salestracking/expense/AddExpense";
 import ReturnList from "../screens/salestracking/return/ReturnList";
 import ReturnDetails from "../screens/salestracking/return/ReturnDetails";
 import ReturnOrder from "../screens/salestracking/return/ReturnOrder";
+import EODReport from "../screens/salestracking/EODReport/EODReport";
 
 const { width } = Dimensions.get("screen");
 const Stack = createStackNavigator();
@@ -487,6 +488,8 @@ function HomeStack(props) {
       <Stack.Screen name="ReturnList" component={ReturnList} options={headerOptions} />
       <Stack.Screen name="ReturnDetails" component={ReturnDetails} options={headerOptions} />
       <Stack.Screen name="ReturnOrder" component={ReturnOrder} options={headerOptions} />
+      <Stack.Screen name="EODReport" component={EODReport} options={headerOptions} />
+
 
 
       <Stack.Screen
@@ -1218,7 +1221,7 @@ function BottomTabNavigator() {
                   color: focused ? Colors.primary : Colors.defaultBlack,
                 }}
               >
-               Visit
+                Visit
               </Text>
             </View>
           ),
@@ -1248,7 +1251,7 @@ function BottomTabNavigator() {
                   borderColor: "white",
                 }}
               >
-                <BankingIcons.order style={{ height: 70, width: 70 }} fill="white"/>
+                <BankingIcons.order style={{ height: 70, width: 70 }} fill="white" />
               </View>
               <Text
                 style={{
@@ -1257,7 +1260,7 @@ function BottomTabNavigator() {
                   color: focused ? Colors.primary : Colors.defaultBlack,
                 }}
               >
-              Place Order
+                Place Order
               </Text>
             </View>
           ),
