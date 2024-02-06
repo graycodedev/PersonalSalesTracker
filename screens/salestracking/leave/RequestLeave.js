@@ -56,16 +56,13 @@ const RequestLeave = (props) => {
         let strData = qs.stringify({
             Id: update ? leave.Id : 0,
             CompanyId: 1,
-            UserId: 0,
-            LeaveType: leaveType,
+            LeaveTypeId: leaveType,
             FromDate: fromDate,
             ToDate: toDate,
             Remarks: remark,
-            AddedBy: 0,
-            AddedOn: new Date(),
-            IsApproved: false,
-            IsCancelled: false,
-        })
+        }); 
+
+
         setIsLoading(true);
         var response = await (await request())
             .post(Api.Leave.Apply, strData)

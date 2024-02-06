@@ -22,7 +22,7 @@ const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-const ExpenseList = ({ navigation }) => {
+const ExpenseList = (props) => {
     const [expenses, setExpenses] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -57,6 +57,9 @@ const ExpenseList = ({ navigation }) => {
     };
 
     useEffect(() => {
+         props.navigation.setOptions({
+            title: "Expenses",
+          });
         getList();
     }, []);
 
@@ -88,7 +91,7 @@ const ExpenseList = ({ navigation }) => {
                         <TouchableOpacity
                             key={expense.id}
                             style={styles.expenseItem}
-                            onPress={() => navigation.navigate("ExpenseDetails", { expense })}
+                            onPress={() => props.navigation.navigate("ExpenseDetails", { expense })}
                         >
                             <View>
                                 <Text style={styles.expenseName}>{expense.Remarks}</Text>
@@ -102,7 +105,7 @@ const ExpenseList = ({ navigation }) => {
             <TouchableOpacity
                 style={styles.circle}
                 onPress={() => {
-                    navigation.navigate("AddExpense");
+                    props.navigation.navigate("AddExpense");
                 }}
             >
                 <BankingIcons.plus fill="white" />

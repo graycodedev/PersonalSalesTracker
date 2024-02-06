@@ -27,7 +27,7 @@ import { AutoCompleteList } from "../../../components/AutoCompleteList";
 import Api from "../../../constants/Api";
 
 
-const AddCollection = ({ route }) => {
+const AddCollection = (props) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -54,8 +54,14 @@ const AddCollection = ({ route }) => {
     });
 
     useEffect(() => {
+
     }, [selectedDate]);
 
+    useEffect(() => {
+       props.navigation.setOptions({
+            title: "Save Collection",
+          });
+    }, []);
 
 
     const pickImage = async () => {
@@ -79,6 +85,37 @@ const AddCollection = ({ route }) => {
 
     const onClose = () => {
         setShowPartiesList(false);
+    }
+
+    const savePayment = async () => {
+        let strData = qs.stringify({
+            Id:  0,
+            OrderId: title,
+            PaymentMode: note,
+            Remarks: true,
+            Amount: 1
+        })
+        setIsLoading(true);
+        var response = await (await request())
+            .post(Api.Notes.Save, strData)
+            .catch(function (error) {
+                setIsLoading(false);
+                ToastMessage.Short("Error Occurred Contact Support");
+            });
+        if (response != undefined) {
+            if (response.data.Code == 200) {
+                setIsLoading(false);
+                goToNotesList();
+                return response.data.Data;
+
+            } else {
+                ToastMessage.Short(response.data.Message);
+            }
+        } else {
+            ToastMessage.Short("Error Occurred Contact Support");
+        }
+        setIsLoading(false);
+
     }
     return (
         <ScrollView

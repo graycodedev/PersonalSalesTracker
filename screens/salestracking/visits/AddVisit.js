@@ -30,8 +30,9 @@ const AddVisit = (props, route) => {
     const [selectedParty, setSelectedParty] = useState(null);
 
     useEffect(() => {
+        let addText=update ? "Update" : "Add"
         navigation.setOptions({
-            title: 'Add Visit',
+            title: addText+ ' Visit',
         });
         getLocation();
     }, []);

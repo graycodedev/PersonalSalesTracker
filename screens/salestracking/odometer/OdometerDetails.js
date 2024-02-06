@@ -11,6 +11,8 @@ import PageStyle from "../../style/pageStyle";
 import { ButtonPrimary } from "../../../components/Button";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
+import AppStyles from "../../../assets/theme/AppStyles";
+import DetailCard from "../../../components/DetailCard";
 
 const OdometerDetails = ({ navigation, route }) => {
     useEffect(() => {
@@ -21,6 +23,35 @@ const OdometerDetails = ({ navigation, route }) => {
 
     const { odometer } = route.params;
 
+
+    const odometerDetails=[
+        {
+         Label:"Start Odometer",
+          Value:odometer.StartOdometer
+        },
+        {
+         Label:"End Odometer",
+          Value:odometer.EndOdometer
+        },
+        {
+         Label:"Start Date",
+          Value:new Date(odometer.StartDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeStyle:"short" }) +", "+ new Date(odometer.StartDate).toLocaleDateString('en-US', {  month:'short', day: 'numeric' })
+        },
+        {
+         Label:"End Date",
+         Value:new Date(odometer.EndDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeStyle:"short" }) +", "+ new Date(odometer.EndDate).toLocaleDateString('en-US', {  month:'short', day: 'numeric' })
+
+        },
+        {
+         Label:"Remarks",
+          Value:odometer.Remarks
+        },
+        {
+         Label:"Admin Remarks",
+          Value:odometer.AdminRemarks
+        },
+    ]
+
     return (
         <ScrollView
             nestedScrollEnabled={true}
@@ -28,54 +59,7 @@ const OdometerDetails = ({ navigation, route }) => {
             style={{ width: "100%", backgroundColor: "#eee" }}
             contentContainerStyle={{ flexGrow: 1 }}
         >
-            <View style={styles.container}>
-
-                <View style={styles.itemContainer}>
-
-                    <View style={styles.item}>
-                        <Text style={styles.odometerInfo}>Start Odometer:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.odometerData}>{odometer.StartOdometer}</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.odometerInfo}>End Odometer:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.odometerData}>{odometer.EndOdometer}</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.odometerInfo}>Start Date:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.odometerData}>{odometer.StartDate}</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.odometerInfo}>End Date:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.odometerData}>{odometer.EndDate}</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.odometerInfo}>Remarks:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.odometerData}>{odometer.Remarks}</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.odometerInfo}>Admin Remarks:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.odometerData}>{odometer.AdminRemarks}</Text>
-                        </View>
-                    </View>
-
-                </View>
-            </View>
+            <DetailCard details={odometerDetails}/>
         </ScrollView>
 
     );
@@ -98,6 +82,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         justifyContent: 'space-between',
         padding: 10,
+        paddingVertical:4
     },
     odometerInfo: {
         fontSize: 20,

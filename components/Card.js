@@ -41,29 +41,8 @@ export const AccountCard = ({ data, navigation, callback, balanceError }) => {
                   <Icon name="eye-slash" size={15} />
                 </TouchableOpacity>
               )}
-              {visible && balanceError != "" && (
-                <TouchableOpacity
-                  style={{ padding: 10 }}
-                  onPress={() => callback()}
-                >
-                  <Ionicons
-                    name="reload"
-                    size={18}
-                    style={{ color: "black", marginLeft: 20 }}
-                  />
-                </TouchableOpacity>
-               )} 
+            
             </View>
-            {data.AvlBalance && (
-              <Text
-                style={[
-                  styles.amountText,
-                  { fontSize: 14, fontFamily: "Bold" },
-                ]}
-              >
-                Available: {visible ? data.AvlBalance : "XXXX.XX"}
-              </Text>
-            )}
           </View>
         </View>
         <TouchableOpacity   onPress={() => {
@@ -78,8 +57,8 @@ export const AccountCard = ({ data, navigation, callback, balanceError }) => {
             }}
           
           >
-            <SVG.purseIcon height={25} width={25} fill={Colors.primary} />
-            <Text
+            <SVG.purseIcon height={45} width={45} fill={Colors.primary} />
+            {/* <Text
               style={{
                 fontSize: 10,
                 textAlign: "center",
@@ -88,7 +67,7 @@ export const AccountCard = ({ data, navigation, callback, balanceError }) => {
               }}
             >
              Receive Payment
-            </Text>
+            </Text> */}
           </View>
           {/* <TouchableOpacity onPress={() => navigation.navigate("Scan")}>
               <BankingIcons.qrIcon fill={Colors.primary} />

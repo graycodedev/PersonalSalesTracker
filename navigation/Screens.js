@@ -1195,8 +1195,8 @@ function BottomTabNavigator() {
         }}
       />
       <Tab.Screen
-        name="TransactionList"
-        component={TransactionList}
+        name="AddVisit"
+        component={AddVisit}
         options={{
           tabBarLabel: "History",
           headerShown: true,
@@ -1251,7 +1251,7 @@ function BottomTabNavigator() {
                   borderColor: "white",
                 }}
               >
-                <BankingIcons.order style={{ height: 70, width: 70 }} fill="white" />
+                <BankingIcons.order style={{ height: 30, width: 33 }} fill="white"/>
               </View>
               <Text
                 style={{
@@ -1268,8 +1268,8 @@ function BottomTabNavigator() {
       />
 
       <Tab.Screen
-        name="MoneyTransferList"
-        component={MoneyTransferList}
+        name="AddParty"
+        component={AddParty}
         options={{
           headerShown: true,
 

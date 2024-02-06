@@ -133,7 +133,9 @@ const ProfileHeader = (props) => {
             style={styles.checkIn}
             onPress={checkIn}
           >
-            <Text style={{ fontFamily: "SemiBold", fontSize: 14, color: "white" }}>
+             <BankingIcons.fingerPrint height={25} width={25} fill={"black"}/>
+            
+            <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>
               Check In
             </Text>
           </TouchableOpacity>
@@ -181,12 +183,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-around"
   },
   checkIn: {
-    backgroundColor: "#5BC236",
+    borderColor: "#5BC236",
     width: 126,
     height: 36,
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: "#EEEEEE",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around"

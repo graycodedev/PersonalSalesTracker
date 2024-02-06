@@ -85,9 +85,9 @@ const Products = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {products.map((product) => (
+                    {products.map((product, index) => (
                         <TouchableOpacity
-                            key={product.id}
+                            key={index}
                             style={styles.productItem}
                             onPress={() => navigation.navigate("ProductDetails", { product })}
                         >

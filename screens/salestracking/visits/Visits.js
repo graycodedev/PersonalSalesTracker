@@ -23,7 +23,7 @@ const wait = (timeout) => {
 const Visits = ({ navigation }) => {
     useEffect(() => {
         navigation.setOptions({
-            title: "Visits List",
+            title: "Visits",
         });
     }, [])
 
@@ -36,6 +36,8 @@ const Visits = ({ navigation }) => {
             setRefreshing(false);
             getList();
         });
+        setIsLoading(false);
+
     };
 
     const getList = async () => {
@@ -88,7 +90,7 @@ const Visits = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {visits.map((visit) => {
+                    {visits.length>0 ? visits.map((visit) => {
                         const visitDate = new Date(visit.VisitDate);
                         const date = visitDate.toLocaleDateString();
 
@@ -109,7 +111,9 @@ const Visits = ({ navigation }) => {
                                 </View>
                             </TouchableOpacity>
                         );
-                    })}
+                    }):<Text>No visits found!!</Text>
+                    
+                    }
 
 
 

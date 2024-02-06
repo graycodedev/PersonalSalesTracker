@@ -39,6 +39,7 @@ const OrderList = ({ navigation }) => {
             setRefreshing(false);
             getList();
         });
+        setIsLoading(false);
     };
 
     const getList = async () => {
@@ -58,6 +59,7 @@ const OrderList = ({ navigation }) => {
                 ToastMessage.Short("Error Loading Notes");
             }
         } finally {
+            // alert("finallu");
             setIsLoading(false);
         }
     };

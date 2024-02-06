@@ -53,7 +53,6 @@ const Notes = ({ navigation }) => {
 
         ToastMessage.Short("Error! Contact Support");
       });
-      console.log(response.data)
     if (response != undefined) {
       if (response.data.Code == 200) {
         setNotes(response.data.Data);
@@ -89,8 +88,8 @@ const Notes = ({ navigation }) => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <View style={styles.container}>
-          {notes.map((note) => (
-            <View key={note.value} style={styles.noteContainer}>
+          {notes.map((note, index) => (
+            <View key={index} style={styles.noteContainer}>
               <Text style={styles.noteHead}>{note.NoteTitle}</Text>
               <View style={styles.noteView}>
                 <Text style={styles.noteText} numberOfLines={4}>{note.Note}</Text>

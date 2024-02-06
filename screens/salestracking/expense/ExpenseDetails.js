@@ -14,13 +14,15 @@ import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
 
 const ExpenseDetails = ({ navigation, route }) => {
+    const { expense } = route.params;
     useEffect(() => {
         navigation.setOptions({
-            title: expense.ExpensesTypeId,
+            title: expense.ExpenseTypeName +" Expense",
         });
     }, [])
 
-    const { expense } = route.params;
+    
+    console.log("Ex", expense)
 
     return (
         <ScrollView
@@ -34,9 +36,9 @@ const ExpenseDetails = ({ navigation, route }) => {
                 <View style={styles.itemContainer}>
 
                     <View style={styles.item}>
-                        <Text style={styles.expenseInfo}>Expenses Type ID:</Text>
+                        <Text style={styles.expenseInfo}>Expenses Type:</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.expenseData}>{expense.ExpensesTypeId}</Text>
+                            <Text style={styles.expenseData}>{expense.ExpenseTypeName}</Text>
                         </View>
                     </View>
 

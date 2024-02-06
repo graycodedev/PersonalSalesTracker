@@ -55,12 +55,9 @@ const AddExpense = (props) => {
         let strData = qs.stringify({
             Id: update ? expense.Id : 0,
             CompanyId: 1,
-            UserId: 0,
-            ExpenseType: expenseType,
+            ExpenseTypeId: expenseType,
             Amount: amount,
             Remarks: remark,
-            AddedBy: 0,
-            AddedOn: new Date(),
             IsActive: true,
         })
         setIsLoading(true);

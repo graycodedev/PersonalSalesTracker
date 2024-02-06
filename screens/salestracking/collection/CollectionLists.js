@@ -44,6 +44,9 @@ const CollectionList = ({ navigation }) => {
     };
 
     useEffect(() => {
+        navigation.setOptions({
+            title: "Collections",
+          });
         getList();
     }, []);
 
@@ -58,7 +61,7 @@ const CollectionList = ({ navigation }) => {
     );
 
     return (
-        <View>
+        <View style={{flex: 1}}>
             {isLoading ? (
                 <ActivityIndicator size="large" color={Colors.primary} />
             ) : (

@@ -33,6 +33,7 @@ const StartTrip = () => {
         navigation.setOptions({
             title: "Start Trip",
         });
+        getLocation();
     }, [])
 
     const pickImage = async () => {
@@ -84,6 +85,7 @@ const StartTrip = () => {
             });
         if (response != undefined) {
             if (response.data.Code == 200) {
+                alert(1)
                 setIsLoading(false);
                 navigation.goBack();
                 return response.data.Data;
@@ -119,11 +121,7 @@ const StartTrip = () => {
                     />
                 </View>
 
-                <View style={{ margin: 30 }}>
-                    <TouchableOpacity onPress={getLocation}>
-                        <ButtonPrimary title={"Get Location"} />
-                    </TouchableOpacity>
-                </View>
+            
 
                 <View style={{ marginTop: 20 }}>
                     <Text style={{ fontFamily: "Medium", marginBottom: 20 }}>Odometer Image</Text>

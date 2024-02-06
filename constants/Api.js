@@ -212,10 +212,10 @@ const Visits = {
   Delete: BaseUrl + "api/v1/st_visits/delete"
 }
 const Collections = {
-  List: BaseUrl + "api/v1/st_collections/list",
-  Details: BaseUrl + "api/v1/st_collections/details",
-  Save: BaseUrl + "api/v1/st_collections/save",
-  Delete: BaseUrl + "api/v1/st_collections/delete"
+  List: BaseUrl + "api/v1/st_paymentreceived/list",
+  Details: BaseUrl + "api/v1/st_paymentreceived/details",
+  Save: BaseUrl + "api/v1/st_paymentreceived/save",
+  Delete: BaseUrl + "api/v1/st_paymentreceived/delete"
 }
 const Advance = {
   ListByUser: BaseUrl + "api/v1/st_advancerequest/list/byuser",

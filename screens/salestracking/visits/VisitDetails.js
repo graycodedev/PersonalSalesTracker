@@ -11,8 +11,8 @@ import ToastMessage from "../../../components/Toast/Toast";
 import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
 
-const VisitDetails = ({ route, navigation }) => {
-    const { visit } = route.params;
+const VisitDetails = (props) => {
+    const { visit } = props.route.params;
     const [visitDetails, setVisitDetails] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
@@ -25,6 +25,9 @@ const VisitDetails = ({ route, navigation }) => {
     );
 
     useEffect(() => {
+         props.navigation.setOptions({
+            title: "Visit Details",
+          });
         getDetail();
         setIsLoading(false);
     }, []);
@@ -59,7 +62,7 @@ const VisitDetails = ({ route, navigation }) => {
             if (response.data.Code == 200) {
                 setShowConfirmDelete(false);
                 ToastMessage.Short(response.data.Message);
-                navigation.goBack();
+                props.navigation.goBack();
             } else {
                 ToastMessage.Short("Error deleting the visit");
             }
@@ -69,7 +72,7 @@ const VisitDetails = ({ route, navigation }) => {
     };
 
     const updateVisit = () => {
-        navigation.navigate('AddVisit', { update: true, visit: visitDetails });
+        props.navigation.navigate('AddVisit', { update: true, visit: visitDetails });
     };
 
     return (

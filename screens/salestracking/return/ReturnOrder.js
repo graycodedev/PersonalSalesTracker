@@ -75,16 +75,12 @@ const ReturnOrder = (props) => {
         let strData = qs.stringify({
             Id: update ? returnItem.Id : 0,
             CompanyId: 1,
-            UserId: 0,
-            ReturnReasonTitle: returnReason,
-            ProductName: productName,
+            OrderReturnReasonId: returnReason,
+            ProductId: productName,
             Quantity: quantity,
             Remarks: remark,
-            AddedBy: 0,
-            AddedOn: new Date(),
-            IsApproved: false,
-            IsCancelled: false,
         })
+        console.log("Str", strData)
         setIsLoading(true);
         var response = await (await request())
             .post(Api.Returns.Save, strData)

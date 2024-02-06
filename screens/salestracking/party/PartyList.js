@@ -23,7 +23,7 @@ const wait = (timeout) => {
 const PartyList = ({ navigation }) => {
     useEffect(() => {
         navigation.setOptions({
-            title: "Party List",
+            title: "Parties",
         });
     }, [])
 
@@ -88,9 +88,9 @@ const PartyList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {parties.map((party) => (
+                    {parties.map((party, index) => (
                         <TouchableOpacity
-                            key={party.value}
+                            key={index}
                             style={styles.partyItem}
                             onPress={() => navigation.navigate("PartyDetails", { party })}
                         >

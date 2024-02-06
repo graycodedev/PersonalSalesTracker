@@ -47,7 +47,7 @@ import KhanepaniSVG from "../assets/bankingsvg/khanepani.svg";
 
 import qrIcon from "../assets/bankingsvg/qr.svg";
 import notificationIcon from "../assets/bankingsvg/notification.svg";
-import purseIcon from "../assets/bankingsvg/purse.svg";
+import purseIcon from "../assets/bankingsvg/recieve.svg";
 import passwordIcon from "../assets/bankingsvg/password.svg";
 
 import TelephoneIcon from "../assets/bankingsvg/TelephoneIcon.svg";
@@ -95,14 +95,16 @@ import visits from "../assets/bankingsvg/visits.svg";
 import writing from "../assets/bankingsvg/writing.svg"; 
 import odometer from "../assets/bankingsvg/odometer5.svg"; 
 import kpireport from "../assets/bankingsvg/kpireport.svg"; 
-import salesreport from "../assets/bankingsvg/salesreport1.svg"; 
-import visitreport from "../assets/bankingsvg/visitreport0.svg"; 
+import salesreport from "../assets/bankingsvg/salesreport10.svg"; 
+import visitreport from "../assets/bankingsvg/visitreport10.svg"; 
 import eodreport from "../assets/bankingsvg/eodreport7.svg"; 
-import order from "../assets/bankingsvg/order.svg"; 
+import order from "../assets/bankingsvg/order14.svg"; 
 import profile1 from "../assets/bankingsvg/profile1.svg"; 
 import advance from "../assets/bankingsvg/advance.svg"; 
 import addVisit from "../assets/bankingsvg/addVisit.svg"; 
-import addParties from "../assets/bankingsvg/addParties.svg"; 
+import addParties from "../assets/bankingsvg/addParties3.svg"; 
+import fingerPrint from "../assets/bankingsvg/fingerprint1.svg"; 
+
 
 
 
@@ -205,5 +207,6 @@ order,
 profile1, 
 advance, 
 addVisit, 
-addParties
+addParties, 
+fingerPrint
 };

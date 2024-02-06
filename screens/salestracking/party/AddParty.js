@@ -24,6 +24,7 @@ const AddParty = (props) => {
     props.navigation.setOptions({
       title: "Add Party",
     });
+    getLocation();
   }, []);
 
   const update = props.route.params?.update;
@@ -130,17 +131,6 @@ const AddParty = (props) => {
             value={mobileNumber}
             keyboardType="numeric"
           />
-        </View>
-
-        <View style={{ margin: 30, marginBottom: -10 }}>
-          <TouchableOpacity onPress={getLocation}>
-            <ButtonPrimary title="Location" />
-            <ActivityIndicator
-              animating={isLoading}
-              color="#ffa500"
-              style={styles.activityIndicator}
-            ></ActivityIndicator>
-          </TouchableOpacity>
         </View>
 
         <View>

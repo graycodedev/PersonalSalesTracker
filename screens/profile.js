@@ -42,15 +42,6 @@ const Profile = ({ navigation }) => {
               </Pressable>
             </View>
           </TouchableOpacity>
-          {/* <View style={styles.navButtons}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <BankingIcons.PromoCodeIcon style={styles.image} />
-              <Text style={styles.optionText}>Promo code </Text>
-            </View>
-            <Pressable>
-              <Image source={IMAGES.arrowIcon} style={{ marginRight: 18 }} />
-            </Pressable>
-          </View> */}
           <TouchableOpacity
             onPress={() => navigation.navigate("ChangePassword")}
           >

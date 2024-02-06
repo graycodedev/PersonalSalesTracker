@@ -74,7 +74,7 @@ const AddOrder = ({ navigation, route }) => {
             contentContainerStyle={{ flexGrow: 1 }}
         >
             <View style={styles.container}>
-                <CustomDropdown
+                {/* <CustomDropdown
                     items={orders.map((order, index) => ({
                         label: order.name,
                         value: index,
@@ -82,7 +82,7 @@ const AddOrder = ({ navigation, route }) => {
                     placeholder="Select Party"
                     searchablePlaceholder="Search Party"
                     itemSelected={(item) => setSelectedParty(item.value)}
-                />
+                /> */}
 
                 <View>
                     <Text style={{ fontFamily: "Medium", marginTop: 10, marginBottom: -5 }}>
@@ -177,7 +177,7 @@ const AddOrder = ({ navigation, route }) => {
                                         <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
                                             Select a Product
                                         </Text>
-                                        {orders.map((order) => (
+                                        {/* {orders.map((order) => (
                                             <TouchableOpacity
                                                 key={order.value}
                                                 onPress={() => {
@@ -188,7 +188,7 @@ const AddOrder = ({ navigation, route }) => {
                                             >
                                                 <Text style={{ fontSize: 18, marginBottom: 10 }}>{order.name}</Text>
                                             </TouchableOpacity>
-                                        ))}
+                                        ))} */}
                                         <TouchableOpacity onPress={() => setModalVisible(false)}>
                                             <Text style={{ fontSize: 18, color: "red", marginTop: 10 }}>Cancel</Text>
                                         </TouchableOpacity>
