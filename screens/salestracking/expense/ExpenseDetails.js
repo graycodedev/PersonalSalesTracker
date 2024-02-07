@@ -21,8 +21,6 @@ const ExpenseDetails = ({ navigation, route }) => {
         });
     }, [])
 
-    
-    console.log("Ex", expense)
 
     return (
         <ScrollView

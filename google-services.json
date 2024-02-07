@@ -45,6 +45,139 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:972484932438:android:efd8e438426e703dfe9cf7",
+        "android_client_info": {
+          "package_name": "com.graycode.arthikbikashsaccos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9hKtz9iV04wKV1ez_H6fZPQf8HGgTIvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972484932438:android:ab4b285661123314fe9cf7",
+        "android_client_info": {
+          "package_name": "com.graycode.finmaxsales"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9hKtz9iV04wKV1ez_H6fZPQf8HGgTIvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972484932438:android:18a24afe2fa55f6dfe9cf7",
+        "android_client_info": {
+          "package_name": "com.graycode.kohinoorsaccos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9hKtz9iV04wKV1ez_H6fZPQf8HGgTIvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972484932438:android:9a8570f353cb3afbfe9cf7",
+        "android_client_info": {
+          "package_name": "com.graycode.narayanisaccos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9hKtz9iV04wKV1ez_H6fZPQf8HGgTIvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972484932438:android:8ad56cf9741becaffe9cf7",
+        "android_client_info": {
+          "package_name": "com.graycode.nawayuwa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9hKtz9iV04wKV1ez_H6fZPQf8HGgTIvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972484932438:android:8a4baf96a1dafd45fe9cf7",
+        "android_client_info": {
+          "package_name": "com.graycode.sadhvabsaccos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9hKtz9iV04wKV1ez_H6fZPQf8HGgTIvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972484932438:android:988c1d16cd1efd62fe9cf7",
+        "android_client_info": {
+          "package_name": "com.graycode.sanjeewani"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9hKtz9iV04wKV1ez_H6fZPQf8HGgTIvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:972484932438:android:6bfebae2449f6b31fe9cf7",
         "android_client_info": {
           "package_name": "com.graycode.timalmahabharat"

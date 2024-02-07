@@ -311,6 +311,8 @@ const ReturnReasons = {
 }
 
 
+const ApplicationSettingsByKey= BaseUrl + "api/v1/applicationsettings/valuebykey";
+
 export default {
   CompanyId,
   CompanyCode,
@@ -394,7 +396,8 @@ export default {
   Attendances,
   Orders,
   Returns,
-  ReturnReasons
+  ReturnReasons, 
+  ApplicationSettingsByKey
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

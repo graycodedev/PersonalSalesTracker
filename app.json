@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Personal Sales Tracker",
-    "slug": "aainchopainchosaccos",
+    "name": "FINMAX Sales App",
+    "slug": "finmax-sales-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,7 +19,7 @@
     "platforms": ["ios", "android"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.graycode.aainchopainchosaccos",
+      "bundleIdentifier": "com.graycode.finmaxsales",
 
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to let user put a photo in his profile page."
@@ -27,9 +27,9 @@
       "buildNumber": "9"
     },
     "android": {
-      "package": "com.graycode.aainchopainchosaccos",
+      "package": "com.graycode.finmaxsales",
       "permissions": ["CAMERA", "WRITE_EXTERNAL_STORAGE"],
-      "versionCode": 1502,
+      "versionCode": 1,
       "googleServicesFile": "./google-services.json"
     },
     "plugins": [
@@ -65,10 +65,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "a318dfc7-68b2-4192-ae1a-115345f49d55"
+        "projectId": "9fb69b05-27f7-4c82-8712-a60c116c925e"
       }
     },
     "sdkVersion": "49.0.0",
-    "owner": "sushilsapkota"
+    "owner": "graycodedev"
   }
 }

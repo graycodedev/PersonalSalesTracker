@@ -274,12 +274,12 @@ export const DashBoardServices = ({ navigation }) => {
     {
       name: "Sales Report",
       icon: BankingIcons.salesreport,
-      navigation: "ChequeRequest",
+      navigation: "CollectionList",
     },
     {
       name: "Visit Report",
       icon: BankingIcons.visitreport,
-      navigation: "ChequeRequest",
+      navigation: "Visits",
     },
     {
       name: "KPI Report",

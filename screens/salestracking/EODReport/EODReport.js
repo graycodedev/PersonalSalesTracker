@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
+import ReportCard from '../../../components/salestracking/ReportCard';
+import * as SVG from "../../../components/BankingIcons"
 
 const EODReport = ({ navigation }) => {
     // Static values for now
@@ -21,7 +23,6 @@ const EODReport = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             style={styles.container}
         >
-            <Text style={styles.title}>EOD Report</Text>
             <View style={styles.chartContainer}>
                 <LineChart
                     data={data}
@@ -44,6 +45,19 @@ const EODReport = ({ navigation }) => {
                     }}
                 />
             </View>
+               
+            <View style={{flexDirection:"row", justifyContent:"space-between", marginBottom: 8}}>
+            <ReportCard icon={ <SVG.visits />} title={"Visits"} subtitle={"10"} style={{height: 160,width: "49%", backgroundColor:"#D9D6F4" }}/>
+            <ReportCard icon={ <SVG.order />} title={"Orders"} subtitle={"5"} style={{height: 160,width: "49%", backgroundColor:"#EAF5D2"}}/>
+            </View>
+            <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+
+            <ReportCard icon={ <SVG.visits />} title={"Collections"} subtitle={"Rs.90900"} style={{height: 160,width: "49%" ,backgroundColor:"#e7feff"}}/>
+            <ReportCard icon={ <SVG.order />} title={"New Customers"} subtitle={"3"} style={{height: 160,width: "49%", backgroundColor:"#FCF0C7"}}/>
+            </View>
+           
+            
+            
         </ScrollView>
     );
 };

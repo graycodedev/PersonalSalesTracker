@@ -21,6 +21,7 @@ import qs from "qs";
 import Api from "../../../constants/Api";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
+import { ApiRequestWithImage } from "../../../components/ApiRequest";
 
 const StartTrip = () => {
     const navigation = useNavigation();
@@ -45,7 +46,7 @@ const StartTrip = () => {
         });
 
         if (!result.canceled) {
-            setSelectedImage(result.uri);
+            setSelectedImage(result.assets[0].uri);
         }
     };
 
@@ -65,27 +66,24 @@ const StartTrip = () => {
             ToastMessage.Short('Location not available');
             return;
         }
+        setIsLoading(true);
 
-        let strData = qs.stringify({
+        let data = {
             Id: 0,
-            SalesPersonUserId: 1,
             VehicleNo: 1,
             StartLatitude: location.coords.latitude,
             StartLongitude: location.coords.longitude,
             StartOdometer: startOdometer,
             StartDate: new Date(),
-            StartOdometerImage: selectedImage,
-        })
-        setIsLoading(true);
-        var response = await (await request())
-            .post(Api.Odometers.Start, strData)
-            .catch(function (error) {
-                setIsLoading(false);
-                ToastMessage.Short("Error Occurred Contact Support");
-            });
+        }
+
+        let imageData = {
+            StartOdometerFile: selectedImage,
+        };
+        var response = await ApiRequestWithImage(Api.Odometers.Start, data, imageData);
+       
         if (response != undefined) {
             if (response.data.Code == 200) {
-                alert(1)
                 setIsLoading(false);
                 navigation.goBack();
                 return response.data.Data;
@@ -138,9 +136,9 @@ const StartTrip = () => {
 
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
-                        onPress={() => {
+                        onPress={async() => {
                             if (isFormFilled) {
-                                saveTrip();
+                               await saveTrip();
                             }
                         }}
                         disabled={!isFormFilled}

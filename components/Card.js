@@ -46,7 +46,7 @@ export const AccountCard = ({ data, navigation, callback, balanceError }) => {
           </View>
         </View>
         <TouchableOpacity   onPress={() => {
-              navigation.navigate("LoadAccountList");
+              navigation.navigate("ReceivePayment");
             }} style={{padding: 10}}>
           <View
             style={{

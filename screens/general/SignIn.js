@@ -73,8 +73,8 @@ class SignIn extends React.Component {
     super(props);
     this.state = {
       isLoading: false,
-      email: "9825181111",
-      password: "salestracking",
+      email: "",
+      password: "",
       rememberMe: false,
       emailError: "",
       passwordError: "",
@@ -235,7 +235,8 @@ class SignIn extends React.Component {
     var user = await helpers.GetUserInfo();
     var isChecked = await DeviceStorage.getKey("enableRememberMe");
     if (isChecked == "true" && user != undefined && user != null) {
-      this.setState({ email: user.PhoneNumber, isChecked: true });
+      var userData = await this.secureStoreGet();
+      this.setState({ email: userData.email,password:userData.password, companyCode:userData.companyCode, isChecked: true });
     }
     this.handleIos();
     this.getOffers();
@@ -331,18 +332,19 @@ class SignIn extends React.Component {
         return {
           email: myJson.email,
           password: myJson.password,
+          companyCode: myJson.companyCode
         };
       }
     } catch (e) { }
   };
 
   secureStoreSave = async () => {
-    const { email, password } = this.state;
-    const credentials = { email, password };
+    const { email, password, companyCode } = this.state;
+    const credentials = { email, password, companyCode };
     try {
       await SecureStore.setItemAsync("mbuser", JSON.stringify(credentials));
 
-      this.setState({ email: "", password: "" });
+      this.setState({ email: "", password: "", companyCode:"" });
     } catch (e) { }
   };
 
@@ -838,6 +840,8 @@ class SignIn extends React.Component {
                   style={styles.input}
                   maxLength={10}
                   onChangeText={(text) => this.setState({ companyCode: text })}
+                  value={this.state.companyCode}
+
                 />
               </View>
               <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
@@ -1307,7 +1311,7 @@ class SignIn extends React.Component {
     data = qs.stringify({
       clientId: api.CompanyId,
       CompanyId: api.CompanyId,
-      CompanyCode: api.CompanyCode,
+      CompanyCode: this.state.companyCode,
       SecretKey: api.SecretKey,
       Username: this.state.email,
       Password: this.state.password,

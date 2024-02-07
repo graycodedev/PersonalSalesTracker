@@ -21,6 +21,10 @@ import * as Location from 'expo-location';
 import axios from 'axios';
 import qs from "qs";
 import { ActivityIndicator } from "react-native";
+import ToastMessage from "./Toast/Toast";
+import DeviceStorage from "../config/DeviceStorage";
+import request from "../config/RequestManager";
+import WarningModal from "./WarningModal";
 
 const ProfileHeader = (props) => {
   const [userId, setUserId] = useState();
@@ -29,8 +33,17 @@ const ProfileHeader = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePicture, setProfilePicture] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [showCheckInConfirmation,setShowCheckInConfirmation]= useState(false);
+  const [checkedIn,setCheckedIn]= useState(false);
 
+  useEffect(()=>{
+    GetCheckInStatus();
+  }, []); 
 
+  const GetCheckInStatus= async()=>{
+    let isCheckedIn= await helpers.GetCheckInStatus();
+    setCheckedIn(isCheckedIn); 
+  }
   const GetUserInfo = async () => {
     const u = await helpers.GetUserInfo();
     if (u != null) {
@@ -57,23 +70,35 @@ const ProfileHeader = (props) => {
     let date = new Date();
     let attendanceDate = date.toISOString().split('T')[0];
     let attendanceTime = date.toTimeString().split(' ')[0];
-
+    let route= checkedIn?Api.Attendances.CheckOut:Api.Attendances.CheckIn;
     let data = {
       Latitude: latitude,
       Longitude: longitude,
-      AttendanceDate: attendanceDate,
+      IsCheckIn: !checkedIn, 
+      AttendanceDate: attendanceDate, 
       AttendanceTime: attendanceTime
     };
 
-    axios.post(Api.Attendances.CheckIn, data)
-      .then(response => {
-        console.log(response.data);
+    var response = await (await request()).post(route, JSON.stringify(data));
+    if (response != undefined) {
+      if (response.data.Code == 200) {
+       if(checkedIn){
+        await DeviceStorage.deleteKey("checkInInfo");
+       }
+       else{
+        await DeviceStorage.saveKey("checkInInfo", JSON.stringify(data));
+       }
+       GetCheckInStatus();
+       setShowCheckInConfirmation(false); 
+       ToastMessage.Short(response.data.Message);
 
-        AsyncStorage.setItem('checkInInfo', JSON.stringify(data));
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      } else {
+        ToastMessage.Short("Error Occurred, Contact Support!!!");
+      }
+    } else {
+      ToastMessage.Short("Error Occurred, Contact Support!!!");
+
+    }
   }
 
   return (
@@ -118,7 +143,7 @@ const ProfileHeader = (props) => {
           <TouchableOpacity
             style={styles.boxes}
             onPress={() =>
-              props.navigation.navigate("Scan", { screen: "ShareMyQr" })
+              props.navigation.navigate("ReceivePayment")
             }
           >
             {/* <Image source={IMAGES.shareQR} style={{marginLeft: 22.4, marginRight: 12}} /> */}
@@ -131,15 +156,28 @@ const ProfileHeader = (props) => {
           {/* navigation.navigate("LoadAccountList"); */}
           <TouchableOpacity
             style={styles.checkIn}
-            onPress={checkIn}
+            onPress={()=>setShowCheckInConfirmation(true)}
           >
              <BankingIcons.fingerPrint height={25} width={25} fill={"black"}/>
             
-            <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>
+            {!checkedIn?<Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>
               Check In
-            </Text>
+            </Text>:
+            <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>
+           Check Out
+          </Text>}
           </TouchableOpacity>
         </View>
+        {showCheckInConfirmation && (
+            <WarningModal
+              text1={!checkedIn?"CHECK IN?":"CHECK OUT?"}
+              text2={!checkedIn?"Are you sure you want to Check In?":"Are you sure you want to Check Out?"}
+              onConfirm={checkIn}
+              onCancel={() => {
+                setShowCheckInConfirmation(false)
+              }}
+            />
+          )}
       </View>
     </View>
   );

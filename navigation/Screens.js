@@ -277,6 +277,7 @@ import ReturnList from "../screens/salestracking/return/ReturnList";
 import ReturnDetails from "../screens/salestracking/return/ReturnDetails";
 import ReturnOrder from "../screens/salestracking/return/ReturnOrder";
 import EODReport from "../screens/salestracking/EODReport/EODReport";
+import ReceivePayment from "../screens/payment/ReceivePayment";
 
 const { width } = Dimensions.get("screen");
 const Stack = createStackNavigator();
@@ -489,6 +490,7 @@ function HomeStack(props) {
       <Stack.Screen name="ReturnDetails" component={ReturnDetails} options={headerOptions} />
       <Stack.Screen name="ReturnOrder" component={ReturnOrder} options={headerOptions} />
       <Stack.Screen name="EODReport" component={EODReport} options={headerOptions} />
+      <Stack.Screen name="ReceivePayment" component={ReceivePayment} options={headerOptions} />
 
 
 
@@ -1229,7 +1231,7 @@ function BottomTabNavigator() {
       />
       <Tab.Screen
         name="Scan"
-        component={ScanPay}
+        component={AddOrder}
         options={{
           tabBarIcon: ({ focused }) => (
             <View

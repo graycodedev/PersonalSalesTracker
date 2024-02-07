@@ -429,6 +429,21 @@ const helpers = {
       ToastMessage.Short("Error Loading Payment Gateways !!");
     }
   },
+  GetCheckInStatus: async function  GetCheckInStatus(){
+    let isCheckedIn= false;
+    let date = new Date();
+    let nowDate = date.toISOString().split('T')[0];
+
+    let checkInInfo= await DeviceStorage.getKey("checkInInfo");
+    console.log("checkIn", checkInInfo)
+    if(checkInInfo){
+      let lastCheckedInDate= JSON.parse(checkInInfo); 
+      if(nowDate == lastCheckedInDate.AttendanceDate){
+        isCheckedIn= true;
+      }
+    }
+    return isCheckedIn; 
+  }
 };
 
 export default helpers;
