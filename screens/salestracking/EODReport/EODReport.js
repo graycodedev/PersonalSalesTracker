@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
+// import { LineChart } from 'react-native-chart-kit';
 import ReportCard from '../../../components/salestracking/ReportCard';
 import * as SVG from "../../../components/BankingIcons"
 
@@ -23,7 +23,7 @@ const EODReport = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             style={styles.container}
         >
-            <View style={styles.chartContainer}>
+            {/* <View style={styles.chartContainer}>
                 <LineChart
                     data={data}
                     width={400}
@@ -44,7 +44,7 @@ const EODReport = ({ navigation }) => {
                         borderRadius: 16
                     }}
                 />
-            </View>
+            </View> */}
                
             <View style={{flexDirection:"row", justifyContent:"space-between", marginBottom: 8}}>
             <ReportCard icon={ <SVG.visits />} title={"Visits"} subtitle={"10"} style={{height: 160,width: "49%", backgroundColor:"#D9D6F4" }}/>
