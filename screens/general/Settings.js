@@ -36,20 +36,6 @@ const Settings = ({ navigation }) => {
               </Pressable>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("ChangePin")}>
-            <View style={styles.navButtons}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <BankingIcons.KeyIcon
-                  style={styles.image}
-                  fill={Colors.primary}
-                />
-                <Text style={styles.optionText}>Change Pin</Text>
-              </View>
-              <Pressable>
-               <BankingIcons.ArrowIcon style={{marginRight: 12}} />
-              </Pressable>
-            </View>
-          </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("Fingerprint")}>
             <View style={styles.navButtons}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>

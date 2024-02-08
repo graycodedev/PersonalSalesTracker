@@ -155,7 +155,7 @@ const ProfileHeader = (props) => {
           </TouchableOpacity>
           {/* navigation.navigate("LoadAccountList"); */}
           <TouchableOpacity
-            style={styles.checkIn}
+            style={[styles.checkIn, {borderColor: checkedIn? "red":"#5BC236" }]}
             onPress={()=>setShowCheckInConfirmation(true)}
           >
              <BankingIcons.fingerPrint height={25} width={25} fill={"black"}/>

@@ -310,8 +310,15 @@ const ReturnReasons = {
   Details: BaseUrl + "api/v1/st_OrderReturnReason/details",
 }
 
+const Reports= {
+  Eod: BaseUrl+ "api/v1/st_order/eodReport/byUserId", // date
+}
+
 
 const ApplicationSettingsByKey= BaseUrl + "api/v1/applicationsettings/valuebykey";
+const ContactUs= BaseUrl + "api/v1/contactus/save";
+
+
 
 export default {
   CompanyId,
@@ -397,7 +404,8 @@ export default {
   Orders,
   Returns,
   ReturnReasons, 
-  ApplicationSettingsByKey
+  ApplicationSettingsByKey, 
+  ContactUs,Reports
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

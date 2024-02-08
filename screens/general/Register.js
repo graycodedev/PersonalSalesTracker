@@ -45,6 +45,10 @@ class Register extends React.Component {
       termsAgreed: false,
       termsError: "",
       coopTermsAgreed: false,
+      email:"", 
+      companyName:"", 
+      emailError:"", 
+      companyNameError:""
     };
   }
   validateForm() {
@@ -65,15 +69,17 @@ class Register extends React.Component {
         this.setState(() => ({ phoneNumberError: "Invalid Phone Number!" }));
       }
     }
+    if (this.state.companyName.trim() === "") {
+      isvalid = false;
+      this.setState(() => ({ companyNameError: "Company Name is Required!" }));
+    } 
+    if (this.state.email.trim() === "") {
+      isvalid = false;
+      this.setState(() => ({ emailError: "Email is Required!" }));
+    } 
     if (this.state.termsAgreed == false) {
       isvalid = false;
-      this.setState(() => ({ termsError: "You need to agree to both terms!" }));
-    } else {
-      this.setState(() => ({ termsError: "" }));
-    }
-    if (this.state.coopTermsAgreed == false) {
-      isvalid = false;
-      this.setState(() => ({ termsError: "You need to agree to both terms!" }));
+      this.setState(() => ({ termsError: "You need to agree to Terms of Services!" }));
     } else {
       this.setState(() => ({ termsError: "" }));
     }
@@ -102,133 +108,14 @@ class Register extends React.Component {
 
   render() {
     return (
-      // <ScrollView style={{ width: "100%", backgroundColor: "#fff" }}>
-      //   <View>
-      //     <TopBackgroundIcon
-      //       style={{ position: "absolute" }}
-      //       preserveAspectRatio="none"
-      //       width="100%"
-      //     />
-      //   </View>
-      //   <Text
-      //     style={[
-      //       TextViewStyle.PageHeader,
-      //       {
-      //         marginLeft: 30,
-      //         marginTop: 110,
-      //         fontFamily: "Bold",
-      //       },
-      //     ]}
-      //   >
-      //     Register
-      //   </Text>
-      //   <View style={{ marginTop: 50, margin: 30, flexDirection: "column" }}>
-      //     <KeyboardAvoidingView>
-      //       <View style={{ marginBottom: 2 }}>
-      //         <InputText
-      //           placeholder="Full Name"
-      //           onChangeText={(fullName) => this.setState({ fullName })}
-      //           value={this.state.fullName}
-      //           iconContent={
-      //             <Icon size={16} name="user" style={styles.inputIcons} />
-      //           }
-      //         />
-      //         <Text style={{ color: "red" }}>{this.state.fullNameError}</Text>
-      //       </View>
-      //       <View style={{ marginBottom: 2 }}>
-      //         <InputText
-      //           keyboardType="numeric"
-      //           autoCapitalize="none"
-      //           placeholder="Phone Number"
-      //           onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
-      //           value={this.state.phoneNumber}
-      //           iconContent={
-      //             <Icon size={16} name="phone" style={styles.inputIcons} />
-      //           }
-      //         />
-
-      //         <Text style={{ color: "red" }}>
-      //           {this.state.phoneNumberError}
-      //         </Text>
-      //       </View>
-
-      //       <TouchableOpacity
-      //         color="primary"
-      //         onPress={() => {
-      //           if (this.validateForm()) {
-      //             this.setState({ isLoading: true });
-      //             this.RequestMobileBanking();
-      //           }
-      //         }}
-      //       >
-      //         <ButtonPrimary title={"Register"} />
-      //         <ActivityIndicator
-      //           animating={this.state.isLoading}
-      //           color="#ffa500"
-      //           style={styles.activityIndicator}
-      //         ></ActivityIndicator>
-      //       </TouchableOpacity>
-      //     </KeyboardAvoidingView>
-      //     <TouchableOpacity
-      //       onPress={() =>
-      //         this.props.navigation.navigate("OTPVerification", {
-      //           phoneNumber: "",
-      //         })
-      //       }
-      //     >
-      //       <Text
-      //         style={{
-      //           fontFamily: "Regular",
-      //           color: Colors.primary,
-      //           textAlign: "center",
-      //           paddingTop: 10,
-      //         }}
-      //       >
-      //         Already have a code{" "}
-      //       </Text>
-      //     </TouchableOpacity>
-      //     <TouchableOpacity
-      //       onPress={() => this.props.navigation.navigate("SignIn")}
-      //     >
-      //       <Text
-      //         style={{
-      //           fontFamily: "Regular",
-      //           color: Colors.primary,
-      //           textAlign: "center",
-      //           paddingTop: 10,
-      //         }}
-      //       >
-      //         Go to login{" "}
-      //       </Text>
-      //     </TouchableOpacity>
-      //   </View>
-      // </ScrollView>
       <View style={styles.container}>
-        {/* <Image source={IMAGES.registerEllipse} style={{ width: "100%" }} /> */}
-        {/* <BankingIcons.ScreenHeaderRegisterIcon
-          width="100%"
-          fill={Colors.primary}
-        /> */}
         <View style={styles.headerBackGround} />
         <View style={styles.circle} />
         <View style={styles.box}>
-         
           <View style={{ marginBottom: 31, marginTop: 20 }}>
             <View style={styles.ringingBackGround}></View>
             <BankingIcons.MobileIcon fill={Colors.primary} />
           </View>
-          {/* <View style={{ marginBottom: 2 }}>
-              <InputText
-                placeholder="Full Name"
-                onChangeText={(fullName) => this.setState({ fullName })}
-                value={this.state.fullName}
-                iconContent={
-                  <Icon size={16} name="user" />
-                }
-              />
-              <Text style={{ color: "red" }}>{this.state.fullNameError}</Text>
-            </View> */}
-         
           <View
             style={{
               flexDirection: "row",
@@ -236,17 +123,18 @@ class Register extends React.Component {
               justifyContent: "center",
             }}
           >
-            {/* <View style={styles.flagContainer}>
-                    <Image style = {{marginLeft: 7, width: 16, height: 16}} source={IMAGES.nepalFlagIcon} />
-                    <Text style = {{marginLeft: 5, fontSize: 13}}>+977</Text>
-                </View> */}
             <TextInput
               style={styles.fullNameContainer}
               placeholder="Company Name"
-              onChangeText={(fullName) => this.setState({ fullName })}
-              value={this.state.fullName}
+              onChangeText={(companyName) => this.setState({ companyName })}
+              value={this.state.companyName}
             />
           </View>
+          {this.state.companyNameError != "" && (
+            <Text style={{ color: "red", marginBottom: 10 }}>
+              {this.state.companyNameError}
+            </Text>
+          )}
           <View
             style={{
               flexDirection: "row",
@@ -254,10 +142,6 @@ class Register extends React.Component {
               justifyContent: "center",
             }}
           >
-            {/* <View style={styles.flagContainer}>
-                    <Image style = {{marginLeft: 7, width: 16, height: 16}} source={IMAGES.nepalFlagIcon} />
-                    <Text style = {{marginLeft: 5, fontSize: 13}}>+977</Text>
-                </View> */}
             <TextInput
               style={styles.fullNameContainer}
               placeholder="Contact Person Name"
@@ -265,6 +149,11 @@ class Register extends React.Component {
               value={this.state.fullName}
             />
           </View>
+           {this.state.fullNameError != "" && (
+            <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
+              {this.state.fullNameError}
+            </Text>
+          )}
           <View
             style={{
               flexDirection: "row",
@@ -272,20 +161,16 @@ class Register extends React.Component {
               justifyContent: "center",
             }}
           >
-            {/* <View style={styles.flagContainer}>
-                    <Image style = {{marginLeft: 7, width: 16, height: 16}} source={IMAGES.nepalFlagIcon} />
-                    <Text style = {{marginLeft: 5, fontSize: 13}}>+977</Text>
-                </View> */}
             <TextInput
               style={styles.fullNameContainer}
               placeholder="Email"
-              onChangeText={(fullName) => this.setState({ fullName })}
-              value={this.state.fullName}
+              onChangeText={(email) => this.setState({ email })}
+              value={this.state.email}
             />
           </View>
-          {this.state.fullNameError != "" && (
+          {this.state.emailError != "" && (
             <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
-              {this.state.fullNameError}
+              {this.state.emailError}
             </Text>
           )}
           <View
@@ -349,48 +234,11 @@ class Register extends React.Component {
               </Text>
             </TouchableOpacity>
           </View>
-          {/* <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginVertical: 10,
-            }}
-          >
-            <CheckBox
-              checked={this.state.coopTermsAgreed}
-              center
-              title={""}
-              onIconPress={() =>
-                this.setState({ coopTermsAgreed: !this.state.coopTermsAgreed })
-              }
-              containerStyle={{ padding: 0, margin: 0 }}
-            />
-            <Text style={{ fontFamily: "Regular", fontSize: 14 }}>
-              I agree to the{" "}
-            </Text>
-            <TouchableOpacity
-              onPress={async () => {
-                let companyId = await helpers.GetCompanyId();
-                this.props.navigation.navigate("WebViewScreen", {
-                  Title: "Cooperative Terms",
-                  Url: Api.CooperatveTermsOfServices + companyId,
-                });
-              }}
-            >
-              <Text
-                style={{ fontFamily: "SemiBold", fontSize: 14, color: "blue" }}
-              >
-                Cooperative Terms
-              </Text>
-            </TouchableOpacity>
-          </View> */}
           {this.state.termsError != "" && (
             <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
               {this.state.termsError}
             </Text>
           )}
-          {/* <View style={{ marginBottom: 10}}><Text style={{color: 'red'}}>The phone number you entered doesn't exist.</Text>
-            <Text style={{alignSelf: 'center', color:'red'}}>Renter the number</Text></View> */}
           <TouchableOpacity
             onPress={() => {
               if (this.validateForm()) {
@@ -417,13 +265,6 @@ class Register extends React.Component {
               style={styles.activityIndicator}
             ></ActivityIndicator>
           </TouchableOpacity>
-          {/* <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate("OTPVerification", {
-                phoneNumber: "",
-              })
-            }
-          > */}
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("SignIn")}
           >
@@ -446,15 +287,15 @@ class Register extends React.Component {
   RequestMobileBanking = async () => {
     var uuid = await DeviceStorage.getKey("DeviceId");
     var data = qs.stringify({
-      CompanyId: api.CompanyId,
-      CompanyCode: api.CompanyCode,
-      SecretKey: api.SecretKey,
+      Id: 0, 
       FullName: this.state.fullName,
       PhoneNumber: this.state.phoneNumber,
+      Email: this.state.email,
+      MessageContent: "FINMAX Sales App Request"+ JSON.stringify(this.state.companyName),
       DeviceId: uuid,
     });
     var response = await (await request())
-      .post(api.MobileBankingActivation, data)
+      .post(api.ContactUs, data)
       .catch(function(error) {
         ToastMessage.Short("Error Contact Support");
       });
@@ -487,15 +328,6 @@ const styles = StyleSheet.create({
     height: "45%",
     backgroundColor: Colors.primary,
   },
-  // circle:{
-  //   position: 'absolute',
-  //   marginTop: 240,
-  //   width: "100%",
-  //   height:100,
-  //   borderBottomLeftRadius: 160,
-  //   borderBottomRightRadius: 160,
-  //   backgroundColor: Colors.primary,
-  // },
   box: {
     backgroundColor: "white",
     position: "absolute",
@@ -523,10 +355,8 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: "#EEEEEE",
     borderWidth: 2,
-    // backgroundColor: 'red',
     borderTopLeftRadius: 4,
     borderBottomLeftRadius: 4,
-    // justifyContent: 'center',
     flexDirection: "row",
     alignItems: "center",
   },

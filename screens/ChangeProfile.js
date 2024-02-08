@@ -16,7 +16,7 @@ import { Colors } from "./style/Theme";
 import api, { endPoints } from "../constants/Api";
 // import * as ImagePicker from "expo-image-picker";
 const { width, height } = Dimensions.get("screen");
-import { Profile } from "../components/IconsAll";
+import { ProfileIcon } from "../components/IconsAll";
 
 const ChangeProfile = () => {
   const [fullName, setFullName] = useState("");
@@ -62,19 +62,12 @@ const ChangeProfile = () => {
   }, []);
   return (
     <View style={styles.container}>
-      {/* <BankingIcons.ScreenHeaderRegisterIcon
-        fill={Colors.primary}
-        width="100%"
-      /> */}
+    
       <View style={styles.headerBackGround} />
       <View style={styles.box}>
         <View style={{ marginBottom: 10 }}>
           {!profilePicture ? (
-            // <Image
-            //   style={{ width: 120, height: 120, borderRadius: 75 }}
-            //   source={IMAGES.profile}
-            // />
-            <Profile height={100} width={100} fill={"gray"} />
+            <ProfileIcon height={100} width={100} fill={"gray"} />
           ) : (
             <Image
               style={{
