@@ -14,6 +14,8 @@ import { ActivityIndicator } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { RegularInputText } from "../../../components/Input";
 import { Colors } from "../../style/Theme";
+import { AutoCompleteList } from "../../../components/AutoCompleteList";
+import Api from "../../../constants/Api";
 
 const AddOrder = ({ navigation, route }) => {
     const { selectedOrder, orders } = route.params || {};
@@ -34,6 +36,7 @@ const AddOrder = ({ navigation, route }) => {
 
     const [selectedDiscount, setSelectedDiscount] = useState(null);
     const [applyVAT, setApplyVAT] = useState(false);
+    const [showPartiesList, setShowPartiesList] = useState(false);
 
     const handleSubmit = () => {
 
@@ -65,6 +68,17 @@ const AddOrder = ({ navigation, route }) => {
         month: "2-digit",
         day: "2-digit",
     });
+
+    const updateSelectedParty = (item) => {
+        setSelectedParty(item);
+        setShowPartiesList(false);
+    }
+
+
+    const onClose = () => {
+        setShowPartiesList(false);
+    }
+
 
     return (
         <ScrollView
@@ -104,6 +118,32 @@ const AddOrder = ({ navigation, route }) => {
                             is24Hour={true}
                             display="default"
                             onChange={onChangeDate}
+                        />
+                    )}
+                </View>
+                <View style={{ marginBottom: 15, zIndex: 99 }}>
+                    <TouchableOpacity onPress={() => setShowPartiesList(true)} style={{ paddingLeft: 10, paddingVertical: 14, backgroundColor: "white", borderRadius: 5 }}>
+
+                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedParty ? "Add Party" : selectedParty.PartyName}</Text>
+
+                    </TouchableOpacity>
+
+
+                    {showPartiesList && (
+                        <AutoCompleteList
+                            autocompleteurl={Api.Parties.List}
+                            noItemFoundText={"No parties found!"}
+                            searchablePlaceholder="Search Party"
+                            itemSelected={updateSelectedParty}
+                            visible={showPartiesList}
+                            onClose={() => onClose()}
+                            renderItem={(item) => (
+                                <View style={styles.item}>
+                                    <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>{item.PartyName}</Text>
+                                    <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>{item.ContactPersonName}</Text>
+                                    <Text style={{ fontFamily: "Regular", fontSize: 14 }}>{item.Email}</Text>
+                                </View>
+                            )}
                         />
                     )}
                 </View>
@@ -249,6 +289,14 @@ const styles = StyleSheet.create({
     },
     orderInfo: {
         fontSize: 16,
+    },
+    item: {
+        padding: 8,
+        borderBottomColor: "#e2e2e2",
+        borderBottomWidth: 1,
+        marginBottom: 5,
+        backgroundColor: "#fff",
+        paddingLeft: 18
     },
 });
 
