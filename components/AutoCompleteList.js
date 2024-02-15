@@ -53,6 +53,7 @@ export const AutoCompleteList = (props) => {
       });
       if (response != undefined) {
         if (response.data.Code == 200) {
+          console.log("data", response.data.Data)
             setOptions(response.data.Data);
         } else {
           ToastMessage.Long(response.data.Message);

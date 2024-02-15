@@ -16,7 +16,13 @@ import { RegularInputText } from "../../../components/Input";
 import { Colors } from "../../style/Theme";
 import { AutoCompleteList } from "../../../components/AutoCompleteList";
 import Api from "../../../constants/Api";
-
+import CustomModal from "../../../components/CustomModal";
+import * as BankingIcons from "../../../components/BankingIcons"; 
+import Circle from "../../../components/shapes/Circle"; 
+import WarningModal from "../../../components/WarningModal";
+import ToastMessage from "../../../components/Toast/Toast";
+import request from "../../../config/RequestManager";
+import qs from "qs"
 const AddOrder = ({ navigation, route }) => {
     const { selectedOrder, orders } = route.params || {};
     const { name, price, type, image } = selectedOrder || {};
@@ -30,30 +36,34 @@ const AddOrder = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedProductName, setSelectedProductName] = useState(null);
     const [selectedProductPrice, setSelectedProductPrice] = useState(null);
-    const [quantity, setQuantity] = useState('');
+    const [quantity, setQuantity] = useState(1);
 
     const [selectedProducts, setSelectedProducts] = useState([]);
 
     const [selectedDiscount, setSelectedDiscount] = useState(null);
     const [applyVAT, setApplyVAT] = useState(false);
-    const [showPartiesList, setShowPartiesList] = useState(false);
+    const [showPartiesList, setShowPartiesList]= useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [showProducts, setShowProducts] = useState(false);
+    const [showConfirmDelete, setShowConfirmDelete]= useState(false);
+    const [deleteIndex, setDeleteIndex]= useState(-1);
+    const [updateIndex, setUpdateIndex]= useState(-1);
+    const [notes, setNotes]= useState("");
 
-    const handleSubmit = () => {
 
-        if (selectedProductName && selectedProductPrice && quantity) {
+    const handleAddProduct = () => {
             const newProduct = {
-                name: selectedProductName,
-                price: selectedProductPrice,
-                quantity: quantity,
+                Id: 0,
+                ProductId: selectedProduct.Id,
+                OrderedQuantity:quantity,
+                Rate: selectedProduct.PreferedSellingPrice,
+                SoldQuantity: quantity,
+                ProductName: selectedProduct.ProductName, 
+                PreferedSellingPrice: selectedProduct.PreferedSellingPrice
             };
-
             setSelectedProducts((prevProducts) => [...prevProducts, newProduct]);
-
-            setSelectedProductName(null);
-            setSelectedProductPrice(null);
-            setQuantity('');
-        }
-
+            setQuantity(1);
+            setSelectedProduct(null);
         setModalVisible(false);
     };
 
@@ -78,6 +88,82 @@ const AddOrder = ({ navigation, route }) => {
     const onClose = () => {
         setShowPartiesList(false);
     }
+    const updateSelectedProduct = (item) => {
+        setSelectedProduct(item);
+        setShowProducts(false);
+    }
+
+
+    const onCloseProducts = () => {
+        setShowProducts(false);
+    }
+
+    const deleteOrder =()=>{
+        let products= selectedProducts;
+        products.splice(deleteIndex, 1);
+        setSelectedProducts(products);
+        setShowConfirmDelete(false)
+    }
+
+
+    const openUpdateModel= (index)=>{
+        setUpdateIndex(index);
+        setSelectedProduct(selectedProducts[index]); 
+        setModalVisible(true);
+    }
+
+    const handleUpdateProduct = () => {
+        const newProduct = {
+            Id: 0,
+            ProductId: selectedProduct.Id,
+            OrderedQuantity:quantity,
+            Rate: selectedProduct.PreferedSellingPrice,
+            SoldQuantity: quantity,
+            ProductName: selectedProduct.ProductName, 
+            PreferedSellingPrice: selectedProduct.PreferedSellingPrice
+        };
+        let products= selectedProducts;
+        products[updateIndex]= newProduct;
+        setSelectedProducts(products)
+        setQuantity(0);
+        setSelectedProduct(null);
+        setUpdateIndex(-1)
+        setModalVisible(false);
+};
+
+const submitOrder=async()=>{
+setIsLoading(true)
+    let data={
+        Id: 0, 
+        PartyId: selectedParty.Id,
+        CustomerNote:notes, 
+        EstimatedDeliveryDate: selectedDate, 
+        SalesPersonIdentityUserId: 1, 
+        OrderDetailInputVM: selectedProducts, 
+    }
+    var response = await (await request())
+    .post(Api.Orders.Save, qs.stringify(data))
+    .catch(function (error) {
+        alert(error)
+        setIsLoading(false);
+        ToastMessage.Short("Error Occurred Contact Support");
+    });
+    console.log("rest",response )
+if (response != undefined) {
+    
+    if (response.data.Code == 200) {
+        setIsLoading(false);
+       navigation.navigate("Home")
+
+    } else {
+        ToastMessage.Short(response.data.Message);
+    }
+} else {
+    ToastMessage.Short("Error Occurred Contact Support");
+}
+setIsLoading(false);
+}
+
 
 
     return (
@@ -88,16 +174,6 @@ const AddOrder = ({ navigation, route }) => {
             contentContainerStyle={{ flexGrow: 1 }}
         >
             <View style={styles.container}>
-                {/* <CustomDropdown
-                    items={orders.map((order, index) => ({
-                        label: order.name,
-                        value: index,
-                    }))}
-                    placeholder="Select Party"
-                    searchablePlaceholder="Search Party"
-                    itemSelected={(item) => setSelectedParty(item.value)}
-                /> */}
-
                 <View>
                     <Text style={{ fontFamily: "Medium", marginTop: 10, marginBottom: -5 }}>
                         Date:
@@ -122,11 +198,21 @@ const AddOrder = ({ navigation, route }) => {
                     )}
                 </View>
                 <View style={{ marginBottom: 15, zIndex: 99 }}>
-                    <TouchableOpacity onPress={() => setShowPartiesList(true)} style={{ paddingLeft: 10, paddingVertical: 14, backgroundColor: "white", borderRadius: 5 }}>
-
-                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedParty ? "Add Party" : selectedParty.PartyName}</Text>
-
-                    </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.addDashedBox, {width:"100%", borderStyle:!selectedParty?"dashed":"solid" }]}
+                  onPress={() => setShowPartiesList(true)}
+                >
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                  { !selectedParty && <BankingIcons.plus height={10} width={10} fill={Colors.primary} />}
+                    <Text style={{ fontFamily: "Regular", fontSize: 16 }}>  {!selectedParty ? "Add Party" : selectedParty.PartyName}</Text>
+                  </View>
+                </TouchableOpacity>
 
 
                     {showPartiesList && (
@@ -148,102 +234,232 @@ const AddOrder = ({ navigation, route }) => {
                     )}
                 </View>
 
+   {selectedProducts.length >0 ? 
                 <View style={styles.ordersView}>
-                    <Text style={{ marginBottom: 10 }}>Products</Text>
-                    <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+                    <Text style={{fontFamily:"SemiBold", fontSize: 16, marginBottom: 4}}>Products</Text>
+                    <View>
                         {selectedProducts.map((product, index) => (
-                            <View key={index} style={styles.orderItem}>
-                                <Text style={styles.orderName}>{product.name}</Text>
-                                <Text style={styles.orderInfo}>{product.quantity} at Rs.{product.price}</Text>
-                            </View>
+                            <TouchableOpacity key={index} style={styles.orderItem}>
+                                <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+                                    <Text style={styles.orderName}>{product.ProductName}</Text>
+                                    <View style={{flexDirection:"row"}}>
+                                    <TouchableOpacity onPress={()=>{
+                                        openUpdateModel(index)
+                                    }}>
+                                                                           <BankingIcons.Edit  height={18} width={18} fill={Colors.primary} style={{marginRight: 8}}/>
+
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>{setShowConfirmDelete(true);
+                                        setDeleteIndex(index)
+                                    }}>
+                                    <BankingIcons.DeleteIcon height={18} width={18} fill={"red"}/>
+                                    </TouchableOpacity>
+                                    </View>
+                                    
+                                   
+                                </View>
+                                <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+                                    <View style={{flexDirection:"row"}}>
+                                        <Text style={styles.orderInfo}>Qty: {product.SoldQuantity}  {" "} </Text>
+                                        <Text style={styles.orderInfo}>Rate: Rs.{product.Rate}</Text>
+                                    </View>
+                                    <View>
+                                    <Text style={[styles.orderInfo, {fontSize: 16, fontFamily: "SemiBold"}]}>Rs.{product.SoldQuantity * product.Rate} </Text>
+
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
                         ))}
-                        {selectedProducts.length === 0 && (
-                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                       
+                    </View>
+
+                   
+            
+                    
+                
+            {/* <Circle backgroundColor={Colors.primary} radius={14} containerStyle={{alignItems:"center", justifyContent:"center", alignSelf:"flex-end", marginTop: 6}}>
+            <Circle backgroundColor={"white"} radius={12} containerStyle={{alignItems:"center", justifyContent:"center"}}>
+            <TouchableOpacity
+                onPress={() => {
+                    setModalVisible(true)
+                }}
+            >\
+                <BankingIcons.plus fill={Colors.primary} />
+            </TouchableOpacity>
+
+</Circle>
+            </Circle> */}
+                    
+
+                    
+
+                   
+                </View>
+                :
+
+                 <>
+                                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                                 <Text style={{ fontFamily: "Medium", color: "#9A9A9A", fontSize: 20 }}>
                                     + Empty! Click below to Add Products
                                 </Text>
                             </View>
-                        )}
-                    </ScrollView>
+                                    </>}
 
-                    <TouchableOpacity onPress={() => setModalVisible(true)}>
-                        <ButtonPrimary title={"Add Product"} />
-                        <ActivityIndicator
-                            animating={isLoading}
-                            color="#ffa500"
-                            style={styles.activityIndicator}
-                        />
-                    </TouchableOpacity>
-
-                    <Modal
-                        animationType="none"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => setModalVisible(false)}
+                                       <TouchableOpacity
+                  style={[styles.addDashedBox, {marginBottom: 4}]}
+                  onPress={()=>{setModalVisible(true)}}
+                >
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <BankingIcons.plus height={10} width={10} fill={Colors.primary} />
+                    <Text
+                      style={{
+                        fontFamily: "Medium",
+                        fontSize: 16,
+                        color: Colors.primary,
+                        marginLeft: 8,
+                      }}
                     >
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                            <View style={styles.modalContainer}>
-                                {selectedProductName ? (
-                                    <>
-                                        <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 10 }}>
-                                            {selectedProductName}
-                                        </Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                                            <Text style={{ fontSize: 20, marginRight: 20 }}>
-                                                Price: Rs. {selectedProductPrice}
-                                            </Text>
-                                            <Text style={{ fontSize: 18, marginRight: 10 }}>Quantity:</Text>
-                                            <TextInput
-                                                style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1, paddingLeft: 10, width: 80 }}
-                                                keyboardType="numeric"
-                                                placeholder="Enter Qty"
-                                                onChangeText={(text) => setQuantity(text)}
-                                            />
-                                        </View>
-                                        <Text style={{ fontSize: 20, marginBottom: 10 }}>
-                                            Final Amount: Rs. {selectedProductPrice * quantity}
-                                        </Text>
-                                        <View style={{ flexDirection: 'row', marginHorizontal: 10, alignSelf: 'flex-end', }}>
-                                            <TouchableOpacity onPress={() => setModalVisible(false)}>
-                                                <Text style={{ fontSize: 20, color: Colors.primary, marginRight: 15, }}>Cancel</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={handleSubmit}>
-                                                <Text style={{ fontSize: 20, color: Colors.primary }}>Submit</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
-                                            Select a Product
-                                        </Text>
-                                        {/* {orders.map((order) => (
-                                            <TouchableOpacity
-                                                key={order.value}
-                                                onPress={() => {
-                                                    setSelectedProductName(order.name);
-                                                    setSelectedProductPrice(order.price);
-                                                    setQuantity('1');
-                                                }}
-                                            >
-                                                <Text style={{ fontSize: 18, marginBottom: 10 }}>{order.name}</Text>
-                                            </TouchableOpacity>
-                                        ))} */}
-                                        <TouchableOpacity onPress={() => setModalVisible(false)}>
-                                            <Text style={{ fontSize: 18, color: "red", marginTop: 10 }}>Cancel</Text>
-                                        </TouchableOpacity>
-                                    </>
-                                )}
-                            </View>
-                        </View>
-                    </Modal>
-                </View>
+                      Add Products
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+
+                {selectedProducts.length >0 && <View style={{borderTopWidth: 1, borderBottomWidth:1, borderColor:"black", padding: 8,marginVertical: 8}}>
+                    <View style={{flexDirection:"row"}}> 
+                    <Text style={{fontFamily:"SemiBold", fontSize: 16}}>Qty:</Text>
+                    
+                    <Text style={{fontFamily:"SemiBold", fontSize: 16, marginLeft: 4}}>{selectedProducts.reduce((sum, item) => sum + item.SoldQuantity, 0)}</Text>
+                    </View>
+                    <View style={{flexDirection:"row"}}> 
+                    <Text style={{fontFamily:"SemiBold", fontSize: 16}}>Total Amount:</Text>
+                    
+                    <Text style={{fontFamily:"SemiBold", fontSize: 16, marginLeft: 4}}>{selectedProducts.reduce((sum, item) => sum + item.SoldQuantity* item.Rate, 0)}</Text>
+                    </View>
+                    
+
+                    </View>
+                    }
+
+                                 
+
+                                    <RegularInputText
+                        key="notes"
+                        placeholder="Notes"
+                        onChangeText={(text) => {
+                            setNotes(text)
+                        }}
+                        value={notes}
+                        multiline={true}
+                        numberOfLines={5}
+                        style={{ height: 100, alignItems: 'flex-start', borderWidth: 0 }}
+                    />
+                                    {selectedProducts.length !=0 &&
+                    <TouchableOpacity onPress={async() => {await submitOrder()}}>
+                    <ButtonPrimary title={"Submit"} />
+                    <ActivityIndicator
+                        animating={isLoading}
+                        color="#ffa500"
+                        style={styles.activityIndicator}
+                    />
+                </TouchableOpacity>
+}
 
 
             </View>
+            {modalVisible &&
+        <CustomModal
+          visible={modalVisible}
+          closeModal={() => setModalVisible(false)}
+        >
+                        
+                                        <View style={{ width:"100%",  zIndex: 99 }}>
+                                            <Text style={{ fontFamily: "Medium", marginBottom: 4 }}>Product</Text>
+                    <TouchableOpacity onPress={() => setShowProducts(true)} style={{ paddingLeft: 10, paddingVertical: 14, backgroundColor: "#f5f5f5", borderRadius: 5, }}>
+
+                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedProduct ? "Choose Product" : selectedProduct.ProductName}</Text>
+
+                    </TouchableOpacity>
+
+
+                    {showProducts && (
+                        <AutoCompleteList
+                            autocompleteurl={Api.Products.List}
+                            noItemFoundText={"No products found!"}
+                            searchablePlaceholder="Search Products"
+                            itemSelected={updateSelectedProduct}
+                            visible={showProducts}
+                            onClose={() => onCloseProducts()}
+                            renderItem={(item) => (
+                                <View style={styles.item}>
+                                    <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>{item.ProductName}</Text>
+                                    <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>{item.PreferedSellingPrice}</Text>
+                                </View>
+                            )}
+                        />
+                    )}
+                </View>
+                {selectedProduct && <View>
+                <Text style={{ fontFamily: "Medium", marginBottom: 4 }}>Price</Text>
+                    <RegularInputText
+                        placeholder={"Rs." + selectedProduct.PreferedSellingPrice.toString()}
+                        value={"Rs." + selectedProduct.PreferedSellingPrice.toString()}
+                        style={{backgroundColor: "#f5f5f5"}}
+                        editable={false}
+                        placeholderStyle={{color:"black"}}
+                    />
+                </View>}
+
+
+
+                <View>
+                <Text style={{ fontFamily: "Medium", marginBottom: 4 }}>Quantity</Text>
+                    <RegularInputText
+                    keyboardType="numeric"
+                        key="quantity"
+                        placeholder="Quantity"
+                        onChangeText={(text) => {
+                            setQuantity(parseInt(text))
+                        }}
+                        value={quantity}
+                        style={{backgroundColor: "#f5f5f5"}}
+                    />
+                </View>
+               <TouchableOpacity style={{alignSelf:"flex-end", width:"40%"}} onPress={()=>{
+                if(updateIndex>-1){
+                    handleUpdateProduct()
+                }
+                else{
+                    handleAddProduct()
+
+                }
+                }}>
+                        <ButtonPrimary title={updateIndex > -1? "Update": "Add"} style={{height: 50}}/>
+                    </TouchableOpacity>
+                </CustomModal>}
+
+                {showConfirmDelete && (
+            <WarningModal
+              text1={"Delete Order Item?"}
+              text2={"Are you sure you want to delete this order?"}
+              onConfirm={deleteOrder}
+              onCancel={() => {
+                setShowConfirmDelete(false)
+              }}
+              warning
+            />
+          )}
         </ScrollView>
     );
 };
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -258,10 +474,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     ordersView: {
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        marginVertical: 30,
-        padding: 10,
+        marginTop: 4,
+        marginBottom: 4
     },
     activityIndicator: {
         marginTop: 10,
@@ -280,12 +494,11 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 10,
         elevation: 2,
-        alignItems: 'flex-start',
+        justifyContent: 'center',
     },
     orderName: {
-        fontSize: 18,
-        fontWeight: "bold",
-        marginBottom: 5,
+        fontSize: 16,
+        fontFamily: "SemiBold",
     },
     orderInfo: {
         fontSize: 16,
@@ -298,6 +511,20 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         paddingLeft: 18
     },
+    addDashedBox:
+    {
+        borderColor: "gray",
+        borderWidth: 1,
+        justifyContent: "center",
+        borderRadius: 6,
+        alignItems: "center",
+        paddingHorizontal: 8,
+        backgroundColor: "white",
+        paddingVertical: 5,
+        width: "40%", 
+        alignSelf:"center", 
+        borderStyle:"dashed"
+      }
 });
 
 export default AddOrder;
