@@ -102,14 +102,14 @@ const LeaveList = ({ navigation }) => {
                             >
                                 <View>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                                        <Text style={styles.leaveTitle}>{leave.LeaveType}</Text>
+                                        <Text style={styles.leaveTitle}>{leave.LeaveTypeName}</Text>
                                         {leave.IsApproved == true ? <Text style={[styles.leaveText, { color: 'green' }]}>Approved</Text> : leave.IsCancelled ? <Text style={[styles.leaveText, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.leaveText, { color: 'orange' }]}>Pending</Text>}
                                     </View>
                                     <View>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={styles.leaveText}>From: {fromDate}</Text>
-                                            <Text style={styles.leaveText}>To: {toDate}</Text>
-                                        </View>
+
+                                        <Text style={styles.leaveText}>From: {fromDate}</Text>
+                                        <Text style={styles.leaveText}>To: {toDate}</Text>
+
                                     </View>
                                 </View>
                             </TouchableOpacity>
