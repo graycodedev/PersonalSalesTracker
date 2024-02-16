@@ -3,20 +3,7 @@ import React from 'react'
 import AppStyles from '../assets/theme/AppStyles'
 
 const DetailCard = (props) => {
-    let details=[
-        {
-        Key:"Start Odometer", 
-        Value:"556"
-    }, 
-    {
-        Key:"End Odometer", 
-        Value:"445"
-    }, 
-    {
-        Key:"Start  Date", 
-        Value:"556"
-    }, 
-]
+    
   return (
     <View style={styles.container}>
 
