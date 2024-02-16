@@ -104,6 +104,7 @@ import advance from "../assets/bankingsvg/advance.svg";
 import addVisit from "../assets/bankingsvg/addVisit.svg"; 
 import addParties from "../assets/bankingsvg/addParties3.svg"; 
 import fingerPrint from "../assets/bankingsvg/fingerprint1.svg"; 
+import delivery from "../assets/bankingsvg/delivery.svg"; 
 
 
 
@@ -208,5 +209,6 @@ profile1,
 advance, 
 addVisit, 
 addParties, 
-fingerPrint
+fingerPrint, 
+delivery
 };

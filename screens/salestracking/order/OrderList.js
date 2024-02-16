@@ -52,6 +52,7 @@ const OrderList = ({ navigation }) => {
                 });
             if (response != undefined) {
                 if (response.data.Code == 200) {
+                    console.log(response.data.Data[0])
                     setOrders(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Notes");
@@ -99,11 +100,10 @@ const OrderList = ({ navigation }) => {
                             style={styles.orderItem}
                             onPress={() => navigation.navigate("OrderDetails", { order })}
                         >
-                            <Image source={order.image} style={styles.orderImage} />
                             <View>
-                                <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>Product Name</Text>
+                                <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>{order.CompanyName}</Text>
                                 <Text style={styles.orderInfo}>Order Date: <DateDisplay date={order.OrderDate} /></Text>
-                                <Text style={styles.orderInfo}>Estimated Delivery:<DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
+                                <Text style={styles.orderInfo}>Est. Delivery:<DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
                             </View>
                         </TouchableOpacity>
                     ))}

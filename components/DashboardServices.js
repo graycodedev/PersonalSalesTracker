@@ -267,6 +267,11 @@ export const DashBoardServices = ({ navigation }) => {
       navigation: "ExpenseList",
     },
     {
+      name: "Deliver",
+      icon: BankingIcons.delivery,
+      navigation: "ChequeRequest",
+    },
+    {
       name: "EOD Report",
       icon: BankingIcons.eodreport,
       navigation: "EODReport",
@@ -281,11 +286,7 @@ export const DashBoardServices = ({ navigation }) => {
       icon: BankingIcons.visitreport,
       navigation: "Visits",
     },
-    {
-      name: "KPI Report",
-      icon: BankingIcons.kpireport,
-      navigation: "ChequeRequest",
-    },
+    
 
     // {
     //   name: "Interest rate",
