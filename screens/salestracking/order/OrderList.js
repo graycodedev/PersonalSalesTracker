@@ -18,6 +18,7 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
 import DateDisplay from "../../../components/DateDisplay";
+import AppStyles from "../../../assets/theme/AppStyles";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -100,7 +101,7 @@ const OrderList = ({ navigation }) => {
                         >
                             <Image source={order.image} style={styles.orderImage} />
                             <View>
-                                <Text style={styles.orderName}>Product Name</Text>
+                                <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>Product Name</Text>
                                 <Text style={styles.orderInfo}>Order Date: <DateDisplay date={order.OrderDate} /></Text>
                                 <Text style={styles.orderInfo}>Estimated Delivery:<DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
                             </View>

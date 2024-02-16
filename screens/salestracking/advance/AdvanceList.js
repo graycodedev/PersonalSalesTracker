@@ -16,6 +16,7 @@ import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import DateDisplay from "../../../components/DateDisplay";
+import AppStyles from "../../../assets/theme/AppStyles";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -98,7 +99,7 @@ const AdvanceList = ({ navigation }) => {
                             >
                                 <View>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <Text style={styles.advanceName}>Rs. {advance.Amount}</Text>
+                                        <Text style={AppStyles.Text.BoldTitle}>Rs. {advance.Amount}</Text>
                                         {advance.IsApproved == true ? <Text style={[styles.advanceText, { color: 'green' }]}>Approved</Text> : advance.IsCancelled ? <Text style={[styles.advanceText, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.advanceText, { color: 'orange' }]}>Pending</Text>}
                                     </View>
                                     <View>

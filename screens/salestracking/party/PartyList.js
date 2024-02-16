@@ -15,6 +15,7 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
+import AppStyles from "../../../assets/theme/AppStyles";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -94,12 +95,15 @@ const PartyList = ({ navigation }) => {
                             style={styles.partyItem}
                             onPress={() => navigation.navigate("PartyDetails", { party })}
                         >
-                            <Text style={styles.partyName}>{party.PartyName}</Text>
+                            <Text style={[AppStyles.Text.BoldTitle, {marginBottom: 4}]}>{party.PartyName}</Text>
                             <Text style={styles.partyInfo}>{`${party.ContactPersonName}`}</Text>
                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <Text style={styles.partyInfo}>{`Address: ${party.Address}`}</Text>
-                                <Text style={styles.partyInfo}>{`Code: ${party.PartyCode}`}</Text>
+                               
                             </View>
+                            <View style={{flexDirection:"row", justifyContent:"flex-end"}}>
+                            <Text style={styles.partyInfo}>{`Code: ${party.PartyCode}`}</Text></View>
+                             
                         </TouchableOpacity>
                     ))}
                 </ScrollView>

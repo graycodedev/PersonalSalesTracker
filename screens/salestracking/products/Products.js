@@ -17,6 +17,7 @@ import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
+import AppStyles from "../../../assets/theme/AppStyles";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -91,9 +92,9 @@ const Products = ({ navigation }) => {
                             style={styles.productItem}
                             onPress={() => navigation.navigate("ProductDetails", { product })}
                         >
-                            <Image source={product.productImagePath} style={styles.productImage} />
+                            <Image source={Api.BaseUrl+product.productImagePath} style={styles.productImage} />
                             <View>
-                                <Text style={styles.productName}>{product.ProductName}</Text>
+                                <Text style={AppStyles.Text.BoldTitle}>{product.ProductName}</Text>
                                 <Text style={styles.productInfo}>Product Code: {product.ProductCode}</Text>
                                 <Text style={styles.productInfo}>Marked Price: Rs.{product.MaximumSellingPrice}</Text>
                                 <Text style={styles.productInfo}>Selling Price: Rs.{product.PreferedSellingPrice}</Text>

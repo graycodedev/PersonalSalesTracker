@@ -15,6 +15,7 @@ import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
+import AppStyles from "../../../assets/theme/AppStyles";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -102,7 +103,7 @@ const Visits = ({ navigation }) => {
                             >
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <View>
-                                        <Text style={styles.visitName}>{visit.PartyName ? visit.PartyName : visit.LocationName}</Text>
+                                        <Text style={AppStyles.Text.BoldTitle}>{visit.PartyName ? visit.PartyName : visit.LocationName}</Text>
                                         <Text style={styles.visitText}>{date}</Text>
                                     </View>
                                     {visit.PartyName && (

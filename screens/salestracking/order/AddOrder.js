@@ -349,10 +349,10 @@ setIsLoading(false);
                                 <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                                     <View style={{flexDirection:"row"}}>
                                         <Text style={styles.orderInfo}>Qty: {product.SoldQuantity}  {" "} </Text>
-                                        <Text style={styles.orderInfo}>Rate: Rs.{product.Rate}</Text>
+                                        <Text style={styles.orderInfo}>Rate: Rs.{product.Rate.toFixed(2)}</Text>
                                     </View>
                                     <View>
-                                    <Text style={[styles.orderInfo, {fontSize: 16, fontFamily: "SemiBold"}]}>Rs.{product.SoldQuantity * product.Rate} </Text>
+                                    <Text style={[styles.orderInfo, {fontSize: 16, fontFamily: "SemiBold"}]}>Rs.{(product.SoldQuantity * product.Rate).toFixed(2)} </Text>
 
                                     </View>
                                 </View>
@@ -428,7 +428,7 @@ setIsLoading(false);
                     <View style={{flexDirection:"row"}}> 
                     <Text style={{fontFamily:"SemiBold", fontSize: 16}}>Total Amount:</Text>
                     
-                    <Text style={{fontFamily:"SemiBold", fontSize: 16, marginLeft: 4}}>{selectedProducts.reduce((sum, item) => sum + item.SoldQuantity* item.Rate, 0)}</Text>
+                    <Text style={{fontFamily:"SemiBold", fontSize: 16, marginLeft: 4}}>{selectedProducts.reduce((sum, item) => sum + item.SoldQuantity* item.Rate, 0).toFixed(2)}</Text>
                     </View>
                     
 

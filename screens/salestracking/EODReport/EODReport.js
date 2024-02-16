@@ -25,7 +25,7 @@ const EODReport = ({ navigation }) => {
     };
 
     useEffect(()=>{
-        getReport();
+        (async()=>getReport())();
         
     },[])
 
@@ -46,7 +46,8 @@ const EODReport = ({ navigation }) => {
         } else {
           ToastMessage.Short("Error Loading Notes");
         }
-        setIsLoading(false)
+        setIsLoading(false); 
+        console.log("rep",response.data.Code)
       };
 
     return (
@@ -84,14 +85,14 @@ const EODReport = ({ navigation }) => {
           textStyle={{ color: "#fff", fontFamily: "Light", fontSize: 14 }}
         />
                
-            {reports && !isLoading  && reports?.Ordercount?.NewOrder && <> <View style={{flexDirection:"row", justifyContent:"space-between", marginBottom: 8}}>
-            <ReportCard icon={ <SVG.visits />} title={"Visits"} subtitle={reports.Visit} style={{height: 160,width: "49%", backgroundColor:"#D9D6F4" }}/>
-            <ReportCard icon={ <SVG.order />} title={"Orders"} subtitle={reports.Ordercount.NewOrder} style={{height: 160,width: "49%", backgroundColor:"#EAF5D2"}}/>
+            {reports && !isLoading && <> 
+            <View style={{flexDirection:"row", justifyContent:"space-between", marginBottom: 8}}>
+            <ReportCard icon={ <SVG.visits />} title={"Visits"} subtitle={reports?.Visit} style={{height: 160,width: "49%", backgroundColor:"#D9D6F4" }}/>
+            <ReportCard icon={ <SVG.order />} title={"Orders"} subtitle={reports?.NewOrder} style={{height: 160,width: "49%", backgroundColor:"#EAF5D2"}}/>
             </View>
             <View style={{flexDirection:"row", justifyContent:"space-between"}}>
-
-            <ReportCard icon={ <SVG.collection />} title={"Collections"} subtitle={reports.totalOrderAmount.OrderAmount} style={{height: 160,width: "49%" ,backgroundColor:"#e7feff"}}/>
-            <ReportCard icon={ <SVG.profile1 />} title={"New Customers"} subtitle={reports.CustomerCount.NewCustomer} style={{height: 160,width: "49%", backgroundColor:"#FCF0C7"}}/>
+            <ReportCard icon={ <SVG.collection />} title={"Collections"} subtitle={reports?.OrderAmount} style={{height: 160,width: "49%" ,backgroundColor:"#e7feff"}}/>
+            <ReportCard icon={ <SVG.profile1 />} title={"New Customers"} subtitle={reports?.NewCustomer} style={{height: 160,width: "49%", backgroundColor:"#FCF0C7"}}/>
             </View>
             </>}
            

@@ -15,6 +15,7 @@ import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
+import AppStyles from "../../../assets/theme/AppStyles";
 
 const OdometerList = () => {
     const navigation = useNavigation();
@@ -72,7 +73,7 @@ const OdometerList = () => {
                                 }
                             >
                                 <View>
-                                    <Text style={styles.tripName}>{odometer.StartDate}</Text>
+                                    <Text style={AppStyles.Text.BoldTitle}>{ new Date(odometer.StartDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
                                     <Text style={styles.tripInfo}>Start Odometer: {odometer.StartOdometer}</Text>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                         <Text style={styles.tripInfo}>End Odometer: {odometer.EndOdometer || ''}</Text>

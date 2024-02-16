@@ -14,6 +14,7 @@ import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
+import AppStyles from "../../../assets/theme/AppStyles";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -95,7 +96,7 @@ const ReturnList = ({ navigation }) => {
                                 onPress={() => navigation.navigate("ReturnDetails", { returnItem })}
                             >
                                 <View>
-                                    <Text style={styles.returnTitle}>{returnItem.ReturnReasonTitle}</Text>
+                                    <Text style={[AppStyles.Text.BoldTitle, {marginBottom: 4}]}>{returnItem.ReturnReasonTitle}</Text>
                                     <Text style={styles.returnText}>Product: {returnItem.ProductName}</Text>
                                     <Text style={styles.returnText}>Quantity: {returnItem.Quantity}</Text>
                                 </View>
