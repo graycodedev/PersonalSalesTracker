@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
@@ -23,6 +23,7 @@ import WarningModal from "../../../components/WarningModal";
 import ToastMessage from "../../../components/Toast/Toast";
 import request from "../../../config/RequestManager";
 import qs from "qs"
+import Warning from "../../../components/Warning";
 const AddOrder = ({ navigation, route }) => {
     const { selectedOrder, orders } = route.params || {};
     const { name, price, type, image } = selectedOrder || {};
@@ -32,6 +33,11 @@ const AddOrder = ({ navigation, route }) => {
 
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const [deliveryDate, setDeliveryDate]= useState(new Date());
+    
+    const [showDeliveryDatePicker, setShowDeliveryDatePicker] = useState(false);
+
 
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedProductName, setSelectedProductName] = useState(null);
@@ -49,6 +55,48 @@ const AddOrder = ({ navigation, route }) => {
     const [deleteIndex, setDeleteIndex]= useState(-1);
     const [updateIndex, setUpdateIndex]= useState(-1);
     const [notes, setNotes]= useState("");
+
+
+    const [quantityError, setQuantityError]= useState("");
+    const [productError, setProductError]= useState("");
+    const [partyError, setPartyError]= useState("");
+
+    useEffect(()=>{
+     navigation.setOptions({
+            title: "Add Order",
+          });
+        var today = new Date();
+var tomorrow = new Date(today);
+tomorrow.setDate(today.getDate() + 1);
+setDeliveryDate(tomorrow)
+
+    }, [])
+
+
+    const addProductValidation=()=>{
+        setQuantityError("");
+        setProductError("");
+        let isValid= true;
+        if(quantity<1){
+            isValid= false;
+setQuantityError("Invalid Quantity");
+        }
+        if(selectedProduct == null){
+            isValid= false;
+            setProductError("Select a product")
+        }
+        return isValid;
+    }
+
+    const addOrderValidation=()=>{
+        setPartyError("");
+        let isValid= true;
+        if(selectedParty == null){
+            isValid= false;
+            setPartyError("Select a party!!")
+        }
+        return isValid;
+    }
 
 
     const handleAddProduct = () => {
@@ -74,6 +122,21 @@ const AddOrder = ({ navigation, route }) => {
     };
 
     const formattedDate = selectedDate.toLocaleDateString("en-UK", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    });
+    const onChangeDeliveryDate = (event, deliveryDate) => {
+        const currentDate = deliveryDate || deliveryDate;
+        if(deliveryDate < new Date()){
+           setShowDeliveryDatePicker(false);
+        return
+        }
+        setShowDeliveryDatePicker(false);
+        setDeliveryDate(currentDate);
+    };
+
+    const formattedDeliveryDate = deliveryDate.toLocaleDateString("en-UK", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
@@ -108,7 +171,8 @@ const AddOrder = ({ navigation, route }) => {
 
     const openUpdateModel= (index)=>{
         setUpdateIndex(index);
-        setSelectedProduct(selectedProducts[index]); 
+        setSelectedProduct(selectedProducts[index]);
+        setQuantity(selectedProducts[index].OrderedQuantity) 
         setModalVisible(true);
     }
 
@@ -125,7 +189,7 @@ const AddOrder = ({ navigation, route }) => {
         let products= selectedProducts;
         products[updateIndex]= newProduct;
         setSelectedProducts(products)
-        setQuantity(0);
+        setQuantity(1);
         setSelectedProduct(null);
         setUpdateIndex(-1)
         setModalVisible(false);
@@ -137,7 +201,7 @@ setIsLoading(true)
         Id: 0, 
         PartyId: selectedParty.Id,
         CustomerNote:notes, 
-        EstimatedDeliveryDate: selectedDate, 
+        EstimatedDeliveryDate: deliveryDate, 
         SalesPersonIdentityUserId: 1, 
         OrderDetailInputVM: selectedProducts, 
     }
@@ -174,9 +238,9 @@ setIsLoading(false);
             contentContainerStyle={{ flexGrow: 1 }}
         >
             <View style={styles.container}>
-                <View>
+                {/* <View>
                     <Text style={{ fontFamily: "Medium", marginTop: 10, marginBottom: -5 }}>
-                        Date:
+                       Order Date:
                     </Text>
                     <TouchableOpacity onPress={() => setShowDatePicker(true)}>
                         <RegularInputText
@@ -196,6 +260,29 @@ setIsLoading(false);
                             onChange={onChangeDate}
                         />
                     )}
+                </View> */}
+                <View>
+                    <Text style={{ fontFamily: "Medium", marginTop: 10, marginBottom: -5 }}>
+                        Delivery Date:
+                    </Text>
+                    <TouchableOpacity onPress={() => setShowDeliveryDatePicker(true)}>
+                        <RegularInputText
+                            key="deliverydate"
+                            placeholder="Date"
+                            value={formattedDeliveryDate}
+                            editable={false}
+                        />
+                    </TouchableOpacity>
+
+                    {showDeliveryDatePicker && (
+                        <DateTimePicker
+                            value={deliveryDate}
+                            mode="date"
+                            is24Hour={true}
+                            display="default"
+                            onChange={onChangeDeliveryDate}
+                        />
+                    )}
                 </View>
                 <View style={{ marginBottom: 15, zIndex: 99 }}>
                 <TouchableOpacity
@@ -213,6 +300,7 @@ setIsLoading(false);
                     <Text style={{ fontFamily: "Regular", fontSize: 16 }}>  {!selectedParty ? "Add Party" : selectedParty.PartyName}</Text>
                   </View>
                 </TouchableOpacity>
+                <Warning text={partyError} />
 
 
                     {showPartiesList && (
@@ -300,7 +388,7 @@ setIsLoading(false);
                  <>
                                          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                                 <Text style={{ fontFamily: "Medium", color: "#9A9A9A", fontSize: 20 }}>
-                                    + Empty! Click below to Add Products
+                                    Empty cart! Add Products
                                 </Text>
                             </View>
                                     </>}
@@ -361,7 +449,11 @@ setIsLoading(false);
                         style={{ height: 100, alignItems: 'flex-start', borderWidth: 0 }}
                     />
                                     {selectedProducts.length !=0 &&
-                    <TouchableOpacity onPress={async() => {await submitOrder()}}>
+                    <TouchableOpacity onPress={async() => {
+                        if(!addOrderValidation()){
+                            return;
+                        }
+                        await submitOrder()}}>
                     <ButtonPrimary title={"Submit"} />
                     <ActivityIndicator
                         animating={isLoading}
@@ -386,6 +478,7 @@ setIsLoading(false);
                         <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedProduct ? "Choose Product" : selectedProduct.ProductName}</Text>
 
                     </TouchableOpacity>
+                    <Warning text={productError} />
 
 
                     {showProducts && (
@@ -406,7 +499,7 @@ setIsLoading(false);
                     )}
                 </View>
                 {selectedProduct && <View>
-                <Text style={{ fontFamily: "Medium", marginBottom: 4 }}>Price</Text>
+                <Text style={{ fontFamily: "Medium", marginBottom: 4 }}>Rate</Text>
                     <RegularInputText
                         placeholder={"Rs." + selectedProduct.PreferedSellingPrice.toString()}
                         value={"Rs." + selectedProduct.PreferedSellingPrice.toString()}
@@ -423,15 +516,18 @@ setIsLoading(false);
                     <RegularInputText
                     keyboardType="numeric"
                         key="quantity"
-                        placeholder="Quantity"
                         onChangeText={(text) => {
                             setQuantity(parseInt(text))
                         }}
-                        value={quantity}
+                        value={quantity>0 ?quantity.toString():""}
                         style={{backgroundColor: "#f5f5f5"}}
                     />
                 </View>
+                <Warning text={quantityError} />
                <TouchableOpacity style={{alignSelf:"flex-end", width:"40%"}} onPress={()=>{
+                if(!addProductValidation()){
+                    return;
+                }
                 if(updateIndex>-1){
                     handleUpdateProduct()
                 }
