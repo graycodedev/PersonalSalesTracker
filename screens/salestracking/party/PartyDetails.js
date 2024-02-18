@@ -11,31 +11,10 @@ import ToastMessage from "../../../components/Toast/Toast";
 import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import DetailCard from "../../../components/DetailCard";
 
 const Tab = createMaterialTopTabNavigator();
 
 const OverviewScreen = ({ partyDetails }) => {
-    if (!partyDetails) {
-        return (
-            <Spinner
-                color={Colors.primary}
-                visible={true}
-                textContent={"Getting Details"}
-                textStyle={{ color: "#fff", fontFamily: "Light", fontSize: 14 }}
-            />
-        );
-    }
-
-    const partyDetailList = [
-        { Label: "Party Name", Value: partyDetails.PartyName },
-        { Label: "Contact Person", Value: partyDetails.ContactPersonName },
-        { Label: "PartyCode", Value: partyDetails.PartyCode },
-        { Label: "Address", Value: partyDetails.Address },
-        { Label: "Email", Value: partyDetails.Email },
-        { Label: "Website", Value: partyDetails.Website },
-    ];
-
     return (
         <ScrollView
             nestedScrollEnabled={true}
@@ -43,11 +22,65 @@ const OverviewScreen = ({ partyDetails }) => {
             style={{ width: "100%", backgroundColor: "#eee" }}
             contentContainerStyle={{ flexGrow: 1 }}
         >
-            <DetailCard details={partyDetailList} />
+            {!partyDetails ? (
+                <Spinner
+                    color={Colors.primary}
+                    visible={true}
+                    textContent={"Getting Details"}
+                    textStyle={{ color: "#fff", fontFamily: "Light", fontSize: 14 }}
+                />
+            ) : (
+                <View style={styles.container}>
+                    <View style={styles.itemContainer}>
+
+                        <View style={styles.partyItem}>
+                            <Text style={styles.detail}>Party Name: </Text>
+                            <View style={styles.labelContainer}>
+                                <Text style={styles.data}>{partyDetails.PartyName}</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.partyItem}>
+                            <Text style={styles.detail}>Contact Person: </Text>
+                            <View style={styles.labelContainer}>
+                                <Text style={styles.data}>{partyDetails.ContactPersonName}</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.partyItem}>
+                            <Text style={styles.detail}>PartyCode: </Text>
+                            <View style={styles.labelContainer}>
+                                <Text style={styles.data}>{partyDetails.PartyCode}</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.partyItem}>
+                            <Text style={styles.detail}>Address: </Text>
+                            <View style={styles.labelContainer}>
+                                <Text style={styles.data}>{partyDetails.Address}</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.partyItem}>
+                            <Text style={styles.detail}>Email: </Text>
+                            <View style={styles.labelContainer}>
+                                <Text style={styles.data}>{partyDetails.Email}</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.partyItem}>
+                            <Text style={styles.detail}>Website: </Text>
+                            <View style={styles.labelContainer}>
+                                <Text style={styles.data}>{partyDetails.Website}</Text>
+                            </View>
+                        </View>
+
+                    </View>
+                </View>
+            )}
         </ScrollView>
     );
 };
-
 
 const OrdersScreen = () => (
     <View style={styles.tabContent}>

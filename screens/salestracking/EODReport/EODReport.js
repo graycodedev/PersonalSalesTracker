@@ -36,7 +36,7 @@ const EODReport = ({ navigation }) => {
                 setIsLoading(false)
                 ToastMessage.Short("Error! Contact Support");
             });
-        console.log("Response:", response); // Add this line
+        console.log("reppp", response.data.Data)
         if (response != undefined) {
             if (response.data.Code == 200) {
                 setReports(response.data.Data);
@@ -47,8 +47,8 @@ const EODReport = ({ navigation }) => {
             ToastMessage.Short("Error Loading Notes");
         }
         setIsLoading(false);
+        console.log("rep", response.data.Code)
     };
-
 
     return (
         <ScrollView
@@ -56,6 +56,28 @@ const EODReport = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             style={styles.container}
         >
+            {/* <View style={styles.chartContainer}>
+                <LineChart
+                    data={data}
+                    width={400}
+                    height={250}
+                    chartConfig={{
+                        backgroundColor: '#eee',
+                        backgroundGradientFrom: '#fff',
+                        backgroundGradientTo: '#fff',
+                        decimalPlaces: 2, // optional, defaults to 2dp
+                        color: (opacity = 1) => `rgba(173, 216, 230, ${opacity})`,
+                        style: {
+                            borderRadius: 16
+                        }
+                    }}
+                    bezier
+                    style={{
+                        marginVertical: 8,
+                        borderRadius: 16
+                    }}
+                />
+            </View> */}
             <Spinner
                 color={Colors.primary}
                 visible={isLoading}
