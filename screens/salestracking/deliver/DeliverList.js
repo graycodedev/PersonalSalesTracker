@@ -21,22 +21,24 @@ import DateDisplay from "../../../components/DateDisplay";
 import AppStyles from "../../../assets/theme/AppStyles";
 import WarningModal from "../../../components/WarningModal";
 
+import qs from "qs"
+
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-const OrderList = ({ navigation }) => {
+const DeliverList = ({ navigation }) => {
     useEffect(() => {
         navigation.setOptions({
-            title: "Orders",
+            title: "Orders to Deliver",
         });
     }, [])
 
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
-    
-
+    const [showConfirmDelivery, setShowConfirmDelivery]= useState(false);
+    const [selectedOrderId, setSelectedOrderId]= useState();
 
     const onRefresh = () => {
         wait(2000).then(() => {
@@ -49,7 +51,7 @@ const OrderList = ({ navigation }) => {
     const getList = async () => {
         try {
             var response = await (await request())
-                .get(Api.Orders.List)
+                .get(Api.Dispatch.DispatchedList)
                 .catch(function (error) {
                     ToastMessage.Short("Error! Contact Support");
                 });
@@ -75,6 +77,7 @@ const OrderList = ({ navigation }) => {
 
     useFocusEffect(
         React.useCallback(() => {
+            setIsLoading(true)
             getList();
             return () => {
                 // Cleanup function (optional)
@@ -83,7 +86,32 @@ const OrderList = ({ navigation }) => {
         }, [])
     );
 
-   
+     const confirmDelivery =async()=>{
+        await deliverOrder();
+        // products.splice(deleteIndex, 1);
+        // setSelectedProducts(products);
+       
+    }
+    const deliverOrder = async (id) => {
+        console.log("dfd", Api.Deliver.Save + "?id=" + selectedOrderId)
+        var response = await (await request())
+          .post(Api.Deliver.Save , qs.stringify({id: selectedOrderId}))
+          .catch(function (error) {
+            
+            ToastMessage.Short("Error! Contact Support");
+          });
+        if (response != undefined) {
+          if (response.data.Code == 200) {
+            ToastMessage.Short(response.data.Message);
+            await getList();
+            setShowConfirmDelivery(false); 
+          } else {
+            ToastMessage.Short("Error delivering the order");
+          }
+        } else {
+          ToastMessage.Short("Error delivering the order");
+        }
+      };
 
     return (
         <View style={styles.container}>
@@ -99,7 +127,7 @@ const OrderList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {orders.map((order) => (
+                    {orders.length> 0 && orders.map((order) => (
                         <TouchableOpacity
                             key={order.value}
                             style={styles.orderItem}
@@ -107,23 +135,40 @@ const OrderList = ({ navigation }) => {
                         >
                             <View>
                                 <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>{order.CompanyName}</Text>
-                                <Text style={styles.orderInfo}>Order Date: <DateDisplay date={order.OrderDate} /></Text>
-                                <Text style={styles.orderInfo}>Est. Delivery:<DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
+                                <Text style={[styles.orderInfo, {color: "#040273"}]}>#{order.OrderNo} </Text>
+                                
+                                <Text style={styles.orderInfo}>Delivery Date:<DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
                             </View>
+                            <TouchableOpacity style={{flexDirection:'row', alignItems:'center', borderColor: Colors.primary, borderWidth: 1, justifyContent:"center",  padding: 4, borderRadius: 4}} onPress={()=>{
+                                setSelectedOrderId(order.Id); 
+                                setShowConfirmDelivery(true);
+                            }}>
+                                <Text style={[styles.orderInfo, {color: "#040273", fontFamily:"SemiBold"}]}>deliver</Text>
+                            </TouchableOpacity>
                         </TouchableOpacity>
-                    ))}
+                    )
+                    
+                    )}
+
+{orders.length==0 && 
+
+<View style={{alignItems:"center"}}>
+    <BankingIcons.warning height={60} width={60} fill={"#FFD21E"} />
+    <Text style={[AppStyles.Text.BoldTitle, {fontSize: 20}]}>No deliverable orders found!!</Text>
+</View>
+}
                 </ScrollView>
             )}
-
-            <TouchableOpacity
-                style={styles.circle}
-                onPress={() => {
-                    navigation.navigate("AddOrder");
-                }}
-            >
-                <BankingIcons.plus fill="white" />
-            </TouchableOpacity>
-           
+             {showConfirmDelivery && (
+            <WarningModal
+              text1={"Deliver the order?"}
+              text2={"Do you want to mark the order as delivered?"}
+              onConfirm={confirmDelivery}
+              onCancel={() => {
+                setShowConfirmDelivery(false)
+              }}
+            />
+          )}
         </View>
     );
 };
@@ -144,6 +189,7 @@ const styles = StyleSheet.create({
         elevation: 2,
         flexDirection: "row",
         alignItems: "center",
+        justifyContent:'space-between'
     },
     orderImage: {
         width: 50,
@@ -181,4 +227,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default OrderList;
+export default DeliverList;

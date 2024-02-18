@@ -177,7 +177,7 @@ import { Colors } from "../screens/style/Theme";
       fontSize: 18,
       textAlign: "center",
       fontFamily: "Bold",
-      marginBottom: 6
+      marginBottom: 8
     },
     confirmText: {
       // color: "red",
