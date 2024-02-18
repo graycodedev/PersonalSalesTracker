@@ -95,6 +95,7 @@ setQuantityError("Invalid Quantity");
             isValid= false;
             setPartyError("Select a party!!")
         }
+       
         return isValid;
     }
 
@@ -200,7 +201,7 @@ setIsLoading(true)
     let data={
         Id: 0, 
         PartyId: selectedParty.Id,
-        CustomerNote:notes, 
+        CustomerNote:notes==""?"Order for "+selectedParty?.PartyName: notes, 
         EstimatedDeliveryDate: deliveryDate, 
         SalesPersonIdentityUserId: 1, 
         OrderDetailInputVM: selectedProducts, 

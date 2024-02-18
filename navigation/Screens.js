@@ -278,6 +278,9 @@ import ReturnDetails from "../screens/salestracking/return/ReturnDetails";
 import ReturnOrder from "../screens/salestracking/return/ReturnOrder";
 import EODReport from "../screens/salestracking/EODReport/EODReport";
 import ReceivePayment from "../screens/payment/ReceivePayment";
+import DeliverList from "../screens/salestracking/deliver/DeliverList";
+import DeliverDetails from "../screens/salestracking/deliver/DeliverDetails";
+
 
 const { width } = Dimensions.get("screen");
 const Stack = createStackNavigator();
@@ -1128,6 +1131,16 @@ function HomeStack(props) {
       <Stack.Screen
         name="View Profile"
         component={ChangeProfile}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="DeliverList"
+        component={DeliverList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="DeliverDetails"
+        component={DeliverDetails}
         options={headerOptions}
       />
     </Stack.Navigator>
