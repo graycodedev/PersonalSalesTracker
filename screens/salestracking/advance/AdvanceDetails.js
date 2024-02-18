@@ -11,6 +11,7 @@ import ToastMessage from "../../../components/Toast/Toast";
 import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
 import DateDisplay from "../../../components/DateDisplay";
+import DetailCard from "../../../components/DetailCard";
 
 const AdvanceDetails = ({ route, navigation }) => {
     const { advance } = route.params;
@@ -51,6 +52,13 @@ const AdvanceDetails = ({ route, navigation }) => {
         navigation.navigate('RequestAdvance', { update: true, advance: advanceDetails });
     };
 
+    const advanceDetailsArray = [
+        { Label: "Amount", Value: `Rs. ${advance.Amount}` },
+        { Label: "For", Value: forDate },
+        { Label: "Remarks", Value: advance.Remarks },
+        { Label: "Status", Value: advance.IsApproved ? "Approved" : advance.IsCancelled ? "Cancelled" : "Pending" },
+    ];
+
     return (
         <ScrollView
             nestedScrollEnabled={true}
@@ -58,82 +66,21 @@ const AdvanceDetails = ({ route, navigation }) => {
             style={{ width: "100%", backgroundColor: "#eee" }}
             contentContainerStyle={{ flexGrow: 1 }}
         >
-            <View style={styles.container}>
-                <View style={styles.itemContainer}>
-                    <View style={styles.item}>
-                        <Text style={styles.advanceInfo}>Amount:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.advanceData}>Rs. {advance.Amount}</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.advanceInfo}>For:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.advanceData}>{forDate}</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.advanceInfo}>Remarks:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.advanceData}>{advance.Remarks}</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.item}>
-                        <Text style={styles.advanceInfo}>Status:</Text>
-                        <View style={styles.dataView}>
-                            {advance.IsApproved == true ? <Text style={[styles.advanceData, { color: 'green' }]}>Approved</Text> : advance.IsCancelled ? <Text style={[styles.advanceData, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.advanceData, { color: 'orange' }]}>Pending</Text>}
-                        </View>
-                    </View>
-
-                </View>
-            </View>
+            <DetailCard details={advanceDetailsArray} />
 
             <View style={styles.buttons}>
                 <TouchableOpacity
                     style={[styles.circle, { marginBottom: 8, backgroundColor: Colors.primary }]}
-                    onPress={() => {
-                        updateAdvance()
-                    }}
+                    onPress={updateAdvance}
                 >
                     <BankingIcons.Edit fill={"white"} height={25} width={25} />
                 </TouchableOpacity>
-
             </View>
         </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        margin: 10,
-        padding: 10,
-        alignContent: "center",
-        justifyContent: "flex-start",
-    },
-    itemContainer: {
-        backgroundColor: 'white',
-        elevation: 2,
-    },
-    item: {
-        flexDirection: 'row',
-        backgroundColor: "#fff",
-        justifyContent: 'space-between',
-        padding: 10,
-    },
-    advanceInfo: {
-        fontSize: 20,
-    },
-    dataView: {
-        width: '50%'
-    },
-    advanceData: {
-        fontSize: 20,
-        textAlign: 'right'
-    },
     circle: {
         backgroundColor: "white",
         width: 50,
