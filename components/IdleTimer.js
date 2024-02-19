@@ -14,7 +14,6 @@ const IdleTimer = ({ timeout, onTimeout }) => {
         appState.current === "active" &&
         nextAppState.match(/inactive|background/)
       ) {
-      console.log("hehehehe")
 
         let api= await helpers.GetPaymentMethods(); 
         console.log(api);
