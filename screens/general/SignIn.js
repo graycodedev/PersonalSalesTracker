@@ -107,6 +107,7 @@ class SignIn extends React.Component {
       dropDownCompanySelected: false,
       alertMessage: "",
       companyCode: "",
+      loggingIn:true
     };
   }
   getAppVersion = async () => {
@@ -142,6 +143,7 @@ class SignIn extends React.Component {
   };
 
   getLogoPath = async () => {
+    console.log("Called logoppath")
     let companyId = await helpers.GetCompanyId();
     if (companyId > 0) {
       let logoPath = await helpers.GetCompanyLogoPath();
@@ -214,7 +216,7 @@ class SignIn extends React.Component {
     this.setState({ companiesDetailList: companiesDetailList });
   };
   componentDidMount = async () => {
-    await tokenManager.clearAndRestoreNewToken();
+   
     this.props.navigation.setOptions({
       title: "",
     });
@@ -239,10 +241,6 @@ class SignIn extends React.Component {
       this.setState({ email: userData.email,password:userData.password, companyCode:userData.companyCode, isChecked: true });
     }
     this.handleIos();
-    this.getOffers();
-    // this.getNotice();
-    // this.getAppVersion();
-    this.getDeviceToken();
     this.getSettings();
     this.getCompanyDetails();
     this.getLogoPath();
@@ -621,216 +619,10 @@ class SignIn extends React.Component {
                   Sign in to continue
                 </Text>
               </View>
-              {/* <Text
-                style={{
-                  marginTop: 10,
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  color: Colors.PrimaryColor,
-                  textTransform: "uppercase",
-                }}
-              >
-                {api.WalletName}
-              </Text> */}
+              
             </View>
-            {/* <View
-              style={{ marginTop: 20, margin: 30, flexDirection: "column" }}
-            >
-              <KeyboardAvoidingView>
-                <View style={{ marginBottom: 2 }}>
-                  <InputText
-                    keyboardType="numeric"
-                    placeholder="mobile no"
-                    iconContent={
-                      <Icon size={16} name="phone" style={{ color:Colors.primary}} />
-                    }
-                    onChangeText={(email) => this.setState({ email })}
-                    value={this.state.email}
-                  />
-                  <Text style={{ color: "red" }}>{this.state.emailError}</Text>
-                </View>
-                <View style={{ marginBottom: 0, paddingBottom: 0 }}>
-                  {!this.state.showPassword && (
-                    <View>
-                      <InputText
-                        password
-                        autoCapitalize="none"
-                        placeholder="Password/MPIN"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            name="lock"
-                            style={styles.inputIcons}
-                          />
-                        }
-                        onChangeText={(password) => this.setState({ password })}
-                        value={this.state.password}
-                      />
-                      <View
-                        style={{
-                          position: "absolute",
-                          right: 0,
-                          top: 0,
-                          bottom: 0,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          paddingRight: 5,
-                        }}
-                      >
-                        <TouchableOpacity
-                          onPress={() => {
-                            this.setState({ showPassword: true });
-                          }}
-                        >
-                          <Icon
-                            style={{ color: Colors.primary }}
-                            name="eye"
-                            size={20}
-                            color="#000"
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  )}
-                  {this.state.showPassword && (
-                    <View>
-                      <InputText
-                        autoCapitalize="none"
-                        placeholder="Password"
-                        iconContent={
-                          <Icon
-                            size={16}
-                            name="lock"
-                            style={styles.inputIcons}
-                          />
-                        }
-                        onChangeText={(password) => this.setState({ password })}
-                        value={this.state.password}
-                      />
-                      <View
-                        style={{
-                          position: "absolute",
-                          right: 0,
-                          top: 0,
-                          bottom: 0,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          paddingRight: 5,
-                        }}
-                      >
-                        <TouchableOpacity
-                          onPress={() => {
-                            this.setState({ showPassword: false });
-                          }}
-                        >
-                          <Icon
-                            style={{ color: Colors.primary }}
-                            name="eye-slash"
-                            size={20}
-                            color="#000"
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  )}
-                  <Text style={{ color: "red" }}>
-                    {this.state.passwordError}
-                  </Text>
-                </View>
-                <View style={{ flex: 1, flexDirection: "row" }}>
-                   <CheckBox
-                    value={this.state.isChecked}
-                    onValueChange={() => {
-                      this.state.isChecked
-                        ? this.setState({ isChecked: false })
-                        : this.setState({ isChecked: true });
-                    }}
-                    style={styles.checkbox}
-                  /> 
-                  <Text style={{ alignSelf: "center", textAlign: "center" }}>
-                    Remember me
-                  </Text>
-                </View>
-                {this.state.isBiometricEnabled && (
-                  <View style={{ alignItems: "center", marginBottom: 20 }}>
-                    <TouchableOpacity
-                      color="primary"
-                      onPress={() => {
-                        this.clearState();
-                        if (Platform.OS === "android") {
-                          this.setModalVisible(!this.state.modalVisible);
-                        } else {
-                          this.scanFingerPrint();
-                        }
-                      }}
-                    >
-                      <FingerPrint />
-                    </TouchableOpacity>
-                    <Text style={{ fontSize: 14, fontFamily: "Regular" }}>
-                      Tap to login with fingerprint.
-                    </Text>
-                    {this.state.failedCount > 0 && (
-                      <Text
-                        style={{
-                          color: "red",
-                          fontSize: 14,
-                          fontFamily: "Regular",
-                        }}
-                      >
-                        Failed to authenticate, press cancel and try again.
-                      </Text>
-                    )}
-                  </View>
-                )}
-                <TouchableOpacity
-                  color="primary"
-                  onPress={() => {
-                    if (this.validateForm()) {
-                      this.SignIn();
-                    }
-                  }}
-                >
-                  <ButtonPrimary title={"Sign In"} />
-                  {
-                    <ActivityIndicator
-                      animating={this.state.isLoading}
-                      color="#ffa500"
-                      style={styles.activityIndicator}
-                    ></ActivityIndicator>
-                  }
-                </TouchableOpacity>
-              </KeyboardAvoidingView>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate("ForgotPassword");
-                }}
-              >
-                <Text
-                  style={{
-                    color: Colors.primary,
-                    textAlign: "center",
-                    paddingTop: 10,
-                  }}
-                >
-                  Forgot password ?
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("Register")}
-              >
-                <Text
-                  style={{
-                    color: Colors.primary,
-                    textAlign: "center",
-                    paddingTop: 10,
-                  }}
-                >
-                  Request mobile banking
-                </Text>
-              </TouchableOpacity>
-            </View> */}
+           
             <View style={{ marginHorizontal: 24 }}>
-
               <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
                 Company Code
               </Text>
@@ -1105,23 +897,7 @@ class SignIn extends React.Component {
 
             <View>
               <View style={{ alignSelf: "center" }}>
-                {/* {this.state.allowRegisterFromApp && (
-                  <TouchableOpacity
-                    style={{ alignItems: "center", justifyContent: "center" }}
-                    onPress={() => this.props.navigation.navigate("Register")}
-                  >
-                    <Text
-                      style={{
-                        color: Colors.primary,
-                        marginVertical: 10,
-                        fontSize: 14,
-                        fontFamily: "SemiBold",
-                      }}
-                    >
-                      Request mobile banking
-                    </Text>
-                  </TouchableOpacity>
-                )} */}
+               
 
                 <TouchableOpacity
                   style={{ alignItems: "center", justifyContent: "center" }}
@@ -1149,25 +925,10 @@ class SignIn extends React.Component {
                   version: {info.expo.version}
                 </Text>
               </View>
-              {this.state.offers && this.state.offers.length > 0 && (
-                <ImgSlider
-                  navigation={this.props.navigation}
-                  data={this.state.offers}
-                />
-              )}
+            
             </View>
           </ScrollView>
-          <SigninFooter navigation={this.props.navigation} />
-          {this.state.alertMessage && (
-            <ConfirmationModal
-              text1={"Error"}
-              text2={this.state.alertMessage}
-              onConfirm={() => {
-                this.setState({ alertMessage: "" });
-              }}
-              warning
-            />
-          )}
+          
           <Modal visible={this.state.noticeModal} transparent>
             <Pressable
               style={{ flex: 1 }}
@@ -1303,6 +1064,67 @@ class SignIn extends React.Component {
     this.setState({ isLoading: false });
   };
 
+  SignInRemembered= async(data)=>{
+    this.setState({ isLoading: true });
+    var response = await (await request())
+      .post(api.Login, qs.stringify(data))
+      .catch(function (error) {
+        this.setState({ isLoading: false });
+        ToastMessage.Short("Error Ocurred Contact Support");
+      });
+    console.log("Response", response.data)
+    if (response != undefined && response.data != undefined) {
+      if (response.data.Code == 200) {
+        var userCache = await helpers.GetUserInfo();
+        if (userCache != null && userCache.PhoneNumber != this.state.email) {
+          DeviceStorage.deleteKey("UserAccountsInfo");
+        }
+        this.secureStoreSave();
+        var userInfo = {
+          Id: response.data.Data.User.IdentityUserId,
+          Email: response.data.Data.User.Email,
+          UserName: response.data.Data.User.UserName,
+          PhoneNumber: this.state.email,
+          FullName:
+            response.data.Data.User.FirstName +
+            " " +
+            response.data.Data.User.LastName,
+          BranchId: response.data.Data.User.BranchId,
+          CompanyId: response.data.Data.User.CompanyId,
+          ProfilePicture: response.data.Data.User.ProfilePicture,
+        };
+
+        //saving new user token on login
+
+        await DeviceStorage.saveKey(
+          "enableRememberMe",
+          this.state.isChecked ? "true" : "false"
+        );
+        await DeviceStorage.saveKey("token", response.data.Data.User.Token);
+        await DeviceStorage.saveKey(
+          "refreshtoken",
+          response.data.Data.User.RefreshToken
+        );
+        await DeviceStorage.saveKey("UserInfo", JSON.stringify(userInfo));
+        if (!this.state.savedCompanyDetail) {
+          await DeviceStorage.saveKey(
+            "CompanyDetail",
+            JSON.stringify(this.state.selectedCooperativeDetail)
+          );
+          await DeviceStorage.saveKey("SavedCompanyDetail", "true");
+        }
+        this.props.navigation.replace("Home");
+      } else {
+        this.setState({ alertMessage: response.data.Message });
+      }
+    } else {
+      ToastMessage.Short("Error Ocurred Contact Support");
+      this.setState({ isLoading: false });
+    }
+    this.setState({ isLoading: false });
+  };
+
+
   SignIn = async () => {
     this.setState({ isLoading: true });
 
@@ -1368,15 +1190,6 @@ class SignIn extends React.Component {
         this.props.navigation.replace("Home");
       } else {
         this.setState({ alertMessage: response.data.Message });
-        // Alert.alert(
-        //   "Error",
-        //   "The username or password you have entered is incorrect. Please try again.",
-        //   [
-        //     {
-        //       text: "OK",
-        //     },
-        //   ]
-        // );
       }
     } else {
       ToastMessage.Short("Error Ocurred Contact Support");

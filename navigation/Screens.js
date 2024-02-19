@@ -27,6 +27,7 @@ import ChequeRequest from "../screens/cooperative/ChequeRequest";
 import Settings from "../screens/general/Settings";
 import ServiceList from "../screens/utilityPayment/ServiceList";
 import { ProfileIcon } from "../components/IconsAll";
+import MainScreen from "../screens/general/MainScreen";
 
 import {
   LoadAccountList,
@@ -394,7 +395,7 @@ const headerOptions = {
 function HomeStack(props) {
   return (
     <Stack.Navigator
-      initialRouteName="SignIn"
+      initialRouteName="MainScreen"
       {...props}
       mode="card"
       screenOptions={screenOptionStyle}
@@ -403,6 +404,12 @@ function HomeStack(props) {
         name="SignIn"
         {...props}
         component={SignIn}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="MainScreen"
+        {...props}
+        component={MainScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

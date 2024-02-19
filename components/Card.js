@@ -7,7 +7,7 @@ import * as BankingIcons from "./BankingIcons";
 import { Colors } from "../screens/style/Theme";
 import * as SVG from "../components/BankingIcons";
 
-export const AccountCard = ({ data, navigation, callback, balanceError }) => {
+export const AccountCard = ({ data, navigation,  balanceError }) => {
   const [visible, setVisible] = useState(false);
 
   return (

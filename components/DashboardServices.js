@@ -460,7 +460,8 @@ const styles = StyleSheet.create({
   anOption: {
     marginHorizontal: 5,
     height: 88,
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 2,
     marginBottom: 12,
     borderRadius: 4,
     alignItems: "center",

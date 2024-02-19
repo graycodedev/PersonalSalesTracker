@@ -63,7 +63,6 @@ class Home extends React.Component {
 this.subscription;
     this.handleIos();
     this.GetUserInfo();
-    this.getCategoryAll();
     this.getLogoPathHeader();
     this.getOffers();
   }
@@ -76,10 +75,6 @@ this.subscription;
  this.subscription=  AppState.addEventListener("change", this._handleAppStateChange);
 
   }
-  //commented if no error than remove later oct 28
-  // componentWillReceiveProps(nextProps) {
-  //   this.GetUserInfo();
-  // }
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
    this.subscription.remove();
@@ -159,76 +154,12 @@ this.subscription;
           this.setState({ accountList: accList });
         }
       }
-      await this.getCooperativeBalance();
-      await this.getRecentTransactions();
-      await this.checkUserHasPin();
     }
   };
-  getCategoryAll = async () => {
-    var GetCategories = api.GetCategories + "?offset=1&limit=" + 20;
-    (await request()).get(GetCategories).then((categories) => {
-      if (categories.data != null && categories.data.Code == 200) {
-        this.setState({ categories: categories.data.Data });
-      } else {
-      }
-    });
-  };
+ 
+  
+ 
 
-  getAccountList = async () => {
-    this.setState({ balanceError: "" });
-    var accountListUrl =
-      api.AccountList + "?code=graycode&mobileno=" + this.state.PhoneNumber;
-    var accountList = await (await request()).get(accountListUrl);
-    if (accountList.data != null && accountList.data.Code == 200) {
-      this.setState({ balanceError: "" });
-      this.setState({ accountList: accountList.data.Data });
-      await DeviceStorage.saveKey(
-        "UserAccountsInfo",
-        JSON.stringify(accountList.data.Data)
-      );
-    } else {
-      this.setState({ balanceError: "Error syncing live balance" });
-      ToastMessage.Short("Error syncing account numbers and balance");
-    }
-  };
-  getCooperativeBalance = async () => {
-    var companyBalance = await (await request()).get(api.CooperativeBalance);
-    if (companyBalance.data != null && companyBalance.data.Code == 200) {
-      await DeviceStorage.saveKey(
-        "CooperativeBalance",
-        JSON.stringify(companyBalance.data.Data)
-      );
-    } else {
-      ToastMessage.Short("Error syncing company balance");
-    }
-  };
-  getRecentTransactions = async () => {
-    let clientId = api.IsAppForMultiple
-      ? this.state.IosCompanyId
-      : api.CompanyId;
-    let companyId = api.IsAppForMultiple
-      ? this.state.IosCompanyId
-      : api.CompanyId;
-    var data = qs.stringify({
-      ClientId: clientId,
-      SecretKey: api.SecretKey,
-      UserId: this.state.userId,
-      CompanyId: companyId,
-      UserId: this.state.userId,
-      PageNo: 1,
-      PageSize: 10,
-    });
-    var response = await (await request()).post(api.RecentTransaction, data);
-    if (response != undefined) {
-      if (response.data.Code == 200) {
-        this.setState({ recentTransactions: response.data.Data });
-      } else {
-        ToastMessage.Short("Error Loading Recent Transactions");
-      }
-    } else {
-      ToastMessage.Short("Error Loading Recent Transactions");
-    }
-  };
   handleIos = async () => {
     let CompanyDetail = await helpers.GetCompanyInfoIOS();
     this.setState({
@@ -238,23 +169,9 @@ this.subscription;
       IosPrimaryColor: CompanyDetail.PrimaryColor,
     });
   };
-  checkUserHasPin = async () => {
-    var pinurl = endPoints.CheckUserPin;
-    (await request()).get(pinurl).then((staus) => {
-      let response = staus.data;
-      if (response.Code == 200) {
-        DeviceStorage.saveKey("UserHasPin", response.Data.toString());
-        if (!response.Data) {
-          this.props.navigation.navigate("savepin");
-        }
-      } else {
-        ToastMessage.Short(response.Message);
-      }
-    });
-  };
+
   _onRefresh = async () => {
     await this.GetUserInfo();
-    this.getCategoryAll();
     helpers.GetUserInfo().then((userinfo) => {
       if (userinfo == null) {
         this.props.navigation.navigate("SignIn");
@@ -299,60 +216,9 @@ this.subscription;
           />
         }
       >
-        {/* <View style={styles.topPanel}>
-          <View style={styles.header}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.openDrawer();
-              }}
-            >
-              <Icon style={styles.iconStyle} name="bars" size={25} />
-            </TouchableOpacity>
-
-            <Image
-              style={styles.headerImage}
-              source={{ uri: `${api.BaseUrl}${this.state.logoPathHeader}` }}
-            ></Image>
-
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("Notifications");
-              }}
-            >
-              <IconMatirealCommunityIcons
-                name="bell"
-                size={30}
-                style={styles.iconStyle}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.swiperView}>
-            <View style={styles.swiper}>
-              <Swiper
-                activeDotColor={Colors.primary}
-                paginationStyle={{
-                  bottom: -25,
-                }}
-                key={this.state.accountList.length}
-              >
-                {this.state.accountList.length > 0 &&
-                  this.state.accountList.map((item, index) => {
-                    if (item.AccType != "Loan") {
-                      return <AccountCard key={item.AccNum} data={item} />;
-                    }
-                  })}
-              </Swiper>
-            </View>
-          </View>
-          <TopServices navigation={this.props.navigation} />
-        </View> */}
-        {/* <HomeHeader /> */}
+        
         <View style={styles.headerAndCard}>
-          {/* <BankingIcons.ScreenheaderIcon fill={Colors.primary} width="100%" /> */}
           <View style={styles.headContainer} />
-          {/* <Image source={IMAGES.Ellipse} style={{ width: "100%" }} /> */}
-          {/* <Image source={BankingIcons.ScreenheaderEllipse} width="100%" /> */}
           <BankingIcons.ScreenheaderEllipse
             width="100%"
             fill="white"
@@ -400,7 +266,6 @@ this.subscription;
                         <AccountCard
                           navigation={this.props.navigation}
                           data={"blank"}
-                          callback={()=>this.getAccountList()}
                         />
             
             
@@ -409,14 +274,7 @@ this.subscription;
 
         <DashBoardServices navigation={this.props.navigation} />
 
-        {/* <View style={{ marginLeft: 20, marginVertical: 14 }}>
-          <Text style={{ fontSize: 14, fontFamily: "Bold" }}>
-            Check New Promo
-          </Text>
-          <Text style={{ color: "#777777", fontSize: 10 }}>
-            Shift through our latest offers
-          </Text>
-        </View> */}
+      
         <View style={{ paddingBottom: 20 }}>
           {this.state.offers && this.state.offers.length > 0 && (
             <ImgSlider
@@ -426,51 +284,7 @@ this.subscription;
           )}
         </View>
 
-        {/* <View style={styles.transactionHeading}>
-          <Text style={{ fontSize: 16, fontFamily: "Regular" }}>
-            {" "}
-            Recent Transactions
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate("TransactionList");
-            }}
-          >
-            <View style={styles.IconMore}>
-              <Icon style={{ color: "#fff" }} name="bars" size={15} />
-            </View>
-          </TouchableOpacity>
-        </View> */}
-        {/* {this.state.recentTransactions.length == 0 && (
-          <View style={styles.transactionBackground}>
-            <View style={styles.transactions}>
-              <Text style={styles.transactionText}>
-                No recent transactions found.
-              </Text>
-            </View>
-          </View>
-        )}
-        {this.state.recentTransactions.length > 0 && (
-          <View style={styles.recentTransactionsBackground}>
-            <ScrollView
-              nestedScrollEnabled={true}
-              horizontal={false}
-              style={{ maxHeight: 160, borderRadius: 5, width: "100%" }}
-            >
-              {this.state.recentTransactions &&
-                this.state.recentTransactions.map((item, index) => {
-                  return <SimpleRow data={item} key={index} />;
-                })}
-            </ScrollView>
-          </View>
-        )}
-        <View style={styles.merchantHeading}>
-          <Text style={styles.merchantHeadingText}> Merchants</Text>
-        </View>
-
-        <View style={{ marginBottom: 40 }}>
-          <CategoryViewer categories={this.state.categories} {...this.props} />
-        </View> */}
+      
       </ScrollView>
     );
   }

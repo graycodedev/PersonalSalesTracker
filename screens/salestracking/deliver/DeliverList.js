@@ -20,6 +20,7 @@ import Api from "../../../constants/Api";
 import DateDisplay from "../../../components/DateDisplay";
 import AppStyles from "../../../assets/theme/AppStyles";
 import WarningModal from "../../../components/WarningModal";
+import { Contact } from "../../../constants/Contact";
 
 import qs from "qs"
 
@@ -88,8 +89,6 @@ const DeliverList = ({ navigation }) => {
 
      const confirmDelivery =async()=>{
         await deliverOrder();
-        // products.splice(deleteIndex, 1);
-        // setSelectedProducts(products);
        
     }
     const deliverOrder = async (id) => {
@@ -123,28 +122,41 @@ const DeliverList = ({ navigation }) => {
                 <ScrollView
                     nestedScrollEnabled={true}
                     showsVerticalScrollIndicator={false}
-                    style={{ width: "100%", backgroundColor: "#eee", flex: 1 }}
+                    style={{ width: "100%", flex: 1 }}
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {orders.length> 0 && orders.map((order) => (
+                    {orders.length> 0 && orders.map((order, index) => (
                         <TouchableOpacity
-                            key={order.value}
+                            key={index}
                             style={styles.orderItem}
                             onPress={() => navigation.navigate("DeliverDetails", { deliverId: order.Id })}
                         >
-                            <View>
-                                <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>{order.CompanyName}</Text>
-                                <Text style={[styles.orderInfo, {color: "#040273"}]}>#{order.OrderNo} </Text>
+                            <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center", marginBottom: 4}}>
+                                <View>
                                 
-                                <Text style={styles.orderInfo}>Delivery Date:<DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
+                                    <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>{order.CompanyName}</Text>
+                                    <TouchableOpacity onPress={()=>Contact.MakeCall(order.PartyMobileNo) } style={{flexDirection:"row", alignItems:"center"}}>
+                                    <BankingIcons.callIcon fill={"green"} height={18} width={18}/>
+                                        <Text style={[styles.orderInfo]}> {order.PartyMobileNo} </Text>
+                                    </TouchableOpacity>
+                                    <Text style={[styles.orderInfo, {color: "#040273"}]}>#{order.OrderNo} </Text>
+                                
+                                    <Text style={styles.orderInfo}>Delivery Date: <DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
+                                    <Text style={styles.orderInfo}>Ordered Date: <DateDisplay date={order.OrderDate} /> </Text>
+                                
+                                </View>
+                                
                             </View>
-                            <TouchableOpacity style={{flexDirection:'row', alignItems:'center', borderColor: Colors.primary, borderWidth: 1, justifyContent:"center",  padding: 4, borderRadius: 4}} onPress={()=>{
-                                setSelectedOrderId(order.Id); 
-                                setShowConfirmDelivery(true);
-                            }}>
-                                <Text style={[styles.orderInfo, {color: "#040273", fontFamily:"SemiBold"}]}>deliver</Text>
-                            </TouchableOpacity>
+                            <View style={{flexDirection:'row',justifyContent:"space-between", marginTop: 4}}>
+                                <TouchableOpacity style={{flexDirection:'row', alignItems:'center', borderColor: Colors.primary, borderWidth: 1, justifyContent:"center",  padding: 2, borderRadius: 4, width:"30%"}} onPress={()=>{
+                                        setSelectedOrderId(order.Id);
+                                        setShowConfirmDelivery(true);
+                                    }}>
+                                        <Text style={[styles.orderInfo, {color: "#040273", fontFamily:"SemiBold"}]}>deliver</Text>
+                                    </TouchableOpacity>
+                                <Text style={[styles.orderInfo, {color: "green", alignSelf:"flex-end"}]}>Rs. {order?.TotalAmount}</Text>
+                            </View>
                         </TouchableOpacity>
                     )
                     
@@ -180,6 +192,7 @@ const styles = StyleSheet.create({
         padding: 10,
         alignContent: "center",
         justifyContent: "flex-start",
+       backgroundColor: "#eee"
     },
     orderItem: {
         backgroundColor: "#fff",
@@ -187,9 +200,6 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 10,
         elevation: 2,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent:'space-between'
     },
     orderImage: {
         width: 50,

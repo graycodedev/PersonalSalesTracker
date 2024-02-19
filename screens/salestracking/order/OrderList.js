@@ -20,6 +20,7 @@ import Api from "../../../constants/Api";
 import DateDisplay from "../../../components/DateDisplay";
 import AppStyles from "../../../assets/theme/AppStyles";
 import WarningModal from "../../../components/WarningModal";
+import { Contact } from "../../../constants/Contact";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -99,16 +100,27 @@ const OrderList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {orders.map((order) => (
+                    {orders.map((order, index) => (
                         <TouchableOpacity
-                            key={order.value}
+                            key={index}
                             style={styles.orderItem}
                             onPress={() => navigation.navigate("DeliverDetails", { deliverId: order.Id })}
                         >
-                            <View>
-                                <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>{order.CompanyName}</Text>
-                                <Text style={styles.orderInfo}>Order Date: <DateDisplay date={order.OrderDate} /></Text>
-                                <Text style={styles.orderInfo}>Est. Delivery:<DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
+                            <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center", marginBottom: 4}}>
+                                <View>
+                                
+                                    <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>{order.CompanyName}</Text>
+                                    <TouchableOpacity onPress={()=>Contact.MakeCall(order.PartyMobileNo) } style={{flexDirection:"row", alignItems:"center"}}>
+                                    <BankingIcons.callIcon fill={"green"} height={18} width={18}/>
+                                        <Text style={[styles.orderInfo]}> {order.PartyMobileNo} </Text>
+                                    </TouchableOpacity>
+                                    <Text style={[styles.orderInfo, {color: "#040273"}]}>#{order.OrderNo} </Text>
+                                
+                                    <Text style={styles.orderInfo}>Delivery Date: <DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
+                                    <Text style={styles.orderInfo}>Ordered Date: <DateDisplay date={order.OrderDate} /> </Text>
+                                
+                                </View>
+                                
                             </View>
                         </TouchableOpacity>
                     ))}

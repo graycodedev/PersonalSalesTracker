@@ -213,7 +213,6 @@ setIsLoading(true)
         setIsLoading(false);
         ToastMessage.Short("Error Occurred Contact Support");
     });
-    console.log("rest",response )
 if (response != undefined) {
     
     if (response.data.Code == 200) {
