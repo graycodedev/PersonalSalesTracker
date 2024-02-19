@@ -28,6 +28,9 @@ const AddVisit = (props, route) => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [showPartiesList, setShowPartiesList] = useState(false);
     const [selectedParty, setSelectedParty] = useState(null);
+    const [locationError, setLocationError] = useState("");
+    const [remarkError, setRemarkError] = useState("");
+    const [partyError, setPartyError] = useState("");
 
     useEffect(() => {
         let addText = update ? "Update" : "Add"
@@ -110,6 +113,11 @@ const AddVisit = (props, route) => {
                         }}
                         value={locationName}
                     />
+                    {locationError !== "" && (
+                        <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
+                            {locationError}
+                        </Text>
+                    )}
                     <ActivityIndicator
                         animating={isLoading}
                         color="#ffa500"
@@ -145,6 +153,32 @@ const AddVisit = (props, route) => {
         }
 
         const remarks = remark;
+
+        let isValid = true;
+        if (selectedOption === 'addParty' && locationName.trim() === "") {
+            isValid = false;
+            setLocationError("Location is Required!");
+        } else {
+            setLocationError("");
+        }
+
+        if (remark.trim() === "") {
+            isValid = false;
+            setRemarkError("Remark is Required!");
+        } else {
+            setRemarkError("");
+        }
+
+        if (selectedOption === 'existingParty' && !selectedParty) {
+            isValid = false;
+            setPartyError("Party is Required!");
+        } else {
+            setPartyError("");
+        }
+
+        if (!isValid) {
+            return;
+        }
 
 
         let visitData = {
@@ -271,8 +305,12 @@ const AddVisit = (props, route) => {
                         multiline={true}
                         numberOfLines={5}
                         style={{ height: 100, alignItems: 'flex-start', borderWidth: 0 }}
-
                     />
+                    {remarkError !== "" && (
+                        <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
+                            {remarkError}
+                        </Text>
+                    )}
                 </View>
 
                 <View style={{ margin: 30 }}>
@@ -290,8 +328,6 @@ const AddVisit = (props, route) => {
         </ScrollView>
     );
 };
-
-
 
 const styles = StyleSheet.create({
     container: {

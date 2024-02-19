@@ -9,25 +9,26 @@ import {
     ActivityIndicator,
     Text,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Picker } from "@react-native-picker/picker";
 import { Modal } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { ButtonPrimary } from "../../../components/Button";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as BankingIcons from "../../../components/BankingIcons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Colors } from "../../style/Theme";
-import { TextInput } from "react-native-gesture-handler";
 import { RegularInputText, AmountInputText } from "../../../components/Input";
 import PageStyle from "../../style/pageStyle";
 import { SearchableList } from "../../../components/SearchableList";
 import { AutoCompleteList } from "../../../components/AutoCompleteList";
 import Api from "../../../constants/Api";
+import qs from "qs";
+import request from "../../../config/RequestManager";
+import ToastMessage from "../../../components/Toast/Toast";
+import { useNavigation } from '@react-navigation/native';
 
 
 const AddCollection = (props) => {
+    const navigation = useNavigation();
+
     const [selectedImage, setSelectedImage] = useState(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -58,9 +59,9 @@ const AddCollection = (props) => {
     }, [selectedDate]);
 
     useEffect(() => {
-       props.navigation.setOptions({
+        props.navigation.setOptions({
             title: "Save Collection",
-          });
+        });
     }, []);
 
 
@@ -72,7 +73,7 @@ const AddCollection = (props) => {
             quality: 1,
         });
 
-        if (!result.cancelled) {
+        if (!result.canceled) {
             setSelectedImage(result.uri);
         }
     };
@@ -87,17 +88,25 @@ const AddCollection = (props) => {
         setShowPartiesList(false);
     }
 
-    const savePayment = async () => {
+    const saveCollection = async () => {
+        console.log('Selected Image:', selectedImage);
+        console.log('Selected Party:', selectedParty);
+
         let strData = qs.stringify({
-            Id:  0,
-            OrderId: title,
-            PaymentMode: note,
-            Remarks: true,
-            Amount: 1
-        })
+            Id: 0,
+            PartyId: selectedParty.PartyId,  // Make sure PartyId is present
+            PaymentDate: formattedDate,
+            PaymentMode: mode,
+            Remarks: note,
+            Amount: amount,
+        });
+
+        console.log('Data being sent to API:', strData);
+
+
         setIsLoading(true);
         var response = await (await request())
-            .post(Api.Notes.Save, strData)
+            .post(Api.Collections.Save, strData)
             .catch(function (error) {
                 setIsLoading(false);
                 ToastMessage.Short("Error Occurred Contact Support");
@@ -105,7 +114,7 @@ const AddCollection = (props) => {
         if (response != undefined) {
             if (response.data.Code == 200) {
                 setIsLoading(false);
-                goToNotesList();
+                navigation.goBack();
                 return response.data.Data;
 
             } else {
@@ -198,15 +207,26 @@ const AddCollection = (props) => {
                         placeholder="Payment Mode"
                         label="Select Payment Mode"
                         items={[
-                            { label: 'Cash', value: 'cash' },
-                            { label: 'Credit Card', value: 'creditCard' },
-                            { label: 'Bank Transfer', value: 'bankTransfer' },
+                            { label: 'Cash', value: 'C' },
+                            { label: 'Cheque', value: 'B' },
+                            { label: 'Bank Transfer', value: 'T' },
                         ]}
                         defaultValue={mode}
                         onChangeItem={(item) => setMode(item.value)}
                     />
                 </View>
 
+                <View>
+                    <RegularInputText
+                        key="amount"
+                        placeholder="Amount"
+                        onChangeText={(text) => {
+                            setAmount(text)
+                        }}
+                        value={amount}
+                        keyboardType="numeric"
+                    />
+                </View>
 
                 <View>
                     <RegularInputText
@@ -238,7 +258,7 @@ const AddCollection = (props) => {
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
                         onPress={() => {
-                            setIsLoading(true);
+                            saveCollection()
                         }}
                     >
                         <ButtonPrimary title={"Save"} />

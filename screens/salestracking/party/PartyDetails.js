@@ -10,6 +10,7 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
+import DetailCard from "../../../components/DetailCard";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Tab = createMaterialTopTabNavigator();
@@ -31,51 +32,14 @@ const OverviewScreen = ({ partyDetails }) => {
                 />
             ) : (
                 <View style={styles.container}>
-                    <View style={styles.itemContainer}>
-
-                        <View style={styles.partyItem}>
-                            <Text style={styles.detail}>Party Name: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{partyDetails.PartyName}</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.partyItem}>
-                            <Text style={styles.detail}>Contact Person: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{partyDetails.ContactPersonName}</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.partyItem}>
-                            <Text style={styles.detail}>PartyCode: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{partyDetails.PartyCode}</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.partyItem}>
-                            <Text style={styles.detail}>Address: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{partyDetails.Address}</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.partyItem}>
-                            <Text style={styles.detail}>Email: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{partyDetails.Email}</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.partyItem}>
-                            <Text style={styles.detail}>Website: </Text>
-                            <View style={styles.labelContainer}>
-                                <Text style={styles.data}>{partyDetails.Website}</Text>
-                            </View>
-                        </View>
-
-                    </View>
+                    <DetailCard details={[
+                        { Label: "Party Name", Value: partyDetails.PartyName },
+                        { Label: "Contact Person", Value: partyDetails.ContactPersonName },
+                        { Label: "Party Code", Value: partyDetails.PartyCode },
+                        { Label: "Address", Value: partyDetails.Address },
+                        { Label: "Email", Value: partyDetails.Email },
+                        { Label: "Website", Value: partyDetails.Website },
+                    ]} />
                 </View>
             )}
         </ScrollView>
@@ -222,28 +186,7 @@ const styles = StyleSheet.create({
         alignContent: "center",
         justifyContent: "flex-start",
     },
-    itemContainer: {
-        padding: 2,
-        backgroundColor: "#fff",
-        elevation: 2,
-        borderRadius: 8,
-    },
-    partyItem: {
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        padding: 4,
-    },
-    detail: {
-        fontSize: 16,
-        fontFamily: "Regular",
-    },
-    data: {
-        fontSize: 16,
-        textAlign: 'right',
-    },
-    labelContainer: {
-        width: '50%',
-    },
+
     tabContent: {
         // Styles for the other tabs' content
     },

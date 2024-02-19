@@ -42,6 +42,14 @@ const AddParty = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState('Vat or Pan');
 
+  const [partyNameError, setPartyNameError] = useState("");
+  const [contactPersonNameError, setContactPersonNameError] = useState("");
+  const [mobileNumberError, setMobileNumberError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [vatOrPanNoError, setVatOrPanNoError] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [locationError, setLocationError] = useState("");
+
   const goToPartyList = () => {
     props.navigation.goBack();
   }
@@ -74,6 +82,60 @@ const AddParty = (props) => {
   const saveParty = async () => {
     const companyId = 1;
     const groupId = 1234;
+
+    let isValid = true;
+    if (partyName.trim() === "") {
+      isValid = false;
+      setPartyNameError("Party Name is Required!");
+    } else {
+      setPartyNameError("");
+    }
+
+    if (contactPersonName.trim() === "") {
+      isValid = false;
+      setContactPersonNameError("Contact Person Name is Required!");
+    } else {
+      setContactPersonNameError("");
+    }
+
+    if (mobileNumber.trim() === "") {
+      isValid = false;
+      setMobileNumberError("Mobile Number is Required!");
+    } else {
+      setMobileNumberError("");
+    }
+
+    if (email.trim() === "") {
+      isValid = false;
+      setEmailError("Email is Required!");
+    } else {
+      setEmailError("");
+    }
+
+    if (vatOrPanNo.trim() === "") {
+      isValid = false;
+      setVatOrPanNoError("VAT or PAN No is Required!");
+    } else {
+      setVatOrPanNoError("");
+    }
+
+    if (address.trim() === "") {
+      isValid = false;
+      setAddressError("Address is Required!");
+    } else {
+      setAddressError("");
+    }
+
+    if (!latitude || !longitude) {
+      isValid = false;
+      setLocationError("Location is Required!");
+    } else {
+      setLocationError("");
+    }
+
+    if (!isValid) {
+      return;
+    }
 
     let strData = qs.stringify({
       Id: update ? party.Id : 0,
@@ -125,6 +187,11 @@ const AddParty = (props) => {
             onChangeText={(text) => setPartyName(text)}
             value={partyName}
           />
+          {partyNameError !== "" && (
+            <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
+              {partyNameError}
+            </Text>
+          )}
         </View>
 
         <View>
@@ -134,6 +201,11 @@ const AddParty = (props) => {
             onChangeText={(text) => setContactPersonName(text)}
             value={contactPersonName}
           />
+          {contactPersonNameError !== "" && (
+            <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
+              {contactPersonNameError}
+            </Text>
+          )}
         </View>
 
         <View>
@@ -144,6 +216,11 @@ const AddParty = (props) => {
             value={mobileNumber}
             keyboardType="numeric"
           />
+          {mobileNumberError !== "" && (
+            <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
+              {mobileNumberError}
+            </Text>
+          )}
         </View>
 
         <View>
@@ -153,6 +230,11 @@ const AddParty = (props) => {
             onChangeText={(text) => setAddress(text)}
             value={address}
           />
+          {addressError !== "" && (
+            <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
+              {addressError}
+            </Text>
+          )}
         </View>
 
         <View>
@@ -162,6 +244,11 @@ const AddParty = (props) => {
             onChangeText={(text) => setEmail(text)}
             value={email}
           />
+          {emailError !== "" && (
+            <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
+              {emailError}
+            </Text>
+          )}
         </View>
 
         <View style={{ marginBottom: 10, marginTop: 10, zIndex: 99 }}>
@@ -203,6 +290,11 @@ const AddParty = (props) => {
             value={vatOrPanNo}
             keyboardType="numeric"
           />
+          {vatOrPanNoError !== "" && (
+            <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
+              {vatOrPanNoError}
+            </Text>
+          )}
         </View>
 
         {showMap && region && (
@@ -228,7 +320,6 @@ const AddParty = (props) => {
                   saveParty();
                 }
               }}
-              disabled={!isFormFilled}
             >
               <ButtonPrimary title={update ? "Update" : "Save"} />
               <ActivityIndicator

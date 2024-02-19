@@ -15,9 +15,11 @@ import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
+import DateDisplay from "../../../components/DateDisplay";
+import AppStyles from "../../../assets/theme/AppStyles";
 
 const CollectionList = ({ navigation }) => {
-    const [parties, setParties] = useState([]);
+    const [collections, setCollections] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const getList = async () => {
@@ -31,12 +33,12 @@ const CollectionList = ({ navigation }) => {
 
             if (response != undefined) {
                 if (response.data.Code == 200) {
-                    setParties(response.data.Data);
+                    setCollections(response.data.Data);
                 } else {
-                    ToastMessage.Short("Error Loading Parties");
+                    ToastMessage.Short("Error Loading Collections");
                 }
             } else {
-                ToastMessage.Short("Error Loading Parties");
+                ToastMessage.Short("Error Loading Collections");
             }
         } finally {
             setIsLoading(false);
@@ -46,7 +48,7 @@ const CollectionList = ({ navigation }) => {
     useEffect(() => {
         navigation.setOptions({
             title: "Collections",
-          });
+        });
         getList();
     }, []);
 
@@ -61,7 +63,7 @@ const CollectionList = ({ navigation }) => {
     );
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
             {isLoading ? (
                 <ActivityIndicator size="large" color={Colors.primary} />
             ) : (
@@ -73,19 +75,24 @@ const CollectionList = ({ navigation }) => {
                 >
                     <View style={styles.container}>
                         <View>
-                            {parties.map((party) => (
+                            {collections.map((collection) => (
                                 <TouchableOpacity
-                                    key={party.value}
-                                    style={styles.partyItem}
+                                    key={collection.Id}
+                                    style={styles.collectionItem}
                                     onPress={() =>
-                                        navigation.navigate("CollectionDetails", { party })
+                                        navigation.navigate("CollectionDetails", { collection })
                                     }
                                 >
-                                    <Text style={styles.partyName}>{party.name}</Text>
-                                    <Text style={styles.partyInfo}>{`Recieved Amount: ${party.amount}`}</Text>
-                                    <Text style={styles.partyInfo}>{`Recieved Date: ${party.date}`}</Text>
+                                    <View>
+                                        <Text style={AppStyles.Text.BoldTitle}>{collection.PartyName}</Text>
+                                        <Text style={AppStyles.Text.Regular}>{`Payment Amount: Rs.${collection.Amount}`}</Text>
+                                        <Text style={AppStyles.Text.Regular}>
+                                            Recieved Date: <DateDisplay date={collection.PaymentDate} />
+                                        </Text>
+                                    </View>
                                 </TouchableOpacity>
                             ))}
+
                         </View>
                     </View>
                 </ScrollView>
@@ -95,7 +102,7 @@ const CollectionList = ({ navigation }) => {
                 <TouchableOpacity
                     style={styles.circle}
                     onPress={() => {
-                        navigation.navigate('AddCollection', { partyNames: parties.map(party => party.name) });
+                        navigation.navigate("AddCollection");
                     }}
                 >
                     <BankingIcons.plus fill="white" />
@@ -113,19 +120,19 @@ const styles = StyleSheet.create({
         alignContent: "center",
         justifyContent: "flex-start",
     },
-    partyItem: {
+    collectionItem: {
         backgroundColor: "#fff",
         borderRadius: 8,
         padding: 15,
         marginBottom: 10,
         elevation: 2,
     },
-    partyName: {
+    collectionName: {
         fontSize: 18,
         fontWeight: "bold",
         marginBottom: 5,
     },
-    partyInfo: {
+    collectionInfo: {
         fontSize: 16,
     },
     circle: {

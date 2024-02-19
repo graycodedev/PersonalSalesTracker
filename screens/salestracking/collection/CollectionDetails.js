@@ -1,17 +1,39 @@
 import React, { useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet } from "react-native";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { useLayoutEffect } from "react";
+import { ScrollView, View, StyleSheet } from "react-native";
+import DetailCard from "../../../components/DetailCard";
 
-const CollectionDetails = ({ route, navigation }) => {
-
-    const { party } = route.params;
-
+const CollectionDetails = ({ navigation, route }) => {
     useEffect(() => {
+        const { collection } = route.params;
         navigation.setOptions({
-            title: party.name,
+            title: collection ? `Collection Details - ${collection.PartyName}` : "Collection Details",
         });
-    }, [])
+    }, [route.params]);
+
+    const { collection } = route.params;
+
+    const collectionDetails = [
+        {
+            Label: "Party Name",
+            Value: collection.PartyName
+        },
+        {
+            Label: "Received Amount",
+            Value: collection.Amount
+        },
+        {
+            Label: "Received Date",
+            Value: collection.PaymentDate
+        },
+        {
+            Label: "Received Mode",
+            Value: collection.PaymentMode
+        },
+        {
+            Label: "Note",
+            Value: collection.Remarks
+        },
+    ];
 
     return (
         <ScrollView
@@ -20,42 +42,9 @@ const CollectionDetails = ({ route, navigation }) => {
             style={{ width: "100%", backgroundColor: "#eee" }}
             contentContainerStyle={{ flexGrow: 1 }}
         >
-            <View style={styles.container}>
-                <View style={styles.itemContainer}>
-                    <View style={styles.item}>
-                        <Text style={styles.partyInfo}>Party Name:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.partyData}>{party.name}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.item}>
-                        <Text style={styles.partyInfo}>Recieved Amount:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.partyData}>{party.amount}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.item}>
-                        <Text style={styles.partyInfo}>Recieved Date:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.partyData}>{party.date}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.item}>
-                        <Text style={styles.partyInfo}>Recieved Mode:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.partyData}>{party.mode}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.item}>
-                        <Text style={styles.partyInfo}>Note:</Text>
-                        <View style={styles.dataView}>
-                            <Text style={styles.partyData}>{party.note}</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
+            <DetailCard details={collectionDetails} />
         </ScrollView>
-    )
+    );
 };
 
 const styles = StyleSheet.create({
@@ -66,27 +55,6 @@ const styles = StyleSheet.create({
         alignContent: "center",
         justifyContent: "flex-start",
     },
-    itemContainer: {
-        backgroundColor: 'white',
-        elevation: 2,
-    },
-    item: {
-        flexDirection: 'row',
-        backgroundColor: "#fff",
-        justifyContent: 'space-between',
-        padding: 10,
-    },
-    partyInfo: {
-        fontSize: 20,
-    },
-    dataView: {
-        width: '50%'
-    },
-    partyData: {
-        fontSize: 20,
-        textAlign: 'right'
-    },
 });
-
 
 export default CollectionDetails;
