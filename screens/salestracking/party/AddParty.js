@@ -17,14 +17,13 @@ import qs from "qs";
 import * as Location from 'expo-location';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as BankingIcons from "../../../components/BankingIcons";
-
+import MapView, { Marker } from 'react-native-maps';
 
 const AddParty = (props) => {
   useEffect(() => {
     props.navigation.setOptions({
       title: "Add Party",
     });
-    getLocation();
   }, []);
 
   const update = props.route.params?.update;
@@ -38,9 +37,10 @@ const AddParty = (props) => {
   const [address, setAddress] = useState(party?.Address);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const [region, setRegion] = useState(null);
+  const [showMap, setShowMap] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState('Vat or Pan');
-
 
   const goToPartyList = () => {
     props.navigation.goBack();
@@ -56,6 +56,19 @@ const AddParty = (props) => {
     let location = await Location.getCurrentPositionAsync({});
     setLatitude(location.coords.latitude);
     setLongitude(location.coords.longitude);
+    setRegion({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
+    setShowMap(!showMap); // Map on/off
+  };
+
+  const handleRegionChange = (newRegion) => {
+    setRegion(newRegion);
+    setLatitude(newRegion.latitude);
+    setLongitude(newRegion.longitude);
   };
 
   const saveParty = async () => {
@@ -182,7 +195,6 @@ const AddParty = (props) => {
           />
         </View>
 
-
         <View>
           <RegularInputText
             key="vatOrPanNo"
@@ -193,23 +205,41 @@ const AddParty = (props) => {
           />
         </View>
 
-        <View style={{ margin: 30 }}>
-          <TouchableOpacity
-            onPress={() => {
-              if (isFormFilled) {
-                saveParty();
-              }
-            }}
-            disabled={!isFormFilled}
+        {showMap && region && (
+          <MapView
+            style={{ height: 200, width: '100%' }}
+            region={region}
+            onRegionChangeComplete={handleRegionChange}
           >
-            <ButtonPrimary title={update ? "Update" : "Save"} />
-            <ActivityIndicator
-              animating={isLoading}
-              color="#ffa500"
-              style={styles.activityIndicator}
-            ></ActivityIndicator>
-          </TouchableOpacity>
+            <Marker coordinate={region} />
+          </MapView>
+        )}
+
+        <View style={{ margin: 30 }}>
+          <View style={{ marginBottom: 10 }}>
+            <TouchableOpacity onPress={getLocation}>
+              <ButtonPrimary title="Set Location" />
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginTop: 30 }}>
+            <TouchableOpacity
+              onPress={() => {
+                if (isFormFilled) {
+                  saveParty();
+                }
+              }}
+              disabled={!isFormFilled}
+            >
+              <ButtonPrimary title={update ? "Update" : "Save"} />
+              <ActivityIndicator
+                animating={isLoading}
+                color="#ffa500"
+                style={styles.activityIndicator}
+              ></ActivityIndicator>
+            </TouchableOpacity>
+          </View>
         </View>
+
       </View>
     </ScrollView>
   );

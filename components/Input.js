@@ -54,20 +54,47 @@ export class InputText extends React.Component {
   }
 }
 export class RegularInputText extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEmpty: false,
+    };
+  }
+
+  handleInputChange = (text) => {
+    this.setState({ isEmpty: text === "" });
+    if (this.props.onChangeText) {
+      this.props.onChangeText(text);
+    }
+  };
+
   render() {
     const { shadowless, success, error, keyboardType } = this.props;
-    const inputStyles = [{ ...this.props.style }, TextBoxStyle.BorderLess];
+    const inputStyles = [
+      { ...this.props.style },
+      TextBoxStyle.BorderLess,
+      this.state.isEmpty || this.props.error ? { borderColor: "red" } : {},
+    ];
     return (
-      <Input
-        type={keyboardType}
-        placeholder="write something here"
-        placeholderTextColor={Colors.muted}
-        style={inputStyles}
-        {...this.props}
-      />
+      <>
+        <Input
+          type={keyboardType}
+          placeholder="write something here"
+          placeholderTextColor={Colors.muted}
+          style={inputStyles}
+          onChangeText={this.handleInputChange}
+          {...this.props}
+        />
+        {(this.state.isEmpty || this.props.error) && (
+          <Text style={{ color: "red", fontSize: 12 }}>
+            Please fill the input field
+          </Text>
+        )}
+      </>
     );
   }
 }
+
 export class AmountInputText extends React.Component {
   render() {
     const { shadowless, success, error, keyboardType } = this.props;

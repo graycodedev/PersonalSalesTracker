@@ -45,10 +45,10 @@ class Register extends React.Component {
       termsAgreed: false,
       termsError: "",
       coopTermsAgreed: false,
-      email:"", 
-      companyName:"", 
-      emailError:"", 
-      companyNameError:""
+      email: "",
+      companyName: "",
+      emailError: "",
+      companyNameError: ""
     };
   }
   validateForm() {
@@ -72,11 +72,11 @@ class Register extends React.Component {
     if (this.state.companyName.trim() === "") {
       isvalid = false;
       this.setState(() => ({ companyNameError: "Company Name is Required!" }));
-    } 
+    }
     if (this.state.email.trim() === "") {
       isvalid = false;
       this.setState(() => ({ emailError: "Email is Required!" }));
-    } 
+    }
     if (this.state.termsAgreed == false) {
       isvalid = false;
       this.setState(() => ({ termsError: "You need to agree to Terms of Services!" }));
@@ -149,7 +149,7 @@ class Register extends React.Component {
               value={this.state.fullName}
             />
           </View>
-           {this.state.fullNameError != "" && (
+          {this.state.fullNameError != "" && (
             <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
               {this.state.fullNameError}
             </Text>
@@ -287,16 +287,16 @@ class Register extends React.Component {
   RequestMobileBanking = async () => {
     var uuid = await DeviceStorage.getKey("DeviceId");
     var data = qs.stringify({
-      Id: 0, 
+      Id: 0,
       FullName: this.state.fullName,
       PhoneNumber: this.state.phoneNumber,
       Email: this.state.email,
-      MessageContent: "FINMAX Sales App Request"+ JSON.stringify(this.state.companyName),
+      MessageContent: "FINMAX Sales App Request" + JSON.stringify(this.state.companyName),
       DeviceId: uuid,
     });
     var response = await (await request())
       .post(api.ContactUs, data)
-      .catch(function(error) {
+      .catch(function (error) {
         ToastMessage.Short("Error Contact Support");
       });
     if (response != undefined && response != null) {

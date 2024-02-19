@@ -25,9 +25,9 @@ const VisitDetails = (props) => {
     );
 
     useEffect(() => {
-         props.navigation.setOptions({
+        props.navigation.setOptions({
             title: "Visit Details",
-          });
+        });
         getDetail();
         setIsLoading(false);
     }, []);

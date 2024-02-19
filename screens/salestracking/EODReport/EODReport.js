@@ -10,23 +10,17 @@ import { Colors } from '../../style/Theme';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const EODReport = ({ navigation }) => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [reports, setReports] = useState();
-    // Static values for now
-    const data = {
-        labels: ['9AM', '12PM', '3PM', '6PM'],
-        datasets: [
-            {
-                data: [50, 30, 100, 20],
-                color: (opacity = 1) => `rgba(173, 216, 230, ${opacity})`,
-                strokeWidth: 2
-            }
-        ],
-    };
+    const [isLoading, setIsLoading] = useState(false); // Set to false for static data
+    const [reports, setReports] = useState({
+        Visit: "Visit Data",
+        NewOrder: "Order Data",
+        OrderAmount: "Collection Data",
+        NewCustomer: "Customer Data"
+    }); // Static values for now
 
+    /* Commented out
     useEffect(() => {
         (async () => getReport())();
-
     }, [])
 
     const getReport = async () => {
@@ -49,6 +43,7 @@ const EODReport = ({ navigation }) => {
         setIsLoading(false);
         console.log("rep", response.data.Code)
     };
+    */
 
     return (
         <ScrollView
@@ -56,28 +51,6 @@ const EODReport = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             style={styles.container}
         >
-            {/* <View style={styles.chartContainer}>
-                <LineChart
-                    data={data}
-                    width={400}
-                    height={250}
-                    chartConfig={{
-                        backgroundColor: '#eee',
-                        backgroundGradientFrom: '#fff',
-                        backgroundGradientTo: '#fff',
-                        decimalPlaces: 2, // optional, defaults to 2dp
-                        color: (opacity = 1) => `rgba(173, 216, 230, ${opacity})`,
-                        style: {
-                            borderRadius: 16
-                        }
-                    }}
-                    bezier
-                    style={{
-                        marginVertical: 8,
-                        borderRadius: 16
-                    }}
-                />
-            </View> */}
             <Spinner
                 color={Colors.primary}
                 visible={isLoading}

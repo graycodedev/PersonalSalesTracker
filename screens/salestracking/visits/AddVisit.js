@@ -30,9 +30,9 @@ const AddVisit = (props, route) => {
     const [selectedParty, setSelectedParty] = useState(null);
 
     useEffect(() => {
-        let addText=update ? "Update" : "Add"
+        let addText = update ? "Update" : "Add"
         navigation.setOptions({
-            title: addText+ ' Visit',
+            title: addText + ' Visit',
         });
         getLocation();
     }, []);
@@ -127,24 +127,30 @@ const AddVisit = (props, route) => {
 
 
     const saveVisit = async () => {
+
+        await getLocation();
+
         const companyId = 1;
-        let partyId = 0;
+        let partyId = null;
         let partyName = null;
         let locationNameToSave = null;
+        let isParty = true;
 
         if (selectedOption === 'existingParty') {
             partyId = selectedParty ? selectedParty.Id : null;
             partyName = selectedParty ? selectedParty.PartyName : null;
         } else if (selectedOption === 'addParty') {
             locationNameToSave = locationName;
+            isParty = false;
         }
 
         const remarks = remark;
 
-        let visitData = qs.stringify({
+
+        let visitData = {
             Id: update ? visits.Id : 0,
             CompanyId: companyId,
-            IsParty: true,
+            IsParty: isParty,
             PartyId: partyId,
             PartyName: partyName,
             LocationName: locationNameToSave,
@@ -152,7 +158,17 @@ const AddVisit = (props, route) => {
             Latitude: location ? location.coords.latitude : null,
             Longitude: location ? location.coords.longitude : null,
             IsActive: true,
-        });
+        };
+
+
+        Object.keys(visitData).forEach(key => visitData[key] === null && delete visitData[key]);
+
+
+        visitData = qs.stringify(visitData);
+
+        // Logging locations
+        console.log('Latitude:', location ? location.coords.latitude : null);
+        console.log('Longitude:', location ? location.coords.longitude : null);
 
         setIsLoading(true);
 
@@ -171,6 +187,7 @@ const AddVisit = (props, route) => {
             ToastMessage.Short("Error Occurred. Contact Support");
         }
     }
+
 
     return (
         <ScrollView
