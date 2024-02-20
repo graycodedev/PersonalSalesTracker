@@ -281,6 +281,7 @@ import EODReport from "../screens/salestracking/EODReport/EODReport";
 import ReceivePayment from "../screens/payment/ReceivePayment";
 import DeliverList from "../screens/salestracking/deliver/DeliverList";
 import DeliverDetails from "../screens/salestracking/deliver/DeliverDetails";
+import PaymentDueList from "../screens/salestracking/paymentdue/PaymentDueList";
 
 
 const { width } = Dimensions.get("screen");
@@ -501,6 +502,7 @@ function HomeStack(props) {
       <Stack.Screen name="ReturnOrder" component={ReturnOrder} options={headerOptions} />
       <Stack.Screen name="EODReport" component={EODReport} options={headerOptions} />
       <Stack.Screen name="ReceivePayment" component={ReceivePayment} options={headerOptions} />
+      <Stack.Screen name="PaymentDueList" component={PaymentDueList} options={headerOptions} />
 
 
 
@@ -1273,7 +1275,7 @@ function BottomTabNavigator() {
                   borderColor: "white",
                 }}
               >
-                <BankingIcons.order style={{ height: 30, width: 33 }} fill="white"/>
+                <BankingIcons.order style={{ height: 30, width: 33 }} fill="white" />
               </View>
               <Text
                 style={{

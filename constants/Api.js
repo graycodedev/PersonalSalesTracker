@@ -310,23 +310,29 @@ const ReturnReasons = {
   Details: BaseUrl + "api/v1/st_OrderReturnReason/details",
 }
 
-const Reports= {
-  Eod: BaseUrl+ "api/v1/st_order/eodReport/byUserId", // date
+const Reports = {
+  Eod: BaseUrl + "api/v1/st_order/eodReport/byUserId", // date
 }
 
-const Deliver={
-  DeliveredList: BaseUrl + "api/v1/st_order/list/delivered", 
+const Deliver = {
+  DeliveredList: BaseUrl + "api/v1/st_order/list/delivered",
   Save: BaseUrl + "api/v1/st_order/delivered",
 }
 
-const Dispatch={
-  DispatchedList: BaseUrl+"api/v1/st_order/list/dispatched"
+const Dispatch = {
+  DispatchedList: BaseUrl + "api/v1/st_order/list/dispatched"
+
+}
+
+const PaymentDue = {
+  List: BaseUrl + "api/v1/st_order/paymentduereport",
+  ListByParty: BaseUrl + "api/v1/st_order/paymentduereport/byParty"
 
 }
 
 
-const ApplicationSettingsByKey= BaseUrl + "api/v1/applicationsettings/valuebykey";
-const ContactUs= BaseUrl + "api/v1/contactus/save";
+const ApplicationSettingsByKey = BaseUrl + "api/v1/applicationsettings/valuebykey";
+const ContactUs = BaseUrl + "api/v1/contactus/save";
 
 
 
@@ -413,9 +419,9 @@ export default {
   Attendances,
   Orders,
   Returns,
-  ReturnReasons, 
-  ApplicationSettingsByKey, 
-  ContactUs,Reports, Deliver,Dispatch
+  ReturnReasons,
+  ApplicationSettingsByKey,
+  ContactUs, Reports, Deliver, Dispatch, PaymentDue
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN
