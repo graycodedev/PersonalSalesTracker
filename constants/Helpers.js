@@ -435,7 +435,6 @@ const helpers = {
     let nowDate = date.toISOString().split('T')[0];
 
     let checkInInfo= await DeviceStorage.getKey("checkInInfo");
-    console.log("checkIn", checkInInfo)
     if(checkInInfo){
       let lastCheckedInDate= JSON.parse(checkInInfo); 
       if(nowDate == lastCheckedInDate.AttendanceDate){

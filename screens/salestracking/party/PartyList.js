@@ -16,6 +16,7 @@ import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
 import AppStyles from "../../../assets/theme/AppStyles";
+import { Contact } from "../../../constants/Contact";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -49,6 +50,7 @@ const PartyList = ({ navigation }) => {
 
             if (response != undefined) {
                 if (response.data.Code == 200) {
+                    console.log("rr", response.data.Data[0])
                     setParties(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Parties");
@@ -96,6 +98,10 @@ const PartyList = ({ navigation }) => {
                             onPress={() => navigation.navigate("PartyDetails", { party })}
                         >
                             <Text style={[AppStyles.Text.BoldTitle, {marginBottom: 4}]}>{party.PartyName}</Text>
+                            <TouchableOpacity onPress={()=>Contact.MakeCall(party.MobileNumber) } style={{flexDirection:"row", alignItems:"center"}}>
+                                    <BankingIcons.callIcon fill={"green"} height={18} width={18}/>
+                                        <Text style={[styles.orderInfo]}>{party.MobileNumber}</Text>
+                                    </TouchableOpacity>
                             <Text style={styles.partyInfo}>{`${party.ContactPersonName}`}</Text>
                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                 <Text style={styles.partyInfo}>{`Address: ${party.Address}`}</Text>
@@ -163,6 +169,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         padding: 10,
+    },
+    orderInfo: {
+        fontSize: 16,
+        marginLeft: 4
     },
 });
 

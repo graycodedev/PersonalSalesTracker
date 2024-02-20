@@ -33,6 +33,7 @@ const CollectionList = ({ navigation }) => {
 
             if (response != undefined) {
                 if (response.data.Code == 200) {
+                    console.log("cc", response.data.Data[0])
                     setCollections(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Collections");

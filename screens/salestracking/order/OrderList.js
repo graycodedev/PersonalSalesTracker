@@ -118,9 +118,13 @@ const OrderList = ({ navigation }) => {
                                 
                                     <Text style={styles.orderInfo}>Delivery Date: <DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
                                     <Text style={styles.orderInfo}>Ordered Date: <DateDisplay date={order.OrderDate} /> </Text>
-                                
+                                    
                                 </View>
                                 
+                            </View>
+                            <View style={{flexDirection:'row',justifyContent:"flex-end", marginTop: 4}}>
+                                
+                                <Text style={[styles.orderInfo, {color: "green", alignSelf:"flex-end"}]}>Rs. {order?.TotalAmount?.toFixed(2)}</Text>
                             </View>
                         </TouchableOpacity>
                     ))}
@@ -154,8 +158,6 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 10,
         elevation: 2,
-        flexDirection: "row",
-        alignItems: "center",
     },
     orderImage: {
         width: 50,
