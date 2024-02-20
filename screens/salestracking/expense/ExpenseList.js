@@ -57,9 +57,9 @@ const ExpenseList = (props) => {
     };
 
     useEffect(() => {
-         props.navigation.setOptions({
+        props.navigation.setOptions({
             title: "Expenses",
-          });
+        });
         getList();
     }, []);
 

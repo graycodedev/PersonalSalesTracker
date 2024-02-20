@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-// import { LineChart } from 'react-native-chart-kit';
 import ReportCard from '../../../components/salestracking/ReportCard';
 import * as SVG from "../../../components/BankingIcons";
 import request from '../../../config/RequestManager';
@@ -10,15 +9,9 @@ import { Colors } from '../../style/Theme';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const EODReport = ({ navigation }) => {
-    const [isLoading, setIsLoading] = useState(false); // Set to false for static data
-    const [reports, setReports] = useState({
-        Visit: "Visit Data",
-        NewOrder: "Order Data",
-        OrderAmount: "Collection Data",
-        NewCustomer: "Customer Data"
-    }); // Static values for now
+    const [isLoading, setIsLoading] = useState(true);
+    const [reports, setReports] = useState({});
 
-    /* Commented out
     useEffect(() => {
         (async () => getReport())();
     }, [])
@@ -43,7 +36,6 @@ const EODReport = ({ navigation }) => {
         setIsLoading(false);
         console.log("rep", response.data.Code)
     };
-    */
 
     return (
         <ScrollView
@@ -60,17 +52,18 @@ const EODReport = ({ navigation }) => {
 
             {reports && !isLoading && <>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
-                    <ReportCard icon={<SVG.visits />} title={"Visits"} subtitle={reports?.Visit} style={{ height: 160, width: "49%", backgroundColor: "#D9D6F4" }} />
-                    <ReportCard icon={<SVG.order />} title={"Orders"} subtitle={reports?.NewOrder} style={{ height: 160, width: "49%", backgroundColor: "#EAF5D2" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#FFBF00" }]}><SVG.visits /></View>} title={"Visits"} subtitle={reports?.Visit?.toString() || 'N/A'} style={{ margin: 10, marginBottom: 0, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#007BA7" }]}><SVG.order /></View>} title={"Orders"} subtitle={reports?.NewOrder?.toString() || 'N/A'} style={{ margin: 10, marginBottom: 0, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <ReportCard icon={<SVG.collection />} title={"Collections"} subtitle={reports?.OrderAmount} style={{ height: 160, width: "49%", backgroundColor: "#e7feff" }} />
-                    <ReportCard icon={<SVG.profile1 />} title={"New Customers"} subtitle={reports?.NewCustomer} style={{ height: 160, width: "49%", backgroundColor: "#FCF0C7" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#DC143C" }]}><SVG.collection /></View>} title={"Collections"} subtitle={reports?.OrderAmount?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#50C878" }]}><SVG.profile1 /></View>} title={"New Customers"} subtitle={reports?.NewCustomer?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                </View>
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#9966CC" }]}><SVG.delivery /></View>} title={"Orders Delivered"} subtitle={reports?.TotalOrderDelivered?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#40E0D0" }]}><SVG.odometer /></View>} title={"Distance Travelled"} subtitle={reports?.TravelledDistance?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
                 </View>
             </>}
-
-
-
         </ScrollView>
     );
 };
@@ -89,6 +82,14 @@ const styles = StyleSheet.create({
     },
     chartContainer: {
         alignItems: 'center',
+    },
+    iconContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 2,
+        borderRadius: 30,
+        height: 60,
+        width: 60,
     },
 });
 
