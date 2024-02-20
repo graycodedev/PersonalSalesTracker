@@ -23,7 +23,6 @@ const EODReport = ({ navigation }) => {
                 setIsLoading(false)
                 ToastMessage.Short("Error! Contact Support");
             });
-        console.log("reppp", response.data.Data)
         if (response != undefined) {
             if (response.data.Code == 200) {
                 setReports(response.data.Data);
@@ -34,8 +33,8 @@ const EODReport = ({ navigation }) => {
             ToastMessage.Short("Error Loading Notes");
         }
         setIsLoading(false);
-        console.log("rep", response.data.Code)
     };
+
 
     return (
         <ScrollView
@@ -52,16 +51,16 @@ const EODReport = ({ navigation }) => {
 
             {reports && !isLoading && <>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#FFBF00" }]}><SVG.visits /></View>} title={"Visits"} subtitle={reports?.Visit?.toString() || 'N/A'} style={{ margin: 10, marginBottom: 0, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#007BA7" }]}><SVG.order /></View>} title={"Orders"} subtitle={reports?.NewOrder?.toString() || 'N/A'} style={{ margin: 10, marginBottom: 0, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.visits fill={"#FFBF00"}/></View>} title={"Visits"} subtitle={reports?.Visit?.toString() || 'N/A'} style={{ margin: 10, marginBottom: 0, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.order fill={"#007BA7"}/></View>} title={"Orders"} subtitle={reports?.NewOrder?.toString() || 'N/A'} style={{ margin: 10, marginBottom: 0, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#DC143C" }]}><SVG.collection /></View>} title={"Collections"} subtitle={reports?.OrderAmount?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#50C878" }]}><SVG.profile1 /></View>} title={"New Customers"} subtitle={reports?.NewCustomer?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.collection fill={"#DC143C"}/></View>} title={"Collections"} subtitle={reports?.OrderAmount?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.profile1 fill={"#50C878"}/></View>} title={"New Customers"} subtitle={reports?.NewCustomer?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#9966CC" }]}><SVG.delivery /></View>} title={"Orders Delivered"} subtitle={reports?.TotalOrderDelivered?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 4, borderColor: "#40E0D0" }]}><SVG.odometer /></View>} title={"Distance Travelled"} subtitle={reports?.TravelledDistance?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.delivery fill={"#9966CC"}/></View>} title={"Orders Delivered"} subtitle={reports?.TotalOrderDelivered?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.odometer fill={"#40E0D0"}/></View>} title={"Distance Travelled"} subtitle={reports?.TravelledDistance?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
                 </View>
             </>}
         </ScrollView>

@@ -155,7 +155,7 @@ const DeliverList = ({ navigation }) => {
                                     }}>
                                         <Text style={[styles.orderInfo, {color: "#040273", fontFamily:"SemiBold"}]}>deliver</Text>
                                     </TouchableOpacity>
-                                <Text style={[styles.orderInfo, {color: "green", alignSelf:"flex-end"}]}>Rs. {order?.TotalAmount}</Text>
+                                <Text style={[styles.orderInfo, {color: "green", alignSelf:"flex-end"}]}>Rs. {order?.TotalAmount?.toFixed(2)}</Text>
                             </View>
                         </TouchableOpacity>
                     )
