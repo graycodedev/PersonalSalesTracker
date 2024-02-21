@@ -442,6 +442,11 @@ const helpers = {
       }
     }
     return isCheckedIn; 
+  }, 
+  PostException: async function PostException(message) {
+    var response = await (await request())
+      .get(api.PostException + JSON.stringify(message))
+      .catch(function(error) {});
   }
 };
 

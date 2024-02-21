@@ -12,6 +12,7 @@ import qs from "qs";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import * as Location from 'expo-location';
+import helpers from "../../../constants/Helpers";
 
 const { width } = Dimensions.get("screen");
 
@@ -37,7 +38,7 @@ const AddVisit = (props, route) => {
         navigation.setOptions({
             title: addText + ' Visit',
         });
-        getLocation();
+        (async()=>await getLocation())();
     }, []);
 
     const parties = route.params ? route.params.parties || [] : [];
@@ -135,9 +136,8 @@ const AddVisit = (props, route) => {
 
 
     const saveVisit = async () => {
-
-        await getLocation();
-
+        let visitData={};
+        try {
         const companyId = 1;
         let partyId = null;
         let partyName = null;
@@ -179,9 +179,7 @@ const AddVisit = (props, route) => {
         if (!isValid) {
             return;
         }
-
-
-        let visitData = {
+      visitData = {
             Id: update ? visits.Id : 0,
             CompanyId: companyId,
             IsParty: isParty,
@@ -193,22 +191,13 @@ const AddVisit = (props, route) => {
             Longitude: location ? location.coords.longitude : null,
             IsActive: true,
         };
-
-
         Object.keys(visitData).forEach(key => visitData[key] === null && delete visitData[key]);
-
-
         visitData = qs.stringify(visitData);
-
-        // Logging locations
-        console.log('Latitude:', location ? location.coords.latitude : null);
-        console.log('Longitude:', location ? location.coords.longitude : null);
 
         setIsLoading(true);
 
-        try {
+      
             const response = await (await request()).post(Api.Visits.SaveByUser, visitData);
-
             if (response.data.Code === 200) {
                 setIsLoading(false);
                 goToVisits();
@@ -216,7 +205,7 @@ const AddVisit = (props, route) => {
                 ToastMessage.Short(response.data.Message);
             }
         } catch (error) {
-            console.log('API error', error);
+            await helpers.PostException({data: visitData, messsage: error})
             setIsLoading(false);
             ToastMessage.Short("Error Occurred. Contact Support");
         }

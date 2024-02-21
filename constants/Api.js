@@ -188,6 +188,8 @@ const ServerImages = {
   },
 };
 
+
+const PostException=BaseUrl+ "api/v1/exception/log";
 const Notes = {
   List: BaseUrl + "api/v1/st_notes/list",
   Details: BaseUrl + "api/v1/st_notes/details",
@@ -421,7 +423,7 @@ export default {
   Returns,
   ReturnReasons,
   ApplicationSettingsByKey,
-  ContactUs, Reports, Deliver, Dispatch, PaymentDue
+  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

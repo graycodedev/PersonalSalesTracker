@@ -23,7 +23,6 @@ const MainScreen = (props) => {
     var user = await helpers.GetUserInfo();
     var isChecked = await DeviceStorage.getKey("enableRememberMe");
     if (isChecked == "true" && user != undefined && user != null) {
-      console.log("Hello")
       await tokenManager.clearAndRestoreNewToken();
       var userData = await secureStoreGet();
       data = {
@@ -43,7 +42,6 @@ const MainScreen = (props) => {
   }
 
   const SignInRemembered= async(data)=>{
-    console.log("dfjdk")
     setIsLoading(true)
     var response = await (await request())
       .post(api.Login, qs.stringify(data))
@@ -52,7 +50,6 @@ const MainScreen = (props) => {
         console.log("kkk")
         ToastMessage.Short("Error Ocurred Contact Support");
       });
-      console.log(response.data)
     if (response != undefined && response.data != undefined) {
       if (response.data.Code == 200) {
         
