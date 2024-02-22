@@ -12,6 +12,12 @@ import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
 import DetailCard from "../../../components/DetailCard";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import AppStyles from "../../../assets/theme/AppStyles";
+import DateDisplay from "../../../components/DateDisplay";
+
+const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -47,17 +53,165 @@ const OverviewScreen = ({ partyDetails }) => {
     );
 };
 
-const OrdersScreen = () => (
-    <View style={styles.tabContent}>
-        {/* Orders details go here */}
-    </View>
-);
+const OrdersScreen = ({ partyId }) => {
+    const [orders, setOrders] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
-const CollectionsScreen = () => (
-    <View style={styles.tabContent}>
-        {/* Collections details go here */}
-    </View>
-);
+    const onRefresh = () => {
+        wait(2000).then(() => {
+            setRefreshing(false);
+            getList();
+        });
+        setIsLoading(false);
+    };
+
+    const getList = async () => {
+        try {
+            var response = await (await request())
+                .get(Api.Orders.ListByParty + "?partyId=" + partyId)
+                .catch(function (error) {
+                    console.error("Error fetching orders:", error.message, error.response);
+                    ToastMessage.Short("Error! Contact Support");
+                });
+
+            if (response != undefined) {
+                if (response.data.Code === 200) {
+                    setOrders(response.data.Data);
+                } else {
+                    console.error("Error loading orders:", response.data.Message);
+                    ToastMessage.Short("Error Loading Orders");
+                }
+            } else {
+                console.error("Undefined response from API");
+                ToastMessage.Short("Error Loading Orders");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getList();
+    }, []);
+
+    return (
+        <ScrollView
+            nestedScrollEnabled={true}
+            showsVerticalScrollIndicator={false}
+            style={{ width: "100%", backgroundColor: "#eee", flex: 1 }}
+            contentContainerStyle={{ flexGrow: 1 }}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        >
+            {isLoading ? (
+                <View style={styles.spinnerContainer}>
+                    <ActivityIndicator size="large" color={Colors.primary} />
+                </View>
+            ) : (
+                <View>
+                    {console.log("order log:", orders)}
+                    {orders.length > 0 ? (
+                        orders.map((order, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={styles.orderItem}
+                                onPress={() => navigation.navigate("DeliverDetails", { deliverId: order.Id })}
+                            >
+                                {/* Display order details similar to OrderList component */}
+                            </TouchableOpacity>
+                        ))
+                    ) : (
+                        <Text>No orders found!!</Text>
+                    )}
+                </View>
+            )}
+        </ScrollView>
+    );
+};
+
+
+const CollectionsScreen = ({ partyId }) => {
+    const [collections, setCollections] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = () => {
+        wait(2000).then(() => {
+            setRefreshing(false);
+            getList();
+        });
+        setIsLoading(false);
+    };
+
+    const getList = async () => {
+        try {
+            var response = await (await request())
+                .get(Api.Collections.ListByParty + "?partyId=" + partyId)
+                .catch(function (error) {
+                    console.error("Error fetching collections:", error.message, error.response);
+                    ToastMessage.Short("Error! Contact Support");
+                });
+
+            if (response != undefined) {
+                if (response.data.Code === 200) {
+                    setCollections(response.data.Data);
+                } else {
+                    console.error("Error loading collections:", response.data.Message);
+                    ToastMessage.Short("Error Loading Collections");
+                }
+            } else {
+                console.error("Undefined response from API");
+                ToastMessage.Short("Error Loading Collections");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getList();
+    }, []);
+
+    return (
+        <ScrollView
+            nestedScrollEnabled={true}
+            showsVerticalScrollIndicator={false}
+            style={{ width: "100%", backgroundColor: "#eee", flex: 1 }}
+            contentContainerStyle={{ flexGrow: 1 }}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        >
+            {isLoading ? (
+                <View style={styles.spinnerContainer}>
+                    <ActivityIndicator size="large" color={Colors.primary} />
+                </View>
+            ) : (
+                <View>
+                    {collections.length > 0 ? (
+                        collections.map((collection, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={styles.collectionItem}
+                                onPress={() => navigation.navigate("CollectionDetails", { collection })}
+                            >
+                                <View>
+                                    <Text style={AppStyles.Text.BoldTitle}>{collection.PartyName}</Text>
+                                    <Text style={AppStyles.Text.Regular}>{`Payment Amount: Rs.${collection.Amount}`}</Text>
+                                    <Text style={AppStyles.Text.Regular}>
+                                        Recieved Date: <DateDisplay date={collection.PaymentDate} />
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        ))
+                    ) : (
+                        <Text>No collections found!!</Text>
+                    )}
+                </View>
+            )}
+        </ScrollView>
+    );
+};
+
+
 
 const VisitsScreen = ({ partyId }) => {
     const [visits, setVisits] = useState([]);
@@ -80,7 +234,6 @@ const VisitsScreen = ({ partyId }) => {
                     console.error("Error fetching visits:", error.message, error.response);
                     ToastMessage.Short("Error! Contact Support");
                 });
-
 
             if (response != undefined) {
                 if (response.data.Code == 200) {
@@ -117,6 +270,7 @@ const VisitsScreen = ({ partyId }) => {
                 </View>
             ) : (
                 <View>
+                    {console.log("visits log:", visits)}
                     {visits.length > 0 ? (
                         visits.map((visit) => (
                             <TouchableOpacity
@@ -220,8 +374,8 @@ const PartyDetails = (props) => {
                 }}
             >
                 <Tab.Screen name="Overview" component={() => <OverviewScreen partyDetails={partyDetails} />} />
-                <Tab.Screen name="Orders" component={OrdersScreen} />
-                <Tab.Screen name="Collections" component={() => <CollectionsScreen />} />
+                <Tab.Screen name="Orders" component={() => <OrdersScreen partyId={party.Id} />} />
+                <Tab.Screen name="Collections" component={() => <CollectionsScreen partyId={party.Id} />} />
                 <Tab.Screen name="Visits" component={() => <VisitsScreen partyId={party.Id} />} />
             </Tab.Navigator>
 

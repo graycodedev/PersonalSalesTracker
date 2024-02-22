@@ -189,7 +189,7 @@ const ServerImages = {
 };
 
 
-const PostException=BaseUrl+ "api/v1/exception/log";
+const PostException = BaseUrl + "api/v1/exception/log";
 const Notes = {
   List: BaseUrl + "api/v1/st_notes/list",
   Details: BaseUrl + "api/v1/st_notes/details",
@@ -208,6 +208,7 @@ const Visits = {
   List: BaseUrl + "api/v1/st_visits/list",
   ActiveList: BaseUrl + "api/v1/st_visits/list/active",
   ListByUser: BaseUrl + "api/v1/st_visits/list/byuser",
+  ListByParty: BaseUrl + "api/v1/st_visits/list/byParty/user",
   Details: BaseUrl + "api/v1/st_visits/details",
   Save: BaseUrl + "api/v1/st_visits/save",
   SaveByUser: BaseUrl + "api/v1/st_visits/save/byuser",
@@ -215,6 +216,7 @@ const Visits = {
 }
 const Collections = {
   List: BaseUrl + "api/v1/st_paymentreceived/list",
+  ListByParty: BaseUrl + "api/v1/st_collection/list/byPartyId/byuserId",
   Details: BaseUrl + "api/v1/st_paymentreceived/details",
   Save: BaseUrl + "api/v1/st_paymentreceived/save",
   Delete: BaseUrl + "api/v1/st_paymentreceived/delete"
@@ -291,6 +293,7 @@ const Attendances = {
 }
 const Orders = {
   List: BaseUrl + "api/v1/st_order/list",
+  ListByParty: BaseUrl + "api/v1/st_order/list/byParty",
   Cancel: BaseUrl + "api/v1/st_order/cancel",
   Details: BaseUrl + "api/v1/st_order/details",
   Save: BaseUrl + "api/v1/st_order/save",
