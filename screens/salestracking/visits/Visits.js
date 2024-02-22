@@ -91,13 +91,13 @@ const Visits = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {visits.length>0 ? visits.map((visit) => {
+                    {visits.length>0 ? visits.map((visit, index) => {
                         const visitDate = new Date(visit.VisitDate);
                         const date = visitDate.toLocaleDateString();
 
                         return (
                             <TouchableOpacity
-                                key={visit.Id}
+                                key={index}
                                 style={styles.visitItem}
                                 onPress={() => navigation.navigate("VisitDetails", { visit })}
                             >

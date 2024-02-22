@@ -8,6 +8,7 @@ import {
   ImageStore,
   AppState,
   TouchableOpacity,
+  Platform
 } from "react-native";
 import { Colors } from "../screens/style/Theme";
 import IMAGES from "../constants/newImages";
@@ -63,7 +64,7 @@ const ProfileHeader = (props) => {
       return;
     }
 
-    let location = await Location.getCurrentPositionAsync({});
+    let location= await Location.getCurrentPositionAsync({ accuracy: Platform.OS=="android" ? Location.Accuracy.Low : Location.Accuracy.Lowest});
     let latitude = location.coords.latitude;
     let longitude = location.coords.longitude;
 

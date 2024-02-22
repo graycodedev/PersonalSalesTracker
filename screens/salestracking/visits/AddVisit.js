@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { RegularInputText } from "../../../components/Input";
@@ -65,13 +65,11 @@ const AddVisit = (props, route) => {
     }
 
     const getLocation = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-            alert('Permission to access location was denied');
-            return;
+        let {status}= await Location.getForegroundPermissionsAsync();
+        if(status !== "granted"){
+        props.navigation.navigate("PermissionScreen", {navigation: props.navigation});
         }
-
-        let location = await Location.getCurrentPositionAsync({});
+        let location= await Location.getCurrentPositionAsync({ accuracy: Platform.OS=="android" ? Location.Accuracy.Low : Location.Accuracy.Lowest});
         setLocation(location);
     };
 

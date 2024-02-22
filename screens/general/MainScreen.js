@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-native';
+import { Button, Image, View } from 'react-native';
 import request from '../../config/RequestManager';
 import ToastMessage from '../../components/Toast/Toast';
 import tokenManager from '../../config/TokenManager';
@@ -8,6 +8,7 @@ import helpers from '../../constants/Helpers';
 import * as SecureStore from "expo-secure-store";
 import api from '../../constants/Api';
 import qs from "qs"
+
 
 
 const MainScreen = (props) => {
@@ -20,24 +21,32 @@ const MainScreen = (props) => {
 
 
   const navigate=async()=>{
-    var user = await helpers.GetUserInfo();
-    var isChecked = await DeviceStorage.getKey("enableRememberMe");
-    if (isChecked == "true" && user != undefined && user != null) {
-      await tokenManager.clearAndRestoreNewToken();
-      var userData = await secureStoreGet();
-      data = {
-        clientId: 1,
-        CompanyId: 1,
-        CompanyCode: userData.companyCode,
-        SecretKey: 1,
-        Username: userData.email+'_1',
-        Password: userData.password,
-      };
-      await SignInRemembered(data);
+    let data={};
+    try{
+      var user = await helpers.GetUserInfo();
+      var isChecked = await DeviceStorage.getKey("enableRememberMe");
+      if (isChecked == "true" && user != undefined && user != null) {
+        await tokenManager.clearAndRestoreNewToken();
+        var userData = await secureStoreGet();
+        data = {
+          clientId: 1,
+          CompanyId: 1,
+          CompanyCode: userData.companyCode,
+          SecretKey: 1,
+          Username: userData.email+'_1',
+          Password: userData.password,
+        };
+        await SignInRemembered(data);
+      }
+      else{
+          props.navigation.navigate("SignIn");
+      }
     }
-    else{
-        props.navigation.navigate("SignIn");
+    catch(error){
+      await helpers.PostException({data: data, messsage: error})
+      ToastMessage.Short("Error Occurred. Contact Support");
     }
+   
 
   }
 
@@ -100,8 +109,19 @@ const secureStoreGet = async () => {
 
 
   return (
-    // You can render anything here, or even null since navigation is handled in useEffect
-    null
+    <View style={{backgroundColor: "#ffffff", flex: 1}}>
+      <Image
+    source={require("../../assets/loader2.gif")}
+    style={[
+      {
+        resizeMode: "contain",
+        flex: 1,
+        alignSelf:"center", 
+      },
+    ]}
+  />
+    </View>
+    
   );
 };
 
