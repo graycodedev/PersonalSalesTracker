@@ -142,79 +142,18 @@ class SignIn extends React.Component {
     } catch (e) { }
   };
 
-  getLogoPath = async () => {
-    console.log("Called logoppath")
-    let companyId = await helpers.GetCompanyId();
-    if (companyId > 0) {
-      let logoPath = await helpers.GetCompanyLogoPath();
-      this.setState({ logoPath: logoPath });
-    } else {
-      let logoPath = await helpers.GetCompanyLogoPath();
-      this.setState({ logoPath: logoPath });
-    }
-  };
+
   static navigationOptions = (props) => {
     return {
       gesturesEnabled: false,
     };
   };
 
-  async handleIos() {
-    // await DeviceStorage.deleteKey("SavedCompanyDetail"); // for test
-    // await DeviceStorage.deleteKey("CompanyDetail"); //for test
-    // await DeviceStorage.deleteKey("LogoPath"); //for test
-    // await DeviceStorage.deleteKey("LogoHeaderPath"); //for test
-    if (
-      !api.IsAppForMultiple ||
-      (await DeviceStorage.getKey("SavedCompanyDetail")) == "true"
-    ) {
-      this.setState({ dropDownCompanySelected: true });
-      this.setState({ savedCompanyDetail: true });
-      this.setState({ showdropDown: false });
-      let CompanyDetail = await helpers.GetCompanyInfoIOS();
-      this.setState({
-        IosCompanyId: CompanyDetail.CompanyId,
-        IosCompanyCode: CompanyDetail.CompanyCode,
-        IosWalletName: CompanyDetail.Name,
-        IosAppstoreUrl: CompanyDetail.AppStoreUrl,
-        IosPrimaryColor: CompanyDetail.PrimaryColor,
-      });
-      return;
-    }
-    if (api.IsAppForMultiple) {
-      if (!((await DeviceStorage.getKey("SavedCompanyDetail")) == "true")) {
-        await this.getCompaniesDetails();
-        //finally
-        this.setState({ showdropDown: true });
-      }
+ 
 
-      let companySaved =
-        (await DeviceStorage.getKey("SavedCompanyDetail")) == "true";
-      if (companySaved) {
-        let CompanyDetail = await helpers.GetCompanyInfoIOS();
-        this.setState({
-          IosCompanyId: CompanyDetail.CompanyId,
-          IosCompanyCode: CompanyDetail.CompanyCode,
-          IosWalletName: CompanyDetail.Name,
-          IosAppstoreUrl: CompanyDetail.AppStoreUrl,
-          IosPrimaryColor: CompanyDetail.PrimaryColor,
-        });
-      }
-    }
-  }
 
-  setSelectedCompany = (item) => {
-    this.setState({ selectedCooperativeDetail: item });
-    this.setState({ dropDownCompanySelected: true });
-  };
-  onClearDropDown = () => {
-    this.setState({ dropDownCompanySelected: false });
-  };
 
-  getCompaniesDetails = async () => {
-    var companiesDetailList = await helpers.GetCompaniesDetails();
-    this.setState({ companiesDetailList: companiesDetailList });
-  };
+
   componentDidMount = async () => {
    
     this.props.navigation.setOptions({
@@ -240,39 +179,9 @@ class SignIn extends React.Component {
       var userData = await this.secureStoreGet();
       this.setState({ email: userData.email,password:userData.password, companyCode:userData.companyCode, isChecked: true });
     }
-    this.handleIos();
-    this.getSettings();
-    this.getCompanyDetails();
-    this.getLogoPath();
   };
-  getCompanyDetails = async () => {
-    let companyDetails = await helpers.GetCompanyDetails();
-  };
-  getSettings = async () => {
-    let companyId = api.IsAppForMultiple
-      ? this.state.IosCompanyId
-      : api.CompanyId;
-    var response = await (await request())
-      .get(api.ListMblBankingSettings + companyId)
-      .catch(function (error) {
-        ToastMessage.Short("Error! Contact Support");
-      });
-    if (response != undefined) {
-      if (response.data.Code == 200) {
-        let setting = response.data.Data.find(
-          (o) => o.SettingKey == "REGISTER_FROMAPP"
-        );
-        if (setting != undefined) {
-          if (setting.SettingValue && setting.CompanyId == api.CompanyId)
-            this.setState({ allowRegisterFromApp: true });
-        }
-      } else {
-        ToastMessage.Short("Error Loading Mbl Settings");
-      }
-    } else {
-      ToastMessage.Short("Error Loading Mbl Settings");
-    }
-  };
+ 
+ 
   getDeviceToken = async () => {
     var deviceToken = await DeviceStorage.getKey("FcmToken");
     var deviceInfo =
@@ -433,8 +342,6 @@ class SignIn extends React.Component {
     } catch (e) { }
   };
   _onDone = async () => {
-    // After user finished the intro slides. Show real app through
-    // navigation or simply by controlling state
     await AsyncStorage.setItem("WalkThrough", "done");
     this.setState({ showRealApp: true });
   };
@@ -1146,7 +1053,6 @@ class SignIn extends React.Component {
         this.setState({ isLoading: false });
         ToastMessage.Short("Error Ocurred Contact Support");
       });
-    console.log("Response", response.data)
     if (response != undefined && response.data != undefined) {
       if (response.data.Code == 200) {
         var userCache = await helpers.GetUserInfo();

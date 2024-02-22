@@ -5,7 +5,8 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator, 
+  Platform
 } from "react-native";
 import { ButtonPrimary } from "../../../components/Button";
 import { RegularInputText } from "../../../components/Input";
@@ -61,7 +62,7 @@ const AddParty = (props) => {
       return;
     }
 
-    let location = await Location.getCurrentPositionAsync({});
+    let location= await Location.getCurrentPositionAsync({ accuracy: Platform.OS=="android" ? Location.Accuracy.Low : Location.Accuracy.Lowest});
     setLatitude(location.coords.latitude);
     setLongitude(location.coords.longitude);
     setRegion({

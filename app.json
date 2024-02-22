@@ -29,7 +29,7 @@
     "android": {
       "package": "com.graycode.finmaxsales",
       "permissions": ["CAMERA", "WRITE_EXTERNAL_STORAGE", "LOCATION","ACCESS_COARSE_LOCATION","ACCESS_FINE_LOCATION"],
-      "versionCode": 2,
+      "versionCode": 4,
       "googleServicesFile": "./google-services.json"
     },
     "plugins": [
@@ -71,6 +71,7 @@
     },
     "extra": {
       "eas": {
+
         "projectId": "9fb69b05-27f7-4c82-8712-a60c116c925e"
       }
     },

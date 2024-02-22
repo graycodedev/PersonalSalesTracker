@@ -282,6 +282,7 @@ import ReceivePayment from "../screens/payment/ReceivePayment";
 import DeliverList from "../screens/salestracking/deliver/DeliverList";
 import DeliverDetails from "../screens/salestracking/deliver/DeliverDetails";
 import PaymentDueList from "../screens/salestracking/paymentdue/PaymentDueList";
+import PermissionScreen from "../screens/general/PermissionScreen";
 
 
 const { width } = Dimensions.get("screen");
@@ -503,6 +504,7 @@ function HomeStack(props) {
       <Stack.Screen name="EODReport" component={EODReport} options={headerOptions} />
       <Stack.Screen name="ReceivePayment" component={ReceivePayment} options={headerOptions} />
       <Stack.Screen name="PaymentDueList" component={PaymentDueList} options={headerOptions} />
+      <Stack.Screen name="PermissionScreen" component={PermissionScreen} options={{headerShown: false}} />
 
 
 

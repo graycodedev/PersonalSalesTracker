@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     Text,
+    Platform
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -57,7 +58,7 @@ const StartTrip = () => {
             return;
         }
 
-        let location = await Location.getCurrentPositionAsync({});
+        let location= await Location.getCurrentPositionAsync({ accuracy: Platform.OS=="android" ? Location.Accuracy.Low : Location.Accuracy.Lowest});
         setLocation(location);
     };
 
