@@ -6,6 +6,8 @@ import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
 import DetailCard from "../../../components/DetailCard";
 import { Colors } from "../../style/Theme";
+import DateDisplay from "../../../components/DateDisplay";
+
 
 const VisitDetails = (props) => {
     const { visit } = props.route.params;
@@ -36,7 +38,7 @@ const VisitDetails = (props) => {
 
     const visitDetails = [
         { Label: "Name", Value: visit.PartyName ? visit.PartyName : visit.LocationName },
-        { Label: "Visit Date", Value: visit.VisitDate },
+        { Label: "Visit Date", Value: <DateDisplay date={visit.VisitDate} /> },
         { Label: "Remarks", Value: visit.Remarks },
     ];
 

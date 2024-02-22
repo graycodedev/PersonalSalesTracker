@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import DetailCard from "../../../components/DetailCard";
+import DateDisplay from "../../../components/DateDisplay";
 
 const CollectionDetails = ({ navigation, route }) => {
     useEffect(() => {
@@ -23,7 +24,7 @@ const CollectionDetails = ({ navigation, route }) => {
         },
         {
             Label: "Received Date",
-            Value: collection.PaymentDate
+            Value: <DateDisplay date={collection.PaymentDate} />
         },
         {
             Label: "Received Mode",

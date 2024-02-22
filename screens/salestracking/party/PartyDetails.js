@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl, ActivityIndicator } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import qs from "qs";
 
@@ -35,6 +35,7 @@ const OverviewScreen = ({ partyDetails }) => {
                     <DetailCard details={[
                         { Label: "Party Name", Value: partyDetails.PartyName },
                         { Label: "Contact Person", Value: partyDetails.ContactPersonName },
+                        { Label: "Mobile Number", Value: partyDetails.MobileNumber },
                         { Label: "Party Code", Value: partyDetails.PartyCode },
                         { Label: "Address", Value: partyDetails.Address },
                         { Label: "Email", Value: partyDetails.Email },
@@ -58,11 +59,90 @@ const CollectionsScreen = () => (
     </View>
 );
 
-const VisitsScreen = () => (
-    <View style={styles.tabContent}>
-        {/* Visits details go here */}
-    </View>
-);
+const VisitsScreen = ({ partyId }) => {
+    const [visits, setVisits] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = () => {
+        wait(2000).then(() => {
+            setRefreshing(false);
+            getList();
+        });
+        setIsLoading(false);
+    };
+
+    const getList = async () => {
+        try {
+            var response = await (await request())
+                .get(Api.Visits.ListByParty + "?partyId=" + partyId)
+                .catch(function (error) {
+                    console.error("Error fetching visits:", error.message, error.response);
+                    ToastMessage.Short("Error! Contact Support");
+                });
+
+
+            if (response != undefined) {
+                if (response.data.Code == 200) {
+                    setVisits(response.data.Data);
+                } else {
+                    console.error("Error loading visits:", response.data.Message);
+                    ToastMessage.Short("Error Loading Visits");
+                }
+            } else {
+                console.error("Undefined response from API");
+                ToastMessage.Short("Error Loading Visits");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+
+    useEffect(() => {
+        getList();
+    }, []);
+
+    return (
+        <ScrollView
+            nestedScrollEnabled={true}
+            showsVerticalScrollIndicator={false}
+            style={{ width: "100%", backgroundColor: "#eee", flex: 1 }}
+            contentContainerStyle={{ flexGrow: 1 }}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        >
+            {isLoading ? (
+                <View style={styles.spinnerContainer}>
+                    <ActivityIndicator size="large" color={Colors.primary} />
+                </View>
+            ) : (
+                <View>
+                    {visits.length > 0 ? (
+                        visits.map((visit) => (
+                            <TouchableOpacity
+                                key={visit.Id}
+                                style={styles.visitItem}
+                                onPress={() => navigation.navigate("VisitDetails", { visit })}
+                            >
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View>
+                                        <Text style={AppStyles.Text.BoldTitle}>{visit.PartyName ? visit.PartyName : visit.LocationName}</Text>
+                                        <DateDisplay date={visit.VisitDate} />
+                                    </View>
+                                    {visit.PartyName && (
+                                        <BankingIcons.tickMark fill='green' style={styles.imageStyle} />
+                                    )}
+                                </View>
+                            </TouchableOpacity>
+                        ))
+                    ) : (
+                        <Text>No visits found!!</Text>
+                    )}
+                </View>
+            )}
+        </ScrollView>
+    );
+};
 
 const PartyDetails = (props) => {
     useEffect(() => {
@@ -142,7 +222,7 @@ const PartyDetails = (props) => {
                 <Tab.Screen name="Overview" component={() => <OverviewScreen partyDetails={partyDetails} />} />
                 <Tab.Screen name="Orders" component={OrdersScreen} />
                 <Tab.Screen name="Collections" component={() => <CollectionsScreen />} />
-                <Tab.Screen name="Visits" component={VisitsScreen} />
+                <Tab.Screen name="Visits" component={() => <VisitsScreen partyId={party.Id} />} />
             </Tab.Navigator>
 
             <View style={styles.buttons}>
@@ -204,6 +284,22 @@ const styles = StyleSheet.create({
         right: 20,
         zIndex: 1,
     },
+    spinnerContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    visitItem: {
+        backgroundColor: "#fff",
+        borderRadius: 8,
+        padding: 15,
+        marginBottom: 10,
+        elevation: 2,
+    },
+    imageStyle: {
+        marginRight: 10,
+    },
 });
 
 export default PartyDetails;
+
