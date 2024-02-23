@@ -5,8 +5,8 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator, 
-  Platform
+  ActivityIndicator,
+  Platform,
 } from "react-native";
 import { ButtonPrimary } from "../../../components/Button";
 import { RegularInputText } from "../../../components/Input";
@@ -15,10 +15,10 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
 import qs from "qs";
-import * as Location from 'expo-location';
-import DropDownPicker from 'react-native-dropdown-picker';
+import * as Location from "expo-location";
+import DropDownPicker from "react-native-dropdown-picker";
 import * as BankingIcons from "../../../components/BankingIcons";
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker } from "react-native-maps";
 
 const AddParty = (props) => {
   useEffect(() => {
@@ -31,7 +31,9 @@ const AddParty = (props) => {
   const party = props.route.params?.party;
   const [partyName, setPartyName] = useState(party?.PartyName);
   const [partyCode, setPartyCode] = useState(party?.PartyCode);
-  const [contactPersonName, setContactPersonName] = useState(party?.ContactPersonName);
+  const [contactPersonName, setContactPersonName] = useState(
+    party?.ContactPersonName
+  );
   const [mobileNumber, setMobileNumber] = useState(party?.MobileNumber);
   const [email, setEmail] = useState(party?.Email);
   const [vatOrPanNo, setVatOrPanNo] = useState(party?.VatOrPanNo);
@@ -41,7 +43,7 @@ const AddParty = (props) => {
   const [region, setRegion] = useState(null);
   const [showMap, setShowMap] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('Vat or Pan');
+  const [selectedOption, setSelectedOption] = useState("Vat or Pan");
 
   const [partyNameError, setPartyNameError] = useState("");
   const [contactPersonNameError, setContactPersonNameError] = useState("");
@@ -53,16 +55,22 @@ const AddParty = (props) => {
 
   const goToPartyList = () => {
     props.navigation.goBack();
-  }
+  };
 
   const getLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Permission to access location was denied');
+    let { status } = await Location.getForegroundPermissionsAsync();
+    if (status !== "granted") {
+      props.navigation.navigate("PermissionScreen");
       return;
     }
 
-    let location= await Location.getCurrentPositionAsync({ accuracy: Platform.OS=="android" ? Location.Accuracy.Low : Location.Accuracy.Lowest});
+    let location = await Location.getCurrentPositionAsync({
+      accuracy:
+        Platform.OS == "android"
+          ? Location.Accuracy.Low
+          : Location.Accuracy.Lowest,
+    });
+
     setLatitude(location.coords.latitude);
     setLongitude(location.coords.longitude);
     setRegion({
@@ -148,7 +156,7 @@ const AddParty = (props) => {
       Longitude: longitude,
       State: 4,
       Address: address,
-      VatOrPan: selectedOption === 'Vat or Pan' ? 'p' : 'v',
+      VatOrPan: selectedOption === "Vat or Pan" ? "p" : "v",
       VatOrPanNo: vatOrPanNo,
       MobileNumber: mobileNumber,
     });
@@ -156,7 +164,10 @@ const AddParty = (props) => {
     setIsLoading(true);
 
     try {
-      const response = await (await request()).post(Api.Parties.SaveByUser, strData);
+      const response = await (await request()).post(
+        Api.Parties.SaveByUser,
+        strData
+      );
 
       if (response.data.Code === 200) {
         setIsLoading(false);
@@ -165,13 +176,21 @@ const AddParty = (props) => {
         ToastMessage.Short(response.data.Message);
       }
     } catch (error) {
-      alert(3)
+      alert(3);
       setIsLoading(false);
       ToastMessage.Short("Error Occurred. Contact Support");
     }
-  }
+  };
 
-  const isFormFilled = partyName && contactPersonName && mobileNumber && email && vatOrPanNo && address && latitude && longitude;
+  const isFormFilled =
+    partyName &&
+    contactPersonName &&
+    mobileNumber &&
+    email &&
+    vatOrPanNo &&
+    address &&
+    latitude &&
+    longitude;
 
   return (
     <ScrollView
@@ -275,11 +294,11 @@ const AddParty = (props) => {
             placeholder="Vat or Pan"
             label="Vat or Pan"
             items={[
-              { label: 'Vat', value: 'Vat' },
-              { label: 'Pan', value: 'Pan' },
+              { label: "Vat", value: "Vat" },
+              { label: "Pan", value: "Pan" },
             ]}
             onChangeItem={(item) => setSelectedOption(item.value)}
-            defaultValue={'Vat or pan'}
+            defaultValue={"Vat or pan"}
           />
         </View>
 
@@ -300,7 +319,7 @@ const AddParty = (props) => {
 
         {showMap && region && (
           <MapView
-            style={{ height: 200, width: '100%' }}
+            style={{ height: 200, width: "100%" }}
             region={region}
             onRegionChangeComplete={handleRegionChange}
           >
@@ -331,7 +350,6 @@ const AddParty = (props) => {
             </TouchableOpacity>
           </View>
         </View>
-
       </View>
     </ScrollView>
   );

@@ -25,9 +25,9 @@ export const AutoCompleteList = (props) => {
   const [modalVisible, setModalVisible] = useState(props.visible);
   const [options, setOptions] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [isLoading,setIsLoading]= useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const updateSearch = async(text) => {
+  const updateSearch = async (text) => {
     await getAutoCompleteList(text);
   };
 
@@ -42,26 +42,22 @@ export const AutoCompleteList = (props) => {
     setModalVisible(false);
   };
 
-
-
-
-  const getAutoCompleteList=async(text)=>{
-      var response = await (await request())
-      .get(props.autocompleteurl+"?query="+text)
+  const getAutoCompleteList = async (text) => {
+    var response = await (await request())
+      .get(props.autocompleteurl + "?query=" + text)
       .catch(function(error) {
         ToastMessage.Short("Error! Contact Support");
       });
-      if (response != undefined) {
-        if (response.data.Code == 200) {
-            setOptions(response.data.Data);
-        } else {
-          ToastMessage.Long(response.data.Message);
-        }
+    if (response != undefined) {
+      if (response.data.Code == 200) {
+        setOptions(response.data.Data);
       } else {
-        ToastMessage.Short("Error Ocurred Contact Support");
+        ToastMessage.Long(response.data.Message);
       }
-
-  }
+    } else {
+      ToastMessage.Short("Error Ocurred Contact Support");
+    }
+  };
 
   return (
     <>
@@ -97,7 +93,7 @@ export const AutoCompleteList = (props) => {
                 // value={searchText}
                 placeholder={props.searchablePlaceholder}
                 placeholderTextColor="white"
-                onChangeText={async(text) => {
+                onChangeText={async (text) => {
                   await updateSearch(text);
                 }}
               />
@@ -114,7 +110,7 @@ export const AutoCompleteList = (props) => {
               </TouchableOpacity>
             </View>
           </View>
-          {isLoading &&  (
+          {isLoading && (
             <View
               style={{
                 flex: 1,
@@ -123,32 +119,31 @@ export const AutoCompleteList = (props) => {
               }}
             >
               <Text style={{ fontFamily: "Bold", fontSize: 16, marginTop: 10 }}>
-              Loading ....
+                Loading ....
               </Text>
-            </View>)
-        }
-            <ScrollView contentContainerStyle={styles.scrollViewStyle}>
-              {options.length == 0 ? (
+            </View>
+          )}
+          <ScrollView contentContainerStyle={styles.scrollViewStyle}>
+            {options.length == 0 ? (
+              <View style={{ alignItems: "center", justifyContent: "center" }}>
+                <Text style={{ fontSize: 18 }}>{props.noItemFoundText}</Text>
+              </View>
+            ) : (
+              options.map((item, index) => (
                 <View
-                  style={{ alignItems: "center", justifyContent: "center" }}
+                  key={index}
+                  style={{ pointerEvents: "box-none" }}
+                  onTouchStart={() => {
+                    toggleModal();
+                    props.itemSelected(item);
+                    Keyboard.dismiss();
+                  }}
                 >
-                  <Text style={{ fontSize: 18 }}>{props.noItemFoundText}</Text>
+                  {props.renderItem(item)}
                 </View>
-              ) : (
-                options.map((item, index) => (
-                    <View
-                    style={{pointerEvents:"box-none"}}
-                      onTouchStart={() => {
-                        toggleModal();
-                        props.itemSelected(item);
-                        Keyboard.dismiss()
-                      }}
-                    >
-                      {props.renderItem(item)}
-                    </View>
-                ))
-              )}
-            </ScrollView>
+              ))
+            )}
+          </ScrollView>
         </View>
       </ModalPopUp>
     </>

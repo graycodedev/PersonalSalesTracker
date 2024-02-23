@@ -66,6 +66,8 @@ import { Constants } from "expo";
 import { Autocomplete } from "../../components/Autocomplete";
 import Api from "../../constants/Api";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as Location from "expo-location";
+
 import ConfirmationModal from "../../components/ConfirmationModal";
 
 class SignIn extends React.Component {
@@ -107,7 +109,7 @@ class SignIn extends React.Component {
       dropDownCompanySelected: false,
       alertMessage: "",
       companyCode: "",
-      loggingIn:true
+      loggingIn: true,
     };
   }
   getAppVersion = async () => {
@@ -139,9 +141,8 @@ class SignIn extends React.Component {
           ]
         );
       }
-    } catch (e) { }
+    } catch (e) {}
   };
-
 
   static navigationOptions = (props) => {
     return {
@@ -149,13 +150,7 @@ class SignIn extends React.Component {
     };
   };
 
- 
-
-
-
-
   componentDidMount = async () => {
-   
     this.props.navigation.setOptions({
       title: "",
     });
@@ -169,19 +164,32 @@ class SignIn extends React.Component {
         isBiometricEnabled == null
           ? false
           : isBiometricEnabled == "true"
-            ? true
-            : false,
+          ? true
+          : false,
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    (async () => await this.getLocationPermission())();
     var user = await helpers.GetUserInfo();
     var isChecked = await DeviceStorage.getKey("enableRememberMe");
     if (isChecked == "true" && user != undefined && user != null) {
       var userData = await this.secureStoreGet();
-      this.setState({ email: userData.email,password:userData.password, companyCode:userData.companyCode, isChecked: true });
+      this.setState({
+        email: userData.email,
+        password: userData.password,
+        companyCode: userData.companyCode,
+        isChecked: true,
+      });
     }
   };
- 
- 
+
+  getLocationPermission = async () => {
+    let { status } = await Location.getForegroundPermissionsAsync();
+    if (status !== "granted") {
+      this.props.navigation.navigate("PermissionScreen");
+      return;
+    }
+  };
+
   getDeviceToken = async () => {
     var deviceToken = await DeviceStorage.getKey("FcmToken");
     var deviceInfo =
@@ -199,7 +207,7 @@ class SignIn extends React.Component {
   getOffers = async () => {
     var response = await (await request())
       .get(api.Offers.SignIn)
-      .catch(function (error) {
+      .catch(function(error) {
         ToastMessage.Short("Error! Contact Support");
       });
     if (response != undefined) {
@@ -215,7 +223,7 @@ class SignIn extends React.Component {
   getNotice = async () => {
     var response = await (await request())
       .get(api.Offers.Modal)
-      .catch(function (error) {
+      .catch(function(error) {
         ToastMessage.Short("Error! Contact Support");
       });
     if (response != undefined) {
@@ -239,10 +247,10 @@ class SignIn extends React.Component {
         return {
           email: myJson.email,
           password: myJson.password,
-          companyCode: myJson.companyCode
+          companyCode: myJson.companyCode,
         };
       }
-    } catch (e) { }
+    } catch (e) {}
   };
 
   secureStoreSave = async () => {
@@ -251,8 +259,8 @@ class SignIn extends React.Component {
     try {
       await SecureStore.setItemAsync("mbuser", JSON.stringify(credentials));
 
-      this.setState({ email: "", password: "", companyCode:"" });
-    } catch (e) { }
+      this.setState({ email: "", password: "", companyCode: "" });
+    } catch (e) {}
   };
 
   clearSecureStore = async () => {
@@ -273,7 +281,7 @@ class SignIn extends React.Component {
         [
           {
             text: "Cancel",
-            onPress: () => { },
+            onPress: () => {},
             style: "cancel",
           },
           {
@@ -339,7 +347,7 @@ class SignIn extends React.Component {
           failedCount: this.state.failedCount + 1,
         });
       }
-    } catch (e) { }
+    } catch (e) {}
   };
   _onDone = async () => {
     await AsyncStorage.setItem("WalkThrough", "done");
@@ -498,14 +506,14 @@ class SignIn extends React.Component {
             contentContainerStyle={{ paddingBottom: 15 }}
           >
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <View style={{height:180, width:180}}>
-
+              <View style={{ height: 180, width: 180 }}>
                 <Image
                   style={{
                     marginTop: 20,
                     alignSelf: "center",
-                    resizeMode:"contain", 
-                    height:180, width:180
+                    resizeMode: "contain",
+                    height: 180,
+                    width: 180,
                   }}
                   source={require("../../assets/AppLogo.png")}
                 />
@@ -526,9 +534,8 @@ class SignIn extends React.Component {
                   Sign in to continue
                 </Text>
               </View>
-              
             </View>
-           
+
             <View style={{ marginHorizontal: 24 }}>
               <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
                 Company Code
@@ -540,7 +547,6 @@ class SignIn extends React.Component {
                   maxLength={10}
                   onChangeText={(text) => this.setState({ companyCode: text })}
                   value={this.state.companyCode}
-
                 />
               </View>
               <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
@@ -804,8 +810,6 @@ class SignIn extends React.Component {
 
             <View>
               <View style={{ alignSelf: "center" }}>
-               
-
                 <TouchableOpacity
                   style={{ alignItems: "center", justifyContent: "center" }}
                   onPress={() => this.props.navigation.navigate("Register")}
@@ -832,10 +836,9 @@ class SignIn extends React.Component {
                   version: {info.expo.version}
                 </Text>
               </View>
-            
             </View>
           </ScrollView>
-          
+
           <Modal visible={this.state.noticeModal} transparent>
             <Pressable
               style={{ flex: 1 }}
@@ -932,10 +935,9 @@ class SignIn extends React.Component {
 
     var response = await (await request())
       .post(api.Login, data)
-      .catch(function (error) {
+      .catch(function(error) {
         this.setState({ alertMessage: "Error Ocurred Contact Support" });
       });
-
 
     if (response != undefined) {
       if (response.data.Code == 200) {
@@ -971,15 +973,15 @@ class SignIn extends React.Component {
     this.setState({ isLoading: false });
   };
 
-  SignInRemembered= async(data)=>{
+  SignInRemembered = async (data) => {
     this.setState({ isLoading: true });
     var response = await (await request())
       .post(api.Login, qs.stringify(data))
-      .catch(function (error) {
+      .catch(function(error) {
         this.setState({ isLoading: false });
         ToastMessage.Short("Error Ocurred Contact Support");
       });
-    console.log("Response", response.data)
+    console.log("Response", response.data);
     if (response != undefined && response.data != undefined) {
       if (response.data.Code == 200) {
         var userCache = await helpers.GetUserInfo();
@@ -1031,7 +1033,6 @@ class SignIn extends React.Component {
     this.setState({ isLoading: false });
   };
 
-
   SignIn = async () => {
     this.setState({ isLoading: true });
 
@@ -1042,14 +1043,14 @@ class SignIn extends React.Component {
       CompanyId: api.CompanyId,
       CompanyCode: this.state.companyCode,
       SecretKey: api.SecretKey,
-      Username: this.state.email+'_1',
+      Username: this.state.email + "_1",
       Password: this.state.password,
       Device: this.state.device,
       FcmToken: this.state.fcmToken,
     });
     var response = await (await request())
       .post(api.Login, data)
-      .catch(function (error) {
+      .catch(function(error) {
         this.setState({ isLoading: false });
         ToastMessage.Short("Error Ocurred Contact Support");
       });

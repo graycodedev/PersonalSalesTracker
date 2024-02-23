@@ -8,7 +8,7 @@ import {
   ImageStore,
   AppState,
   TouchableOpacity,
-  Platform
+  Platform,
 } from "react-native";
 import { Colors } from "../screens/style/Theme";
 import IMAGES from "../constants/newImages";
@@ -17,9 +17,9 @@ import * as BankingIcons from "./BankingIcons";
 import ThemedListItem from "react-native-elements/dist/list/ListItem";
 import Api from "../constants/Api";
 import { ProfileIcon } from "./IconsAll";
-import * as SVG from "../components/BankingIcons"
-import * as Location from 'expo-location';
-import axios from 'axios';
+import * as SVG from "../components/BankingIcons";
+import * as Location from "expo-location";
+import axios from "axios";
 import qs from "qs";
 import { ActivityIndicator } from "react-native";
 import ToastMessage from "./Toast/Toast";
@@ -34,17 +34,17 @@ const ProfileHeader = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePicture, setProfilePicture] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [showCheckInConfirmation,setShowCheckInConfirmation]= useState(false);
-  const [checkedIn,setCheckedIn]= useState(false);
+  const [showCheckInConfirmation, setShowCheckInConfirmation] = useState(false);
+  const [checkedIn, setCheckedIn] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     GetCheckInStatus();
-  }, []); 
+  }, []);
 
-  const GetCheckInStatus= async()=>{
-    let isCheckedIn= await helpers.GetCheckInStatus();
-    setCheckedIn(isCheckedIn); 
-  }
+  const GetCheckInStatus = async () => {
+    let isCheckedIn = await helpers.GetCheckInStatus();
+    setCheckedIn(isCheckedIn);
+  };
   const GetUserInfo = async () => {
     const u = await helpers.GetUserInfo();
     if (u != null) {
@@ -58,57 +58,59 @@ const ProfileHeader = (props) => {
   GetUserInfo();
 
   const checkIn = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Permission to access location was denied');
+    let { status } = await Location.getForegroundPermissionsAsync();
+    if (status !== "granted") {
+      props.navigation.navigate("PermissionScreen");
       return;
     }
 
-    let location= await Location.getCurrentPositionAsync({ accuracy: Platform.OS=="android" ? Location.Accuracy.Low : Location.Accuracy.Lowest});
+    let location = await Location.getCurrentPositionAsync({
+      accuracy:
+        Platform.OS == "android"
+          ? Location.Accuracy.Low
+          : Location.Accuracy.Lowest,
+    });
     let latitude = location.coords.latitude;
     let longitude = location.coords.longitude;
 
     let date = new Date();
-    let attendanceDate = date.toISOString().split('T')[0];
-    let attendanceTime = date.toTimeString().split(' ')[0];
-    let route= checkedIn?Api.Attendances.CheckOut:Api.Attendances.CheckIn;
+    let attendanceDate = date.toISOString().split("T")[0];
+    let attendanceTime = date.toTimeString().split(" ")[0];
+    let route = checkedIn ? Api.Attendances.CheckOut : Api.Attendances.CheckIn;
     let data = {
       Latitude: latitude,
       Longitude: longitude,
-      IsCheckIn: !checkedIn, 
-      AttendanceDate: attendanceDate, 
-      AttendanceTime: attendanceTime
+      IsCheckIn: !checkedIn,
+      AttendanceDate: attendanceDate,
+      AttendanceTime: attendanceTime,
     };
 
     var response = await (await request()).post(route, JSON.stringify(data));
     if (response != undefined) {
       if (response.data.Code == 200) {
-       if(checkedIn){
-        await DeviceStorage.deleteKey("checkInInfo");
-       }
-       else{
-        await DeviceStorage.saveKey("checkInInfo", JSON.stringify(data));
-       }
-       GetCheckInStatus();
-       setShowCheckInConfirmation(false); 
-       ToastMessage.Short(response.data.Message);
-
+        if (checkedIn) {
+          await DeviceStorage.deleteKey("checkInInfo");
+        } else {
+          await DeviceStorage.saveKey("checkInInfo", JSON.stringify(data));
+        }
+        GetCheckInStatus();
+        setShowCheckInConfirmation(false);
+        ToastMessage.Short(response.data.Message);
       } else {
         ToastMessage.Short("Error Occurred, Contact Support!!!");
       }
     } else {
       ToastMessage.Short("Error Occurred, Contact Support!!!");
-
     }
-  }
+  };
 
   return (
     <View>
       <View style={styles.container}>
         <BankingIcons.ScreenheaderEllipse
           fill={Colors.primary}
-          position='absolute'
-          width='100%'
+          position="absolute"
+          width="100%"
         />
       </View>
       <View style={styles.profileBox}>
@@ -143,42 +145,49 @@ const ProfileHeader = (props) => {
         <View style={styles.qrAndTickets}>
           <TouchableOpacity
             style={styles.boxes}
-            onPress={() =>
-              props.navigation.navigate("ReceivePayment")
-            }
+            onPress={() => props.navigation.navigate("ReceivePayment")}
           >
             {/* <Image source={IMAGES.shareQR} style={{marginLeft: 22.4, marginRight: 12}} /> */}
-            <BankingIcons.QrInBlackIcon
-            />
+            <BankingIcons.QrInBlackIcon />
             <Text style={{ fontFamily: "SemiBold", fontSize: 12 }}>
               Share QR
             </Text>
           </TouchableOpacity>
           {/* navigation.navigate("LoadAccountList"); */}
           <TouchableOpacity
-            style={[styles.checkIn, {borderColor: checkedIn? "red":"#5BC236" }]}
-            onPress={()=>setShowCheckInConfirmation(true)}
+            style={[
+              styles.checkIn,
+              { borderColor: checkedIn ? "red" : "#5BC236" },
+            ]}
+            onPress={() => setShowCheckInConfirmation(true)}
           >
-             <BankingIcons.fingerPrint height={25} width={25} fill={"black"}/>
-            
-            {!checkedIn?<Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>
-              Check In
-            </Text>:
-            <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>
-           Check Out
-          </Text>}
+            <BankingIcons.fingerPrint height={25} width={25} fill={"black"} />
+
+            {!checkedIn ? (
+              <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>
+                Check In
+              </Text>
+            ) : (
+              <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>
+                Check Out
+              </Text>
+            )}
           </TouchableOpacity>
         </View>
         {showCheckInConfirmation && (
-            <WarningModal
-              text1={!checkedIn?"CHECK IN?":"CHECK OUT?"}
-              text2={!checkedIn?"Are you sure you want to Check In?":"Are you sure you want to Check Out?"}
-              onConfirm={checkIn}
-              onCancel={() => {
-                setShowCheckInConfirmation(false)
-              }}
-            />
-          )}
+          <WarningModal
+            text1={!checkedIn ? "CHECK IN?" : "CHECK OUT?"}
+            text2={
+              !checkedIn
+                ? "Are you sure you want to Check In?"
+                : "Are you sure you want to Check Out?"
+            }
+            onConfirm={checkIn}
+            onCancel={() => {
+              setShowCheckInConfirmation(false);
+            }}
+          />
+        )}
       </View>
     </View>
   );
@@ -219,7 +228,7 @@ const styles = StyleSheet.create({
     borderColor: "#EEEEEE",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   checkIn: {
     borderColor: "#5BC236",
@@ -229,7 +238,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   notificationAndProfile: {
     position: "absolute",
