@@ -284,7 +284,6 @@ import DeliverDetails from "../screens/salestracking/deliver/DeliverDetails";
 import PaymentDueList from "../screens/salestracking/paymentdue/PaymentDueList";
 import PermissionScreen from "../screens/general/PermissionScreen";
 
-
 const { width } = Dimensions.get("screen");
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -318,7 +317,7 @@ const headerOptions = {
       var sendKey = key.replace(/\s/g, "");
       var response = await (await request())
         .get(api.BaseUrl + "api/v1/information/getbykey?key=" + sendKey)
-        .catch(function (error) {
+        .catch(function(error) {
           ToastMessage.Short("Error Ocurred Contact Support");
           console.log(error);
         });
@@ -334,7 +333,6 @@ const headerOptions = {
       } else {
         ToastMessage.Short("Error ocurred contact support !");
       }
-
     };
     return (
       <>
@@ -352,7 +350,7 @@ const headerOptions = {
         <>
           <ModalPopUp
             visible={isVisible}
-            onPress={() => { }}
+            onPress={() => {}}
             onRequestClose={() => {
               setIsVisible(!isVisible);
             }}
@@ -466,47 +464,193 @@ function HomeStack(props) {
         options={headerOptions}
       />
       <Stack.Screen name="topup" component={TopUp} options={headerOptions} />
-      <Stack.Screen name="PartyList" component={PartyList} options={headerOptions} />
-      <Stack.Screen name="PartyDetails" component={PartyDetails} options={headerOptions} />
-      <Stack.Screen name="AddParty" component={AddParty} options={headerOptions} />
+      <Stack.Screen
+        name="PartyList"
+        component={PartyList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="PartyDetails"
+        component={PartyDetails}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="AddParty"
+        component={AddParty}
+        options={headerOptions}
+      />
       <Stack.Screen name="Notes" component={Notes} options={headerOptions} />
-      <Stack.Screen name="NoteInfo" component={NoteInfo} options={headerOptions} />
-      <Stack.Screen name="AddNote" component={AddNote} options={headerOptions} />
-      <Stack.Screen name="CollectionList" component={CollectionList} options={headerOptions} />
-      <Stack.Screen name="CollectionDetails" component={CollectionDetails} options={headerOptions} />
-      <Stack.Screen name="AddCollection" component={AddCollection} options={headerOptions} />
-      <Stack.Screen name="ServiceList" component={ServiceList} options={headerOptions} />
+      <Stack.Screen
+        name="NoteInfo"
+        component={NoteInfo}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="AddNote"
+        component={AddNote}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="CollectionList"
+        component={CollectionList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="CollectionDetails"
+        component={CollectionDetails}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="AddCollection"
+        component={AddCollection}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="ServiceList"
+        component={ServiceList}
+        options={headerOptions}
+      />
       <Stack.Screen name="Visits" component={Visits} options={headerOptions} />
-      <Stack.Screen name="AddVisit" component={AddVisit} options={headerOptions} />
-      <Stack.Screen name="VisitDetails" component={VisitDetails} options={headerOptions} />
-      <Stack.Screen name="Products" component={Products} options={headerOptions} />
-      <Stack.Screen name="ProductDetails" component={ProductDetails} options={headerOptions} />
-      <Stack.Screen name="OdometerList" component={OdometerList} options={headerOptions} />
-      <Stack.Screen name="OdometerDetails" component={OdometerDetails} options={headerOptions} />
-      <Stack.Screen name="StartTrip" component={StartTrip} options={headerOptions} />
-      <Stack.Screen name="EndTrip" component={EndTrip} options={headerOptions} />
-      <Stack.Screen name="RequestLeave" component={RequestLeave} options={headerOptions} />
-      <Stack.Screen name="LeaveList" component={LeaveList} options={headerOptions} />
-      <Stack.Screen name="LeaveDetails" component={LeaveDetails} options={headerOptions} />
-      <Stack.Screen name="RequestAdvance" component={RequestAdvance} options={headerOptions} />
-      <Stack.Screen name="AdvanceList" component={AdvanceList} options={headerOptions} />
-      <Stack.Screen name="AdvanceDetails" component={AdvanceDetails} options={headerOptions} />
-      <Stack.Screen name="Attendance" component={Attendance} options={headerOptions} />
-      <Stack.Screen name="OrderList" component={OrderList} options={headerOptions} />
-      <Stack.Screen name="AddOrder" component={AddOrder} options={headerOptions} />
-      <Stack.Screen name="OrderDetails" component={OrderDetails} options={headerOptions} />
-      <Stack.Screen name="ExpenseList" component={ExpenseList} options={headerOptions} />
-      <Stack.Screen name="AddExpense" component={AddExpense} options={headerOptions} />
-      <Stack.Screen name="ExpenseDetails" component={ExpenseDetails} options={headerOptions} />
-      <Stack.Screen name="ReturnList" component={ReturnList} options={headerOptions} />
-      <Stack.Screen name="ReturnDetails" component={ReturnDetails} options={headerOptions} />
-      <Stack.Screen name="ReturnOrder" component={ReturnOrder} options={headerOptions} />
-      <Stack.Screen name="EODReport" component={EODReport} options={headerOptions} />
-      <Stack.Screen name="ReceivePayment" component={ReceivePayment} options={headerOptions} />
-      <Stack.Screen name="PaymentDueList" component={PaymentDueList} options={headerOptions} />
-      <Stack.Screen name="PermissionScreen" component={PermissionScreen} options={{headerShown: false}} />
-
-
+      <Stack.Screen
+        name="AddVisit"
+        component={AddVisit}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="VisitDetails"
+        component={VisitDetails}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="Products"
+        component={Products}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="ProductDetails"
+        component={ProductDetails}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="OdometerList"
+        component={OdometerList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="OdometerDetails"
+        component={OdometerDetails}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="StartTrip"
+        component={StartTrip}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="EndTrip"
+        component={EndTrip}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="RequestLeave"
+        component={RequestLeave}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="LeaveList"
+        component={LeaveList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="LeaveDetails"
+        component={LeaveDetails}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="RequestAdvance"
+        component={RequestAdvance}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="AdvanceList"
+        component={AdvanceList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="AdvanceDetails"
+        component={AdvanceDetails}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="Attendance"
+        component={Attendance}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="OrderList"
+        component={OrderList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="AddOrder"
+        component={AddOrder}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="OrderDetails"
+        component={OrderDetails}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="ExpenseList"
+        component={ExpenseList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="AddExpense"
+        component={AddExpense}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="ExpenseDetails"
+        component={ExpenseDetails}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="ReturnList"
+        component={ReturnList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="ReturnDetails"
+        component={ReturnDetails}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="ReturnOrder"
+        component={ReturnOrder}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="EODReport"
+        component={EODReport}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="ReceivePayment"
+        component={ReceivePayment}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="PaymentDueList"
+        component={PaymentDueList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="PermissionScreen"
+        component={PermissionScreen}
+        options={{ headerShown: false }}
+      />
 
       <Stack.Screen
         name="Confirmation"
@@ -1277,7 +1421,10 @@ function BottomTabNavigator() {
                   borderColor: "white",
                 }}
               >
-                <BankingIcons.order style={{ height: 30, width: 33 }} fill="white" />
+                <BankingIcons.order
+                  style={{ height: 30, width: 33 }}
+                  fill="white"
+                />
               </View>
               <Text
                 style={{
