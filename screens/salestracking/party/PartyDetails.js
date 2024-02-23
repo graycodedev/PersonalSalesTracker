@@ -186,6 +186,7 @@ const CollectionsScreen = ({ partyId }) => {
                 </View>
             ) : (
                 <View>
+                    {console.log("collection log:", collections)}
                     {collections.length > 0 ? (
                         collections.map((collection, index) => (
                             <TouchableOpacity
