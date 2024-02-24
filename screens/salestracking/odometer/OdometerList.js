@@ -40,7 +40,6 @@ const OdometerList = () => {
             if (response != undefined) {
                 if (response.data.Code == 200) {
                     setOdometers(response.data.Data);
-                    
                 } else {
                     ToastMessage.Short("Error Loading Odometers");
                 }
@@ -66,29 +65,36 @@ const OdometerList = () => {
                     </View>
                 ) : (
                     <View>
-                        {odometers.map((odometer) => (
-                            <TouchableOpacity key={odometer.Id} style={styles.tripItem}
-                                onPress={() =>
-                                    navigation.navigate("OdometerDetails", { odometer })
-                                }
-                            >
-                                <View>
-                                    <Text style={AppStyles.Text.BoldTitle}>{ new Date(odometer.StartDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
-                                    <Text style={styles.tripInfo}>Start Odometer: {odometer.StartOdometer}</Text>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <Text style={styles.tripInfo}>End Odometer: {odometer.EndOdometer || ''}</Text>
-                                        {odometer.EndOdometer == undefined && (
-                                            <TouchableOpacity
-                                                style={styles.endTripButton}
-                                                onPress={() => navigation.navigate('EndTrip')}
-                                            >
-                                                <Text style={styles.endTripButtonText}>End Trip</Text>
-                                            </TouchableOpacity>
-                                        )}
+                        {odometers.length > 0 ? (
+                            odometers.map((odometer) => (
+                                <TouchableOpacity key={odometer.Id} style={styles.tripItem}
+                                    onPress={() =>
+                                        navigation.navigate("OdometerDetails", { odometer })
+                                    }
+                                >
+                                    <View>
+                                        <Text style={AppStyles.Text.BoldTitle}>{new Date(odometer.StartDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
+                                        <Text style={styles.tripInfo}>Start Odometer: {odometer.StartOdometer}</Text>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Text style={styles.tripInfo}>End Odometer: {odometer.EndOdometer || ''}</Text>
+                                            {odometer.EndOdometer == undefined && (
+                                                <TouchableOpacity
+                                                    style={styles.endTripButton}
+                                                    onPress={() => navigation.navigate('EndTrip')}
+                                                >
+                                                    <Text style={styles.endTripButtonText}>End Trip</Text>
+                                                </TouchableOpacity>
+                                            )}
+                                        </View>
                                     </View>
-                                </View>
-                            </TouchableOpacity>
-                        ))}
+                                </TouchableOpacity>
+                            ))
+                        ) : (
+                            <View style={styles.noDataContainer}>
+                                <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                                <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No odometers available</Text>
+                            </View>
+                        )}
                     </View>
                 )}
             </ScrollView>
@@ -104,7 +110,6 @@ const OdometerList = () => {
     );
 };
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -119,10 +124,6 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 10,
         elevation: 2,
-    },
-    tripName: {
-        fontSize: 20,
-        fontWeight: '700',
     },
     tripInfo: {
         fontSize: 16,
@@ -148,7 +149,19 @@ const styles = StyleSheet.create({
         zIndex: 1,
         justifyContent: "center",
         alignItems: "center"
-    }
+    },
+    spinnerContainer: {
+        flex: 1,
+        justifyContent: "center",
+        margin: 20,
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10,
+    },
+    noDataContainer: {
+        alignItems: "center",
+        marginTop: 20,
+    },
 });
 
 export default OdometerList;

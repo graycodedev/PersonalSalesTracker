@@ -86,21 +86,28 @@ const Products = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {products.map((product, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            style={styles.productItem}
-                            onPress={() => navigation.navigate("ProductDetails", { product })}
-                        >
-                            <Image source={Api.BaseUrl+product.productImagePath} style={styles.productImage} />
-                            <View>
-                                <Text style={AppStyles.Text.BoldTitle}>{product.ProductName}</Text>
-                                <Text style={styles.productInfo}>Product Code: {product.ProductCode}</Text>
-                                <Text style={styles.productInfo}>Marked Price: Rs.{product.MaximumSellingPrice}</Text>
-                                <Text style={styles.productInfo}>Selling Price: Rs.{product.PreferedSellingPrice}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
+                    {products.length > 0 ? (
+                        products.map((product, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={styles.productItem}
+                                onPress={() => navigation.navigate("ProductDetails", { product })}
+                            >
+                                <Image source={{ uri: Api.BaseUrl + product.productImagePath }} style={styles.productImage} />
+                                <View>
+                                    <Text style={AppStyles.Text.BoldTitle}>{product.ProductName}</Text>
+                                    <Text style={styles.productInfo}>Product Code: {product.ProductCode}</Text>
+                                    <Text style={styles.productInfo}>Marked Price: Rs.{product.MaximumSellingPrice}</Text>
+                                    <Text style={styles.productInfo}>Selling Price: Rs.{product.PreferedSellingPrice}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        ))
+                    ) : (
+                        <View style={styles.noDataContainer}>
+                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No products available</Text>
+                        </View>
+                    )}
                 </ScrollView>
             )}
 
@@ -145,17 +152,9 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         padding: 10,
     },
-    circle: {
-        backgroundColor: Colors.primary,
-        width: 50,
-        height: 50,
-        position: "absolute",
-        bottom: 20,
-        right: 20,
-        borderRadius: 50,
-        zIndex: 1,
-        justifyContent: "center",
+    noDataContainer: {
         alignItems: "center",
+        marginTop: 20,
     },
 });
 

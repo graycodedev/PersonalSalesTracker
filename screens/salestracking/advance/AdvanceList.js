@@ -27,7 +27,7 @@ const AdvanceList = ({ navigation }) => {
         navigation.setOptions({
             title: "Advance List",
         });
-    }, [])
+    }, []);
 
     const [advances, setAdvances] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -88,30 +88,52 @@ const AdvanceList = ({ navigation }) => {
                     showsVerticalScrollIndicator={false}
                     style={{ width: "100%", backgroundColor: "#eee", flex: 1 }}
                     contentContainerStyle={{ flexGrow: 1 }}
-                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
                 >
-                    {advances.map((advance) => {
-                        return (
-                            <TouchableOpacity
-                                key={advance.Id}
-                                style={styles.advanceItem}
-                                onPress={() => navigation.navigate("AdvanceDetails", { advance })}
-                            >
-                                <View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <Text style={AppStyles.Text.BoldTitle}>Rs. {advance.Amount}</Text>
-                                        {advance.IsApproved == true ? <Text style={[styles.advanceText, { color: 'green' }]}>Approved</Text> : advance.IsCancelled ? <Text style={[styles.advanceText, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.advanceText, { color: 'orange' }]}>Pending</Text>}
-                                    </View>
+                    {advances.length > 0 ? (
+                        advances.map((advance) => {
+                            return (
+                                <TouchableOpacity
+                                    key={advance.Id}
+                                    style={styles.advanceItem}
+                                    onPress={() =>
+                                        navigation.navigate("AdvanceDetails", { advance })
+                                    }
+                                >
                                     <View>
-                                        <Text style={styles.advanceText}>For: <DateDisplay date={advance.ForDate} /></Text>
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                            <Text style={AppStyles.Text.BoldTitle}>Rs. {advance.Amount}</Text>
+                                            {advance.IsApproved ? (
+                                                <Text style={[styles.advanceText, { color: "green" }]}>
+                                                    Approved
+                                                </Text>
+                                            ) : advance.IsCancelled ? (
+                                                <Text style={[styles.advanceText, { color: "red" }]}>
+                                                    Cancelled
+                                                </Text>
+                                            ) : (
+                                                <Text style={[styles.advanceText, { color: "orange" }]}>
+                                                    Pending
+                                                </Text>
+                                            )}
+                                        </View>
+                                        <View>
+                                            <Text style={styles.advanceText}>
+                                                For: <DateDisplay date={advance.ForDate} />
+                                            </Text>
+                                        </View>
                                     </View>
-                                </View>
-                            </TouchableOpacity>
-                        );
-                    })}
-
-
-
+                                </TouchableOpacity>
+                            );
+                        })
+                    ) : (
+                        <View style={{ alignItems: "center", marginTop: 20 }}>
+                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                            <Text style={{ fontSize: 20 }}>No advances available</Text>
+                        </View>
+                    )}
                 </ScrollView>
             )}
 
@@ -126,7 +148,6 @@ const AdvanceList = ({ navigation }) => {
         </View>
     );
 };
-
 
 const styles = StyleSheet.create({
     container: {
@@ -143,26 +164,31 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         elevation: 2,
     },
-    advanceName: {
-        fontSize: 20,
-        fontWeight: '700',
-    },
     advanceText: {
         fontSize: 16,
         color: "#333",
+    },
+    spinnerContainer: {
+        flex: 1,
+        justifyContent: "center",
+        margin: 20,
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10,
     },
     circle: {
         backgroundColor: Colors.primary,
         width: 50,
         height: 50,
-        position: 'absolute',
+        position: "absolute",
         bottom: 20,
         right: 20,
         borderRadius: 50,
         zIndex: 1,
         justifyContent: "center",
-        alignItems: "center"
-    }
+        alignItems: "center",
+    },
 });
 
 export default AdvanceList;
+

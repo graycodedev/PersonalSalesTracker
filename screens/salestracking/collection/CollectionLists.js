@@ -27,13 +27,12 @@ const CollectionList = ({ navigation }) => {
     try {
       var response = await (await request())
         .get(Api.Collections.List)
-        .catch(function(error) {
+        .catch(function (error) {
           ToastMessage.Short("Error! Contact Support");
         });
 
       if (response != undefined) {
         if (response.data.Code == 200) {
-          // console.log("cc", response.data.Data[0])
           setCollections(response.data.Data);
         } else {
           ToastMessage.Short("Error Loading Collections");
@@ -74,35 +73,46 @@ const CollectionList = ({ navigation }) => {
           style={{ width: "100%", backgroundColor: "#eee" }}
           contentContainerStyle={{ flexGrow: 1 }}
         >
-          <TouchableOpacity onPress={()=>navigation.navigate("PaymentDueList")}  style={{flexDirection: "row", justifyContent:"flex-end", paddingTop: 8, right: 15}}>
-            <Text style={{fontSize: 14, fontFamily:"Regular", color: Colors.primary, textDecorationLine:"underline"}}>view dues</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("PaymentDueList")}
+            style={{ flexDirection: "row", justifyContent: "flex-end", paddingTop: 8, right: 15 }}
+          >
+            <Text style={{ fontSize: 14, fontFamily: "Regular", color: Colors.primary, textDecorationLine: "underline" }}>view dues</Text>
           </TouchableOpacity>
-          <View style={styles.container}>
-            <View>
-              {collections.map((collection) => (
-                <TouchableOpacity
-                  key={collection.Id}
-                  style={styles.collectionItem}
-                  onPress={() =>
-                    navigation.navigate("CollectionDetails", { collection })
-                  }
-                >
-                  <View>
-                    <Text style={AppStyles.Text.BoldTitle}>
-                      {collection.PartyName}
-                    </Text>
-                    <Text
-                      style={AppStyles.Text.Regular}
-                    >{`Payment Amount: Rs.${collection.Amount}`}</Text>
-                    <Text style={AppStyles.Text.Regular}>
-                      Recieved Date:{" "}
-                      <DateDisplay date={collection.PaymentDate} />
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
+
+          {collections.length > 0 ? (
+            <View style={styles.container}>
+              <View>
+                {collections.map((collection) => (
+                  <TouchableOpacity
+                    key={collection.Id}
+                    style={styles.collectionItem}
+                    onPress={() =>
+                      navigation.navigate("CollectionDetails", { collection })
+                    }
+                  >
+                    <View>
+                      <Text style={AppStyles.Text.BoldTitle}>
+                        {collection.PartyName}
+                      </Text>
+                      <Text
+                        style={AppStyles.Text.Regular}
+                      >{`Payment Amount: Rs.${collection.Amount}`}</Text>
+                      <Text style={AppStyles.Text.Regular}>
+                        Received Date:{" "}
+                        <DateDisplay date={collection.PaymentDate} />
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
-          </View>
+          ) : (
+            <View style={{ alignItems: "center", paddingTop: 20 }}>
+              <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+              <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No collections available !!</Text>
+            </View>
+          )}
         </ScrollView>
       )}
 
@@ -134,14 +144,6 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 10,
     elevation: 2,
-  },
-  collectionName: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  collectionInfo: {
-    fontSize: 16,
   },
   circle: {
     backgroundColor: Colors.primary,

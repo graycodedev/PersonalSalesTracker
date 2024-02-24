@@ -87,19 +87,26 @@ const ExpenseList = (props) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {expenses.map((expense) => (
-                        <TouchableOpacity
-                            key={expense.id}
-                            style={styles.expenseItem}
-                            onPress={() => props.navigation.navigate("ExpenseDetails", { expense })}
-                        >
-                            <View>
-                                <Text style={styles.expenseName}>{expense.Remarks}</Text>
-                                <Text style={styles.expenseInfo}>Expense Code: {expense.ExpensesTypeId}</Text>
-                                <Text style={styles.expenseInfo}>Expense Amount: Rs.{expense.Amount}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
+                    {expenses.length > 0 ? (
+                        expenses.map((expense) => (
+                            <TouchableOpacity
+                                key={expense.id}
+                                style={styles.expenseItem}
+                                onPress={() => props.navigation.navigate("ExpenseDetails", { expense })}
+                            >
+                                <View>
+                                    <Text style={styles.expenseName}>{expense.Remarks}</Text>
+                                    <Text style={styles.expenseInfo}>Expense Code: {expense.ExpensesTypeId}</Text>
+                                    <Text style={styles.expenseInfo}>Expense Amount: Rs.{expense.Amount}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        ))
+                    ) : (
+                        <View style={{ alignItems: "center" }}>
+                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No expenses available !!</Text>
+                        </View>
+                    )}
                 </ScrollView>
             )}
             <TouchableOpacity

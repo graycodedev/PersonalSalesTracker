@@ -117,11 +117,33 @@ const OrdersScreen = ({ partyId }) => {
                                 style={styles.listItem}
                                 onPress={() => navigation.navigate("DeliverDetails", { deliverId: order.Id })}
                             >
-                                {/* Display order details similar to OrderList component */}
+                                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                                    <View>
+
+                                        <Text style={[AppStyles.Text.BoldTitle, { marginBottom: 4 }]}>{order.CompanyName}</Text>
+                                        <TouchableOpacity onPress={() => Contact.MakeCall(order.PartyMobileNo)} style={{ flexDirection: "row", alignItems: "center" }}>
+                                            <BankingIcons.callIcon fill={"green"} height={18} width={18} />
+                                            <Text style={[styles.orderInfo]}> {order.PartyMobileNo} </Text>
+                                        </TouchableOpacity>
+                                        <Text style={[styles.orderInfo, { color: "#040273" }]}>#{order.OrderNo} </Text>
+
+                                        <Text style={styles.orderInfo}>Delivery Date: <DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
+                                        <Text style={styles.orderInfo}>Ordered Date: <DateDisplay date={order.OrderDate} /> </Text>
+
+                                    </View>
+
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: "flex-end", marginTop: 4 }}>
+
+                                    <Text style={[styles.orderInfo, { color: "green", alignSelf: "flex-end" }]}>Rs. {order?.TotalAmount?.toFixed(2)}</Text>
+                                </View>
                             </TouchableOpacity>
                         ))
                     ) : (
-                        <Text>No orders found!!</Text>
+                        <View style={{ alignItems: "center" }}>
+                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No Order for this party !!</Text>
+                        </View>
                     )}
                 </View>
             )}
@@ -204,7 +226,10 @@ const CollectionsScreen = ({ partyId }) => {
                             </TouchableOpacity>
                         ))
                     ) : (
-                        <Text>No collections found!!</Text>
+                        <View style={{ alignItems: "center" }}>
+                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No Collection for this party !!</Text>
+                        </View>
                     )}
                 </View>
             )}
@@ -291,7 +316,10 @@ const VisitsScreen = ({ partyId }) => {
                             </TouchableOpacity>
                         ))
                     ) : (
-                        <Text>No visits found!!</Text>
+                        <View style={{ alignItems: "center" }}>
+                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No Visits for this party !!</Text>
+                        </View>
                     )}
                 </View>
             )}

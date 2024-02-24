@@ -88,26 +88,28 @@ const ReturnList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {returns.map((returnItem) => {
-                        return (
+                    {returns.length > 0 ? (
+                        returns.map((returnItem) => (
                             <TouchableOpacity
                                 key={returnItem.Id}
                                 style={styles.returnItem}
                                 onPress={() => navigation.navigate("ReturnDetails", { returnItem })}
                             >
                                 <View>
-                                    <Text style={[AppStyles.Text.BoldTitle, {marginBottom: 4}]}>{returnItem.ReturnReasonTitle}</Text>
+                                    <Text style={[AppStyles.Text.BoldTitle, { marginBottom: 4 }]}>{returnItem.ReturnReasonTitle}</Text>
                                     <Text style={styles.returnText}>Product: {returnItem.ProductName}</Text>
                                     <Text style={styles.returnText}>Quantity: {returnItem.Quantity}</Text>
                                 </View>
                             </TouchableOpacity>
-                        );
-                    })}
-
-
+                        ))
+                    ) : (
+                        <View style={styles.noDataContainer}>
+                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No return items available</Text>
+                        </View>
+                    )}
                 </ScrollView>
-            )
-            }
+            )}
 
             <TouchableOpacity
                 style={styles.circle}
@@ -140,11 +142,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         elevation: 2,
     },
-    returnTitle: {
-        fontSize: 18,
-        fontWeight: "bold",
-        marginBottom: 5,
-    },
     returnText: {
         fontSize: 16,
     },
@@ -158,6 +155,10 @@ const styles = StyleSheet.create({
         right: 30,
         justifyContent: "center",
         alignItems: "center",
+    },
+    noDataContainer: {
+        alignItems: "center",
+        marginTop: 20,
     },
 });
 
