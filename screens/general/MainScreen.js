@@ -44,6 +44,7 @@ const MainScreen = (props) => {
     }
     catch(error){
       await helpers.PostException(error)
+      await DeviceStorage.deleteKey("enableRememberMe");
       ToastMessage.Short("Error Occurred. Contact Support");
     }
    
