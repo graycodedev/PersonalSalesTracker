@@ -114,7 +114,7 @@ const OrdersScreen = ({ partyId }) => {
                         orders.map((order, index) => (
                             <TouchableOpacity
                                 key={index}
-                                style={styles.orderItem}
+                                style={styles.listItem}
                                 onPress={() => navigation.navigate("DeliverDetails", { deliverId: order.Id })}
                             >
                                 {/* Display order details similar to OrderList component */}
@@ -191,7 +191,7 @@ const CollectionsScreen = ({ partyId }) => {
                         collections.map((collection, index) => (
                             <TouchableOpacity
                                 key={index}
-                                style={styles.collectionItem}
+                                style={styles.listItem}
                                 onPress={() => navigation.navigate("CollectionDetails", { collection })}
                             >
                                 <View>
@@ -276,7 +276,7 @@ const VisitsScreen = ({ partyId }) => {
                         visits.map((visit) => (
                             <TouchableOpacity
                                 key={visit.Id}
-                                style={styles.visitItem}
+                                style={styles.listItem}
                                 onPress={() => navigation.navigate("VisitDetails", { visit })}
                             >
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    visitItem: {
+    listItem: {
         backgroundColor: "#fff",
         borderRadius: 8,
         padding: 15,
