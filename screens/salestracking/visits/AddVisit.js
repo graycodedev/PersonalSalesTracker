@@ -85,7 +85,18 @@ const AddVisit = (props, route) => {
           Platform.OS == "android"
             ? Location.Accuracy.Low
             : Location.Accuracy.Lowest,
+ maximumAge: 10000
       });
+
+      if(location == null || location == undefined){
+        alert("Last location sent")
+        let loc= await Location.getLastKnownPositionAsync({
+maxAge: 10000
+        }); 
+        setLocation(loc);
+      }
+
+
     setLocation(location);
   };
 

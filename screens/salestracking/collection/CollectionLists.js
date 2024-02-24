@@ -74,6 +74,9 @@ const CollectionList = ({ navigation }) => {
           style={{ width: "100%", backgroundColor: "#eee" }}
           contentContainerStyle={{ flexGrow: 1 }}
         >
+          <TouchableOpacity onPress={()=>navigation.navigate("PaymentDueList")}  style={{flexDirection: "row", justifyContent:"flex-end", paddingTop: 8, right: 15}}>
+            <Text style={{fontSize: 14, fontFamily:"Regular", color: Colors.primary, textDecorationLine:"underline"}}>view dues</Text>
+          </TouchableOpacity>
           <View style={styles.container}>
             <View>
               {collections.map((collection) => (

@@ -36,7 +36,12 @@
         "ACCESS_FINE_LOCATION"
       ],
       "versionCode": 5,
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json", 
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBW_OsuOXYLzHZGFvZEomhbGDewfSZoJYk"
+        }
+      }
     },
     "plugins": [
       [

@@ -20,10 +20,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Home from "../screens/Home";
-import Accounts from "../screens/cooperative/Accounts";
-import AccountStatement from "../screens/cooperative/AccountStatement";
-import IntrestRate from "../screens/cooperative/IntrestRate";
-import ChequeRequest from "../screens/cooperative/ChequeRequest";
 import Settings from "../screens/general/Settings";
 import ServiceList from "../screens/utilityPayment/ServiceList";
 import { ProfileIcon } from "../components/IconsAll";
@@ -458,11 +454,7 @@ function HomeStack(props) {
         component={ExchangeRates}
         options={headerOptions}
       ></Stack.Screen>
-      <Stack.Screen
-        name="ChequeRequest"
-        component={ChequeRequest}
-        options={headerOptions}
-      />
+     
       <Stack.Screen name="topup" component={TopUp} options={headerOptions} />
       <Stack.Screen
         name="PartyList"
@@ -968,16 +960,7 @@ function HomeStack(props) {
         component={TopUpSuccess}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="Accounts"
-        component={Accounts}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="AccountStatement"
-        component={AccountStatement}
-        options={headerOptions}
-      />
+     
       <Stack.Screen
         name="Landline"
         component={Landline}
@@ -1101,11 +1084,6 @@ function HomeStack(props) {
       <Stack.Screen
         name="savepin"
         component={SavePinScreen}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="IntrestRate"
-        component={IntrestRate}
         options={headerOptions}
       />
       <Stack.Screen

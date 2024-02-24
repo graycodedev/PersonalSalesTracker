@@ -165,8 +165,8 @@ const DeliverList = ({ navigation }) => {
 {orders.length==0 && 
 
 <View style={{alignItems:"center"}}>
-    <BankingIcons.warning height={60} width={60} fill={"#FFD21E"} />
-    <Text style={[AppStyles.Text.BoldTitle, {fontSize: 20}]}>No deliverable orders found!!</Text>
+    <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+    <Text style={[AppStyles.Text.BoldTitle, {fontSize: 20}]}>No orders for delivery !!</Text>
 </View>
 }
                 </ScrollView>
