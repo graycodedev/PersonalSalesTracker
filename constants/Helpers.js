@@ -447,6 +447,16 @@ const helpers = {
     var response = await (await request())
       .get(api.PostException +"?message="+message)
       .catch(function(error) {});
+  }, 
+  GetLocation: async function GetLocation(){
+    
+let res= await axios.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBW_OsuOXYLzHZGFvZEomhbGDewfSZoJYk", {}, {
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+
+return res.data.location
   }
 };
 

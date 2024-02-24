@@ -35,7 +35,7 @@
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
       ],
-      "versionCode": 5,
+      "versionCode": 6,
       "googleServicesFile": "./google-services.json", 
       "config": {
         "googleMaps": {

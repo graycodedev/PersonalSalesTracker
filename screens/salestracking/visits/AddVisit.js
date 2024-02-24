@@ -22,6 +22,7 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import * as Location from "expo-location";
 import helpers from "../../../constants/Helpers";
+import axios from "axios";
 
 const { width } = Dimensions.get("screen");
 
@@ -80,24 +81,9 @@ const AddVisit = (props, route) => {
       return;
     }
 
-    let location = await Location.getCurrentPositionAsync({
-        accuracy:
-          Platform.OS == "android"
-            ? Location.Accuracy.Low
-            : Location.Accuracy.Lowest,
- maximumAge: 10000
-      });
+    var location= await helpers.GetLocation();
+    setLocation(location); 
 
-      if(location == null || location == undefined){
-        alert("Last location sent")
-        let loc= await Location.getLastKnownPositionAsync({
-maxAge: 10000
-        }); 
-        setLocation(loc);
-      }
-
-
-    setLocation(location);
   };
 
   const renderAdditionalComponent = () => {
@@ -226,8 +212,8 @@ maxAge: 10000
         PartyName: partyName,
         LocationName: locationNameToSave,
         Remarks: remarks,
-        Latitude: location ? location.coords.latitude : null,
-        Longitude: location ? location.coords.longitude : null,
+        Latitude: location ? location.lat : null,
+        Longitude: location ? location.lng : null,
         IsActive: true,
       };
       Object.keys(visitData).forEach(
