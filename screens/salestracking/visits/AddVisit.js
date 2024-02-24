@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
+  Platform
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -79,7 +80,12 @@ const AddVisit = (props, route) => {
       return;
     }
 
-    let location = await Location.getCurrentPositionAsync({});
+    let location = await Location.getCurrentPositionAsync({
+        accuracy:
+          Platform.OS == "android"
+            ? Location.Accuracy.Low
+            : Location.Accuracy.Lowest,
+      });
     setLocation(location);
   };
 

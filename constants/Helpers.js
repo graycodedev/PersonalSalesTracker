@@ -445,7 +445,7 @@ const helpers = {
   }, 
   PostException: async function PostException(message) {
     var response = await (await request())
-      .get(api.PostException + JSON.stringify(message))
+      .get(api.PostException +"?message="+message)
       .catch(function(error) {});
   }
 };

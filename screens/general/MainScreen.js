@@ -43,7 +43,7 @@ const MainScreen = (props) => {
       }
     }
     catch(error){
-      await helpers.PostException({data: data, messsage: error})
+      await helpers.PostException(error)
       ToastMessage.Short("Error Occurred. Contact Support");
     }
    
