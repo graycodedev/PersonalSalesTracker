@@ -36,11 +36,11 @@ const OdometerDetails = ({ navigation, route }) => {
         },
         {
             Label: "Start Date",
-            Value: new Date(odometer.StartDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeStyle: "short" }) + ", " + new Date(odometer.StartDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+            Value: <><TimeDisplay time={odometer.StartDate} />, <DateDisplay date={odometer.StartDate} /></>
         },
         {
             Label: "End Date",
-            Value: new Date(odometer.EndDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeStyle: "short" }) + ", " + new Date(odometer.EndDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+            Value: <><TimeDisplay time={odometer.EndDate} />, <DateDisplay date={odometer.EndDate} /></>
 
         },
         {

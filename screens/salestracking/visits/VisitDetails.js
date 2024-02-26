@@ -39,6 +39,7 @@ const VisitDetails = (props) => {
     const visitDetails = [
         { Label: "Name", Value: visit.PartyName ? visit.PartyName : visit.LocationName },
         { Label: "Visit Date", Value: <DateDisplay date={visit.VisitDate} /> },
+        { Label: "Visit Time", Value: <TimeDisplay time={visit.VisitDate} /> },
         { Label: "Remarks", Value: visit.Remarks },
     ];
 
