@@ -15,7 +15,7 @@ import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
-import DateDisplay from "../../../components/DateDisplay";
+import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 import AppStyles from "../../../assets/theme/AppStyles";
 
 const CollectionList = ({ navigation }) => {

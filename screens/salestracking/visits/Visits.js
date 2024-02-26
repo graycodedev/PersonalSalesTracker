@@ -16,7 +16,7 @@ import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import AppStyles from "../../../assets/theme/AppStyles";
-import DateDisplay from "../../../components/DateDisplay";
+import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 
 
 const wait = (timeout) => {
@@ -96,6 +96,7 @@ const Visits = ({ navigation }) => {
                     {visits.length > 0 ? visits.map((visit) => {
                         const visitDate = new Date(visit.VisitDate);
                         const date = visitDate.toLocaleDateString();
+                        const time = visitDate.toLocaleTimeString();
 
                         return (
                             <TouchableOpacity
@@ -107,6 +108,7 @@ const Visits = ({ navigation }) => {
                                     <View>
                                         <Text style={AppStyles.Text.BoldTitle}>{visit.PartyName ? visit.PartyName : visit.LocationName}</Text>
                                         <DateDisplay date={visit.VisitDate} />
+                                        <TimeDisplay time={visit.VisitDate} />
                                     </View>
                                     {visit.PartyName && (
                                         <BankingIcons.tickMark fill='green' style={styles.imageStyle} />

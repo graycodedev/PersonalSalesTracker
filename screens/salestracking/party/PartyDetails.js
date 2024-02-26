@@ -13,7 +13,7 @@ import WarningModal from "../../../components/WarningModal";
 import DetailCard from "../../../components/DetailCard";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AppStyles from "../../../assets/theme/AppStyles";
-import DateDisplay from "../../../components/DateDisplay";
+import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
