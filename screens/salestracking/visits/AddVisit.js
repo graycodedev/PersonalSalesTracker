@@ -29,16 +29,17 @@ const { width } = Dimensions.get("screen");
 const AddVisit = (props, route) => {
   const update = props.route.params?.update;
   const visits = props.route.params?.visit;
+  const isParty = Boolean(visits?.PartyName);
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("existingParty");
+  const [selectedOption, setSelectedOption] = useState(isParty ? "party" : "location");
   const [location, setLocation] = useState(null);
-  const [locationName, setLocationName] = useState("");
-  const [remark, setRemark] = useState("");
+  const [locationName, setLocationName] = useState(visits?.LocationName || "");
+  const [remark, setRemark] = useState(visits?.Remarks || "");
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(visits?.VisitDate ? new Date(visits.VisitDate) : new Date());
   const [showPartiesList, setShowPartiesList] = useState(false);
-  const [selectedParty, setSelectedParty] = useState(null);
+  const [selectedParty, setSelectedParty] = useState(visits?.PartyName || "");
   const [locationError, setLocationError] = useState("");
   const [remarkError, setRemarkError] = useState("");
   const [partyError, setPartyError] = useState("");
@@ -87,7 +88,7 @@ const AddVisit = (props, route) => {
   };
 
   const renderAdditionalComponent = () => {
-    if (selectedOption === "existingParty") {
+    if (selectedOption === "party") {
       return (
         <View style={{ marginBottom: 15, zIndex: 98 }}>
           <TouchableOpacity
@@ -129,7 +130,7 @@ const AddVisit = (props, route) => {
           )}
         </View>
       );
-    } else if (selectedOption === "addParty") {
+    } else if (selectedOption === "location") {
       return (
         <View>
           <RegularInputText
@@ -169,10 +170,10 @@ const AddVisit = (props, route) => {
       let locationNameToSave = null;
       let isParty = true;
 
-      if (selectedOption === "existingParty") {
+      if (selectedOption === "party") {
         partyId = selectedParty ? selectedParty.Id : null;
         partyName = selectedParty ? selectedParty.PartyName : null;
-      } else if (selectedOption === "addParty") {
+      } else if (selectedOption === "location") {
         locationNameToSave = locationName;
         isParty = false;
       }
@@ -180,7 +181,7 @@ const AddVisit = (props, route) => {
       const remarks = remark;
 
       let isValid = true;
-      if (selectedOption === "addParty" && locationName.trim() === "") {
+      if (selectedOption === "location" && locationName.trim() === "") {
         isValid = false;
         setLocationError("Location is Required!");
       } else {
@@ -194,7 +195,7 @@ const AddVisit = (props, route) => {
         setRemarkError("");
       }
 
-      if (selectedOption === "existingParty" && !selectedParty) {
+      if (selectedOption === "party" && !selectedParty) {
         isValid = false;
         setPartyError("Party is Required!");
       } else {
@@ -273,21 +274,21 @@ const AddVisit = (props, route) => {
               color: "#9A9A9A",
             }}
             arrowColor={"#9A9A9A"}
-            placeholder="Select Party"
-            label="Select Party"
+            placeholder="Existing Party?"
+            label="Existing Party?"
             items={[
-              { label: "Yes", value: "existingParty" },
-              { label: "No", value: "addParty" },
+              { label: "Yes", value: "party" },
+              { label: "No", value: "location" },
             ]}
             onChangeItem={(item) => {
               setSelectedOption(item.value);
-              if (item.value === "existingParty") {
+              if (item.value === "party") {
                 setLocationName("");
               } else {
                 setSelectedParty(null);
               }
             }}
-            defaultValue={"existingParty"}
+            defaultValue={isParty ? "party" : "location"}
           />
         </View>
 
