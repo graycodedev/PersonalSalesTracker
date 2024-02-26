@@ -46,6 +46,7 @@ const ReturnOrder = (props) => {
         if (response != undefined) {
             if (response.data.Code == 200) {
                 setReturnReasons(response.data.Data);
+
             } else {
                 ToastMessage.Short(response.data.Message);
             }
@@ -63,6 +64,7 @@ const ReturnOrder = (props) => {
         if (response != undefined) {
             if (response.data.Code == 200) {
                 setProductNames(response.data.Data);
+
             } else {
                 ToastMessage.Short(response.data.Message);
             }
@@ -73,34 +75,38 @@ const ReturnOrder = (props) => {
 
     const saveReturn = async () => {
         let strData = qs.stringify({
-            Id: update ? returnItem.Id : 0,
+            Id: update ? returnItem?.Id : 0,
             CompanyId: 1,
             OrderReturnReasonId: returnReason,
             ProductId: productName,
             Quantity: quantity,
             Remarks: remark,
-        })
-        console.log("Str", strData)
+        });
+
         setIsLoading(true);
-        var response = await (await request())
-            .post(Api.Returns.Save, strData)
-            .catch(function (error) {
-                setIsLoading(false);
-                ToastMessage.Short("Error! Contact Support");
-            });
-        if (response != undefined) {
-            if (response.data.Code == 200) {
-                setIsLoading(false);
-                navigation.goBack();
-                return response.data.Data;
+        try {
+            var response = await (await request())
+                .post(Api.Returns.Save, strData);
+
+            if (response != undefined && response.data != undefined) {
+                if (response.data.Code == 200) {
+                    setIsLoading(false);
+                    navigation.goBack();
+                    ToastMessage.Short(response.data.Message);
+                    return response.data.Data;
+                } else {
+                    ToastMessage.Short(response.data.Message);
+                }
             } else {
-                ToastMessage.Short(response.data.Message);
+                ToastMessage.Short("Error! Contact Support");
             }
-        } else {
+        } catch (error) {
+            setIsLoading(false);
             ToastMessage.Short("Error! Contact Support");
         }
         setIsLoading(false);
-    }
+    };
+
 
     const isFormFilled = remark && returnReason && productName && quantity;
 

@@ -31,7 +31,7 @@ const ReturnDetails = ({ route, navigation }) => {
     ];
 
     const updateReturn = () => {
-        navigation.navigate('RequestReturn', { update: true, return: returnItem });
+        navigation.navigate('ReturnOrder', { update: true, return: returnItem });
     };
 
     return (

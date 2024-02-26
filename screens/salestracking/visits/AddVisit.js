@@ -81,8 +81,8 @@ const AddVisit = (props, route) => {
       return;
     }
 
-    var location= await helpers.GetLocation();
-    setLocation(location); 
+    var location = await helpers.GetLocation();
+    setLocation(location);
 
   };
 
@@ -230,6 +230,8 @@ const AddVisit = (props, route) => {
       if (response.data.Code === 200) {
         setIsLoading(false);
         goToVisits();
+        ToastMessage.Short(response.data.Message);
+
       } else {
         ToastMessage.Short(response.data.Message);
       }
