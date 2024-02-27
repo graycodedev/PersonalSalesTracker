@@ -5,10 +5,11 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    ActivityIndicator
+    ActivityIndicator,
+    RefreshControl
 } from "react-native";
-import PageStyle from "../../style/pageStyle";
 import { useNavigation } from "@react-navigation/native";
+import PageStyle from "../../style/pageStyle";
 import { ButtonPrimary } from "../../../components/Button";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
@@ -18,19 +19,26 @@ import Api from "../../../constants/Api";
 import AppStyles from "../../../assets/theme/AppStyles";
 import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 
+const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 const OdometerList = () => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(true);
     const [odometers, setOdometers] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
-    useEffect(() => {
-        navigation.setOptions({
-            title: "Odometer List",
+    const onRefresh = () => {
+        setRefreshing(true);
+        wait(2000).then(() => {
+            setRefreshing(false);
+            getList();
         });
-        getList();
-    }, [])
+    };
 
     const getList = async () => {
+        setIsLoading(true);
         try {
             var response = await (await request())
                 .get(Api.Odometers.List)
@@ -52,6 +60,13 @@ const OdometerList = () => {
         }
     };
 
+    useEffect(() => {
+        navigation.setOptions({
+            title: "Odometer List",
+        });
+        getList();
+    }, []);
+
     return (
         <View style={styles.container}>
             <ScrollView
@@ -59,6 +74,7 @@ const OdometerList = () => {
                 showsVerticalScrollIndicator={false}
                 style={{ width: "100%", backgroundColor: "#eee" }}
                 contentContainerStyle={{ flexGrow: 1 }}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
                 {isLoading ? (
                     <View style={styles.spinnerContainer}>
