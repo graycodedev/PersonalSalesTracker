@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  RefreshControl
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import PageStyle from "../../style/pageStyle";
@@ -18,9 +19,21 @@ import Api from "../../../constants/Api";
 import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 import AppStyles from "../../../assets/theme/AppStyles";
 
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+
 const CollectionList = ({ navigation }) => {
   const [collections, setCollections] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    wait(2000).then(() => {
+      setRefreshing(false);
+      getList();
+    });
+  };
 
   const getList = async () => {
     setIsLoading(true);
@@ -65,13 +78,16 @@ const CollectionList = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       {isLoading ? (
-        <ActivityIndicator size="large" color={Colors.primary} />
+        <View style={styles.spinnerContainer}>
+          <ActivityIndicator size="large" color={Colors.primary} />
+        </View>
       ) : (
         <ScrollView
           nestedScrollEnabled={true}
           showsVerticalScrollIndicator={false}
           style={{ width: "100%", backgroundColor: "#eee" }}
           contentContainerStyle={{ flexGrow: 1 }}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         >
           <TouchableOpacity
             onPress={() => navigation.navigate("PaymentDueList")}
@@ -144,6 +160,14 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 10,
     elevation: 2,
+  },
+  spinnerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    margin: 20,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
   circle: {
     backgroundColor: Colors.primary,
