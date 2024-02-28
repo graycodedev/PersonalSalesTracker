@@ -10,6 +10,7 @@ import ToastMessage from "../components/Toast/Toast";
 import qs from "qs";
 import React, { useState } from "react";
 import AppConfig from "../config/AppConfig";
+import * as Location from 'expo-location';
 
 const helpers = {
   GetUserInfo: async function GetUserInfo() {
@@ -449,14 +450,37 @@ const helpers = {
       .catch(function(error) {});
   }, 
   GetLocation: async function GetLocation(){
+    try{
+    this.PostException("get location: 1")
+    let location=  await Location.getCurrentPositionAsync();
+    this.PostException("get location: 2"+location)
+    if(location!=null){
+      return {
+        lat: location.coords.latitude, 
+        lng: location.coords.longitude
+      }
+    }}
+    catch(error){
+      this.PostException(error);
+    }
+    // this.PostException("1")
+    // await Location.getCurrentPositionAsync().then((location)=>{
+    //   this.PostException("2")
+    //   return {
+    //     lat: location.coords.latitude, 
+    //     lng: location.coords.longitude
+    //   }
+    // }).catch((error)=>{
+    //   this.PostException(error)
+    // })
     
-let res= await axios.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBW_OsuOXYLzHZGFvZEomhbGDewfSZoJYk", {}, {
-  headers: {
-    'Content-Type': 'application/json'
-  }
-})
+// let res= await axios.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBW_OsuOXYLzHZGFvZEomhbGDewfSZoJYk", {}, {
+//   headers: {
+//     'Content-Type': 'application/json'
+//   }
+// })
 
-return res.data.location
+// return res.data.location
   }
 };
 

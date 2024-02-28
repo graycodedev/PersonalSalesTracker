@@ -109,7 +109,6 @@ const Notes = ({ navigation }) => {
             <Text style={[styles.noDataText, { fontSize: 20 }]}>No notes available</Text>
           </View>
         )}
-        <View >
           <TouchableOpacity
             style={styles.circle}
             onPress={() => {
@@ -118,7 +117,6 @@ const Notes = ({ navigation }) => {
           >
             <BankingIcons.plus fill="white" />
           </TouchableOpacity>
-        </View>
       </View> :
 
         <View style={styles.spinnercontainer}>

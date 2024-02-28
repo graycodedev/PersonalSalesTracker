@@ -117,9 +117,9 @@ const Visits = ({ navigation }) => {
                             </TouchableOpacity>
                         );
                     }) :
-                        <View>
+                        <View style={{alignItems:"center"}}>
                             <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
-                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No return items available</Text>
+                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No visits available</Text>
                         </View>
 
                     }

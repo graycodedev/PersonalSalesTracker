@@ -50,7 +50,6 @@ const PartyList = ({ navigation }) => {
 
             if (response != undefined) {
                 if (response.data.Code == 200) {
-                    console.log("rr", response.data.Data[0])
                     setParties(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Parties");

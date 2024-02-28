@@ -33,9 +33,10 @@
         "WRITE_EXTERNAL_STORAGE",
         "LOCATION",
         "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION"
+        "ACCESS_FINE_LOCATION",
+        "FOREGROUND_SERVICE_LOCATION"
       ],
-      "versionCode": 6,
+      "versionCode": 10,
       "googleServicesFile": "./google-services.json", 
       "config": {
         "googleMaps": {

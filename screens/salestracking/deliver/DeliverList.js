@@ -58,7 +58,6 @@ const DeliverList = ({ navigation }) => {
                 });
             if (response != undefined) {
                 if (response.data.Code == 200) {
-                    console.log(response.data.Data[0])
                     setOrders(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Notes");
@@ -130,7 +129,7 @@ const DeliverList = ({ navigation }) => {
                         <TouchableOpacity
                             key={index}
                             style={styles.orderItem}
-                            onPress={() => navigation.navigate("DeliverDetails", { deliverId: order.Id })}
+                            onPress={() => navigation.navigate("OrderDetails", { orderId: order.Id })}
                         >
                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                                 <View>

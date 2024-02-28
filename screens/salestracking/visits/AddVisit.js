@@ -23,6 +23,7 @@ import ToastMessage from "../../../components/Toast/Toast";
 import * as Location from "expo-location";
 import helpers from "../../../constants/Helpers";
 import axios from "axios";
+import { Colors } from "../../style/Theme";
 
 const { width } = Dimensions.get("screen");
 
@@ -82,7 +83,8 @@ const AddVisit = (props, route) => {
       return;
     }
 
-    var location = await helpers.GetLocation();
+    let location = await helpers.GetLocation();
+    console.log(location); 
     setLocation(location);
 
   };
@@ -216,6 +218,7 @@ const AddVisit = (props, route) => {
         Latitude: location ? location.lat : null,
         Longitude: location ? location.lng : null,
         IsActive: true,
+        VisitPurposeId: 1
       };
       Object.keys(visitData).forEach(
         (key) => visitData[key] === null && delete visitData[key]
@@ -318,6 +321,7 @@ const AddVisit = (props, route) => {
           )}
         </View>
 
+       
         <View>
           <RegularInputText
             key="remark"
@@ -335,6 +339,12 @@ const AddVisit = (props, route) => {
               {remarkError}
             </Text>
           )}
+        </View>
+        <View style={{flexDirection:"row",  backgroundColor: "#e5e5e5", marginTop: 4}}>
+          <View style={{flex:5, padding: 12 }}>
+            <Text style={{fontFamily:"Regular"}}>{location ?location.lat + ", " + location.lng:"Fetch Location Failed !!"}</Text>
+          </View>
+          <TouchableOpacity style={{flex: 2, backgroundColor: Colors.primary, padding: 12}} onPress={async()=>await getLocation()}><Text style={{color: "white", alignSelf:"center"}}>Get Location</Text></TouchableOpacity>
         </View>
 
         <View style={{ margin: 30 }}>

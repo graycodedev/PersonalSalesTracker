@@ -22,6 +22,7 @@ const wait = (timeout) => {
 const Tab = createMaterialTopTabNavigator();
 
 const OverviewScreen = ({ partyDetails }) => {
+    console.log("part", partyDetails)
     return (
         <ScrollView
             nestedScrollEnabled={true}
@@ -115,7 +116,7 @@ const OrdersScreen = ({ partyId }) => {
                             <TouchableOpacity
                                 key={index}
                                 style={styles.listItem}
-                                onPress={() => navigation.navigate("DeliverDetails", { deliverId: order.Id })}
+                                onPress={() => navigation.navigate("OrderDetails", { orderId: order.Id })}
                             >
                                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                                     <View>
@@ -402,7 +403,7 @@ const PartyDetails = (props) => {
                     tabBarPressColor: Colors.primary,
                 }}
             >
-                <Tab.Screen name="Overview" component={() => <OverviewScreen partyDetails={partyDetails} />} />
+                <Tab.Screen name="Overview" component={() => <OverviewScreen partyDetails={partyDetails} />}/>
                 <Tab.Screen name="Orders" component={() => <OrdersScreen partyId={party.Id} />} />
                 <Tab.Screen name="Collections" component={() => <CollectionsScreen partyId={party.Id} />} />
                 <Tab.Screen name="Visits" component={() => <VisitsScreen partyId={party.Id} />} />
@@ -444,7 +445,6 @@ const PartyDetails = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 10,
         padding: 2,
         alignContent: "center",
         justifyContent: "flex-start",
