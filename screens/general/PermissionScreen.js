@@ -1,8 +1,14 @@
-import { View, Text, Linking, Image, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  Linking,
+  Image,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import AppStyles from "../../assets/theme/AppStyles";
 import { ButtonPrimary } from "../../components/Elements";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Location from "expo-location";
 import FavouriteStyles from "../style/favouriteStyle";
 import { Colors } from "../style/Theme";
