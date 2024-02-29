@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+// import { useFocusEffect } from "@react-navigation/native-stack";
 import ToastMessage from "../../../components/Toast/Toast";
 import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
 import DetailCard from "../../../components/DetailCard";
 import { Colors } from "../../style/Theme";
-import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
+import DateDisplay from "../../../components/DateDisplay";
 
 
 const VisitDetails = (props) => {
     const { visit } = props.route.params;
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            return () => { };
-        }, [])
-    );
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         return () => { };
+    //     }, [])
+    // );
 
     useEffect(() => {
-        props.navigation.setOptions({
-            title: "Visit Details",
-        });
+        // props.navigation.setOptions({
+        //     title: "Visit Details",
+        // });
     }, []);
 
     const deleteVisit = async () => {
@@ -39,7 +39,6 @@ const VisitDetails = (props) => {
     const visitDetails = [
         { Label: "Name", Value: visit.PartyName ? visit.PartyName : visit.LocationName },
         { Label: "Visit Date", Value: <DateDisplay date={visit.VisitDate} /> },
-        { Label: "Visit Time", Value: <TimeDisplay time={visit.VisitDate} /> },
         { Label: "Remarks", Value: visit.Remarks },
     ];
 

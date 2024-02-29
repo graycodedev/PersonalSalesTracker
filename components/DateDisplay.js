@@ -9,12 +9,4 @@ const DateDisplay = ({ date }) => {
     );
 };
 
-const TimeDisplay = ({ time }) => {
-    const formattedTime = new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
-
-    return (
-        <Text>{formattedTime}</Text>
-    );
-};
-
-export { DateDisplay, TimeDisplay };
+export default DateDisplay;

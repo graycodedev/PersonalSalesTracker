@@ -14,7 +14,8 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
 import AppStyles from "../../../assets/theme/AppStyles";
-import * as BankingIcons from "../../../components/BankingIcons";
+import WarningModal from "../../../components/WarningModal";
+import { Contact } from "../../../constants/Contact";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -50,19 +51,14 @@ const PaymentDueList = ({ navigation }) => {
 
             if (response != undefined) {
                 if (response.data.Code === 200) {
-                    console.log(
-                        "Payment Due Data:",
-                        response.data.Data.PaymentDueReportDetail
-                    );
+                    console.log("Payment Due Data:", response.data.Data.PaymentDueReportDetail);
                     setPaymentsDue(response.data.Data.PaymentDueReportDetail);
                 } else {
                     console.error("Error Loading Payment Due. Response:", response);
                     ToastMessage.Short("Error Loading Payment Due");
                 }
             } else {
-                console.error(
-                    "Undefined response while fetching Payment Due data"
-                );
+                console.error("Undefined response while fetching Payment Due data");
                 ToastMessage.Short("Error Loading Payment Due");
             }
         } finally {
@@ -91,58 +87,46 @@ const PaymentDueList = ({ navigation }) => {
                     style={{ width: "100%", backgroundColor: "#eee", flex: 1 }}
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                        />
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                     }
                 >
-                    {paymentsDue.length > 0 ? (
-                        paymentsDue.map((paymentDue, index) => (
-                            <TouchableOpacity
-                                key={index}
-                                style={styles.paymentDueItem}
-                                onPress={() =>
-                                    navigation.navigate("PaymentDueDetails", {
-                                        paymentDueId: paymentDue.Id,
-                                    })
-                                }
+                    {paymentsDue.map((paymentDue, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={styles.paymentDueItem}
+                            onPress={() =>
+                                navigation.navigate("PaymentDueDetails", {
+                                    paymentDueId: paymentDue.Id,
+                                })
+                            }
+                        >
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    marginBottom: 4,
+                                }}
                             >
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        marginBottom: 4,
-                                    }}
-                                >
-                                    <View>
-                                        <Text
-                                            style={[AppStyles.Text.BoldTitle, { marginBottom: 4 }]}
-                                        >
-                                            Order No: {paymentDue.OrderNo}
-                                        </Text>
-                                        <Text style={styles.paymentDueInfo}>
-                                            Due Date: {paymentDue.DueDate} days
-                                        </Text>
-                                        <Text style={styles.paymentDueInfo}>
-                                            Total Amount: ${paymentDue.TotalAmount}
-                                        </Text>
-                                        <Text style={styles.paymentDueInfo}>
-                                            Amount To Be Received: ${paymentDue.AmountToBeReceived}
-                                        </Text>
-                                    </View>
+                                <View>
+                                    <Text
+                                        style={[AppStyles.Text.BoldTitle, { marginBottom: 4 }]}
+                                    >
+                                        Order No: {paymentDue.OrderNo}
+                                    </Text>
+                                    <Text style={styles.paymentDueInfo}>
+                                        Due Date: {paymentDue.DueDate} days
+                                    </Text>
+                                    <Text style={styles.paymentDueInfo}>
+                                        Total Amount: ${paymentDue.TotalAmount}
+                                    </Text>
+                                    <Text style={styles.paymentDueInfo}>
+                                        Amount To Be Received: ${paymentDue.AmountToBeReceived}
+                                    </Text>
                                 </View>
-                            </TouchableOpacity>
-                        ))
-                    ) : (
-                        <View style={styles.noDataContainer}>
-                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
-                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>
-                                No payment dues available
-                            </Text>
-                        </View>
-                    )}
+                            </View>
+                        </TouchableOpacity>
+                    ))}
                 </ScrollView>
             )}
         </View>
@@ -176,10 +160,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         padding: 10,
-    },
-    noDataContainer: {
-        alignItems: "center",
-        marginTop: 20,
     },
 });
 

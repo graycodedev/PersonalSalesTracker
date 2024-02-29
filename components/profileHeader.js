@@ -64,17 +64,22 @@ const ProfileHeader = (props) => {
       return;
     }
 
-    var location= await helpers.GetLocation();
-
-    console.log("location", location);
+    let location = await Location.getCurrentPositionAsync({
+      accuracy:
+        Platform.OS == "android"
+          ? Location.Accuracy.Low
+          : Location.Accuracy.Lowest,
+    });
+    let latitude = location.coords.latitude;
+    let longitude = location.coords.longitude;
 
     let date = new Date();
     let attendanceDate = date.toISOString().split("T")[0];
     let attendanceTime = date.toTimeString().split(" ")[0];
     let route = checkedIn ? Api.Attendances.CheckOut : Api.Attendances.CheckIn;
     let data = {
-      Latitude: location.lat,
-      Longitude: location.lng,
+      Latitude: latitude,
+      Longitude: longitude,
       IsCheckIn: !checkedIn,
       AttendanceDate: attendanceDate,
       AttendanceTime: attendanceTime,

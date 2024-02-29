@@ -3,19 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
-  Image,
-  TouchableWithoutFeedback,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
 import { ButtonKey, ButtonPrimary } from "./Elements";
-import { TopBackgroundIcon } from "./IconsAll";
 import request from "../config/RequestManager";
 import ToastMessage from "./Toast/Toast";
-import DeviceStorage from "../config/DeviceStorage";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import { InputText, RegularInputText } from "./Input";
 import api, { endPoints } from "../constants/Api";
 import qs from "qs";
 import { Colors } from "../screens/style/Theme";

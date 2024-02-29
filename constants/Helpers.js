@@ -5,7 +5,7 @@ import DeviceStorage from "../config/DeviceStorage";
 import request from "../config/RequestManager";
 import axios from "axios";
 import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
+// import * as Sharing from "expo-sharing";
 import ToastMessage from "../components/Toast/Toast";
 import qs from "qs";
 import React, { useState } from "react";
@@ -288,36 +288,36 @@ const helpers = {
   GetCompanyLogoPathHeader: async function GetCompanyLogoPathHeader() {
     return await DeviceStorage.getKey("LogoHeaderPath");
   },
-  DownloadFile: async function DownloadFile(fileUrl) {
-    let downloadProg = 0;
-    let document = null;
-    const callback = (downloadProgress) => {
-      const progress =
-        downloadProgress.totalBytesWritten /
-        downloadProgress.totalBytesExpectedToWrite;
-      downloadProg = progress * 100;
-    };
-    const filename = fileUrl.split("/").slice(-1)[0];
-    const downloadResumable = FileSystem.createDownloadResumable(
-      api.BaseUrl + fileUrl,
-      FileSystem.documentDirectory + filename,
-      {},
-      callback(downloadProg)
-    );
+  // DownloadFile: async function DownloadFile(fileUrl) {
+  //   let downloadProg = 0;
+  //   let document = null;
+  //   const callback = (downloadProgress) => {
+  //     const progress =
+  //       downloadProgress.totalBytesWritten /
+  //       downloadProgress.totalBytesExpectedToWrite;
+  //     downloadProg = progress * 100;
+  //   };
+  //   const filename = fileUrl.split("/").slice(-1)[0];
+  //   const downloadResumable = FileSystem.createDownloadResumable(
+  //     api.BaseUrl + fileUrl,
+  //     FileSystem.documentDirectory + filename,
+  //     {},
+  //     callback(downloadProg)
+  //   );
 
-    try {
-      const { uri } = await downloadResumable.downloadAsync();
-      console.log("Finished downloading to ", uri);
-      document = uri;
-    } catch (e) {
-      console.error(e);
-    }
-    if (!(await Sharing.isAvailableAsync())) {
-      alert(`Uh oh, sharing isn't available on your platform`);
-      return;
-    }
-    Sharing.shareAsync(document);
-  },
+  //   try {
+  //     const { uri } = await downloadResumable.downloadAsync();
+  //     console.log("Finished downloading to ", uri);
+  //     document = uri;
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  //   if (!(await Sharing.isAvailableAsync())) {
+  //     alert(`Uh oh, sharing isn't available on your platform`);
+  //     return;
+  //   }
+  //   Sharing.shareAsync(document);
+  // },
   GetFileUrlById: async function GetFileUrlById(id) {
     var url = api.GetFileUrlById + "?id=" + id;
     var response = await (await request()).get(url).catch(function(error) {

@@ -13,7 +13,6 @@ import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
 import AppStyles from "../../../assets/theme/AppStyles";
 import DetailCard from "../../../components/DetailCard";
-import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 
 const OdometerDetails = ({ navigation, route }) => {
     useEffect(() => {
@@ -25,31 +24,31 @@ const OdometerDetails = ({ navigation, route }) => {
     const { odometer } = route.params;
 
 
-    const odometerDetails = [
+    const odometerDetails=[
         {
-            Label: "Start Odometer",
-            Value: odometer.StartOdometer
+         Label:"Start Odometer",
+          Value:odometer.StartOdometer
         },
         {
-            Label: "End Odometer",
-            Value: odometer.EndOdometer
+         Label:"End Odometer",
+          Value:odometer.EndOdometer
         },
         {
-            Label: "Start Date",
-            Value: <><TimeDisplay time={odometer.StartDate} />, <DateDisplay date={odometer.StartDate} /></>
+         Label:"Start Date",
+          Value:new Date(odometer.StartDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeStyle:"short" }) +", "+ new Date(odometer.StartDate).toLocaleDateString('en-US', {  month:'short', day: 'numeric' })
         },
         {
-            Label: "End Date",
-            Value: <><TimeDisplay time={odometer.EndDate} />, <DateDisplay date={odometer.EndDate} /></>
+         Label:"End Date",
+         Value:new Date(odometer.EndDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeStyle:"short" }) +", "+ new Date(odometer.EndDate).toLocaleDateString('en-US', {  month:'short', day: 'numeric' })
 
         },
         {
-            Label: "Remarks",
-            Value: odometer.Remarks
+         Label:"Remarks",
+          Value:odometer.Remarks
         },
         {
-            Label: "Admin Remarks",
-            Value: odometer.AdminRemarks
+         Label:"Admin Remarks",
+          Value:odometer.AdminRemarks
         },
     ]
 
@@ -60,7 +59,7 @@ const OdometerDetails = ({ navigation, route }) => {
             style={{ width: "100%", backgroundColor: "#eee" }}
             contentContainerStyle={{ flexGrow: 1 }}
         >
-            <DetailCard details={odometerDetails} />
+            <DetailCard details={odometerDetails}/>
         </ScrollView>
 
     );
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         justifyContent: 'space-between',
         padding: 10,
-        paddingVertical: 4
+        paddingVertical:4
     },
     odometerInfo: {
         fontSize: 20,

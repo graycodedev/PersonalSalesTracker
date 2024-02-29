@@ -17,7 +17,7 @@ import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
-import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
+import DateDisplay from "../../../components/DateDisplay";
 import AppStyles from "../../../assets/theme/AppStyles";
 import WarningModal from "../../../components/WarningModal";
 import { Contact } from "../../../constants/Contact";
@@ -38,8 +38,8 @@ const DeliverList = ({ navigation }) => {
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
-    const [showConfirmDelivery, setShowConfirmDelivery] = useState(false);
-    const [selectedOrderId, setSelectedOrderId] = useState();
+    const [showConfirmDelivery, setShowConfirmDelivery]= useState(false);
+    const [selectedOrderId, setSelectedOrderId]= useState();
 
     const onRefresh = () => {
         wait(2000).then(() => {
@@ -58,6 +58,7 @@ const DeliverList = ({ navigation }) => {
                 });
             if (response != undefined) {
                 if (response.data.Code == 200) {
+                    console.log(response.data.Data[0])
                     setOrders(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Notes");
@@ -86,30 +87,30 @@ const DeliverList = ({ navigation }) => {
         }, [])
     );
 
-    const confirmDelivery = async () => {
+     const confirmDelivery =async()=>{
         await deliverOrder();
-
+       
     }
     const deliverOrder = async (id) => {
         console.log("dfd", Api.Deliver.Save + "?id=" + selectedOrderId)
         var response = await (await request())
-            .post(Api.Deliver.Save, qs.stringify({ id: selectedOrderId }))
-            .catch(function (error) {
-
-                ToastMessage.Short("Error! Contact Support");
-            });
+          .post(Api.Deliver.Save , qs.stringify({id: selectedOrderId}))
+          .catch(function (error) {
+            
+            ToastMessage.Short("Error! Contact Support");
+          });
         if (response != undefined) {
-            if (response.data.Code == 200) {
-                ToastMessage.Short(response.data.Message);
-                await getList();
-                setShowConfirmDelivery(false);
-            } else {
-                ToastMessage.Short("Error delivering the order");
-            }
-        } else {
+          if (response.data.Code == 200) {
+            ToastMessage.Short(response.data.Message);
+            await getList();
+            setShowConfirmDelivery(false); 
+          } else {
             ToastMessage.Short("Error delivering the order");
+          }
+        } else {
+          ToastMessage.Short("Error delivering the order");
         }
-    };
+      };
 
     return (
         <View style={styles.container}>
@@ -125,61 +126,61 @@ const DeliverList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {orders.length > 0 && orders.map((order, index) => (
+                    {orders.length> 0 && orders.map((order, index) => (
                         <TouchableOpacity
                             key={index}
                             style={styles.orderItem}
-                            onPress={() => navigation.navigate("OrderDetails", { orderId: order.Id })}
+                            onPress={() => navigation.navigate("DeliverDetails", { deliverId: order.Id })}
                         >
-                            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                            <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center", marginBottom: 4}}>
                                 <View>
-
-                                    <Text style={[AppStyles.Text.BoldTitle, { marginBottom: 4 }]}>{order.CompanyName}</Text>
-                                    <TouchableOpacity onPress={() => Contact.MakeCall(order.PartyMobileNo)} style={{ flexDirection: "row", alignItems: "center" }}>
-                                        <BankingIcons.callIcon fill={"green"} height={18} width={18} />
+                                
+                                    <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>{order.CompanyName}</Text>
+                                    <TouchableOpacity onPress={()=>Contact.MakeCall(order.PartyMobileNo) } style={{flexDirection:"row", alignItems:"center"}}>
+                                    <BankingIcons.callIcon fill={"green"} height={18} width={18}/>
                                         <Text style={[styles.orderInfo]}> {order.PartyMobileNo} </Text>
                                     </TouchableOpacity>
-                                    <Text style={[styles.orderInfo, { color: "#040273" }]}>#{order.OrderNo} </Text>
-
+                                    <Text style={[styles.orderInfo, {color: "#040273"}]}>#{order.OrderNo} </Text>
+                                
                                     <Text style={styles.orderInfo}>Delivery Date: <DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
                                     <Text style={styles.orderInfo}>Ordered Date: <DateDisplay date={order.OrderDate} /> </Text>
-
+                                
                                 </View>
-
+                                
                             </View>
-                            <View style={{ flexDirection: 'row', justifyContent: "space-between", marginTop: 4 }}>
-                                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', borderColor: Colors.primary, borderWidth: 1, justifyContent: "center", padding: 2, borderRadius: 4, width: "30%" }} onPress={() => {
-                                    setSelectedOrderId(order.Id);
-                                    setShowConfirmDelivery(true);
-                                }}>
-                                    <Text style={[styles.orderInfo, { color: "#040273", fontFamily: "SemiBold" }]}>deliver</Text>
-                                </TouchableOpacity>
-                                <Text style={[styles.orderInfo, { color: "green", alignSelf: "flex-end" }]}>Rs. {order?.TotalAmount?.toFixed(2)}</Text>
+                            <View style={{flexDirection:'row',justifyContent:"space-between", marginTop: 4}}>
+                                <TouchableOpacity style={{flexDirection:'row', alignItems:'center', borderColor: Colors.primary, borderWidth: 1, justifyContent:"center",  padding: 2, borderRadius: 4, width:"30%"}} onPress={()=>{
+                                        setSelectedOrderId(order.Id);
+                                        setShowConfirmDelivery(true);
+                                    }}>
+                                        <Text style={[styles.orderInfo, {color: "#040273", fontFamily:"SemiBold"}]}>deliver</Text>
+                                    </TouchableOpacity>
+                                <Text style={[styles.orderInfo, {color: "green", alignSelf:"flex-end"}]}>Rs. {order?.TotalAmount?.toFixed(2)}</Text>
                             </View>
                         </TouchableOpacity>
                     )
-
+                    
                     )}
 
-                    {orders.length == 0 &&
+{orders.length==0 && 
 
-                        <View style={{ alignItems: "center" }}>
-                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
-                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No orders for delivery !!</Text>
-                        </View>
-                    }
+<View style={{alignItems:"center"}}>
+    <BankingIcons.warning height={60} width={60} fill={"#FFD21E"} />
+    <Text style={[AppStyles.Text.BoldTitle, {fontSize: 20}]}>No deliverable orders found!!</Text>
+</View>
+}
                 </ScrollView>
             )}
-            {showConfirmDelivery && (
-                <WarningModal
-                    text1={"Deliver the order?"}
-                    text2={"Do you want to mark the order as delivered?"}
-                    onConfirm={confirmDelivery}
-                    onCancel={() => {
-                        setShowConfirmDelivery(false)
-                    }}
-                />
-            )}
+             {showConfirmDelivery && (
+            <WarningModal
+              text1={"Deliver the order?"}
+              text2={"Do you want to mark the order as delivered?"}
+              onConfirm={confirmDelivery}
+              onCancel={() => {
+                setShowConfirmDelivery(false)
+              }}
+            />
+          )}
         </View>
     );
 };
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
         padding: 10,
         alignContent: "center",
         justifyContent: "flex-start",
-        backgroundColor: "#eee"
+       backgroundColor: "#eee"
     },
     orderItem: {
         backgroundColor: "#fff",

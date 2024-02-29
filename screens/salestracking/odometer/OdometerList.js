@@ -5,11 +5,10 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    ActivityIndicator,
-    RefreshControl
+    ActivityIndicator
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import PageStyle from "../../style/pageStyle";
+import { useNavigation } from "@react-navigation/native";
 import { ButtonPrimary } from "../../../components/Button";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
@@ -17,28 +16,20 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
 import AppStyles from "../../../assets/theme/AppStyles";
-import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
-
-const wait = (timeout) => {
-    return new Promise((resolve) => setTimeout(resolve, timeout));
-};
 
 const OdometerList = () => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(true);
     const [odometers, setOdometers] = useState([]);
-    const [refreshing, setRefreshing] = useState(false);
 
-    const onRefresh = () => {
-        setRefreshing(true);
-        wait(2000).then(() => {
-            setRefreshing(false);
-            getList();
+    useEffect(() => {
+        navigation.setOptions({
+            title: "Odometer List",
         });
-    };
+        getList();
+    }, [])
 
     const getList = async () => {
-        setIsLoading(true);
         try {
             var response = await (await request())
                 .get(Api.Odometers.List)
@@ -49,6 +40,7 @@ const OdometerList = () => {
             if (response != undefined) {
                 if (response.data.Code == 200) {
                     setOdometers(response.data.Data);
+                    
                 } else {
                     ToastMessage.Short("Error Loading Odometers");
                 }
@@ -60,13 +52,6 @@ const OdometerList = () => {
         }
     };
 
-    useEffect(() => {
-        navigation.setOptions({
-            title: "Odometer List",
-        });
-        getList();
-    }, []);
-
     return (
         <View style={styles.container}>
             <ScrollView
@@ -74,7 +59,6 @@ const OdometerList = () => {
                 showsVerticalScrollIndicator={false}
                 style={{ width: "100%", backgroundColor: "#eee" }}
                 contentContainerStyle={{ flexGrow: 1 }}
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
                 {isLoading ? (
                     <View style={styles.spinnerContainer}>
@@ -82,38 +66,29 @@ const OdometerList = () => {
                     </View>
                 ) : (
                     <View>
-                        {odometers.length > 0 ? (
-                            odometers.map((odometer) => (
-                                <TouchableOpacity key={odometer.Id} style={styles.tripItem}
-                                    onPress={() =>
-                                        navigation.navigate("OdometerDetails", { odometer })
-                                    }
-                                >
-                                    <View>
-                                        <Text style={AppStyles.Text.BoldTitle}>
-                                            <DateDisplay date={odometer.StartDate} />
-                                        </Text>
-                                        <Text style={styles.tripInfo}>Start Odometer: {odometer.StartOdometer}</Text>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={styles.tripInfo}>End Odometer: {odometer.EndOdometer || ''}</Text>
-                                            {odometer.EndOdometer == undefined && (
-                                                <TouchableOpacity
-                                                    style={styles.endTripButton}
-                                                    onPress={() => navigation.navigate('EndTrip')}
-                                                >
-                                                    <Text style={styles.endTripButtonText}>End Trip</Text>
-                                                </TouchableOpacity>
-                                            )}
-                                        </View>
+                        {odometers.map((odometer) => (
+                            <TouchableOpacity key={odometer.Id} style={styles.tripItem}
+                                onPress={() =>
+                                    navigation.navigate("OdometerDetails", { odometer })
+                                }
+                            >
+                                <View>
+                                    <Text style={AppStyles.Text.BoldTitle}>{ new Date(odometer.StartDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
+                                    <Text style={styles.tripInfo}>Start Odometer: {odometer.StartOdometer}</Text>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                        <Text style={styles.tripInfo}>End Odometer: {odometer.EndOdometer || ''}</Text>
+                                        {odometer.EndOdometer == undefined && (
+                                            <TouchableOpacity
+                                                style={styles.endTripButton}
+                                                onPress={() => navigation.navigate('EndTrip')}
+                                            >
+                                                <Text style={styles.endTripButtonText}>End Trip</Text>
+                                            </TouchableOpacity>
+                                        )}
                                     </View>
-                                </TouchableOpacity>
-                            ))
-                        ) : (
-                            <View style={styles.noDataContainer}>
-                                <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
-                                <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No odometers available</Text>
-                            </View>
-                        )}
+                                </View>
+                            </TouchableOpacity>
+                        ))}
                     </View>
                 )}
             </ScrollView>
@@ -129,6 +104,7 @@ const OdometerList = () => {
     );
 };
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -143,6 +119,10 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 10,
         elevation: 2,
+    },
+    tripName: {
+        fontSize: 20,
+        fontWeight: '700',
     },
     tripInfo: {
         fontSize: 16,
@@ -168,19 +148,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
         justifyContent: "center",
         alignItems: "center"
-    },
-    spinnerContainer: {
-        flex: 1,
-        justifyContent: "center",
-        margin: 20,
-        flexDirection: "row",
-        justifyContent: "space-around",
-        padding: 10,
-    },
-    noDataContainer: {
-        alignItems: "center",
-        marginTop: 20,
-    },
+    }
 });
 
 export default OdometerList;

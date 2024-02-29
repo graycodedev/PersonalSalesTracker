@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
@@ -8,7 +7,8 @@ import {
     ActivityIndicator,
     RefreshControl,
 } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+// import { useFocusEffect } from "@react-navigation/native-stack";
 import PageStyle from "../../style/pageStyle";
 import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
@@ -22,12 +22,12 @@ const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-const PartyList = ({ navigation }) => {
-    useEffect(() => {
-        navigation.setOptions({
-            title: "Parties",
-        });
-    }, [])
+const PartyList = ({ props }) => {
+    // useEffect(() => {
+    //     props.navigation.setOptions({
+    //         title: "Parties",
+    //     });
+    // }, [])
 
     const [parties, setParties] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -50,6 +50,7 @@ const PartyList = ({ navigation }) => {
 
             if (response != undefined) {
                 if (response.data.Code == 200) {
+                    console.log("rr", response.data.Data[0])
                     setParties(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Parties");
@@ -62,19 +63,19 @@ const PartyList = ({ navigation }) => {
         }
     };
 
-    useEffect(() => {
-        getList();
-    }, []);
+    // useEffect(() => {
+    //     getList();
+    // }, []);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            getList();
-            return () => {
-                // Cleanup function (optional)
-                // Additional cleanup logic (if needed)
-            };
-        }, [])
-    );
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         getList();
+    //         return () => {
+    //             // Cleanup function (optional)
+    //             // Additional cleanup logic (if needed)
+    //         };
+    //     }, [])
+    // );
 
     return (
         <View style={styles.container}>
@@ -94,7 +95,7 @@ const PartyList = ({ navigation }) => {
                         <TouchableOpacity
                             key={index}
                             style={styles.partyItem}
-                            onPress={() => navigation.navigate("PartyDetails", { party })}
+                            onPress={() => props.navigation.navigate("PartyDetails", { party })}
                         >
                             <Text style={[AppStyles.Text.BoldTitle, {marginBottom: 4}]}>{party.PartyName}</Text>
                             <TouchableOpacity onPress={()=>Contact.MakeCall(party.MobileNumber) } style={{flexDirection:"row", alignItems:"center"}}>
@@ -117,7 +118,7 @@ const PartyList = ({ navigation }) => {
             <TouchableOpacity
                 style={styles.circle}
                 onPress={() => {
-                    navigation.navigate("AddParty");
+                    props.navigation.navigate("AddParty");
                 }}
             >
                 <BankingIcons.plus fill="white" />

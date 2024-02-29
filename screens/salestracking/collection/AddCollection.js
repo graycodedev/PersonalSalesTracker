@@ -23,11 +23,9 @@ import Api from "../../../constants/Api";
 import qs from "qs";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
-import { useNavigation } from '@react-navigation/native';
 
 
 const AddCollection = (props) => {
-    const navigation = useNavigation();
 
     const [selectedImage, setSelectedImage] = useState(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -114,7 +112,7 @@ const AddCollection = (props) => {
         if (response != undefined) {
             if (response.data.Code == 200) {
                 setIsLoading(false);
-                navigation.goBack();
+                props.navigation.goBack();
                 return response.data.Data;
 
             } else {

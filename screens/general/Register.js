@@ -2,26 +2,16 @@ import React from "react";
 import {
   StyleSheet,
   Dimensions,
-  KeyboardAvoidingView,
   View,
-  ScrollView,
   TouchableOpacity,
   Text,
   ActivityIndicator,
   Image,
-  ImageBackground,
   TextInput,
-  Pressable,
-  SafeAreaView,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import { CheckBox } from "react-native-elements";
 import qs from "qs";
 import api from "../../constants/Api";
-import { TopBackgroundIcon } from "../../components/IconsAll";
-import { TextViewStyle } from "../style/index";
-import { InputText } from "../../components/Input";
-import { ButtonPrimary } from "../../components/Elements";
 import request from "../../config/RequestManager";
 import ToastMessage from "../../components/Toast/Toast";
 import DeviceStorage from "../../config/DeviceStorage";
@@ -29,7 +19,6 @@ import IMAGES from "../../constants/newImages";
 import { Colors } from "../../screens/style/Theme";
 import * as BankingIcons from "../../components/BankingIcons";
 import Api from "../../constants/Api";
-import helpers from "../../constants/Helpers";
 
 const { width, height } = Dimensions.get("screen");
 class Register extends React.Component {

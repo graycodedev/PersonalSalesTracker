@@ -18,11 +18,11 @@ import {
   Button,
   Pressable,
   TouchableOpacity,
+  Text, 
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { CommonActions } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { Text } from "galio-framework";
 import qs from "qs";
 import api from "../../constants/Api";
 import {
@@ -34,8 +34,6 @@ import {
   MobileImage,
   FinanceImage,
 } from "../../components/IconsAll";
-import { ButtonPrimary } from "../../components/Elements";
-import { InputText, RegularInputText } from "../../components/Input";
 const { width, height } = Dimensions.get("screen");
 import { TextViewStyle, TextBoxStyle, ButtonViewStyle } from "../style/index";
 import { StackActions } from "@react-navigation/native";
@@ -47,28 +45,18 @@ import DeviceStorage from "../../config/DeviceStorage";
 import { FingerPrint } from "../../components/IconsAll";
 import * as LocalAuthentication from "expo-local-authentication";
 import { Colors } from "../style/Theme";
-import ModalPopUp from "../../components/Modal";
 import * as SecureStore from "expo-secure-store";
 import helpers from "../../constants/Helpers";
-import SigninFooter from "../../components/SigninFooter";
-import ImgSlider from "../../components/ImgSlider";
 import checkVersion from "react-native-store-version";
 import IMAGES from "../../constants/newImages";
 import Spinner from "react-native-loading-spinner-overlay";
 import * as BankingIcons from "../../components/BankingIcons";
-import uuid from "react-native-uuid";
 import AppConfig from "../../config/AppConfig";
 import * as Device from "expo-device";
 import * as info from "../../app.json";
-import SelectDropdown from "react-native-select-dropdown";
-import * as FileSystem from "expo-file-system";
-import { Constants } from "expo";
-import { Autocomplete } from "../../components/Autocomplete";
-import Api from "../../constants/Api";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Location from "expo-location";
 
-import ConfirmationModal from "../../components/ConfirmationModal";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -541,7 +529,7 @@ class SignIn extends React.Component {
                 Company Code
               </Text>
               <View>
-                <InputText
+                <TextInput
                   placeholder=""
                   style={styles.input}
                   maxLength={10}
@@ -553,7 +541,7 @@ class SignIn extends React.Component {
                 Mobile No
               </Text>
               <View>
-                <InputText
+                <TextInput
                   placeholder=""
                   style={styles.input}
                   maxLength={10}
@@ -570,7 +558,7 @@ class SignIn extends React.Component {
               </Text>
               {!this.state.showPassword && (
                 <View>
-                  <InputText
+                  <TextInput
                     style={styles.input}
                     password
                     autoCapitalize="none"
@@ -606,7 +594,7 @@ class SignIn extends React.Component {
               )}
               {this.state.showPassword && (
                 <View>
-                  <InputText
+                  <TextInput
                     style={styles.input}
                     autoCapitalize="none"
                     placeholder="Password"

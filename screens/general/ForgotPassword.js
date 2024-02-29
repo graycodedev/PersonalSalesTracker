@@ -42,11 +42,11 @@ class ForgotPassword extends React.Component {
       phoneNumberError: "",
     };
   }
-  componentDidMount = async () => {
-    this.props.navigation.setOptions({
-      title: "",
-    });
-  };
+  // componentDidMount = async () => {
+  //   // this.props.navigation.setOptions({
+  //   //   title: "",
+  //   // });
+  // };
   validateForm() {
     let isvalid = true;
     if (this.state.phoneNumber.trim() === "") {

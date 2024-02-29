@@ -14,7 +14,6 @@ import {
   Button,
   SafeAreaView,
 } from "react-native";
-import OTPInputView from "@twotalltotems/react-native-otp-input";
 import Icon, { FA5Style } from "react-native-vector-icons/FontAwesome5";
 import qs from "qs";
 import { Images } from "../../constants";

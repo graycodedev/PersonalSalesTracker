@@ -10,17 +10,20 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "userInterfaceStyle": "light",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.graycode.finmaxsales",
-
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to let user put a photo in his profile page."
       },
@@ -33,30 +36,12 @@
         "WRITE_EXTERNAL_STORAGE",
         "LOCATION",
         "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION",
-        "FOREGROUND_SERVICE_LOCATION"
+        "ACCESS_FINE_LOCATION"
       ],
-      "versionCode": 10,
-      "googleServicesFile": "./google-services.json", 
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyBW_OsuOXYLzHZGFvZEomhbGDewfSZoJYk"
-        }
-      }
+      "versionCode":12,
+      "googleServicesFile": "./google-services.json"
     },
     "plugins": [
-      [
-        "expo-barcode-scanner",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
-        }
-      ],
-      [
-        "expo-contacts",
-        {
-          "contactsPermission": "Allow $(PRODUCT_NAME) to access your contacts."
-        }
-      ],
       [
         "expo-location",
         {
@@ -64,29 +49,15 @@
         }
       ]
     ],
-    "assetBundlePatterns": ["**/*"],
-    "packagerOpts": {
-      "config": "metro.config.js",
-      "sourceExts": [
-        "expo.ts",
-        "expo.tsx",
-        "expo.js",
-        "expo.jsx",
-        "ts",
-        "tsx",
-        "js",
-        "jsx",
-        "json",
-        "wasm",
-        "svg"
-      ]
-    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "extra": {
       "eas": {
         "projectId": "9fb69b05-27f7-4c82-8712-a60c116c925e"
       }
-    },
-    "sdkVersion": "49.0.0",
-    "owner": "graycodedev"
+    }
   }
 }
+
+

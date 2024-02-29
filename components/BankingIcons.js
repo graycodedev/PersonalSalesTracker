@@ -78,11 +78,11 @@ import ExportIcon from "../assets/bankingsvg/export.svg";
 import InterCopTransIcon from "../assets/bankingsvg/intercoptrans.svg";
 
 import warning from "../assets/bankingsvg/warning.svg"
-import norecords from "../assets/bankingsvg/warning.svg"
 import tick from "../assets/bankingsvg/tick.svg"
 import tickMark from "../assets/bankingsvg/tickMark.svg"
 import close from "../assets/bankingsvg/close.svg"
 import plus from "../assets/bankingsvg/plus.svg"
+import norecords from "../assets/bankingsvg/warning.svg"
 
 //dashboard
 import collection from "../assets/bankingsvg/collection.svg";

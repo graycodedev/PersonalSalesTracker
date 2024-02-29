@@ -17,7 +17,7 @@ import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
-import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
+import DateDisplay from "../../../components/DateDisplay";
 import AppStyles from "../../../assets/theme/AppStyles";
 import WarningModal from "../../../components/WarningModal";
 import { Contact } from "../../../constants/Contact";
@@ -36,6 +36,8 @@ const OrderList = ({ navigation }) => {
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    
+
 
     const onRefresh = () => {
         wait(2000).then(() => {
@@ -63,6 +65,7 @@ const OrderList = ({ navigation }) => {
                 ToastMessage.Short("Error Loading Notes");
             }
         } finally {
+            // alert("finallu");
             setIsLoading(false);
         }
     };
@@ -81,6 +84,8 @@ const OrderList = ({ navigation }) => {
         }, [])
     );
 
+   
+
     return (
         <View style={styles.container}>
             {isLoading ? (
@@ -95,41 +100,34 @@ const OrderList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {orders.length > 0 ? (
-                        orders.map((order, index) => (
-                            <TouchableOpacity
-                                key={index}
-                                style={styles.orderItem}
-                                onPress={() => navigation.navigate("OrderDetails", { orderId: order.Id })}
-                            >
-                                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                                    <View>
-
-                                        <Text style={[AppStyles.Text.BoldTitle, { marginBottom: 4 }]}>{order.PartyName}</Text>
-                                        <TouchableOpacity onPress={() => Contact.MakeCall(order.PartyMobileNo)} style={{ flexDirection: "row", alignItems: "center" }}>
-                                            <BankingIcons.callIcon fill={"green"} height={18} width={18} />
-                                            <Text style={[styles.orderInfo]}> {order.PartyMobileNo} </Text>
-                                        </TouchableOpacity>
-                                        <Text style={[styles.orderInfo, { color: "#040273" }]}>#{order.OrderNo} </Text>
-
-                                        <Text style={styles.orderInfo}>Delivery Date: <DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
-                                        <Text style={styles.orderInfo}>Ordered Date: <DateDisplay date={order.OrderDate} /> </Text>
-
-                                    </View>
-
+                    {orders.map((order, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={styles.orderItem}
+                            onPress={() => navigation.navigate("DeliverDetails", { deliverId: order.Id })}
+                        >
+                            <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center", marginBottom: 4}}>
+                                <View>
+                                
+                                    <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>{order.CompanyName}</Text>
+                                    <TouchableOpacity onPress={()=>Contact.MakeCall(order.PartyMobileNo) } style={{flexDirection:"row", alignItems:"center"}}>
+                                    <BankingIcons.callIcon fill={"green"} height={18} width={18}/>
+                                        <Text style={[styles.orderInfo]}> {order.PartyMobileNo} </Text>
+                                    </TouchableOpacity>
+                                    <Text style={[styles.orderInfo, {color: "#040273"}]}>#{order.OrderNo} </Text>
+                                
+                                    <Text style={styles.orderInfo}>Delivery Date: <DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
+                                    <Text style={styles.orderInfo}>Ordered Date: <DateDisplay date={order.OrderDate} /> </Text>
+                                    
                                 </View>
-                                <View style={{ flexDirection: 'row', justifyContent: "flex-end", marginTop: 4 }}>
-
-                                    <Text style={[styles.orderInfo, { color: "green", alignSelf: "flex-end" }]}>Rs. {order?.TotalAmount?.toFixed(2)}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        ))
-                    ) : (
-                        <View style={styles.noDataContainer}>
-                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
-                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No orders available</Text>
-                        </View>
-                    )}
+                                
+                            </View>
+                            <View style={{flexDirection:'row',justifyContent:"flex-end", marginTop: 4}}>
+                                
+                                <Text style={[styles.orderInfo, {color: "green", alignSelf:"flex-end"}]}>Rs. {order?.TotalAmount?.toFixed(2)}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    ))}
                 </ScrollView>
             )}
 
@@ -141,7 +139,7 @@ const OrderList = ({ navigation }) => {
             >
                 <BankingIcons.plus fill="white" />
             </TouchableOpacity>
-
+           
         </View>
     );
 };
@@ -160,6 +158,17 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 10,
         elevation: 2,
+    },
+    orderImage: {
+        width: 50,
+        height: 50,
+        marginRight: 10,
+        borderRadius: 25,
+    },
+    orderName: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginBottom: 5,
     },
     orderInfo: {
         fontSize: 16,
@@ -183,10 +192,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         padding: 10,
-    },
-    noDataContainer: {
-        alignItems: "center",
-        marginTop: 20,
     },
 });
 

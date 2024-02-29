@@ -4,7 +4,6 @@ import { useFocusEffect } from "@react-navigation/native";
 import * as BankingIcons from "../../../components/BankingIcons";
 import DetailCard from "../../../components/DetailCard";
 import { Colors } from "../../style/Theme";
-import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 
 
 const AdvanceDetails = ({ route, navigation }) => {

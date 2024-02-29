@@ -3,7 +3,6 @@ import { View, BackHandler, StatusBar, ScrollView, Text } from "react-native";
 import { WebView } from "react-native-webview";
 import Api from "../../constants/Api";
 import utils from "../../components/utils";
-import { theme } from "galio-framework";
 import { Colors } from "../style/Theme";
 import DeviceStorage from "../../config/DeviceStorage";
 const WebViewScreen = (props) => {

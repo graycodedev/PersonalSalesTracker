@@ -1,11 +1,13 @@
 // import { StatusBar } from 'expo-status-bar';
-import React, { useImperativeHandle } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import {
   StyleSheet,
   Text,
   View,
   ActivityIndicator,
   StatusBar,
+  Platform, 
+  AppRegistry, SafeAreaView
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import * as Font from "expo-font";
@@ -17,6 +19,7 @@ import Constants from "expo-constants";
 import IdleTimer from "./components/IdleTimer";
 import IdleTimerPopUP from "./components/IdleTimerPopUp";
 import helpers from "./constants/Helpers";
+import { registerRootComponent } from 'expo';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -26,61 +29,17 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      assetsLoaded: false,
-      devicePushToken: "",
-      notification: null,
-      expoPushToken: "",
-      navigation: null,
-      routeNameRef: {},
-      navigationRef: {},
-      idleTimerPop: false,
-    };
-    this.setState({ navigation: this.state.routeNameRef.current });
-  }
-  handleTimeout = async () => {
-    if ((await DeviceStorage.getKey("currentScreen")) != "SignIn") {
-      this.setState({ idleTimerPop: true });
-    }
-  };
 
-  registerForPushNotificationsAsync = async () => {
-    let token;
-    let deviceToken;
-    if (Constants.isDevice) {
-      const {
-        status: existingStatus,
-      } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== "granted") {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== "granted") {
-        // alert("Failed to get push token for push notification!");
-        return [undefined, undefined];
-      }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-      deviceToken = await (await Notifications.getDevicePushTokenAsync()).data;
-    } else {
-      alert("Must use physical device for Push Notifications");
-    }
-
-    if (Platform.OS === "android") {
-      Notifications.setNotificationChannelAsync("default", {
-        name: "default",
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: "#FF231F7C",
-      });
-    }
-
-    return [token, deviceToken];
-  };
-  async componentDidMount() {
+export default function App() {
+  // const LOCATION_TASK_NAME = "background-location-task";
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
+  const [navigation, setNavigation] = useState(null);
+  const [devicePushToken, setDevicePushToken] = useState("");
+  const [notification, setNotification] = useState(null);
+  const [firstTrip, setFirstTrip] = useState();
+  const navigationRef = useRef();
+  const routeNameRef = useRef();
+  const loadFonts = async () => {
     let customFonts = {
       Bold: require("./assets/font/opensans/OpenSans-Bold.ttf"),
       BoldItalic: require("./assets/font/opensans/OpenSans-BoldItalic.ttf"),
@@ -92,90 +51,132 @@ export default class App extends React.Component {
       SemiBold: require("./assets/font/opensans/OpenSans-SemiBold.ttf"),
       SemiBoldItalic: require("./assets/font/opensans/OpenSans-SemiBoldItalic.ttf"),
     };
+
     await Font.loadAsync(customFonts);
+    setAssetsLoaded(true);
+  };
 
-    this.setState({ assetsLoaded: true });
-    // dont uncomment these
-    // React.useImperativeHandle();
-    // this.routeNameRef = React.createRef();
-    // this.navigationRef = React.createRef();
-    this.notificationListener = React.createRef();
-    this.responseListener = React.createRef();
+  const runOperationsInOrder = async () => {
+    await loadFonts();
 
-    this.registerForPushNotificationsAsync().then(([token, deviceToken]) => {
-      this.setState({ expoPushToken: token });
-      this.setState({ devicePushToken: deviceToken });
-      DeviceStorage.saveKey("FcmToken", this.state.devicePushToken);
-    });
+    // registerForPushNotificationsAsync().then(([token, deviceToken]) => {
+    //   setDevicePushToken(deviceToken);
+    //   DeviceStorage.saveKey("FcmToken", deviceToken);
+    // });
+    setNavigation(routeNameRef.current);
+    
+  };
 
-    this.notificationListener = Notifications.addNotificationReceivedListener(
+  useEffect(() => {
+    runOperationsInOrder()
+      .then(() => {
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+      });
+    const notificationListener = Notifications.addNotificationReceivedListener(
       (notification) => {
-        this.setState({ notification: notification });
+        setNotification(notification);
+        // navigationRef.current.navigate("Notifications");
       }
     );
 
-    this.responseListener = Notifications.addNotificationResponseReceivedListener(
-      async (response) => {
-        if (response) {
-          var note = response.notification;
-        }
-        if (this.state.navigation.getCurrentRoute().name == "SignIn") {
-          return;
-        } else {
-          this.state.navigation.navigate("Notifications", {
-            data: note,
-          });
-        }
-      }
-    );
-  }
-
-  componentWillUnmount() {
-    if (this.notificationListener) {
-      Notifications.removeNotificationSubscription(this.notificationListener);
-    }
-    if (this.responseListener) {
-      Notifications.removeNotificationSubscription(this.responseListener);
-    }
-  }
-
-  render() {
-    const { assetsLoaded } = this.state;
-
-    if (assetsLoaded) {
-      return (
-        <NavigationContainer
-          ref={this.state.navigationRef}
-          onReady={() => {
-            this.state.routeNameRef.current = this.state.navigationRef.current.getCurrentRoute().name;
-            this.setState({
-              navigation: this.state.navigationRef.current,
+    const responseListener =
+      Notifications.addNotificationResponseReceivedListener(
+        async (response) => {
+          if (response.notification.request.trigger != null) {
+            await DeviceStorage.saveKey("navigateToNotification", "true");
+            navigationRef.current.navigate("Notifications", {
+              data: note,
             });
-          }}
-          onStateChange={() => {
-            const previousRouteName = this.state.routeNameRef.current;
-            const currentRouteName = this.state.navigationRef.current.getCurrentRoute()
-              .name;
+          } else {
+            navigationRef.current.navigate("Notifications", {
+              data: note,
+            });
+          }
+        }
+      );
 
-            if (previousRouteName !== currentRouteName) {
-            }
-            // Save the current route name for later comparision
-            this.state.routeNameRef.current = currentRouteName;
-            DeviceStorage.saveKey("currentScreen", currentRouteName);
-          }}
-        >
-          
-          <Screens currentScreen={this.state.routeNameRef.current} />
-        </NavigationContainer>
-      );
-    }
-    if (!assetsLoaded) {
-      return (
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <ActivityIndicator />
-          <StatusBar barStyle="light-content" backgroundColor={"black"} />
-        </View>
-      );
-    }
-  }
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    
+    };
+  }, []);
+
+  return assetsLoaded == true ? (
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() => {
+        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+        setNavigation(navigationRef.current);
+      }}
+      onStateChange={() => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.current.getCurrentRoute().name;
+
+        if (previousRouteName !== currentRouteName) {
+        }
+        // Save the current route name for later comparision
+        routeNameRef.current = currentRouteName;
+        DeviceStorage.saveKey("currentScreen", currentRouteName);
+      }}
+    >
+      <StatusBar
+        translucent
+        backgroundColor={"transparent"}
+        barStyle={"dark-content"}
+      />
+<Screens currentScreen={routeNameRef.current} />
+    </NavigationContainer>
+ 
+  ) : (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      {/* <ActivityIndicator size={"large"} /> */}
+      <Text style={{ marginTop: 10 }}>Please Wait ...</Text>
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  //paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+    backgroundColor: "#fff",
+  },
+});
+
+
+const registerForPushNotificationsAsync = async () => {
+  let token;
+  let deviceToken;
+  if (Constants.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      // alert("Failed to get push token for push notification!");
+      return [undefined, undefined];
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    deviceToken = (await Notifications.getDevicePushTokenAsync()).data;
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  return [token, deviceToken];
+};
+

@@ -9,13 +9,11 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
+  Text, 
+  Alert, BackHandler
 } from "react-native";
 import { CommonActions } from "@react-navigation/native";
-import { Alert, BackHandler } from "react-native";
 import api, { endPoints } from "../constants/Api";
-import qs from "qs";
-import { Text, theme } from "galio-framework";
-import Swiper from "react-native-swiper";
 import { HeaderHeight } from "../constants/utils";
 import { AccountCard } from "../components/Card";
 import { DashBoardServices } from "../components/DashboardServices";
@@ -216,16 +214,15 @@ this.subscription;
           />
         }
       >
-        
-        <View style={styles.headerAndCard}>
-          <View style={styles.headContainer} />
+         <View style={styles.headerAndCard}>
+         <View style={styles.headContainer} />
           <BankingIcons.ScreenheaderEllipse
             width="100%"
             fill="white"
             style={styles.ellipse}
             resizeMode="cover"
           />
-          <View style={styles.accountAndBankName}>
+           <View style={styles.accountAndBankName}>
             <Text style={{ fontSize: 16, color: "white", fontFamily: "Bold" }}>
               Hi, {this.state.fullName}
             </Text>
@@ -235,8 +232,8 @@ this.subscription;
               WELCOME TO{" "}
               {api.CompanyName}
             </Text>
-          </View>
-          <View style={styles.notificationAndProfile}>
+          </View> 
+           <View style={styles.notificationAndProfile}>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("Notifications");
@@ -257,24 +254,25 @@ this.subscription;
                   source={{ uri: api.BaseUrl + this.state.ProfilePicture }}
                 />
               ) : (
-                // <Image source={IMAGES.profile} />
+                <View>
                 <ProfileIcon height={25} width={25} fill={"white"} />
+                </View>
               )}
             </TouchableOpacity>
-          </View>
-            <View style={styles.swiper}>
+          </View> 
+             <View style={styles.swiper}>
                         <AccountCard
                           navigation={this.props.navigation}
                           data={"blank"}
                         />
             
             
-            </View>
-        </View>
+            </View>  
+        </View> 
 
-        <DashBoardServices navigation={this.props.navigation} />
+         <DashBoardServices navigation={this.props.navigation} />  
 
-      
+   
         <View style={{ paddingBottom: 20 }}>
           {this.state.offers && this.state.offers.length > 0 && (
             <ImgSlider
@@ -282,8 +280,7 @@ this.subscription;
               data={this.state.offers}
             />
           )}
-        </View>
-
+        </View>  
       
       </ScrollView>
     );
@@ -433,3 +430,5 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
+
+

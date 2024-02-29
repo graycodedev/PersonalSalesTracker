@@ -94,7 +94,7 @@ const Visits = ({ navigation }) => {
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
                     {visits.length > 0 ? visits.map((visit) => {
-                        const visitDate = new Date(visit.VisitDate);
+                        const visitDate = new Date(visit?.VisitDate);
                         const date = visitDate.toLocaleDateString();
                         const time = visitDate.toLocaleTimeString();
 
@@ -107,8 +107,8 @@ const Visits = ({ navigation }) => {
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <View>
                                         <Text style={AppStyles.Text.BoldTitle}>{visit.PartyName ? visit.PartyName : visit.LocationName}</Text>
-                                        <DateDisplay date={visit.VisitDate} />
-                                        <TimeDisplay time={visit.VisitDate} />
+                                        <DateDisplay date={visit?.VisitDate} />
+                                        <TimeDisplay time={visit?.VisitDate} />
                                     </View>
                                     {visit.PartyName && (
                                         <BankingIcons.tickMark fill='green' style={styles.imageStyle} />

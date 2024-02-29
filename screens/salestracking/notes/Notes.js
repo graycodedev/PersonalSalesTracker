@@ -22,7 +22,7 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 const Notes = ({ navigation }) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading]=useState(true);
   const [notes, setNotes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -32,6 +32,7 @@ const Notes = ({ navigation }) => {
       getList();
     }
     );
+
   };
 
   const handleReadMore = (note) => {
@@ -41,32 +42,33 @@ const Notes = ({ navigation }) => {
     getList();
   }, [])
 
-  const getList = async () => {
-    try {
-      var response = await (await request())
-        .get(Api.Notes.List)
-        .catch(function (error) {
-          setIsLoading(false)
-          ToastMessage.Short("Error! Contact Support");
-        });
 
-      if (response != undefined) {
-        if (response.data.Code == 200) {
-          setNotes(response.data.Data);
-        } else {
-          ToastMessage.Short(response.data.Message);
-        }
+
+  const getList = async () => {
+    
+    var response = await (await request())
+      .get(Api.Notes.List)
+      .catch(function (error) {
+    setIsLoading(false)
+
+        ToastMessage.Short("Error! Contact Support");
+      });
+    if (response != undefined) {
+      if (response.data.Code == 200) {
+        setNotes(response.data.Data);
+
       } else {
-        ToastMessage.Short("Error Loading Notes");
+        ToastMessage.Short(response.data.Message);
       }
-    } finally {
-      setIsLoading(false);
+    } else {
+      ToastMessage.Short("Error Loading Notes");
     }
+    setIsLoading(false)
   };
 
   useFocusEffect(
     React.useCallback(() => {
-      setIsLoading(true);
+      setIsLoading(true)
       getList();
       return () => {
         // Cleanup function (optional)
@@ -75,54 +77,51 @@ const Notes = ({ navigation }) => {
     }, [])
   );
 
-  return (
-    <>
-      {!isLoading ? <View style={{ height: "100%" }}>
-        {notes.length > 0 ? (
-          <ScrollView
-            nestedScrollEnabled={true}
-            showsVerticalScrollIndicator={false}
-            style={{ width: "100%", backgroundColor: "#eee" }}
-            contentContainerStyle={{ flexGrow: 1 }}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          >
-            <View style={styles.container}>
-              {notes.map((note, index) => (
-                <View key={index} style={styles.noteContainer}>
-                  <Text style={styles.noteHead}>{note.NoteTitle}</Text>
-                  <View style={styles.noteView}>
-                    <Text style={styles.noteText} numberOfLines={4}>{note.Note}</Text>
-                  </View>
-                  <TouchableOpacity
-                    style={{ marginTop: 10, }}
-                    onPress={() => handleReadMore(note)}
-                  >
-                    <Text style={{ fontSize: 16, fontWeight: '500', color: "#AE529B" }}>Read More ➔</Text>
-                  </TouchableOpacity>
-                </View>
-              ))}
-            </View>
-          </ScrollView>
-        ) : (
-          <View style={styles.noDataContainer}>
-            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
-            <Text style={[styles.noDataText, { fontSize: 20 }]}>No notes available</Text>
-          </View>
-        )}
-          <TouchableOpacity
-            style={styles.circle}
-            onPress={() => {
-              navigation.navigate('AddNote');
-            }}
-          >
-            <BankingIcons.plus fill="white" />
-          </TouchableOpacity>
-      </View> :
 
-        <View style={styles.spinnercontainer}>
-          <ActivityIndicator size="large" color={Colors.primary} />
-        </View>}
-    </>
+  return (<>
+    {!isLoading ? <View style={{height:"100%"}}>
+      <ScrollView
+        nestedScrollEnabled={true}
+        showsVerticalScrollIndicator={false}
+        style={{ width: "100%", backgroundColor: "#eee" }}
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
+        <View style={styles.container}>
+          {notes.map((note, index) => (
+            <View key={index} style={styles.noteContainer}>
+              <Text style={styles.noteHead}>{note.NoteTitle}</Text>
+              <View style={styles.noteView}>
+                <Text style={styles.noteText} numberOfLines={4}>{note.Note}</Text>
+              </View>
+              <TouchableOpacity
+                style={{ marginTop: 10, }}
+                onPress={() => handleReadMore(note)}
+              >
+                <Text style={{ fontSize: 16, fontWeight: '500', color: "#AE529B" }}>Read More ➔</Text>
+              </TouchableOpacity>
+            </View>
+          ))
+
+          }
+        </View>
+      </ScrollView>
+      <View >
+        <TouchableOpacity
+          style={styles.circle}
+          onPress={() => {
+            navigation.navigate('AddNote');
+          }}
+        >
+          <BankingIcons.plus fill="white" />
+        </TouchableOpacity>
+      </View>
+    </View> :
+
+      <View style={styles.spinnercontainer}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>}
+  </>
   );
 };
 
@@ -141,6 +140,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 10,
     elevation: 2,
+
   },
   noteHead: {
     fontSize: 16,
@@ -172,14 +172,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     padding: 10,
-  },
-  noDataContainer: {
-    alignItems: "center",
-    marginTop: 20,
-  },
-  noDataText: {
-    fontSize: 20,
-  },
+  }
 });
 
 export default Notes;

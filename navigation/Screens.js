@@ -10,241 +10,45 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Platform
 } from "react-native";
-import request from "../config/RequestManager";
-import ToastMessage from "../components/Toast/Toast";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { createSwitchNavigator } from "react-navigation";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as BankingIcons from "../components/BankingIcons";
+
+import { Colors } from "../screens/style/Theme";
 import Home from "../screens/Home";
 import Settings from "../screens/general/Settings";
-import ServiceList from "../screens/utilityPayment/ServiceList";
-import { ProfileIcon } from "../components/IconsAll";
 import MainScreen from "../screens/general/MainScreen";
 
-import {
-  LoadAccountList,
-  LoadAccountSuccess,
-} from "../screens/transfer/LoadAccount";
-
-import {
-  TopUp,
-  TopUpConfirmation,
-  TopUpSuccess,
-} from "../screens/utilityPayment/TopUp";
-import {
-  DishHome,
-  DishHomePayment,
-  DishHomeSuccessful,
-} from "../screens/utilityPayment/tv/DishHome";
-import {
-  PrabhuTV,
-  PrabhuTVPayment,
-  PrabhuTVSuccessful,
-} from "../screens/utilityPayment/tv/PrabhuTV";
-import {
-  SkyTV,
-  SkyTVPayment,
-  SkyTVSuccessful,
-} from "../screens/utilityPayment/tv/SkyTV";
-import {
-  SimTV,
-  SimTVPayment,
-  SimTVSuccessful,
-} from "../screens/utilityPayment/tv/SimTV";
-import {
-  MeroTV,
-  MeroTVPayment,
-  MeroTVSuccessful,
-} from "../screens/utilityPayment/tv/MeroTV";
-import {
-  MaxTV,
-  MaxTVPayment,
-  MaxTVSuccessful,
-} from "../screens/utilityPayment/tv/MaxTV";
-import {
-  ClearTV,
-  ClearTVPayment,
-  ClearTVSuccessful,
-} from "../screens/utilityPayment/tv/ClearTV";
-import {
-  RelianceInsurance,
-  RelianceInsurancePayment,
-  RelianceInsuranceSuccessful,
-} from "../screens/utilityPayment/insurance/RelianceInsurance";
-import {
-  NepalLifeInsurance,
-  NepalLifeInsurancePayment,
-  NepalLifeInsuranceSuccessful,
-} from "../screens/utilityPayment/insurance/NepalLifeInsurance";
-import {
-  PrimeLifeInsurance,
-  PrimeLifeInsurancePayment,
-  PrimeLifeInsuranceSuccessful,
-} from "../screens/utilityPayment/insurance/PrimeLifeInsurance";
-import {
-  JyotiLifeInsurance,
-  JyotiLifeInsurancePayment,
-  JyotiLifeInsuranceSuccessful,
-} from "../screens/utilityPayment/insurance/JyotiLifeInsurance";
-import {
-  SuryaLifeInsurance,
-  SuryaLifeInsurancePayment,
-  SuryaLifeInsuranceSuccessful,
-} from "../screens/utilityPayment/insurance/SuryaLifeInsurance";
-import {
-  UnionLifeInsurance,
-  UnionLifeInsurancePayment,
-  UnionLifeInsuranceSuccessful,
-} from "../screens/utilityPayment/insurance/UnionLifeInsurance";
-import {
-  MahalaxmiLifeInsurance,
-  MahalaxmiLifeInsurancePayment,
-  MahalaxmiLifeInsuranceSuccessful,
-} from "../screens/utilityPayment/insurance/MahalaxmiLifeInsurance";
-import {
-  SagarmathaInsurance,
-  SagarmathaInsurancePayment,
-  SagarmathaInsuranceSuccessful,
-} from "../screens/utilityPayment/insurance/SagarmathaInsurance";
 import Register from "../screens/general/Register";
 import RegisterSuccess from "../screens/general/RegisterSuccess";
 import SignIn from "../screens/general/SignIn";
-import { HeaderBackButton } from "@react-navigation/stack";
-import {
-  Landline,
-  LandlineConfirmation,
-  LandlineSuccess,
-} from "../screens/utilityPayment/Landline";
-import {
-  AccountTransfer,
-  AccountTransferConfirmation,
-  AccountTransferSuccess,
-} from "../screens/transfer/AccountTransfer";
-import {
-  BankTransfer,
-  BankTransferConfirmation,
-  BankTransferSuccess,
-} from "../screens/transfer/BankTransfer";
-import KeyboardPin from "../components/KeyBoard";
-import { UtilityList } from "../screens/utilityPayment/UtilityServices";
-import {
-  NeaPayment,
-  NeaPaymentConfirmation,
-  NeaPaymentSuccess,
-} from "../screens/utilityPayment/NeaPayment";
-import { DynamicScreen } from "../screens/utilityPayment/DynamicScreen";
-import { DynamicInquiryScreen } from "../screens/utilityPayment/DynamicInquiryScreen";
-import { DynamicPaymentScreen } from "../screens/utilityPayment/DynamicPaymentScreen";
-import { DynamicPaymentConfirmScreen } from "../screens/utilityPayment/DynamicPaymentConfirmScreen";
-import MoneyTransferList from "../screens/transfer/MoneyTransfer";
 import { CommingSoon } from "../screens/CommingSoon";
 import OTPVerification from "../screens/general/OTPVerification";
-import {
-  TransactionList,
-  TransactionDetail,
-} from "../screens/TransactionsList";
-import {
-  CommunityWaterPayment,
-  CommunityWaterPaymentConfirmation,
-  CommunityWaterPaymentSuccess,
-} from "../screens/utilityPayment/water/CommunityWater";
-import ForgotPassword from "../screens/general/ForgotPassword";
+
+ import ForgotPassword from "../screens/general/ForgotPassword";
 import ForgotPasswordReset from "../screens/general/ForgotPasswordReset";
-import SavePinScreen from "../screens/pin/SavePinScreen";
 import ChangePassword from "../screens/general/ChangePassword";
 import ChangePin from "../screens/pin/ChangePin";
-import {
-  Airlines,
-  AirlinesFlights,
-  AirlinesFlightDetail,
-  AirlinesFlightBooking,
-  TicketSuccess,
-} from "../screens/Airlines";
-import {
-  ShareQR,
-  ScanPayConfirm,
-  ScanPaySuccess,
-  ScanPayConfirmAccountTransfer,
-  ScanPayConfirmBankTransfer,
-  ScanPayConfirmFonePay,
-} from "../screens/transfer/ScanPay";
-import ScanPay from "../screens/transfer/ScanPay";
+
 import FingerPrintSetup from "../screens/general/FingerPrintSetup";
 import FAQ from "../screens/FAQ";
 import OfferScreen from "../screens/OfferScreen";
-import ExchangeRates from "../screens/ExchangeRates";
 import Notifications from "../screens/Notifications";
-import Profile from "../screens/profile";
-import WalletList from "../screens/wallet/WalletList";
-import Internet from "../screens/utilityPayment/Internet";
-import Television from "../screens/utilityPayment/Television";
-import Insurance from "../screens/utilityPayment/Insurance";
-import {
-  WorldLink,
-  WorldLinkPayment,
-  WorldlinkSuccessful,
-} from "../screens/utilityPayment/internet/WorldLink";
-import {
-  PokharaInternetPayment,
-  PokharaInternetSuccessful,
-} from "../screens/utilityPayment/internet/PokharaInternet";
-import {
-  LoadKhalti,
-  LoadKhaltiConfirmation,
-  LoadKhaltiSuccess,
-} from "../screens/wallet/LoadKhalti";
-import {
-  LoadEsewa,
-  LoadEsewaConfirmation,
-  LoadEsewaSuccess,
-} from "../screens/wallet/LoadEsewa";
+
 import DeviceStorage from "../config/DeviceStorage";
 import ModalPopUp from "../components/Modal";
 import api from "../constants/Api";
 import WebView from "react-native-webview";
-import IMAGES from "../constants/newImages";
 import ChangeProfile from "../screens/ChangeProfile";
-import {
-  ButwalPowerCompany,
-  BpcPaymentConfirmation,
-  BpcPaymentSuccess,
-} from "../screens/utilityPayment/electricity/ButwalPowerCompany";
-
-import { Colors } from "../screens/style/Theme";
-
-import * as BankingIcons from "../components/BankingIcons";
 import WebViewScreen from "../screens/general/WebViewScreen";
-import {
-  Vianet,
-  VianetPayment,
-  VianetSuccessful,
-} from "../screens/utilityPayment/internet/Vianet";
-import {
-  Classictech,
-  ClassictechPayment,
-  ClassictechSuccessful,
-} from "../screens/utilityPayment/internet/Classictech";
-import {
-  Arrownet,
-  ArrownetPayment,
-  ArrownetSuccessful,
-} from "../screens/utilityPayment/internet/Arrownet";
-import {
-  Royalnet,
-  RoyalnetPayment,
-  RoyalnetSuccessful,
-} from "../screens/utilityPayment/internet/Royalnet";
-import { Subisu } from "../screens/utilityPayment/internet/Subisu";
-import PartyList from "../screens/salestracking/party/PartyList";
+
+ import PartyList from "../screens/salestracking/party/PartyList";
 import PartyDetails from "../screens/salestracking/party/PartyDetails";
 import Notes from "../screens/salestracking/notes/Notes";
-import CollectionList from "../screens/salestracking/collection/CollectionLists";
-import CollectionDetails from "../screens/salestracking/collection/CollectionDetails";
-import AddCollection from "../screens/salestracking/collection/AddCollection";
+ import CollectionList from "../screens/salestracking/collection/CollectionLists";
+ import CollectionDetails from "../screens/salestracking/collection/CollectionDetails";
+ import AddCollection from "../screens/salestracking/collection/AddCollection";
 import NoteInfo from "../screens/salestracking/notes/NoteInfo";
 import AddParty from "../screens/salestracking/party/AddParty";
 import AddNote from "../screens/salestracking/notes/AddNote";
@@ -264,9 +68,9 @@ import Attendance from "../screens/salestracking/attendance/Attendance";
 import OrderList from "../screens/salestracking/order/OrderList";
 import AddOrder from "../screens/salestracking/order/AddOrder";
 import OrderDetails from "../screens/salestracking/order/OrderDetails";
-import Visits from "../screens/salestracking/visits/Visits";
-import AddVisit from "../screens/salestracking/visits/AddVisit";
-import VisitDetails from "../screens/salestracking/visits/VisitDetails";
+  import Visits from "../screens/salestracking/visits/Visits";
+ import AddVisit from "../screens/salestracking/visits/AddVisit";
+  import VisitDetails from "../screens/salestracking/visits/VisitDetails";
 import ExpenseList from "../screens/salestracking/expense/ExpenseList";
 import ExpenseDetails from "../screens/salestracking/expense/ExpenseDetails";
 import AddExpense from "../screens/salestracking/expense/AddExpense";
@@ -276,14 +80,16 @@ import ReturnOrder from "../screens/salestracking/return/ReturnOrder";
 import EODReport from "../screens/salestracking/EODReport/EODReport";
 import ReceivePayment from "../screens/payment/ReceivePayment";
 import DeliverList from "../screens/salestracking/deliver/DeliverList";
-
+import DeliverDetails from "../screens/salestracking/deliver/DeliverDetails";
 import PaymentDueList from "../screens/salestracking/paymentdue/PaymentDueList";
 import PermissionScreen from "../screens/general/PermissionScreen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Profile from "../screens/profile";
 
-const { width } = Dimensions.get("screen");
-const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+
 const screenOptionStyle = {
   headerStyle: {
     backgroundColor: Colors.primary,
@@ -305,90 +111,91 @@ const headerOptions = {
   headerStyle: {
     backgroundColor: Colors.primary,
   },
-  headerRight: (props) => {
-    const [data, setData] = useState(null);
-    const [isVisible, setIsVisible] = useState(false);
+  // headerRight: (props) => {
+  //   const [data, setData] = useState(null);
+  //   const [isVisible, setIsVisible] = useState(false);
 
-    const GetPageInfo = async (key) => {
-      var sendKey = key.replace(/\s/g, "");
-      var response = await (await request())
-        .get(api.BaseUrl + "api/v1/information/getbykey?key=" + sendKey)
-        .catch(function(error) {
-          ToastMessage.Short("Error Ocurred Contact Support");
-          console.log(error);
-        });
-      if (response != undefined) {
-        if (response.data.Code == 200) {
-          if (response.data.Data) {
-            setData(response.data.Data);
-          } else {
-          }
-        } else {
-          ToastMessage.Short(response.data.Message);
-        }
-      } else {
-        ToastMessage.Short("Error ocurred contact support !");
-      }
-    };
-    return (
-      <>
-        <TouchableOpacity
-          onPress={async () => {
-            const key = await DeviceStorage.getKey("currentScreen");
-            await GetPageInfo(key);
-            setIsVisible(true);
-          }}
-        >
-          <View style={{ marginRight: 20 }}>
-            <Icon name="info-circle" size={25} style={{ color: "#fff" }} />
-          </View>
-        </TouchableOpacity>
-        <>
-          <ModalPopUp
-            visible={isVisible}
-            onPress={() => {}}
-            onRequestClose={() => {
-              setIsVisible(!isVisible);
-            }}
-            height={0.5}
-          >
-            <View style={{ flex: 1 }}>
-              <View
-                style={{
-                  height: 50,
-                  flexDirection: "row",
-                  backgroundColor: Colors.primary,
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ fontSize: 22, color: "white", marginLeft: 20 }}>
-                  info
-                </Text>
-                <TouchableOpacity onPress={() => setIsVisible(!isVisible)}>
-                  <Ionicons
-                    name="close"
-                    size={30}
-                    style={{
-                      alignSelf: "flex-end",
-                      color: "white",
-                      marginRight: 15,
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={{ flex: 1 }}>
-                <WebView source={{ html: data }} />
-              </View>
-            </View>
-          </ModalPopUp>
-        </>
-      </>
-    );
-  },
+  //   const GetPageInfo = async (key) => {
+  //     var sendKey = key.replace(/\s/g, "");
+  //     var response = await (await request())
+  //       .get(api.BaseUrl + "api/v1/information/getbykey?key=" + sendKey)
+  //       .catch(function(error) {
+  //         ToastMessage.Short("Error Ocurred Contact Support");
+  //         console.log(error);
+  //       });
+  //     if (response != undefined) {
+  //       if (response.data.Code == 200) {
+  //         if (response.data.Data) {
+  //           setData(response.data.Data);
+  //         } else {
+  //         }
+  //       } else {
+  //         ToastMessage.Short(response.data.Message);
+  //       }
+  //     } else {
+  //       ToastMessage.Short("Error ocurred contact support !");
+  //     }
+  //   };
+  //   return (
+  //     <>
+  //       <TouchableOpacity
+  //         onPress={async () => {
+  //           const key = await DeviceStorage.getKey("currentScreen");
+  //           await GetPageInfo(key);
+  //           setIsVisible(true);
+  //         }}
+  //       >
+  //         <View style={{ marginRight: 20 }}>
+  //           <Icon name="info-circle" size={25} style={{ color: "#fff" }} />
+  //         </View>
+  //       </TouchableOpacity>
+  //       <>
+  //         <ModalPopUp
+  //           visible={isVisible}
+  //           onPress={() => {}}
+  //           onRequestClose={() => {
+  //             setIsVisible(!isVisible);
+  //           }}
+  //           height={0.5}
+  //         >
+  //           <View style={{ flex: 1 }}>
+  //             <View
+  //               style={{
+  //                 height: 50,
+  //                 flexDirection: "row",
+  //                 backgroundColor: Colors.primary,
+  //                 alignItems: "center",
+  //                 justifyContent: "space-between",
+  //               }}
+  //             >
+  //               <Text style={{ fontSize: 22, color: "white", marginLeft: 20 }}>
+  //                 info
+  //               </Text>
+  //               <TouchableOpacity onPress={() => setIsVisible(!isVisible)}>
+  //                 <Ionicons
+  //                   name="close"
+  //                   size={30}
+  //                   style={{
+  //                     alignSelf: "flex-end",
+  //                     color: "white",
+  //                     marginRight: 15,
+  //                   }}
+  //                 />
+  //               </TouchableOpacity>
+  //             </View>
+  //             <View style={{ flex: 1 }}>
+  //               <WebView source={{ html: data }} />
+  //             </View>
+  //           </View>
+  //         </ModalPopUp>
+  //       </>
+  //     </>
+  //   );
+  // },
 };
 
-function HomeStack(props) {
+
+function ScreenStack(props) {
   return (
     <Stack.Navigator
       initialRouteName="MainScreen"
@@ -397,33 +204,53 @@ function HomeStack(props) {
       screenOptions={screenOptionStyle}
     >
       <Stack.Screen
-        name="SignIn"
-        {...props}
-        component={SignIn}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="MainScreen"
         {...props}
         component={MainScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Register"
+        name="SignIn"
         {...props}
-        component={Register}
+        component={SignIn}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="RegisterSuccess"
-        {...props}
-        component={RegisterSuccess}
-        options={{ headerShown: false }}
-      />
+      
       <Stack.Screen
         name="Home"
         {...props}
         component={BottomTabNavigator}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="CollectionList"
+        component={CollectionList}
+        options={headerOptions}
+      /> 
+          <Stack.Screen    {...props} name="Visits" component={Visits}  options={headerOptions} />  
+        <Stack.Screen
+       {...props}
+        name="AddVisit"
+        component={AddVisit}
+        options={headerOptions}
+      />
+        <Stack.Screen
+       {...props}
+        name="PartyList"
+        component={PartyList}
+        options={headerOptions}
+      />
+      
+      <Stack.Screen
+      {...props}
+        name="VisitDetails"
+        component={VisitDetails}
+        options={headerOptions}
+      /> 
+      <Stack.Screen
+        name="Register"
+        {...props}
+        component={Register}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -432,7 +259,7 @@ function HomeStack(props) {
         component={OTPVerification}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
+       <Stack.Screen
         name="ForgotPassword"
         {...props}
         component={ForgotPassword}
@@ -449,18 +276,9 @@ function HomeStack(props) {
         component={FAQ}
         options={headerOptions}
       ></Stack.Screen>
-      <Stack.Screen
-        name="Exchange Rates"
-        component={ExchangeRates}
-        options={headerOptions}
-      ></Stack.Screen>
-     
-      <Stack.Screen name="topup" component={TopUp} options={headerOptions} />
-      <Stack.Screen
-        name="PartyList"
-        component={PartyList}
-        options={headerOptions}
-      />
+
+
+    
       <Stack.Screen
         name="PartyDetails"
         component={PartyDetails}
@@ -482,11 +300,7 @@ function HomeStack(props) {
         component={AddNote}
         options={headerOptions}
       />
-      <Stack.Screen
-        name="CollectionList"
-        component={CollectionList}
-        options={headerOptions}
-      />
+
       <Stack.Screen
         name="CollectionDetails"
         component={CollectionDetails}
@@ -497,22 +311,7 @@ function HomeStack(props) {
         component={AddCollection}
         options={headerOptions}
       />
-      <Stack.Screen
-        name="ServiceList"
-        component={ServiceList}
-        options={headerOptions}
-      />
-      <Stack.Screen name="Visits" component={Visits} options={headerOptions} />
-      <Stack.Screen
-        name="AddVisit"
-        component={AddVisit}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="VisitDetails"
-        component={VisitDetails}
-        options={headerOptions}
-      />
+
       <Stack.Screen
         name="Products"
         component={Products}
@@ -645,470 +444,8 @@ function HomeStack(props) {
       />
 
       <Stack.Screen
-        name="Confirmation"
-        component={TopUpConfirmation}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Internet"
-        component={Internet}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Television"
-        component={Television}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Insurance"
-        component={Insurance}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="WorldLink"
-        component={WorldLink}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="WorldLink Payment"
-        component={WorldLinkPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="WorldLink Successful"
-        component={WorldlinkSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen name="Vianet" component={Vianet} options={headerOptions} />
-      <Stack.Screen
-        name="Vianet Payment"
-        component={VianetPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Vianet Successful"
-        component={VianetSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Classic Tech"
-        component={Classictech}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Classic Tech Payment"
-        component={ClassictechPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Classic Tech Successful"
-        component={ClassictechSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Arrownet"
-        component={Arrownet}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Arrownet Payment"
-        component={ArrownetPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Arrownet Successful"
-        component={ArrownetSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Royal Network"
-        component={Royalnet}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Royal Network Payment"
-        component={RoyalnetPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Royal Network Successful"
-        component={RoyalnetSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Pokhara Internet"
-        component={PokharaInternetPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Pokhara Internet Successful"
-        component={PokharaInternetSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen name="Subisu" component={Subisu} options={headerOptions} />
-      <Stack.Screen
-        name="DishHome"
-        component={DishHome}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="DishHome Payment"
-        component={DishHomePayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="DishHome Success"
-        component={DishHomeSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="PrabhuTV"
-        component={PrabhuTV}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="PrabhuTV Payment"
-        component={PrabhuTVPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="PrabhuTV Success"
-        component={PrabhuTVSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen name="SkyTV" component={SkyTV} options={headerOptions} />
-      <Stack.Screen
-        name="SkyTV Payment"
-        component={SkyTVPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="SkyTV Success"
-        component={SkyTVSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen name="SimTV" component={SimTV} options={headerOptions} />
-      <Stack.Screen
-        name="SimTV Payment"
-        component={SimTVPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="SimTV Success"
-        component={SimTVSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen name="MeroTV" component={MeroTV} options={headerOptions} />
-      <Stack.Screen
-        name="MeroTV Payment"
-        component={MeroTVPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="MeroTV Success"
-        component={MeroTVSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="ClearTV"
-        component={ClearTV}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="ClearTV Payment"
-        component={ClearTVPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="ClearTV Success"
-        component={ClearTVSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen name="MaxTV" component={MaxTV} options={headerOptions} />
-      <Stack.Screen
-        name="MaxTV Payment"
-        component={MaxTVPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="MaxTV Success"
-        component={MaxTVSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Reliance"
-        component={RelianceInsurance}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Reliance Payment"
-        component={RelianceInsurancePayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Reliance Success"
-        component={RelianceInsuranceSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Nepal Life"
-        component={NepalLifeInsurance}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Nepal Life Payment"
-        component={NepalLifeInsurancePayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Nepal Life Success"
-        component={NepalLifeInsuranceSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Prime Life"
-        component={PrimeLifeInsurance}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Prime Life Payment"
-        component={PrimeLifeInsurancePayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Prime Life Success"
-        component={PrimeLifeInsuranceSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Jyoti Life"
-        component={JyotiLifeInsurance}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Jyoti Life Payment"
-        component={JyotiLifeInsurancePayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Jyoti Life Success"
-        component={JyotiLifeInsuranceSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Surya Life"
-        component={SuryaLifeInsurance}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Surya Life Payment"
-        component={SuryaLifeInsurancePayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Surya Life Success"
-        component={SuryaLifeInsuranceSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Union Life"
-        component={UnionLifeInsurance}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Union Life Payment"
-        component={UnionLifeInsurancePayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Union Life Success"
-        component={UnionLifeInsuranceSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Mahalaxmi Life"
-        component={MahalaxmiLifeInsurance}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Mahalaxmi Life Payment"
-        component={MahalaxmiLifeInsurancePayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Mahalaxmi Life Success"
-        component={MahalaxmiLifeInsuranceSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Sagarmatha"
-        component={SagarmathaInsurance}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Sagarmatha Payment"
-        component={SagarmathaInsurancePayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="Sagarmatha Success"
-        component={SagarmathaInsuranceSuccessful}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="TopUpSuccess"
-        component={TopUpSuccess}
-        options={{ headerShown: false }}
-      />
-     
-      <Stack.Screen
-        name="Landline"
-        component={Landline}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="LandlineConfirmation"
-        component={LandlineConfirmation}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="LandlineSuccess"
-        component={LandlineSuccess}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="AccountTransfer"
-        component={AccountTransfer}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="AccountTransferConfirmation"
-        component={AccountTransferConfirmation}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="AccountTransferSuccess"
-        component={AccountTransferSuccess}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="BankTransfer"
-        component={BankTransfer}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="BankTransferConfirmation"
-        component={BankTransferConfirmation}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="BankTransferSuccess"
-        component={BankTransferSuccess}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="UtilityList"
-        component={UtilityList}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="electricity"
-        component={NeaPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="ButwalPowerCompany"
-        component={ButwalPowerCompany}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="BpcPaymentConfirmation"
-        component={BpcPaymentConfirmation}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="BpcPaymentSuccess"
-        component={BpcPaymentSuccess}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="dynamicmerchant"
-        component={DynamicScreen}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="dynamicinquiry"
-        component={DynamicInquiryScreen}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="dynamicpayment"
-        component={DynamicPaymentScreen}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="dynamicpaymentconfirm"
-        component={DynamicPaymentConfirmScreen}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="NeaPaymentConfirmation"
-        component={NeaPaymentConfirmation}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="NeaPaymentSuccess"
-        component={NeaPaymentSuccess}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="CommunityWaterPayment"
-        component={CommunityWaterPayment}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="CommunityWaterPaymentConfirmation"
-        component={CommunityWaterPaymentConfirmation}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="CommunityWaterPaymentSuccess"
-        component={CommunityWaterPaymentSuccess}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
         name="CommingSoon"
         component={CommingSoon}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="savepin"
-        component={SavePinScreen}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="airlines"
-        component={Airlines}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="AirlinesFlights"
-        component={AirlinesFlights}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="AirlinesFlightDetail"
-        component={AirlinesFlightDetail}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="AirlinesFlightBooking"
-        component={AirlinesFlightBooking}
-        options={headerOptions}
-      />
-      <Stack.Screen
-        name="AirlinesTicketSuccess"
-        component={TicketSuccess}
         options={headerOptions}
       />
 
@@ -1133,87 +470,7 @@ function HomeStack(props) {
           },
         })}
       ></Stack.Screen>
-      <Stack.Screen
-        name="Wallets"
-        component={WalletList}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="Load Khalti"
-        component={LoadKhalti}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="Load Khalti Confirmation"
-        component={LoadKhaltiConfirmation}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="Load Khalti Success"
-        component={LoadKhaltiSuccess}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
 
-      <Stack.Screen
-        name="Load Esewa"
-        component={LoadEsewa}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="Load Esewa Confirmation"
-        component={LoadEsewaConfirmation}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="Load Esewa Success"
-        component={LoadEsewaSuccess}
-        options={{ headerShown: false }}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="LoadAccountList"
-        component={LoadAccountList}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="LoadAccountSuccess"
-        component={LoadAccountSuccess}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="ShareMyQr"
-        {...props}
-        component={ShareQR}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="ScanPayConfirmAccountTransfer"
-        {...props}
-        component={ScanPayConfirmAccountTransfer}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="ScanPayConfirmBankTransfer"
-        {...props}
-        component={ScanPayConfirmBankTransfer}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="ScanPayConfirmFonePay"
-        {...props}
-        component={ScanPayConfirmFonePay}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="ScanPaySuccess"
-        {...props}
-        component={ScanPaySuccess}
-        options={headerOptions}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="TransactionDetail"
-        component={TransactionDetail}
-        options={headerOptions}
-      />
 
       <Stack.Screen
         name="ChangePassword"
@@ -1271,6 +528,11 @@ function HomeStack(props) {
         component={DeliverList}
         options={headerOptions}
       />
+      <Stack.Screen
+        name="DeliverDetails"
+        component={DeliverDetails}
+        options={headerOptions}
+      /> 
     </Stack.Navigator>
   );
 }
@@ -1482,5 +744,5 @@ function BottomTabNavigator() {
 }
 
 export default function AppRoute(props) {
-  return <HomeStack {...props} />;
+  return <ScreenStack {...props} />;
 }

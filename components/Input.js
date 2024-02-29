@@ -1,40 +1,38 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Input } from "galio-framework";
-import Icon from "./Icon";
 import { TextBoxStyle } from "../screens/style/index";
 import { Colors } from "../screens/style/Theme";
+import { TextInput } from "react-native";
 export class ArInput extends React.Component {
   render() {
     const { shadowless, success, error, keyboardType } = this.props;
 
     return (
-      <Input
+      <TextInput
         type={keyboardType}
         placeholder="write something here"
         placeholderTextColor={Colors.muted}
         style={TextBoxStyle.WithBorder}
         color={Colors.HeadingColor}
-        iconContent={
-          <Icon
-            size={14}
-            color={Colors.primary}
-            name="link"
-            family="AntDesign"
-          />
-        }
+        // iconContent={
+        //   <Icon
+        //     size={14}
+        //     color={Colors.primary}
+        //     name="link"
+        //     family="AntDesign"
+        //   />
+        // }
         {...this.props}
       />
     );
   }
 }
-//export default ArInput;
+export default ArInput;
 
 export class InputText extends React.Component {
   render() {
     const { shadowless, success, error, keyboardType, editable } = this.props;
     return (
-      <Input
+      <ArInput
         editable={editable}
         type={keyboardType}
         placeholder="write something here"
@@ -77,7 +75,7 @@ export class RegularInputText extends React.Component {
     ];
     return (
       <>
-        <Input
+        <TextInput
           type={keyboardType}
           placeholder="write something here"
           placeholderTextColor={Colors.muted}
@@ -120,3 +118,4 @@ export class AmountInputText extends React.Component {
     );
   }
 }
+

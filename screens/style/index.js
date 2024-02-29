@@ -3,16 +3,14 @@ import TextViewStyle from "./textViewStyle";
 import TextBoxStyle from "./textBoxStyle";
 import ButtonViewStyle from "./buttonStyle";
 import { HeaderHeight } from "./../../constants/utils";
-import { Block, Text, theme, DeckSwiper } from "galio-framework";
 const MiscStyle = StyleSheet.create({
   profile: {
-    marginTop: Platform.OS === "android" ? -HeaderHeight : 0,
+   // marginTop: Platform.OS === "android" ? -HeaderHeight : 0,
     // marginBottom: -HeaderHeight * 2,
     flex: 1,
   },
   profileCard: {
     // position: "relative",
-    padding: theme.SIZES.BASE,
     backgroundColor: "#FFF",
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 8,

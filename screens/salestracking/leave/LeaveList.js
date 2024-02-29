@@ -14,7 +14,6 @@ import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
-import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -74,6 +73,9 @@ const LeaveList = ({ navigation }) => {
         }, [])
     );
 
+
+
+
     return (
         <View style={styles.container}>
             {isLoading ? (
@@ -88,38 +90,36 @@ const LeaveList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {leaves.length > 0 ? (
-                        leaves.map((leave) => {
-                            const fromDate = new Date(leave.FromDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                            const toDate = new Date(leave.ToDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    {leaves.map((leave) => {
+                        const fromDate = new Date(leave.FromDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                        const toDate = new Date(leave.ToDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-                            return (
-                                <TouchableOpacity
-                                    key={leave.Id}
-                                    style={styles.leaveItem}
-                                    onPress={() => navigation.navigate("LeaveDetails", { leave })}
-                                >
-                                    <View>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                                            <Text style={styles.leaveTitle}>{leave.LeaveTypeName}</Text>
-                                            {leave.IsApproved == true ? <Text style={[styles.leaveText, { color: 'green' }]}>Approved</Text> : leave.IsCancelled ? <Text style={[styles.leaveText, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.leaveText, { color: 'orange' }]}>Pending</Text>}
-                                        </View>
-                                        <View>
-                                            <Text style={styles.leaveText}>From: {fromDate}</Text>
-                                            <Text style={styles.leaveText}>To: {toDate}</Text>
-                                        </View>
+                        return (
+                            <TouchableOpacity
+                                key={leave.Id}
+                                style={styles.leaveItem}
+                                onPress={() => navigation.navigate("LeaveDetails", { leave })}
+                            >
+                                <View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                                        <Text style={styles.leaveTitle}>{leave.LeaveTypeName}</Text>
+                                        {leave.IsApproved == true ? <Text style={[styles.leaveText, { color: 'green' }]}>Approved</Text> : leave.IsCancelled ? <Text style={[styles.leaveText, { color: 'red' }]}>Cancelled</Text> : <Text style={[styles.leaveText, { color: 'orange' }]}>Pending</Text>}
                                     </View>
-                                </TouchableOpacity>
-                            );
-                        })
-                    ) : (
-                        <View style={styles.noDataContainer}>
-                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
-                            <Text style={[styles.noDataText, { fontSize: 20 }]}>No leaves available</Text>
-                        </View>
-                    )}
+                                    <View>
+
+                                        <Text style={styles.leaveText}>From: {fromDate}</Text>
+                                        <Text style={styles.leaveText}>To: {toDate}</Text>
+
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        );
+                    })}
+
+
                 </ScrollView>
-            )}
+            )
+            }
 
             <TouchableOpacity
                 style={styles.circle}
@@ -160,12 +160,8 @@ const styles = StyleSheet.create({
     leaveText: {
         fontSize: 16,
     },
-    noDataContainer: {
-        alignItems: "center",
-        marginTop: 20,
-    },
-    noDataText: {
-        fontSize: 20,
+    leaveRemarks: {
+        fontSize: 14,
     },
     circle: {
         width: 60,

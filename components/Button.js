@@ -1,9 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import PropTypes from "prop-types";
 
 import { TouchableOpacity } from "react-native";
-import { Button } from "galio-framework"; //remove galio framework button and use ButtonPrimary later
 import {
   TextViewStyle,
   TextBoxStyle,
@@ -24,14 +23,14 @@ class ArButton extends React.Component {
     ];
 
     return (
-      <Button
+      <ButtonPrimary
         style={buttonStyles}
         shadowless
         textStyle={{ fontSize: 12, fontWeight: "700" }}
         {...props}
       >
         {children}
-      </Button>
+      </ButtonPrimary>
     );
   }
 }
