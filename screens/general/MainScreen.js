@@ -1,28 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Image, View } from 'react-native';
-import request from '../../config/RequestManager';
-import ToastMessage from '../../components/Toast/Toast';
-import tokenManager from '../../config/TokenManager';
-import DeviceStorage from '../../config/DeviceStorage';
-import helpers from '../../constants/Helpers';
+import React, { useEffect, useState } from "react";
+import { Button, Image, View } from "react-native";
+import request from "../../config/RequestManager";
+import ToastMessage from "../../components/Toast/Toast";
+import tokenManager from "../../config/TokenManager";
+import DeviceStorage from "../../config/DeviceStorage";
+import helpers from "../../constants/Helpers";
 import * as SecureStore from "expo-secure-store";
-import api from '../../constants/Api';
-import qs from "qs"
-
-
+import api from "../../constants/Api";
+import qs from "qs";
 
 const MainScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(true);
 
-    const [isLoading, setIsLoading]= useState(true);
-    
   useEffect(() => {
- navigate();
+    navigate();
   }, []);
 
-
-  const navigate=async()=>{
-    let data={};
-    try{
+  const navigate = async () => {
+    let data = {};
+    try {
       var user = await helpers.GetUserInfo();
       var isChecked = await DeviceStorage.getKey("enableRememberMe");
       if (isChecked == "true" && user != undefined && user != null) {
@@ -33,35 +29,30 @@ const MainScreen = (props) => {
           CompanyId: 1,
           CompanyCode: userData.companyCode,
           SecretKey: 1,
-          Username: userData.email+'_1',
+          Username: userData.email,
           Password: userData.password,
         };
         await SignInRemembered(data);
+      } else {
+        props.navigation.navigate("SignIn");
       }
-      else{
-          props.navigation.navigate("SignIn");
-      }
-    }
-    catch(error){
-      await helpers.PostException(error)
+    } catch (error) {
+      await helpers.PostException(error);
       ToastMessage.Short("Error Occurred. Contact Support");
     }
-   
+  };
 
-  }
-
-  const SignInRemembered= async(data)=>{
-    setIsLoading(true)
+  const SignInRemembered = async (data) => {
+    setIsLoading(true);
     var response = await (await request())
       .post(api.Login, qs.stringify(data))
       .catch(function (error) {
-        setIsLoading(false)
-        console.log("kkk")
+        setIsLoading(false);
+        console.log("kkk");
         ToastMessage.Short("Error Ocurred Contact Support");
       });
     if (response != undefined && response.data != undefined) {
       if (response.data.Code == 200) {
-        
         var userInfo = {
           Id: response.data.Data.User.IdentityUserId,
           Email: response.data.Data.User.Email,
@@ -76,24 +67,23 @@ const MainScreen = (props) => {
           ProfilePicture: response.data.Data.User.ProfilePicture,
         };
 
-       
         await DeviceStorage.saveKey("token", response.data.Data.User.Token);
         await DeviceStorage.saveKey(
           "refreshtoken",
           response.data.Data.User.RefreshToken
         );
         await DeviceStorage.saveKey("UserInfo", JSON.stringify(userInfo));
-       props.navigation.navigate("Home");
+        props.navigation.navigate("Home");
       } else {
       }
     } else {
       ToastMessage.Short("Error Ocurred Contact Support");
-      setIsLoading(false)
+      setIsLoading(false);
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
-const secureStoreGet = async () => {
+  const secureStoreGet = async () => {
     try {
       const credentials = await SecureStore.getItemAsync("mbuser");
       if (credentials) {
@@ -101,27 +91,25 @@ const secureStoreGet = async () => {
         return {
           email: myJson.email,
           password: myJson.password,
-          companyCode: myJson.companyCode
+          companyCode: myJson.companyCode,
         };
       }
-    } catch (e) { }
+    } catch (e) {}
   };
 
-
   return (
-    <View style={{backgroundColor: "#ffffff", flex: 1}}>
+    <View style={{ backgroundColor: "#ffffff", flex: 1 }}>
       <Image
-    source={require("../../assets/loader2.gif")}
-    style={[
-      {
-        resizeMode: "contain",
-        flex: 1,
-        alignSelf:"center", 
-      },
-    ]}
-  />
+        source={require("../../assets/loader2.gif")}
+        style={[
+          {
+            resizeMode: "contain",
+            flex: 1,
+            alignSelf: "center",
+          },
+        ]}
+      />
     </View>
-    
   );
 };
 

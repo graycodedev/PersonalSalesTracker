@@ -58,6 +58,7 @@
     "react-native-screens": "~3.29.0",
     "react-native-select-dropdown": "^3.4.0",
     "react-native-store-version": "^1.4.1",
+    "react-native-svg": "^15.0.0",
     "react-native-svg-transformer": "^1.3.0",
     "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^10.0.3",
