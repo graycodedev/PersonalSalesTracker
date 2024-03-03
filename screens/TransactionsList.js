@@ -5,11 +5,10 @@ import {
   ActivityIndicator,
   StyleSheet,
   RefreshControl,
-  TouchableOpacity
+  TouchableOpacity, Text
 } from "react-native";
 import api from "../constants/Api";
 import qs from "qs";
-import { Text } from "galio-framework";
 import { RowDetailedView } from "../components/Row";
 import helpers from "../constants/Helpers";
 import request from "../config/RequestManager";

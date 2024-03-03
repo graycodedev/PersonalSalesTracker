@@ -15,7 +15,6 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconMaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { Input } from "galio-framework";
 import { Colors } from "../screens/style/Theme";
 import * as Contacts from "expo-contacts";
 import ModalPopUp from "../components/Modal";
@@ -249,7 +248,7 @@ export const RetriveContacts = (props) => {
         </View>
       ) : (
         <View style={styles.conatiner}>
-          <Input
+          <TextInput
             type={props.keyboardType}
             placeholderTextColor={Colors.muted}
             style={styles.input}

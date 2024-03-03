@@ -1,6 +1,5 @@
 // import React from "react";
 // import { StyleSheet, TouchableOpacity, Linking } from "react-native";
-// import { Block, Text, theme } from "galio-framework";
 // import request from "../config/RequestManager";
 // import ToastMessage from "../components/Toast/Toast";
 

@@ -1031,7 +1031,7 @@ class SignIn extends React.Component {
       CompanyId: api.CompanyId,
       CompanyCode: this.state.companyCode,
       SecretKey: api.SecretKey,
-      Username: this.state.email + "_1",
+      Username: this.state.email,
       Password: this.state.password,
       Device: this.state.device,
       FcmToken: this.state.fcmToken,

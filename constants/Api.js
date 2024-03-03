@@ -8,7 +8,7 @@ const BaseUrl = AppConfig.CompanyConfig.BaseUrl;
 const AndroidAppUrl = AppConfig.CompanyConfig.AndroidAppUrl;
 const BranchId = AppConfig.CompanyConfig.BranchId;
 const IsAppForMultiple = AppConfig.GeneralConfig.IsAppForMultiple;
-const Login = BaseUrl + "api/v1/user/login";
+const Login = BaseUrl + "api/v1/salesuser/login";
 const MobileBankingActivation =
   BaseUrl + "api/v1/mobilebankingactivationrequest/register";
 const MobileBankingVerification = BaseUrl + "api/v1/otp/verifyotp";

@@ -9,7 +9,6 @@
 //   Linking,
 //   BackHandler,
 // } from "react-native";
-// import { Block, Button, Text, theme } from "galio-framework";
 // import { BackgroundImage } from "../../constants/Images";
 
 // const { height, width } = Dimensions.get("screen");

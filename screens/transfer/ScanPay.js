@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Platform,
+  Text
 } from "react-native";
 import api, { endPoints } from "../../constants/Api";
 import qs from "qs";
-import { Text, theme } from "galio-framework";
 import tokenManager from "../../config/TokenManager";
 import request from "../../config/RequestManager";
 import ToastMessage from "../../components/Toast/Toast";

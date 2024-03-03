@@ -8,7 +8,6 @@
 //   TouchableOpacity,
 //   BackHandler,
 // } from "react-native";
-// import { Block, Text, theme } from "galio-framework";
 // import tokenManager from "../config/TokenManager";
 
 // import { DrawerItem as DrawerCustomItem } from "../components";

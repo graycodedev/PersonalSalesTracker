@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   Switch,
 } from "react-native";
-import { Text } from "galio-framework";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 import { TopBackgroundIcon, AirPlaneIcon } from "../components/IconsAll";

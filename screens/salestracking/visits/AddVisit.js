@@ -84,7 +84,6 @@ const AddVisit = (props, route) => {
     }
 
     let location = await helpers.GetLocation();
-    console.log(location); 
     setLocation(location);
 
   };

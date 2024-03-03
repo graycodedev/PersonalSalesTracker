@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Input } from "galio-framework";
 import Icon from "./Icon";
 import { TextBoxStyle } from "../screens/style/index";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList } from "react-native";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, TextInput } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { ButtonPrimary } from "./Button";
 import request from "../config/RequestManager";
@@ -197,7 +196,7 @@ export class DynamicForm extends React.Component {
             </>
           )}
           {element.type == "text" && (
-            <Input
+            <TextInput
               key={element.name}
               type={element.type}
               placeholder={element.placeholder}
