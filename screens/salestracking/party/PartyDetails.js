@@ -109,7 +109,6 @@ const OrdersScreen = ({ partyId }) => {
                 </View>
             ) : (
                 <View>
-                    {console.log("order log:", orders)}
                     {orders.length > 0 ? (
                         orders.map((order, index) => (
                             <TouchableOpacity
@@ -270,7 +269,6 @@ const VisitsScreen = ({ partyId }) => {
                 </View>
             ) : (
                 <View>
-                    {console.log("visits log:", visits)}
                     {visits.length > 0 ? (
                         visits.map((visit) => (
                             <TouchableOpacity

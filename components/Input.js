@@ -1,7 +1,7 @@
 import React from "react";
 import { TextBoxStyle } from "../screens/style/index";
 import { Colors } from "../screens/style/Theme";
-import { TextInput } from "react-native";
+import { TextInput, View } from "react-native";
 export class ArInput extends React.Component {
   render() {
     const { shadowless, success, error, keyboardType } = this.props;
@@ -74,7 +74,7 @@ export class RegularInputText extends React.Component {
       this.state.isEmpty || this.props.error ? { borderColor: "red" } : {},
     ];
     return (
-      <>
+      <View style={{backgroundColor:Colors.secondary, paddingHorizontal: 4, }}>
         <TextInput
           type={keyboardType}
           placeholder="write something here"
@@ -88,7 +88,7 @@ export class RegularInputText extends React.Component {
             Please fill the input field
           </Text>
         )}
-      </>
+      </View>
     );
   }
 }

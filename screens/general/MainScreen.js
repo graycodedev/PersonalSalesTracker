@@ -20,6 +20,11 @@ const MainScreen = (props) => {
     let data = {};
     try {
       var user = await helpers.GetUserInfo();
+      let signedOut= await DeviceStorage.getKey("SignedOut"); 
+      if(signedOut == "true"){
+        props.navigation.navigate("SignIn");
+        return;
+      }
       var isChecked = await DeviceStorage.getKey("enableRememberMe");
       if (isChecked == "true" && user != undefined && user != null) {
         await tokenManager.clearAndRestoreNewToken();
@@ -48,7 +53,6 @@ const MainScreen = (props) => {
       .post(api.Login, qs.stringify(data))
       .catch(function (error) {
         setIsLoading(false);
-        console.log("kkk");
         ToastMessage.Short("Error Ocurred Contact Support");
       });
     if (response != undefined && response.data != undefined) {

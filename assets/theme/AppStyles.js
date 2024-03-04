@@ -11,6 +11,10 @@ const AppStyles = StyleSheet.create({
         BoldTitle:{
             fontSize: 16,
         fontWeight: '700',
+        }, 
+        Regular:{
+            fontSize: 14,
+            fontWeight: '500',
         }
     }
     

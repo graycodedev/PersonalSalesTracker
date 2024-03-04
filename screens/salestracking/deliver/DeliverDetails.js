@@ -92,7 +92,7 @@ const DeliverDetails = ({ navigation, route }) => {
     const getDetail = async () => {
         console.log('del', deliverId)
         var response = await (await request())
-          .get(Api.Orders.Details + "?id=" + 28)
+          .get(Api.Orders.Details + "?id=" + deliverId)
           .catch(function (error) {
             
             ToastMessage.Short("Error! Contact Support");

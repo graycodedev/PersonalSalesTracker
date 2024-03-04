@@ -19,6 +19,7 @@ import tokenManager from "../config/TokenManager";
 import SignIn from "../screens/general/SignIn";
 import { StackActions } from "@react-navigation/native";
 import * as info from "../app.json";
+import DeviceStorage from "../config/DeviceStorage";
 
 const Profile = ({ navigation }) => {
   return (
@@ -106,9 +107,10 @@ const Profile = ({ navigation }) => {
         <TouchableOpacity
           style={styles.signOut}
           onPress={async () => {
-            tokenManager.clearAndRestoreNewToken().then(() => {
+            tokenManager.clearAndRestoreNewToken().then(async() => {
               navigation.dispatch(StackActions.replace("SignIn"));
               navigation.replace("SignIn");
+              await DeviceStorage.saveKey("SignedOut", "true"); 
             });
           }}
         >

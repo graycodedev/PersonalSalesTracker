@@ -10,6 +10,7 @@ import DateDisplay from "../../../components/DateDisplay";
 
 
 const VisitDetails = (props) => {
+    console.log(props.route.params.visit.VisitDate)
     const { visit } = props.route.params;
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 

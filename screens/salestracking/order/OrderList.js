@@ -56,7 +56,6 @@ const OrderList = ({ navigation }) => {
                 });
             if (response != undefined) {
                 if (response.data.Code == 200) {
-                    console.log(response.data.Data[0])
                     setOrders(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Notes");

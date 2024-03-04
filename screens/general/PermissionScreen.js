@@ -25,7 +25,13 @@ const PermissionScreen = (props) => {
       Linking.openSettings();
       return;
     }
-    props.navigation.navigate("Home");
+    if(props?.route?.params?.showSignIn){
+      props.navigation.navigate("SignIn");
+    }
+    else{
+
+      props.navigation.navigate("Home");
+    }
   };
   return (
     <View

@@ -173,7 +173,7 @@ class SignIn extends React.Component {
   getLocationPermission = async () => {
     let { status } = await Location.getForegroundPermissionsAsync();
     if (status !== "granted") {
-      this.props.navigation.navigate("PermissionScreen");
+      this.props.navigation.navigate("PermissionScreen", {showSignIn: true});
       return;
     }
   };
@@ -564,7 +564,8 @@ class SignIn extends React.Component {
                     autoCapitalize="none"
                     placeholder=""
                     onChangeText={(password) => this.setState({ password })}
-                    value={this.state.password}
+                    secureTextEntry={true}
+                    calue={this.state.password}
                   />
                   <View
                     style={{
@@ -1074,6 +1075,7 @@ class SignIn extends React.Component {
           "refreshtoken",
           response.data.Data.User.RefreshToken
         );
+        await DeviceStorage.saveKey("SignedOut", "false");
         await DeviceStorage.saveKey("UserInfo", JSON.stringify(userInfo));
         if (!this.state.savedCompanyDetail) {
           await DeviceStorage.saveKey(

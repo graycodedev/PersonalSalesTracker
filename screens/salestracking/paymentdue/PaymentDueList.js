@@ -51,7 +51,6 @@ const PaymentDueList = ({ navigation }) => {
 
             if (response != undefined) {
                 if (response.data.Code === 200) {
-                    console.log("Payment Due Data:", response.data.Data.PaymentDueReportDetail);
                     setPaymentsDue(response.data.Data.PaymentDueReportDetail);
                 } else {
                     console.error("Error Loading Payment Due. Response:", response);
@@ -71,7 +70,6 @@ const PaymentDueList = ({ navigation }) => {
     }, []);
 
     useEffect(() => {
-        console.log("Payment Due List:", paymentsDue);
     }, [paymentsDue]);
 
     return (
@@ -109,19 +107,24 @@ const PaymentDueList = ({ navigation }) => {
                                 }}
                             >
                                 <View>
+                                <Text
+                                        style={[AppStyles.Text.BoldTitle]}
+                                    >
+                                    Party Name: {paymentDue?.PartyName}
+                                    </Text>
                                     <Text
                                         style={[AppStyles.Text.BoldTitle, { marginBottom: 4 }]}
                                     >
-                                        Order No: {paymentDue.OrderNo}
+                                        Order No: #{paymentDue.OrderNo}
                                     </Text>
                                     <Text style={styles.paymentDueInfo}>
-                                        Due Date: {paymentDue.DueDate} days
+                                        Due Days: {paymentDue.DueDate} days
                                     </Text>
                                     <Text style={styles.paymentDueInfo}>
-                                        Total Amount: ${paymentDue.TotalAmount}
+                                        Total Amount: Rs.{paymentDue.TotalAmount}
                                     </Text>
                                     <Text style={styles.paymentDueInfo}>
-                                        Amount To Be Received: ${paymentDue.AmountToBeReceived}
+                                        Amount Receivable: Rs.{paymentDue.AmountToBeReceived}
                                     </Text>
                                 </View>
                             </View>

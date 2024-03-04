@@ -286,11 +286,6 @@ export const DashBoardServices = ({ navigation }) => {
       icon: BankingIcons.visitreport,
       navigation: "Visits",
     },
-    {
-      name: "Payment Due",
-      icon: BankingIcons.ChequeIcon,
-      navigation: "PaymentDueList",
-    },
 
 
     // {
@@ -314,6 +309,11 @@ export const DashBoardServices = ({ navigation }) => {
       name: "Airlines",
       icon: BankingIcons.Airplane,
       navigation: "airlines",
+    },
+    {
+      name: "Butwal Power",
+      icon: BankingIcons.ElectricityIcon,
+      navigation: "ButwalPowerCompany",
     },
   ];
   var allServices = [...arrServices, ...arrServicesMore];
