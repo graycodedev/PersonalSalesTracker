@@ -99,7 +99,6 @@ const DeliverDetails = ({ navigation, route }) => {
           });
         if (response != undefined) {
           if (response.data.Code == 200) {
-            console.log('Deliver Details', response.data.Data)
             setDeliver(response.data.Data);
           } else {
             ToastMessage.Short("Error Loading Deliver Details");

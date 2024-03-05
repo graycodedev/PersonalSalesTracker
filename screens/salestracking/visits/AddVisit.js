@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -7,9 +7,13 @@ import {
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
-  Platform
+  Platform, 
+  Modal, 
+  ImageBackground
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
+import { Camera } from "expo-camera";
 import DropDownPicker from "react-native-dropdown-picker";
 import { RegularInputText } from "../../../components/Input";
 import { ButtonPrimary } from "../../../components/Button";
@@ -20,10 +24,12 @@ import Api from "../../../constants/Api";
 import qs from "qs";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
-import * as Location from "expo-location";
 import helpers from "../../../constants/Helpers";
 import axios from "axios";
 import { Colors } from "../../style/Theme";
+import * as SVG from "../../../components/BankingIcons"
+import MediaServices from "../../../components/media/MediaServices";
+import { ApiRequestWithImage, ApiRequestWithImageAndFiles } from "../../../components/ApiRequest";
 
 const { width } = Dimensions.get("screen");
 
@@ -44,6 +50,66 @@ const AddVisit = (props, route) => {
   const [locationError, setLocationError] = useState("");
   const [remarkError, setRemarkError] = useState("");
   const [partyError, setPartyError] = useState("");
+  const [purposes, setPurposes]= useState([]);
+  const [selectedPurpose, setSelectedPurpose]= useState(); 
+  const [isCameraReady, setIsCameraReady] = useState(false);
+  const [photo, setPhoto] = useState(null);
+  const [files, setFiles]= useState([]); 
+  const [photoError, setPhotoError]= useState(""); 
+  const [fileError, setFileError]= useState(""); 
+  const cameraRef = useRef(null);
+
+  const handlePhotoUpload = async () => {
+    setIsCameraReady(true);
+    if (!cameraRef.current) {
+      return;
+    }
+  };
+
+  const takePhoto = async () => {
+    const options = { quality: 1, base64: true };
+    var photo = await cameraRef.current.takePictureAsync(options);
+    setPhoto(photo);
+    setIsCameraReady(false);
+  };
+
+  const getVisitPurpose = async () => {
+    try {
+        var response = await (await request())
+            .get(Api.VisitPurpose.List)
+            .catch(function (error) {
+                ToastMessage.Short(error);
+            });
+        if (response != undefined) {
+            if (response.data.Code == 200) {
+              let purposesArr= []
+              if(response.data.Data.length == 0){
+                return
+              }
+              response.data.Data.map((item)=>{
+                let purpose= {
+                  label: item.PurposeName, 
+                  value: item
+                }
+                purposesArr.push(purpose);
+              })
+                setPurposes(purposesArr);
+            } else {
+                ToastMessage.Short("Error Loading Purposes for Visit !");
+            }
+        } else {
+            ToastMessage.Short("Error Loading Purposes for Visit !!");
+        }
+    }
+    catch(error){
+      ToastMessage.Short(error);
+    } 
+    finally {
+        setIsLoading(false);
+    }
+};
+
+
 
   useEffect(() => {
     let addText = update ? "Update" : "Add";
@@ -51,7 +117,16 @@ const AddVisit = (props, route) => {
       title: addText + " Visit",
     });
     (async () => await getLocation())();
+    getVisitPurpose();
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Camera permission not granted");
+      }
+    })();
   }, []);
+
+  
 
   const parties = route.params ? route.params.parties || [] : [];
 
@@ -162,6 +237,13 @@ const AddVisit = (props, route) => {
     navigation.goBack();
   };
 
+  const pickFiles =async ()=>{
+    let selectedFiles= await MediaServices.PickFiles();
+    let allFiles= selectedFiles.concat(files); 
+    setFiles(allFiles); 
+    console.log(allFiles)
+  }
+
   const saveVisit = async () => {
     let visitData = {};
     try {
@@ -203,6 +285,21 @@ const AddVisit = (props, route) => {
         setPartyError("");
       }
 
+      if (selectedPurpose?.IsReportRequired && files.length == 0) {
+        isValid = false;
+        setFileError("Select at least a file");
+      }
+      else{
+        setFileError("")
+      }
+      if (selectedPurpose?.IsImageRequired && photo == null) {
+        isValid = false;
+        setPhotoError("Take a pic");
+      }
+      else[
+        setPhotoError("")
+      ]
+
       if (!isValid) {
         return;
       }
@@ -217,31 +314,40 @@ const AddVisit = (props, route) => {
         Latitude: location ? location.lat : null,
         Longitude: location ? location.lng : null,
         IsActive: true,
-        VisitPurposeId: 1
+        VisitPurposeId: selectedPurpose?.Id
       };
       Object.keys(visitData).forEach(
         (key) => visitData[key] === null && delete visitData[key]
       );
-      visitData = qs.stringify(visitData);
-
-      setIsLoading(true);
-
-      const response = await (await request()).post(
+      let imageData = {
+        ImageFile: photo.uri,
+      }; 
+      console.log("Hey", imageData)
+   
+    
+      var response = await ApiRequestWithImageAndFiles(
         Api.Visits.SaveByUser,
-        visitData
+        visitData,
+        imageData, 
+        files
       );
-      if (response.data.Code === 200) {
-        setIsLoading(false);
-        goToVisits();
-        ToastMessage.Short(response.data.Message);
 
+
+      if (response != undefined) {
+        if (response.data.Code == 200) {
+          setIsLoading(false);
+          goToVisits();
+          ToastMessage.Short(response.data.Message);
+        } else {
+          ToastMessage.Short(response.data.Message);
+        }
       } else {
-        ToastMessage.Short(response.data.Message);
+        ToastMessage.Short("Error Occurred. Contact Support");
       }
     } catch (error) {
       await helpers.PostException({ data: visitData, messsage: error });
       setIsLoading(false);
-      ToastMessage.Short("Error Occurred. Contact Support");
+      ToastMessage.Short("Error Occurred. Contact Support !!");
     }
   };
 
@@ -319,8 +425,33 @@ const AddVisit = (props, route) => {
             />
           )}
         </View>
-
-       
+        <View style={{ marginBottom: 10, marginTop: 10, zIndex: 99 }}>
+          <DropDownPicker
+            containerStyle={{ height: 50 }}
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              fontFamily: "Regular",
+              borderColor: "#fff",
+              borderWidth: 0,
+            }}
+            itemStyle={{
+              justifyContent: "flex-start",
+              fontFamily: "Medium",
+              color: "red",
+            }}
+            labelStyle={{
+              fontFamily: "Medium",
+              color: "#9A9A9A",
+            }}
+            arrowColor={"#9A9A9A"}
+            placeholder="Choose purpose of Visit"
+            label="Vat or Pan"
+            items={purposes}
+            onChangeItem={(item) => setSelectedPurpose(item.value)}
+            defaultValue={"Vat or pan"}
+          />
+        </View>
         <View>
           <RegularInputText
             key="remark"
@@ -339,6 +470,73 @@ const AddVisit = (props, route) => {
             </Text>
           )}
         </View>
+        {selectedPurpose && (selectedPurpose?.IsImageRequired || selectedPurpose?.IsReportRequired) && <View style={{flexDirection:"row", justifyContent:"space-between", paddingVertical: 12, paddingHorizontal: 20, backgroundColor:"#ffffff",marginBottom: 8}}>
+         { selectedPurpose?.IsReportRequired && <View style={{alignItems: "center"}}>
+            <TouchableOpacity style={{height: 50, width: 50,borderRadius: 25, alignItems:"center", justifyContent:"center", backgroundColor:Colors.primary}} onPress={async()=>{
+             await pickFiles()
+            }}>
+            <SVG.Upload height={25} width= {25} fill={"#ffffff"}/>
+            </TouchableOpacity>
+            <Text>
+              Upload file
+            </Text>
+            {
+              files.length>0 && files.map((item, index)=>{
+                return(
+                  <Text key={index}>{item.name.slice(0,20) + "..." + item.name.substring(item.name.length-5)}</Text>
+                )
+              })
+            }
+          </View>}
+         { selectedPurpose?.IsReportRequired && <View style={{alignItems: "center"}}>
+           {!photo && <>
+              <TouchableOpacity style={{height: 50, width: 50,borderRadius: 25, alignItems:"center", justifyContent:"center", backgroundColor:Colors.primary}} onPress={handlePhotoUpload}>
+              <SVG.Camera height={25} width= {25} fill={"#ffffff"}/>
+              </TouchableOpacity>
+              <Text>
+               Take Photo
+              </Text>
+            </>
+                
+            }
+          </View>}
+        </View>}
+        {
+          photo && 
+          <View
+                  style={{
+                    height: 300,
+                    width: "100%",
+                  }}
+                >
+                  <ImageBackground
+                    source={{
+                      uri: photo.uri,
+                    }}
+                  
+                    resizeMode="cover"
+                    style={{
+                      backgroundColor: "yellow",
+                      flex: 1,
+                      justifyContent: "center",
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={handlePhotoUpload}
+                      style={{ alignItems: "center" }}
+                    >
+                      <SVG.Camera
+                        height={50}
+                        width={50}
+                        fill={Colors.primary}
+                      />
+                    </TouchableOpacity>
+                  </ImageBackground>
+                </View>
+        }
+       
+       
+        
         <View style={{flexDirection:"row",  backgroundColor: "#e5e5e5", marginTop: 4}}>
           <View style={{flex:5, padding: 12 }}>
             <Text style={{fontFamily:"Regular"}}>{location ?location.lat + ", " + location.lng:"Fetch Location Failed !!"}</Text>
@@ -357,6 +555,30 @@ const AddVisit = (props, route) => {
           </TouchableOpacity>
         </View>
       </View>
+      {isCameraReady && (
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isCameraReady}
+        style={{flex: 1}}
+        >
+                <Camera
+                  ref={cameraRef}
+                  isCameraReady={isCameraReady}
+                  focusMode="continuous"
+                  style={{ flex: 1,zIndex: 999, justifyContent:"flex-end", alignItems:"center"}}
+                  ratio="16:9"
+                >
+                  {/* <Text> HI</Text> */}
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => takePhoto()}
+                    ></TouchableOpacity>
+                  </View>
+                </Camera>
+                </Modal>
+              )}
     </ScrollView>
   );
 };
@@ -376,6 +598,17 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     backgroundColor: "#fff",
     paddingLeft: 18,
+  },
+  buttonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    bottom: 10
+  },
+  button: {
+    height: 80,
+    width: 80,
+    borderRadius: 40,
+    backgroundColor: "white",
   },
 });
 

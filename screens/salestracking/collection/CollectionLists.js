@@ -14,7 +14,7 @@ import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
-import DateDisplay from "../../../components/DateDisplay";
+import {DateDisplay} from "../../../components/DateDisplay";
 import AppStyles from "../../../assets/theme/AppStyles";
 
 const wait = (timeout) => {
@@ -44,7 +44,6 @@ const CollectionList = ({ navigation }) => {
 
       if (response != undefined) {
         if (response.data.Code == 200) {
-          console.log(response.data.Data[0])
           setCollections(response.data.Data);
         } else {
           ToastMessage.Short("Error Loading Collections");

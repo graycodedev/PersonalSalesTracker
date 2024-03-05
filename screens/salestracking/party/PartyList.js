@@ -8,7 +8,7 @@ import {
     RefreshControl,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-// import { useFocusEffect } from "@react-navigation/native-stack";
+import { useFocusEffect } from "@react-navigation/native";
 import PageStyle from "../../style/pageStyle";
 import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
@@ -22,12 +22,12 @@ const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-const PartyList = ({ props }) => {
-    // useEffect(() => {
-    //     props.navigation.setOptions({
-    //         title: "Parties",
-    //     });
-    // }, [])
+const PartyList = (props ) => {
+    useEffect(() => {
+        props.navigation.setOptions({
+            title: "Parties",
+        });
+    }, [])
 
     const [parties, setParties] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -62,19 +62,19 @@ const PartyList = ({ props }) => {
         }
     };
 
-    // useEffect(() => {
-    //     getList();
-    // }, []);
+    useEffect(() => {
+        getList();
+    }, []);
 
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //         getList();
-    //         return () => {
-    //             // Cleanup function (optional)
-    //             // Additional cleanup logic (if needed)
-    //         };
-    //     }, [])
-    // );
+    useFocusEffect(
+        React.useCallback(() => {
+            getList();
+            return () => {
+                // Cleanup function (optional)
+                // Additional cleanup logic (if needed)
+            };
+        }, [])
+    );
 
     return (
         <View style={styles.container}>

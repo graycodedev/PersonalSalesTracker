@@ -6,7 +6,7 @@ import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
 import DetailCard from "../../../components/DetailCard";
 import { Colors } from "../../style/Theme";
-import DateDisplay from "../../../components/DateDisplay";
+import {DateDisplay} from "../../../components/DateDisplay";
 
 
 const VisitDetails = (props) => {

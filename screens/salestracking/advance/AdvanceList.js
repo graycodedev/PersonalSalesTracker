@@ -15,7 +15,7 @@ import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
-import DateDisplay from "../../../components/DateDisplay";
+import {DateDisplay} from "../../../components/DateDisplay";
 import AppStyles from "../../../assets/theme/AppStyles";
 
 const wait = (timeout) => {

@@ -5,6 +5,7 @@ import request from "../config/RequestManager";
 import TokenManager from "../config/TokenManager";
 import DeviceStorage from "../config/DeviceStorage";
 import axios from "axios";
+import helpers from "../constants/Helpers";
 const ApiRequestPost = async (route, data) => {
   let strData = qs.stringify(data);
   // console.log("Request of " + route + "with data " + strData);
@@ -74,9 +75,6 @@ const ApiRequestWithImage = async (route, data, imageData) => {
       });
     }
   }
-  console.log("Access", access_token); 
-  console.log("Route", route);
-  console.log("FormData", formData);
   var res= await axios.post(route, formData, {
       headers: {
         Authorization: `Bearer ${access_token}`,
@@ -85,18 +83,54 @@ const ApiRequestWithImage = async (route, data, imageData) => {
       },
     });
     return await res;
-console.log(res)
-    // .then((response) => {
-    //     if (response.data.Code == 200) {
-    //         console.log("fdf")
-    //         return response;
-    //       } else {
-    //         ToastMessage.Short(response.data.Message);
-    //       }
-    // })
-    // .catch((error) => {
-    //   alert(error);
-    // });
+};
+const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
+  try{
+    await TokenManager.restoreNewToken();
+    const access_token = await DeviceStorage.getKey("token");
+
+    const formData = new FormData();
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        formData.append(key, data[key]);
+      }
+    }
+    for (const key in imageData) {
+      if (imageData.hasOwnProperty(key)) {
+        formData.append(key, {
+          uri: imageData[key],
+          type: "image/png",
+          name: "photo",
+        });
+      }
+    }
+   
+        files.forEach((file, index) => {
+          console.log("file 1", file); 
+          const fle = {
+            uri: file.uri,
+            type: "application/octet-stream",
+            name: file.name,
+          };
+          formData.append("Files", fle);
+        })
+     
+    var res= await axios.post(route, formData, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "multipart/form-data",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      return await res;
+  }
+  catch(error){
+    await helpers.PostException("while sending images"+ error); 
+    console.log(error)
+    ToastMessage.Short(error)
+  }
+ 
+ 
 };
 
 function createQueryString(data) {
@@ -115,4 +149,4 @@ function createQueryString(data) {
   return params;
 }
 
-export { ApiRequestGet, ApiRequestPost, ApiRequestWithImage };
+export { ApiRequestGet, ApiRequestPost, ApiRequestWithImage, ApiRequestWithImageAndFiles };

@@ -215,11 +215,11 @@ const Visits = {
   Delete: BaseUrl + "api/v1/st_visits/delete"
 }
 const Collections = {
-  List: BaseUrl + "api/v1/st_paymentreceived/list",
+  List: BaseUrl + "api/v1/st_collection/list",
   ListByParty: BaseUrl + "api/v1/st_collection/list/byPartyId/byuserId",
-  Details: BaseUrl + "api/v1/st_paymentreceived/details",
-  Save: BaseUrl + "api/v1/st_paymentreceived/save",
-  Delete: BaseUrl + "api/v1/st_paymentreceived/delete"
+  Details: BaseUrl + "api/v1/st_collection/details",
+  Save: BaseUrl + "api/v1/st_collection/save",
+  Delete: BaseUrl + "api/v1/st_collection/delete"
 }
 const Advance = {
   ListByUser: BaseUrl + "api/v1/st_advancerequest/list/byuser",
@@ -335,6 +335,11 @@ const PaymentDue = {
 
 }
 
+const VisitPurpose= {
+  List: BaseUrl + "api/v1/st_visitpurpose/list/byuser",
+  Details: BaseUrl + "api/v1/st_visitpurpose/details"
+}
+
 
 const ApplicationSettingsByKey = BaseUrl + "api/v1/applicationsettings/valuebykey";
 const ContactUs = BaseUrl + "api/v1/contactus/save";
@@ -426,7 +431,7 @@ export default {
   Returns,
   ReturnReasons,
   ApplicationSettingsByKey,
-  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException
+  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException, VisitPurpose
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

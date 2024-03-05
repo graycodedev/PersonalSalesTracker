@@ -106,6 +106,9 @@ import addVisit from "../assets/bankingsvg/addVisit.svg";
 import addParties from "../assets/bankingsvg/addParties3.svg"; 
 import fingerPrint from "../assets/bankingsvg/fingerprint1.svg"; 
 import delivery from "../assets/bankingsvg/delivery.svg"; 
+import Camera from "../assets/bankingsvg/camera1.svg"; 
+import Upload from "../assets/bankingsvg/upload.svg"; 
+
 
 
 
@@ -211,5 +214,6 @@ advance,
 addVisit, 
 addParties, 
 fingerPrint, 
-delivery, norecords
+delivery, norecords, Camera, 
+Upload
 };

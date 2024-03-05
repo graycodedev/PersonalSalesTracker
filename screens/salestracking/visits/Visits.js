@@ -115,8 +115,8 @@ const Visits = ({ navigation }) => {
                       <Text style={AppStyles.Text.BoldTitle}>
                         {visit.PartyName ? visit.PartyName : visit.LocationName}
                       </Text>
-                      {/* <DateDisplay date={visit?.VisitDate} /> */}
-                      {/* <TimeDisplay time={visit?.VisitDate} /> */}
+                      <DateDisplay date={visit?.VisitDate} />
+                      <TimeDisplay time={visit?.VisitDate} />
                     </View>
                     {visit.PartyName && (
                       <BankingIcons.tickMark

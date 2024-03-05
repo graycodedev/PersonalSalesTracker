@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import AppStyles from '../assets/theme/AppStyles';
-import DateDisplay from './DateDisplay';
+import {DateDisplay} from './DateDisplay';
 import * as BankingIcons from "./BankingIcons";
 
 const ListItem = ({ item, onPress }) => {
