@@ -94,9 +94,9 @@ const ExpenseList = (props) => {
                             onPress={() => props.navigation.navigate("ExpenseDetails", { expense })}
                         >
                             <View>
-                                <Text style={styles.expenseName}>{expense.Remarks}</Text>
-                                <Text style={styles.expenseInfo}>Expense Code: {expense.ExpensesTypeId}</Text>
+                                <Text style={styles.expenseInfo}>Expense Type: {expense.ExpenseTypeName}</Text>
                                 <Text style={styles.expenseInfo}>Expense Amount: Rs.{expense.Amount}</Text>
+                                <Text style={styles.expenseInfo}>Remarks: {expense.Remarks}</Text>
                             </View>
                         </TouchableOpacity>
                     ))}

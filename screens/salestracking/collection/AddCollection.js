@@ -92,7 +92,7 @@ const AddCollection = (props) => {
 
         let strData = qs.stringify({
             Id: 0,
-            PartyId: selectedParty.PartyId,  // Make sure PartyId is present
+            PartyId: selectedParty.Id,  // Make sure PartyId is present
             PaymentDate: formattedDate,
             PaymentMode: mode,
             Remarks: note,

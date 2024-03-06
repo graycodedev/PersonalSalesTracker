@@ -95,6 +95,7 @@ const Visits = ({ navigation }) => {
         >
           {visits.length > 0 ? (
             visits.map((visit) => {
+              console.log("A visit", visit)
               const visitDate = new Date(visit?.VisitDate);
               const date = visitDate.toLocaleDateString();
               const time = visitDate.toLocaleTimeString();
@@ -111,20 +112,27 @@ const Visits = ({ navigation }) => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <View>
                       <Text style={AppStyles.Text.BoldTitle}>
                         {visit.PartyName ? visit.PartyName : visit.LocationName}
                       </Text>
-                      <DateDisplay date={visit?.VisitDate} />
-                      <TimeDisplay time={visit?.VisitDate} />
-                    </View>
-                    {visit.PartyName && (
+                      {visit.PartyName && (
                       <BankingIcons.tickMark
                         fill="green"
                         style={styles.imageStyle}
                       />
                     )}
+                      
+                     
+                     
+                    
                   </View>
+                  <Text style={AppStyles.Text.Regular}>
+                        Purpose: {visit.PurposeName}
+                      </Text>
+                      <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+                      <DateDisplay date={visit?.VisitDate} />
+                      <TimeDisplay time={visit?.VisitDate} />
+                      </View>
                 </TouchableOpacity>
               );
             })

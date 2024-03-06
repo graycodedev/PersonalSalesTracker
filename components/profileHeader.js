@@ -63,29 +63,24 @@ const ProfileHeader = (props) => {
       props.navigation.navigate("PermissionScreen");
       return;
     }
-
-    let location = await Location.getCurrentPositionAsync({
-      accuracy:
-        Platform.OS == "android"
-          ? Location.Accuracy.Low
-          : Location.Accuracy.Lowest,
-    });
-    let latitude = location.coords.latitude;
-    let longitude = location.coords.longitude;
+    let location = await helpers.GetLocation();
+   
 
     let date = new Date();
     let attendanceDate = date.toISOString().split("T")[0];
     let attendanceTime = date.toTimeString().split(" ")[0];
     let route = checkedIn ? Api.Attendances.CheckOut : Api.Attendances.CheckIn;
     let data = {
-      Latitude: latitude,
-      Longitude: longitude,
+      Latitude: location.lat,
+      Longitude: location.lng,
       IsCheckIn: !checkedIn,
       AttendanceDate: attendanceDate,
       AttendanceTime: attendanceTime,
     };
+    console.log("ll", data)
 
-    var response = await (await request()).post(route, JSON.stringify(data));
+    var response = await (await request()).post(route, qs.stringify(data));
+    console.log(response.data)
     if (response != undefined) {
       if (response.data.Code == 200) {
         if (checkedIn) {
@@ -100,7 +95,7 @@ const ProfileHeader = (props) => {
         ToastMessage.Short("Error Occurred, Contact Support!!!");
       }
     } else {
-      ToastMessage.Short("Error Occurred, Contact Support!!!");
+      ToastMessage.Short("Error Occurred, Contact Support !");
     }
   };
 

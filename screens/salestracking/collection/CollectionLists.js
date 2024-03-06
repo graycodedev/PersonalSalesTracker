@@ -45,6 +45,7 @@ const CollectionList = ({ navigation }) => {
       if (response != undefined) {
         if (response.data.Code == 200) {
           setCollections(response.data.Data);
+          console.log(response.data.Data[0])
         } else {
           ToastMessage.Short("Error Loading Collections");
         }
@@ -111,7 +112,7 @@ const CollectionList = ({ navigation }) => {
                       </Text>
                       <Text
                         style={AppStyles.Text.Regular}
-                      >{`Payment Amount: Rs.${collection.Amount}`}</Text>
+                      >{`Recieved Amount: Rs.${collection.Amount}`}</Text>
                       <Text style={AppStyles.Text.Regular}>
                         Received Date:
                         <DateDisplay date={collection?.PaymentDate} />

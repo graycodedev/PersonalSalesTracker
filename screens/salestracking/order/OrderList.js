@@ -108,7 +108,7 @@ const OrderList = ({ navigation }) => {
                             <View style={{flexDirection:"row", justifyContent:"space-between", alignItems:"center", marginBottom: 4}}>
                                 <View>
                                 
-                                    <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>{order.CompanyName}</Text>
+                                    <Text style={[AppStyles.Text.BoldTitle, {marginBottom:4}]}>{order.PartyName}</Text>
                                     <TouchableOpacity onPress={()=>Contact.MakeCall(order.PartyMobileNo) } style={{flexDirection:"row", alignItems:"center"}}>
                                     <BankingIcons.callIcon fill={"green"} height={18} width={18}/>
                                         <Text style={[styles.orderInfo]}> {order.PartyMobileNo} </Text>

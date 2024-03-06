@@ -1,13 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as BankingIcons from "./BankingIcons";
 import { Colors } from "../screens/style/Theme";
 import * as SVG from "../components/BankingIcons";
+import Api from "../constants/Api";
+import ToastMessage from "./Toast/Toast";
+import request from "../config/RequestManager";
 
 export const AccountCard = ({ data, navigation,  balanceError }) => {
   const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [reports, setReports] = useState();
+
+  useEffect(() => {
+      (async () => getReport())();
+  }, [])
+
+  const getReport = async () => {
+      var response = await (await request())
+          .get(Api.Reports.Eod)
+          .catch(function (error) {
+              setIsLoading(false)
+              ToastMessage.Short("Error! Contact Support");
+          });
+      if (response != undefined) {
+          if (response.data.Code == 200) {
+              setReports(response.data.Data);
+          } else {
+              ToastMessage.Short(response.data.Message);
+          }
+      } else {
+          ToastMessage.Short("Error Loading Notes");
+      }
+      setIsLoading(false);
+  };
+
 
   return (
     <View style={{ flex: 1, width: "100%" }}>
@@ -16,33 +45,33 @@ export const AccountCard = ({ data, navigation,  balanceError }) => {
           <View style={styles.accountInfo}>
             <View style={styles.left}>
               <View style={styles.accountType}>
-                <Text style={styles.accountInfoText}>Visits: 444</Text>
+              {!reports?.Visit ? <Text style={styles.accountInfoText}>Visits: XXX</Text>: <Text style={styles.accountInfoText}>Visits: {reports?.Visit}</Text>}
               </View>
               <View style={styles.accountNumber}>
-              <Text style={[styles.amountText, {fontSize:11}]}>
-                Order: 555
-              </Text>
+            
+              {!reports?.NewOrder ? <Text style={styles.accountInfoText}>Order: XXX</Text>: <Text style={styles.accountInfoText}>Order: {reports?.NewOrder}</Text>}
                 <Text style={styles.accountInfoText}>{data.AccNum}</Text>
               </View>
             </View>
           </View>
-          <View style={styles.amount}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={styles.amountText}>
-                Collection: 666
-              </Text>
-              {visible ? (
-                <TouchableOpacity onPress={() => setVisible(!visible)}>
-                  <Icon name="eye" size={15} />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={() => setVisible(!visible)}>
-                  <Icon name="eye-slash" size={15} />
-                </TouchableOpacity>
-              )}
-            
+            <View>
+              <View style={{ flexDirection: "row", justifyContent:"space-between", alignItems:"center" }}>
+              
+                {!reports?.OrderAmount || !visible ? <Text style={[styles.accountInfoText]}>Collection: Rs. XXXXXX</Text>: <Text style={styles.accountInfoText}>Collection: Rs. {reports?.OrderAmount}</Text>}
+                <View style={{marginLeft: 8}}>
+                  {visible ? (
+                    <TouchableOpacity onPress={() => setVisible(!visible)}>
+                      <Icon name="eye" size={15} />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => setVisible(!visible)}>
+                      <Icon name="eye-slash" size={15} />
+                    </TouchableOpacity>
+                  )}
+                </View>
+              
+              </View>
             </View>
-          </View>
         </View>
         <TouchableOpacity   onPress={() => {
               navigation.navigate("ReceivePayment");
@@ -50,34 +79,15 @@ export const AccountCard = ({ data, navigation,  balanceError }) => {
           <View
             style={{
               alignSelf: "flex-end",
-              // right: 30,
-              // paddingTop: 6,
               alignItems: "center",
             }}
           
           >
             <SVG.purseIcon height={45} width={45} fill={Colors.primary} />
-            {/* <Text
-              style={{
-                fontSize: 10,
-                textAlign: "center",
-                fontFamily: "Regular",
-                color: Colors.primary,
-              }}
-            >
-             Receive Payment
-            </Text> */}
+          
           </View>
-          {/* <TouchableOpacity onPress={() => navigation.navigate("Scan")}>
-              <BankingIcons.qrIcon fill={Colors.primary} />
-            </TouchableOpacity> */}
+        
         </TouchableOpacity>
-
-        {visible && balanceError != "" && (
-          <View>
-            <Text style={{ color: "red" }}>{balanceError}</Text>
-          </View>
-        )}
       </View>
     </View>
   );
@@ -131,7 +141,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  amount: {},
   amountText: {
     fontFamily: "Medium",
     fontSize: 14,

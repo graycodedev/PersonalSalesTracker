@@ -74,7 +74,7 @@ export class RegularInputText extends React.Component {
       this.state.isEmpty || this.props.error ? { borderColor: "red" } : {},
     ];
     return (
-      <View style={{backgroundColor:Colors.secondary, paddingHorizontal: 4, }}>
+      <View style={{backgroundColor:"#ffffff", paddingHorizontal: 4,marginBottom: 8 }}>
         <TextInput
           type={keyboardType}
           placeholder="write something here"

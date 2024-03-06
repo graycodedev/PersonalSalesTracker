@@ -910,11 +910,8 @@ class SignIn extends React.Component {
   }
   loginFromFingerPrint = async (userData) => {
     this.setState({ isLoading: true });
-    let cmpId = await helpers.GetCompanyId();
     var data = qs.stringify({
-      clientId: cmpId,
-      CompanyId: cmpId,
-      CompanyCode: api.CompanyCode,
+      CompanyCode: userData.companyCode,
       SecretKey: api.SecretKey,
       Username: userData.email,
       Password: userData.password,
@@ -970,7 +967,6 @@ class SignIn extends React.Component {
         this.setState({ isLoading: false });
         ToastMessage.Short("Error Ocurred Contact Support");
       });
-    console.log("Response", response.data);
     if (response != undefined && response.data != undefined) {
       if (response.data.Code == 200) {
         var userCache = await helpers.GetUserInfo();
@@ -1064,7 +1060,6 @@ class SignIn extends React.Component {
           ProfilePicture: response.data.Data.User.ProfilePicture,
         };
 
-        //saving new user token on login
 
         await DeviceStorage.saveKey(
           "enableRememberMe",

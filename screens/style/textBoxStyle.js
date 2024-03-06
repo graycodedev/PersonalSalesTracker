@@ -13,7 +13,7 @@ const TextBoxStyle = StyleSheet.create({
     borderRadius: 10,
     height: 50,
     borderWidth: 0,
-    backgroundColor: Colors.secondary,
+    backgroundColor: "#ffffff",
     color: "#AEB9CA",
     fontSize: 14,
     fontFamily: fontfamily.Medium,

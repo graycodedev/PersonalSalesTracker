@@ -169,7 +169,7 @@ const DeliverDetails = ({ navigation, route }) => {
             {!isLoading && deliver? 
                 <><View style={styles.container}>
                 <View>
-                    <Text style={{ fontFamily: "Medium", marginTop: 10, marginBottom: -5 }}>
+                    <Text style={{ fontFamily: "Medium", marginTop: 10, marginBottom: 4 }}>
                         Delivery Date:
                     </Text>
                    {deliver?.EstimatedDeliveryDate && <View>

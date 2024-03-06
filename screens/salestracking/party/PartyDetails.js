@@ -13,7 +13,7 @@ import WarningModal from "../../../components/WarningModal";
 import DetailCard from "../../../components/DetailCard";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AppStyles from "../../../assets/theme/AppStyles";
-import {DateDisplay} from "../../../components/DateDisplay";
+import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -39,7 +39,7 @@ const OverviewScreen = ({ partyDetails }) => {
             ) : (
                 <View style={styles.container}>
                     <DetailCard details={[
-                        { Label: "Party Name", Value: partyDetails?.PartyName },
+                        { Label: "Party Name", Value: partyDetails.PartyName },
                         { Label: "Contact Person", Value: partyDetails.ContactPersonName },
                         { Label: "Mobile Number", Value: partyDetails.MobileNumber },
                         { Label: "Party Code", Value: partyDetails.PartyCode },
@@ -54,6 +54,7 @@ const OverviewScreen = ({ partyDetails }) => {
 };
 
 const OrdersScreen = ({ partyId }) => {
+    const partyid= partyId; 
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -79,8 +80,7 @@ const OrdersScreen = ({ partyId }) => {
                 if (response.data.Code === 200) {
                     setOrders(response.data.Data);
                 } else {
-                    console.error("Error loading orders:", response.data.Message);
-                    ToastMessage.Short("Error Loading Orders");
+                    ToastMessage.Short(response.data.Message);
                 }
             } else {
                 console.error("Undefined response from API");
@@ -93,7 +93,7 @@ const OrdersScreen = ({ partyId }) => {
 
     useEffect(() => {
         getList();
-    }, []);
+    }, [partyid]);
 
     return (
         <ScrollView
@@ -109,18 +109,41 @@ const OrdersScreen = ({ partyId }) => {
                 </View>
             ) : (
                 <View>
+                    {console.log("order log:", orders)}
                     {orders.length > 0 ? (
                         orders.map((order, index) => (
                             <TouchableOpacity
                                 key={index}
-                                style={styles.orderItem}
-                                onPress={() => navigation.navigate("DeliverDetails", { deliverId: order.Id })}
+                                style={styles.listItem}
+                                onPress={() => navigation.navigate("OrderDetails", { orderId: order.Id })}
                             >
-                                {/* Display order details similar to OrderList component */}
+                                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                                    <View>
+
+                                        <Text style={[AppStyles.Text.BoldTitle, { marginBottom: 4 }]}>{order.CompanyName}</Text>
+                                        <TouchableOpacity onPress={() => Contact.MakeCall(order.PartyMobileNo)} style={{ flexDirection: "row", alignItems: "center" }}>
+                                            <BankingIcons.callIcon fill={"green"} height={18} width={18} />
+                                            <Text style={[styles.orderInfo]}> {order.PartyMobileNo} </Text>
+                                        </TouchableOpacity>
+                                        <Text style={[styles.orderInfo, { color: "#040273" }]}>#{order.OrderNo} </Text>
+
+                                        <Text style={styles.orderInfo}>Delivery Date: <DateDisplay date={order.EstimatedDeliveryDate} /> </Text>
+                                        <Text style={styles.orderInfo}>Ordered Date: <DateDisplay date={order.OrderDate} /> </Text>
+
+                                    </View>
+
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: "flex-end", marginTop: 4 }}>
+
+                                    <Text style={[styles.orderInfo, { color: "green", alignSelf: "flex-end" }]}>Rs. {order?.TotalAmount?.toFixed(2)}</Text>
+                                </View>
                             </TouchableOpacity>
                         ))
                     ) : (
-                        <Text>No orders found!!</Text>
+                        <View style={{ alignItems: "center" }}>
+                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No Order for this party !!</Text>
+                        </View>
                     )}
                 </View>
             )}
@@ -130,6 +153,7 @@ const OrdersScreen = ({ partyId }) => {
 
 
 const CollectionsScreen = ({ partyId }) => {
+    const partyid= partyId; 
     const [collections, setCollections] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -169,7 +193,7 @@ const CollectionsScreen = ({ partyId }) => {
 
     useEffect(() => {
         getList();
-    }, []);
+    }, [partyid]);
 
     return (
         <ScrollView
@@ -185,11 +209,12 @@ const CollectionsScreen = ({ partyId }) => {
                 </View>
             ) : (
                 <View>
+                    {console.log("collection log:", collections)}
                     {collections.length > 0 ? (
                         collections.map((collection, index) => (
                             <TouchableOpacity
                                 key={index}
-                                style={styles.collectionItem}
+                                style={styles.listItem}
                                 onPress={() => navigation.navigate("CollectionDetails", { collection })}
                             >
                                 <View>
@@ -202,7 +227,10 @@ const CollectionsScreen = ({ partyId }) => {
                             </TouchableOpacity>
                         ))
                     ) : (
-                        <Text>No collections found!!</Text>
+                        <View style={{ alignItems: "center" }}>
+                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No Collection for this party !!</Text>
+                        </View>
                     )}
                 </View>
             )}
@@ -213,6 +241,7 @@ const CollectionsScreen = ({ partyId }) => {
 
 
 const VisitsScreen = ({ partyId }) => {
+    const partyid= partyId; 
     const [visits, setVisits] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -253,7 +282,7 @@ const VisitsScreen = ({ partyId }) => {
 
     useEffect(() => {
         getList();
-    }, []);
+    }, [partyid]);
 
     return (
         <ScrollView
@@ -269,11 +298,12 @@ const VisitsScreen = ({ partyId }) => {
                 </View>
             ) : (
                 <View>
+                    {console.log("visits log:", visits)}
                     {visits.length > 0 ? (
                         visits.map((visit) => (
                             <TouchableOpacity
                                 key={visit.Id}
-                                style={styles.visitItem}
+                                style={styles.listItem}
                                 onPress={() => navigation.navigate("VisitDetails", { visit })}
                             >
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -288,7 +318,10 @@ const VisitsScreen = ({ partyId }) => {
                             </TouchableOpacity>
                         ))
                     ) : (
-                        <Text>No visits found!!</Text>
+                        <View style={{ alignItems: "center" }}>
+                            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                            <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No Visits for this party !!</Text>
+                        </View>
                     )}
                 </View>
             )}
@@ -371,7 +404,7 @@ const PartyDetails = (props) => {
                     tabBarPressColor: Colors.primary,
                 }}
             >
-                <Tab.Screen name="Overview" component={() => <OverviewScreen partyDetails={partyDetails} />} />
+                <Tab.Screen name="Overview" component={() => <OverviewScreen partyDetails={partyDetails} />}/>
                 <Tab.Screen name="Orders" component={() => <OrdersScreen partyId={party.Id} />} />
                 <Tab.Screen name="Collections" component={() => <CollectionsScreen partyId={party.Id} />} />
                 <Tab.Screen name="Visits" component={() => <VisitsScreen partyId={party.Id} />} />
@@ -386,14 +419,14 @@ const PartyDetails = (props) => {
                 >
                     <BankingIcons.Edit fill={"white"} height={25} width={25} />
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={[styles.circle, { backgroundColor: "#FF5F7F" }]}
                     onPress={() => {
                         setShowConfirmDelete(true);
                     }}
                 >
                     <BankingIcons.DeleteIcon fill="white" />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
             {showConfirmDelete && (
                 <WarningModal
@@ -413,7 +446,6 @@ const PartyDetails = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 10,
         padding: 2,
         alignContent: "center",
         justifyContent: "flex-start",
@@ -441,7 +473,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    visitItem: {
+    listItem: {
         backgroundColor: "#fff",
         borderRadius: 8,
         padding: 15,

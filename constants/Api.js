@@ -70,7 +70,7 @@ const UserCommissionRateApi = BaseUrl + "api/v1/commisionrate/user/"; //{service
 const LoadEsewa = BaseUrl + "api/v1/esewa/wallet/load";
 const LoadKhalti = BaseUrl + "api/v1/khalti/wallet/load";
 const GetNotifications = BaseUrl + "api/v1/notification/ListByUser";
-const TermsOfServices = "https://graycode.com.np/mobilebanking-privacypolicy/";
+const TermsOfServices = "https://thefinmax.com/salesapp-privacypolicy";
 const CooperatveTermsOfServices =
   "https://graycode.com.np/mobilebanking-coop-policy/cid-";
 const GetCompanyInfo = BaseUrl + "api/v1/mobilebanking/company/GetCompanyInfo?companyId=";

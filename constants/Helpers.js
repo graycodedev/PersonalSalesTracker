@@ -451,9 +451,7 @@ const helpers = {
   }, 
   GetLocation: async function GetLocation(){
     try{
-    this.PostException("get location: 1")
     let location=  await Location.getCurrentPositionAsync();
-    this.PostException("get location: 2"+location)
     if(location!=null){
       return {
         lat: location.coords.latitude, 

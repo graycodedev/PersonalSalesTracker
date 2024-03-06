@@ -322,7 +322,6 @@ const AddVisit = (props, route) => {
       let imageData = {
         ImageFile: photo.uri,
       }; 
-      console.log("Hey", imageData)
    
     
       var response = await ApiRequestWithImageAndFiles(

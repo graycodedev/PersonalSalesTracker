@@ -217,7 +217,7 @@ if (response != undefined) {
     
     if (response.data.Code == 200) {
         setIsLoading(false);
-       navigation.navigate("Home")
+       navigation.navigate("OrderList"); 
 
     } else {
         ToastMessage.Short(response.data.Message);
@@ -262,7 +262,7 @@ setIsLoading(false);
                     )}
                 </View> */}
                 <View>
-                    <Text style={{ fontFamily: "Medium", marginTop: 10, marginBottom: -5 }}>
+                    <Text style={{ fontFamily: "Medium", marginTop: 10, marginBottom: 4 }}>
                         Delivery Date:
                     </Text>
                     <TouchableOpacity onPress={() => setShowDeliveryDatePicker(true)}>
@@ -386,7 +386,7 @@ setIsLoading(false);
                 :
 
                  <>
-                                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                                         <View style={{ height: 100, justifyContent: "center", alignItems: "center" }}>
                                 <Text style={{ fontFamily: "Medium", color: "#9A9A9A", fontSize: 20 }}>
                                     Empty cart! Add Products
                                 </Text>
@@ -394,7 +394,7 @@ setIsLoading(false);
                                     </>}
 
                                        <TouchableOpacity
-                  style={[styles.addDashedBox, {marginBottom: 4}]}
+                  style={[styles.addDashedBox, {marginBottom: 34}]}
                   onPress={()=>{setModalVisible(true)}}
                 >
                   <View
