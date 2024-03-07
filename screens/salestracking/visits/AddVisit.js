@@ -119,9 +119,10 @@ const AddVisit = (props, route) => {
     (async () => await getLocation())();
     getVisitPurpose();
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
+      let { status } = await Camera.getCameraPermissionsAsync();
       if (status !== "granted") {
-        console.log("Camera permission not granted");
+        props.navigation.navigate("PermissionScreen", {type:"camera"});
+        return;
       }
     })();
   }, []);
@@ -154,7 +155,7 @@ const AddVisit = (props, route) => {
   const getLocation = async () => {
     let { status } = await Location.getForegroundPermissionsAsync();
     if (status !== "granted") {
-      props.navigation.navigate("PermissionScreen");
+      props.navigation.navigate("PermissionScreen", {type: "location"});
       return;
     }
 

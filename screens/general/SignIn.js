@@ -173,7 +173,7 @@ class SignIn extends React.Component {
   getLocationPermission = async () => {
     let { status } = await Location.getForegroundPermissionsAsync();
     if (status !== "granted") {
-      this.props.navigation.navigate("PermissionScreen", {showSignIn: true});
+      this.props.navigation.navigate("PermissionScreen", {showSignIn: true, type: "location"});
       return;
     }
   };
@@ -1033,15 +1033,19 @@ class SignIn extends React.Component {
       Device: this.state.device,
       FcmToken: this.state.fcmToken,
     });
+    console.log("1",data)
     var response = await (await request())
       .post(api.Login, data)
       .catch(function(error) {
+        console.log(error)
         this.setState({ isLoading: false });
         ToastMessage.Short("Error Ocurred Contact Support");
       });
     if (response != undefined && response.data != undefined) {
       if (response.data.Code == 200) {
+        console.log("2")
         var userCache = await helpers.GetUserInfo();
+        console.log("rc", userCache)
         if (userCache != null && userCache.PhoneNumber != this.state.email) {
           DeviceStorage.deleteKey("UserAccountsInfo");
         }

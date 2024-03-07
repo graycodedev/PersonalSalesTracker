@@ -29,7 +29,7 @@ import ToastMessage from "../../../components/Toast/Toast";
 import * as SVG from "../../../components/BankingIcons"
 import { Camera } from "expo-camera";
 
-const EndTrip = () => {
+const EndTrip = (props) => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -44,6 +44,13 @@ const EndTrip = () => {
       title: "End Trip",
     });
     getLocation();
+    (async () => {
+      let { status } = await Camera.getCameraPermissionsAsync();
+      if (status !== "granted") {
+        props.navigation.navigate("PermissionScreen", {type:"camera"});
+        return;
+      }
+    })();
   }, []);
 
   const handlePhotoUpload = async () => {
@@ -76,7 +83,7 @@ const EndTrip = () => {
   const getLocation = async () => {
     let { status } = await Location.getForegroundPermissionsAsync();
     if (status !== "granted") {
-      props.navigation.navigate("PermissionScreen");
+      props.navigation.navigate("PermissionScreen", {type:"location"});
       return;
     }
 

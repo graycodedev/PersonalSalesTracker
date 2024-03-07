@@ -12,19 +12,47 @@ import { ButtonPrimary } from "../../components/Elements";
 import * as Location from "expo-location";
 import FavouriteStyles from "../style/favouriteStyle";
 import { Colors } from "../style/Theme";
+import { Camera } from "expo-camera";
 
 const PermissionScreen = (props) => {
-  let permission = {
-    title: "Enable Location Permission",
+  let type= props.route.params.type; 
+  let permission={
+    type: "", 
+    title: "",
     subtitle:
-      "To use the application you need to provide location permission. You can always change permission from settings.",
-  };
+      "",
+  }
+  switch (type) {
+    case "location":
+      permission.type= "location";
+      permission.title= "Enable Location Permission";
+      permission.subtitle= "To use the application you need to provide location permission. You can always change permission from settings.";
+      break;
+    case "camera":
+      permission.type= "camera";
+        permission.title= "Enable Camera Permission";
+        permission.subtitle= "To use the application you need to provide camera permission. You can always change permission from settings.";
+        break;
+  
+    default:
+      break;
+  }
   const onGivePermission = async () => {
-    let permission = await Location.requestForegroundPermissionsAsync();
-    if (permission.status !== "granted") {
-      Linking.openSettings();
-      return;
+    if(permission.type == "location"){
+      let takePermission = await Location.requestForegroundPermissionsAsync();
+      if (takePermission.status !== "granted") {
+        Linking.openSettings();
+        return;
+      }
     }
+    if(permission.type == "camera"){
+      let takePermission = await Camera.requestCameraPermissionsAsync();
+      if (takePermission.status !== "granted") {
+        Linking.openSettings();
+        return;
+      }
+    }
+  
     if(props?.route?.params?.showSignIn){
       props.navigation.navigate("SignIn");
     }

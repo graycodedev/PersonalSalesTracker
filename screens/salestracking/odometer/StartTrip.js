@@ -30,7 +30,7 @@ import * as SVG from "../../../components/BankingIcons"
 import { Camera } from "expo-camera";
 
 
-const StartTrip = () => {
+const StartTrip = (props) => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -45,6 +45,13 @@ const StartTrip = () => {
       title: "Start Trip",
     });
     getLocation();
+    (async () => {
+      let { status } = await Camera.getCameraPermissionsAsync();
+      if (status !== "granted") {
+        props.navigation.navigate("PermissionScreen", {type:"camera"});
+        return;
+      }
+    })();
   }, []);
 
   const handlePhotoUpload = async () => {

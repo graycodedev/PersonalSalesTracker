@@ -60,7 +60,7 @@ const AddParty = (props) => {
   const getLocation = async () => {
     let { status } = await Location.getForegroundPermissionsAsync();
     if (status !== "granted") {
-      props.navigation.navigate("PermissionScreen");
+      props.navigation.navigate("PermissionScreen", {type: "location"});
       return;
     }
 
