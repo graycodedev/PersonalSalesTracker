@@ -95,7 +95,6 @@ const Visits = ({ navigation }) => {
         >
           {visits.length > 0 ? (
             visits.map((visit) => {
-              console.log("A visit", visit)
               const visitDate = new Date(visit?.VisitDate);
               const date = visitDate.toLocaleDateString();
               const time = visitDate.toLocaleTimeString();

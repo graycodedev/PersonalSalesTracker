@@ -5,7 +5,8 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    ActivityIndicator
+    ActivityIndicator, 
+    Animated
 } from "react-native";
 import PageStyle from "../../style/pageStyle";
 import { useNavigation } from "@react-navigation/native";
@@ -21,6 +22,30 @@ const OdometerList = () => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(true);
     const [odometers, setOdometers] = useState([]);
+
+    const [isClicked, setIsClicked] = useState(false);
+  const [animation] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    if (isClicked) {
+      Animated.timing(animation, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(animation, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isClicked, animation]);
+
+  const translateY = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [100, 0], // Adjust as needed
+  });
 
     useEffect(() => {
         navigation.setOptions({
@@ -95,11 +120,25 @@ const OdometerList = () => {
             <TouchableOpacity
                 style={styles.circle}
                 onPress={() => {
-                    navigation.navigate('StartTrip');
+                    // navigation.navigate('StartTrip');
+                    setIsClicked(!isClicked)
                 }}
             >
                 <BankingIcons.plus fill="white" />
             </TouchableOpacity>
+            {isClicked && <TouchableOpacity
+                style={styles.modal}
+                onPress={() => {
+                    navigation.navigate('StartTrip');
+                }}
+            >
+                <Animated.View style={[styles.overlay, { transform: [{ translateY }] }]}>
+                <View style={styles.background} >
+                <BankingIcons.BellIcon fill={Colors.primary} />
+                <BankingIcons.BankIcon fill={Colors.primary} />
+                </View>
+      </Animated.View>
+            </TouchableOpacity>}
         </View>
     );
 };
@@ -148,7 +187,42 @@ const styles = StyleSheet.create({
         zIndex: 1,
         justifyContent: "center",
         alignItems: "center"
-    }
+    }, 
+    modal:{
+        backgroundColor: "red",
+        position: 'absolute',
+        bottom: 100,
+        right: 100,
+        zIndex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    }, 
+    button: {
+        padding: 20,
+        backgroundColor: 'blue',
+        borderRadius: 10,
+      },
+      icon: {
+        width: 50,
+        height: 50,
+      },
+      overlay: {
+        position: 'absolute',
+        bottom: 100,
+        left: 0,
+        right: 100,
+        alignItems: 'center',
+        backgroundColor: "red"
+      },
+      smallIcon: {
+        width: 20,
+        height: 20,
+        opacity: 0.5,
+      },
+      background: {
+        backgroundColor: "red", 
+        width: "100%"
+      },
 });
 
 export default OdometerList;

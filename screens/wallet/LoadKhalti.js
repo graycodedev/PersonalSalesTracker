@@ -17,7 +17,7 @@ import uuid from "react-native-uuid";
 import { SuccessView } from "../../components/SuccessView";
 import request from "../../config/RequestManager";
 import { RegularInputText } from "../../components/Input";
-import { RetriveContacts } from "../../components/RetriveContacts";
+// import { RetriveContacts } from "../../components/RetriveContacts";
 import DropDownPicker from "react-native-dropdown-picker";
 import helpers from "../../constants/Helpers";
 import FavouriteStyles from "../style/favouriteStyle";
@@ -167,7 +167,7 @@ export const LoadKhalti = (props) => {
       showsVerticalScrollIndicator={false}
     >
       <KeyboardAvoidingView style={{ marginHorizontal: 10 }}>
-        <View style={styles.item}>
+        {/* <View style={styles.item}>
           <Text style={styles.label}>Khalti ID</Text>
           <RetriveContacts
             key="mobileno"
@@ -184,7 +184,7 @@ export const LoadKhalti = (props) => {
           {!!khaltiIdError && (
             <Text style={{ color: "red", marginTop: 5 }}>{khaltiIdError}</Text>
           )}
-        </View>
+        </View> */}
 
         <View>
           <Text style={styles.label}>Amount</Text>
