@@ -85,6 +85,8 @@ import PaymentDueList from "../screens/salestracking/paymentdue/PaymentDueList";
 import PermissionScreen from "../screens/general/PermissionScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Profile from "../screens/profile";
+import AddFuel from "../screens/salestracking/fuel/AddFuel"; 
+import FuelList from "../screens/salestracking/fuel/FuelList";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -403,6 +405,11 @@ function ScreenStack(props) {
         options={headerOptions}
       />
       <Stack.Screen
+        name="AddFuel"
+        component={AddFuel}
+        options={headerOptions}
+      />
+      <Stack.Screen
         name="ExpenseDetails"
         component={ExpenseDetails}
         options={headerOptions}
@@ -526,6 +533,11 @@ function ScreenStack(props) {
       <Stack.Screen
         name="DeliverList"
         component={DeliverList}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="FuelList"
+        component={FuelList}
         options={headerOptions}
       />
       <Stack.Screen

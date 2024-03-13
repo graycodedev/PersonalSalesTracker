@@ -6,7 +6,8 @@ import {
     ScrollView,
     TouchableOpacity,
     ActivityIndicator, 
-    Animated
+    Animated, 
+    Modal
 } from "react-native";
 import PageStyle from "../../style/pageStyle";
 import { useNavigation } from "@react-navigation/native";
@@ -78,7 +79,7 @@ const OdometerList = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container]}>
             <ScrollView
                 nestedScrollEnabled={true}
                 showsVerticalScrollIndicator={false}
@@ -126,19 +127,77 @@ const OdometerList = () => {
             >
                 <BankingIcons.plus fill="white" />
             </TouchableOpacity>
-            {isClicked && <TouchableOpacity
-                style={styles.modal}
-                onPress={() => {
-                    navigation.navigate('StartTrip');
-                }}
+            {isClicked &&
+            <Modal
+            transparent={true}
+            animationType="slide"
+            style={{ backgroundColor: "white" }}
+          >
+            <TouchableOpacity
+              style={[
+                styles.modalContainer,
+                {
+                  paddingHorizontal: 0,
+                  position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+                }
+                
+              ]}
+              onPress={()=>setIsClicked(false)}
             >
-                <Animated.View style={[styles.overlay, { transform: [{ translateY }] }]}>
-                <View style={styles.background} >
-                <BankingIcons.BellIcon fill={Colors.primary} />
-                <BankingIcons.BankIcon fill={Colors.primary} />
+              <Animated.View style={[styles.overlay, { flex: 1, transform: [{ translateY }] }]}>
+              <View
+                style={styles.modal}
+               
+            >
+              
+                <View style={styles.background}>
+                <TouchableOpacity style={{alignItems:"center", flexDirection:"row"}} onPress={() => {
+                        setIsClicked(false);
+                        navigation.navigate('FuelList');
+                    }}>
+                        <View style={{ padding: 2, borderRadius: 3}}>
+                            <Text style={{fontFamily:"SemiBold"}}>Fuel List{"  "}</Text>
+                        </View>
+                        <View style={{width: 40, height: 40, borderRadius: 20, backgroundColor:Colors.primary, alignItems:"center", justifyContent:"center", marginLeft: 4}}>
+                            <BankingIcons.Gasoline fill={"white"} height={25} width={25}/>
+                            
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{alignItems:"center", flexDirection:"row", marginTop: 4}} onPress={() => {
+                        setIsClicked(false);
+                        navigation.navigate('AddFuel');
+                    }}>
+                        <View style={{ padding: 2, borderRadius: 3}}>
+                            <Text style={{fontFamily:"SemiBold"}}>Add Fuel{" "}</Text>
+                        </View>
+                        <View style={{width: 40, height: 40, borderRadius: 20, backgroundColor:Colors.primary, alignItems:"center", justifyContent:"center", marginLeft: 4}}>
+                            <BankingIcons.Gasoline fill={"white"} height={25} width={25}/>
+                            
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{alignItems:"center",  flexDirection:"row", marginTop: 4}}  onPress={() => {
+                        setIsClicked(false);
+                        navigation.navigate('StartTrip');
+                    }}>
+                         <View style={{ padding: 2, borderRadius: 3}}>
+                            <Text style={{fontFamily:"SemiBold"}}>Start Trip</Text>
+                        </View>
+                    <View style={{width: 40, height: 40, borderRadius: 20, backgroundColor:Colors.primary, alignItems:"center", justifyContent:"center", marginLeft: 4}}>
+                        <BankingIcons.odometer fill={"white"} height={25} width={25} />
+                    </View>
+                    </TouchableOpacity>
+                   
                 </View>
-      </Animated.View>
-            </TouchableOpacity>}
+            </View>
+            </Animated.View>
+            </TouchableOpacity>
+          </Modal>
+             }
         </View>
     );
 };
@@ -189,10 +248,9 @@ const styles = StyleSheet.create({
         alignItems: "center"
     }, 
     modal:{
-        backgroundColor: "red",
         position: 'absolute',
-        bottom: 100,
-        right: 100,
+        bottom: 0,
+        right: 0,
         zIndex: 1,
         justifyContent: "center",
         alignItems: "center"
@@ -210,9 +268,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 100,
         left: 0,
-        right: 100,
+        right: 40,
         alignItems: 'center',
-        backgroundColor: "red"
+        backgroundColor: "blue"
       },
       smallIcon: {
         width: 20,
@@ -220,9 +278,18 @@ const styles = StyleSheet.create({
         opacity: 0.5,
       },
       background: {
-        backgroundColor: "red", 
-        width: "100%"
+        // backgroundColor: "blue", 
+        // width: "100%"
       },
+      modalContainer: {
+        flex: 1,
+      },
+       modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
 });
 
 export default OdometerList;

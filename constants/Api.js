@@ -340,6 +340,14 @@ const VisitPurpose= {
   Details: BaseUrl + "api/v1/st_visitpurpose/details"
 }
 
+const Vehicles={
+  List:BaseUrl +  "api/v1/st_vehicles/list"
+}
+const Fuel={
+  Save: BaseUrl +"api/v1/st_vehiclefuel/save", 
+  List: BaseUrl + "api/v1/st_vehiclefuel/list/byUser"
+}
+
 
 const ApplicationSettingsByKey = BaseUrl + "api/v1/applicationsettings/valuebykey";
 const ContactUs = BaseUrl + "api/v1/contactus/save";
@@ -431,7 +439,7 @@ export default {
   Returns,
   ReturnReasons,
   ApplicationSettingsByKey,
-  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException, VisitPurpose
+  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException, VisitPurpose, Vehicles, Fuel
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

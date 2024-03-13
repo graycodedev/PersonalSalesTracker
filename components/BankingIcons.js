@@ -108,6 +108,7 @@ import fingerPrint from "../assets/bankingsvg/fingerprint1.svg";
 import delivery from "../assets/bankingsvg/delivery.svg"; 
 import Camera from "../assets/bankingsvg/camera1.svg"; 
 import Upload from "../assets/bankingsvg/upload.svg"; 
+import Gasoline from "../assets/bankingsvg/gasoline.svg"; 
 
 
 
@@ -215,5 +216,6 @@ addVisit,
 addParties, 
 fingerPrint, 
 delivery, norecords, Camera, 
-Upload
+Upload, 
+Gasoline
 };
