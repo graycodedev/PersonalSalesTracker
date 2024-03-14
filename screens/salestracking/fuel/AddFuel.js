@@ -90,10 +90,10 @@ const AddFuel = (props) => {
 
         let strData = qs.stringify({
             Id: 0,
-            VehicleId: selectedVehicle.Id, 
+            VehicleId: selectedVehicle.VehicleId, 
             FuelUnit: fuelUnit,
             Remarks: note,
-            FuelAmount: amount,
+            FuelAmount: amount
         });
 
 
@@ -132,7 +132,7 @@ const AddFuel = (props) => {
                 <View style={{ marginBottom: 15, zIndex: 99 }}>
                     <TouchableOpacity onPress={() => setshowVehiclesList(true)} style={{ paddingLeft: 10, paddingVertical: 14, backgroundColor: "white", borderRadius: 5 }}>
 
-                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedVehicle ? "Select Vehicle" : selectedVehicle.Title +" - "+  selectedVehicle.PlateNo}</Text>
+                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedVehicle ? "Select Vehicle" : selectedVehicle.VehicleName +" - "+  selectedVehicle.PlateNo}</Text>
 
                     </TouchableOpacity>
 
@@ -147,7 +147,7 @@ const AddFuel = (props) => {
                             onClose={() => onClose()}
                             renderItem={(item) => (
                                 <View style={styles.item}>
-                                    <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>{item.Title}</Text>
+                                    <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>{item.VehicleName}</Text>
                                     <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>{item.PlateNo}</Text>
                                     <Text style={{ fontFamily: "Regular", fontSize: 14 }}>{item.FuelType =="p"?"Petrol":item.FuelType =="d"?"Diesel":item.FuelType =="e"?"Electric": item.FuelType}</Text>
                                 </View>

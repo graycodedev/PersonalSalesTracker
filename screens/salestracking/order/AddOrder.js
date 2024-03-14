@@ -301,8 +301,6 @@ setIsLoading(false);
                   </View>
                 </TouchableOpacity>
                 <Warning text={partyError} />
-
-
                     {showPartiesList && (
                         <AutoCompleteList
                             autocompleteurl={Api.Parties.List}
@@ -317,7 +315,7 @@ setIsLoading(false);
                                     <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>{item.ContactPersonName}</Text>
                                     <Text style={{ fontFamily: "Regular", fontSize: 14 }}>{item.Email}</Text>
                                 </View>
-                            )}
+                            )}          
                         />
                     )}
                 </View>

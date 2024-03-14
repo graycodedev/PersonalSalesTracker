@@ -45,11 +45,11 @@ export const AccountCard = ({ data, navigation,  balanceError }) => {
           <View style={styles.accountInfo}>
             <View style={styles.left}>
               <View style={styles.accountType}>
-              {!reports?.Visit ? <Text style={styles.accountInfoText}>Visits: XXX</Text>: <Text style={styles.accountInfoText}>Visits: {reports?.Visit}</Text>}
+              {!reports ? <Text style={styles.accountInfoText}>Visits: XXX</Text>: <Text style={styles.accountInfoText}>Visits: {reports?.Visit}</Text>}
               </View>
               <View style={styles.accountNumber}>
             
-              {!reports?.NewOrder ? <Text style={styles.accountInfoText}>Order: XXX</Text>: <Text style={styles.accountInfoText}>Order: {reports?.NewOrder}</Text>}
+              {!reports ? <Text style={styles.accountInfoText}>Order: XXX</Text>: <Text style={styles.accountInfoText}>Order: {reports?.NewOrder}</Text>}
                 <Text style={styles.accountInfoText}>{data.AccNum}</Text>
               </View>
             </View>
@@ -57,7 +57,7 @@ export const AccountCard = ({ data, navigation,  balanceError }) => {
             <View>
               <View style={{ flexDirection: "row", justifyContent:"space-between", alignItems:"center" }}>
               
-                {!reports?.OrderAmount || !visible ? <Text style={[styles.accountInfoText]}>Collection: Rs. XXXXXX</Text>: <Text style={styles.accountInfoText}>Collection: Rs. {reports?.OrderAmount}</Text>}
+                {!reports || !visible ? <Text style={[styles.accountInfoText]}>Collection: Rs. XXXXXX</Text>: <Text style={styles.accountInfoText}>Collection: Rs. {reports?.OrderAmount}</Text>}
                 <View style={{marginLeft: 8}}>
                   {visible ? (
                     <TouchableOpacity onPress={() => setVisible(!visible)}>

@@ -87,9 +87,9 @@ const ExpenseList = (props) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {expenses.map((expense) => (
+                    {expenses.map((expense,index) => (
                         <TouchableOpacity
-                            key={expense.id}
+                            key={index}
                             style={styles.expenseItem}
                             onPress={() => props.navigation.navigate("ExpenseDetails", { expense })}
                         >

@@ -341,7 +341,7 @@ const VisitPurpose= {
 }
 
 const Vehicles={
-  List:BaseUrl +  "api/v1/st_vehicles/list"
+  List:BaseUrl +  "api/v1/st_vehicleuser/list/byUser"
 }
 const Fuel={
   Save: BaseUrl +"api/v1/st_vehiclefuel/save", 

@@ -104,12 +104,15 @@ const OdometerList = () => {
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                         <Text style={styles.tripInfo}>End Odometer: {odometer.EndOdometer || ''}</Text>
                                         {odometer.EndOdometer == undefined && (
-                                            <TouchableOpacity
-                                                style={styles.endTripButton}
-                                                onPress={() => navigation.navigate('EndTrip')}
-                                            >
-                                                <Text style={styles.endTripButtonText}>End Trip</Text>
-                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{flexDirection:'row', alignItems:'center', borderColor: Colors.primary, borderWidth: 1, justifyContent:"center", borderRadius: 4, padding: 4, paddingVertical: 2}}    onPress={() => navigation.navigate('EndTrip')}>
+                                                    <Text style={[ {color: "#040273", fontFamily:"SemiBold", fontSize: 16}]}>end trip</Text>
+                                                </TouchableOpacity>
+                                            // <TouchableOpacity
+                                            //     style={styles.endTripButton}
+                                            //     onPress={() => navigation.navigate('EndTrip')}
+                                            // >
+                                            //     <Text style={styles.endTripButtonText}>End Trip</Text>
+                                            // </TouchableOpacity>
                                         )}
                                     </View>
                                 </View>
@@ -139,11 +142,11 @@ const OdometerList = () => {
                 {
                   paddingHorizontal: 0,
                   position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(255, 255, 255, 0.7)",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: "rgba(255, 255, 255, 0.7)",
                 }
                 
               ]}
@@ -163,8 +166,8 @@ const OdometerList = () => {
                         <View style={{ padding: 2, borderRadius: 3}}>
                             <Text style={{fontFamily:"SemiBold"}}>Fuel List{"  "}</Text>
                         </View>
-                        <View style={{width: 40, height: 40, borderRadius: 20, backgroundColor:Colors.primary, alignItems:"center", justifyContent:"center", marginLeft: 4}}>
-                            <BankingIcons.Gasoline fill={"white"} height={25} width={25}/>
+                        <View style={{width: 30, height: 30, borderRadius: 20, backgroundColor:Colors.primary, alignItems:"center", justifyContent:"center", marginLeft: 4}}>
+                            <BankingIcons.Menu fill={"white"} height={17} width={17}/>
                             
                         </View>
                     </TouchableOpacity>
@@ -175,8 +178,8 @@ const OdometerList = () => {
                         <View style={{ padding: 2, borderRadius: 3}}>
                             <Text style={{fontFamily:"SemiBold"}}>Add Fuel{" "}</Text>
                         </View>
-                        <View style={{width: 40, height: 40, borderRadius: 20, backgroundColor:Colors.primary, alignItems:"center", justifyContent:"center", marginLeft: 4}}>
-                            <BankingIcons.Gasoline fill={"white"} height={25} width={25}/>
+                        <View style={{width: 30, height: 30, borderRadius: 20, backgroundColor:Colors.primary, alignItems:"center", justifyContent:"center", marginLeft: 4}}>
+                            <BankingIcons.Gasoline fill={"white"} height={20} width={20}/>
                             
                         </View>
                     </TouchableOpacity>
@@ -187,8 +190,8 @@ const OdometerList = () => {
                          <View style={{ padding: 2, borderRadius: 3}}>
                             <Text style={{fontFamily:"SemiBold"}}>Start Trip</Text>
                         </View>
-                    <View style={{width: 40, height: 40, borderRadius: 20, backgroundColor:Colors.primary, alignItems:"center", justifyContent:"center", marginLeft: 4}}>
-                        <BankingIcons.odometer fill={"white"} height={25} width={25} />
+                    <View style={{width: 30, height: 30, borderRadius: 20, backgroundColor:Colors.primary, alignItems:"center", justifyContent:"center", marginLeft: 4}}>
+                        <BankingIcons.odometer fill={"white"} height={20} width={20}/>
                     </View>
                     </TouchableOpacity>
                    

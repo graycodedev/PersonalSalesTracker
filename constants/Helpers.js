@@ -452,13 +452,15 @@ const helpers = {
   GetLocation: async function GetLocation(){
     try{
     let location=  await Location.getCurrentPositionAsync();
+    console.log("locate",location);
     if(location!=null){
       return {
-        lat: location.coords.latitude, 
+        lat: location.coords.latitude,
         lng: location.coords.longitude
       }
     }}
     catch(error){
+      ToastMessage.Long("Unable to give location"+error);
       this.PostException(error);
     }
     // this.PostException("1")

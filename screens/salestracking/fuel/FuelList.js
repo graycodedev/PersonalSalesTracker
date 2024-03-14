@@ -17,6 +17,7 @@ import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
 import AppStyles from "../../../assets/theme/AppStyles";
 import { Contact } from "../../../constants/Contact";
+import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -50,6 +51,7 @@ const FuelList = (props ) => {
 
             if (response != undefined) {
                 if (response.data.Code == 200) {
+                    console.log("Fuel", response.data.Data[0])
                     setFuels(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Parties");
@@ -91,14 +93,20 @@ const FuelList = (props ) => {
                             key={index}
                             style={styles.partyItem}
                         >
-                            <Text style={[AppStyles.Text.BoldTitle, {marginBottom: 4}]}>Vehicle Name</Text>
+                            <Text style={[AppStyles.Text.BoldTitle, {marginBottom: 4}]}>{fuelVehicle.VehicleName}</Text>
+                            <Text style={styles.partyInfo}>{`${fuelVehicle.PlateNo}`}</Text>
+                            <View style={{flexDirection:"row"}}>
+                      <DateDisplay date={fuelVehicle?.FuelDate} />
+                      <View style={{marginLeft: 6}}>
+                          <TimeDisplay time={fuelVehicle?.FuelDate} />
+                      </View>
+                      </View>
                            
-                            <Text style={styles.partyInfo}>{`${fuelVehicle.FuelUnit}`}</Text>
                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                               
                             </View>
-                            <View style={{flexDirection:"row", justifyContent:"flex-end"}}>
-                            <Text style={styles.partyInfo}>{`Code: ${fuelVehicle.FuelAmount}`}</Text></View>
+                            <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+                            <Text style={styles.partyInfo}>{`${fuelVehicle.FuelUnit} liters`}</Text>
+                            <Text style={styles.partyInfo}>{`Rs: ${fuelVehicle.FuelAmount}`}</Text></View>
                              
                         </TouchableOpacity>
                     ))}
