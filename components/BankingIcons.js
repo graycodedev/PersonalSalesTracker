@@ -110,6 +110,12 @@ import Camera from "../assets/bankingsvg/camera1.svg";
 import Upload from "../assets/bankingsvg/upload.svg"; 
 import Gasoline from "../assets/bankingsvg/gasoline.svg"; 
 import Menu from "../assets/bankingsvg/menu.svg"; 
+import BeatPlan from "../assets/bankingsvg/beatplan.svg"; 
+import Daylog from "../assets/bankingsvg/daylog.svg"; 
+import Daylog1 from "../assets/bankingsvg/daylog1.svg"; 
+import Task from "../assets/bankingsvg/task.svg"; 
+import BeatPlan1 from "../assets/bankingsvg/beatplan1.svg"; 
+import BeatPlan2 from "../assets/bankingsvg/beatplan2.svg"; 
 
 
 
@@ -218,5 +224,5 @@ addParties,
 fingerPrint, 
 delivery, norecords, Camera, 
 Upload, 
-Gasoline, Menu
+Gasoline, Menu, BeatPlan, Daylog, Task, Daylog1, BeatPlan1, BeatPlan2
 };

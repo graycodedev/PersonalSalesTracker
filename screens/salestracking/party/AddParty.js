@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Platform,
+  Button
 } from "react-native";
 import { ButtonPrimary } from "../../../components/Button";
 import { RegularInputText } from "../../../components/Input";
@@ -25,7 +26,12 @@ const AddParty = (props) => {
     props.navigation.setOptions({
       title: "Add Party",
     });
+   
   }, []);
+
+  const getMap=()=>{
+    openMap({ latitude: 37.865101, longitude: -119.538330 });
+  }
 
   const update = props.route.params?.update;
   const party = props.route.params?.party;

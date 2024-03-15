@@ -87,6 +87,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Profile from "../screens/profile";
 import AddFuel from "../screens/salestracking/fuel/AddFuel"; 
 import FuelList from "../screens/salestracking/fuel/FuelList";
+import Tasks from "../screens/salestracking/task/Tasks";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -543,6 +544,11 @@ function ScreenStack(props) {
       <Stack.Screen
         name="DeliverDetails"
         component={DeliverDetails}
+        options={headerOptions}
+      /> 
+      <Stack.Screen
+        name="Tasks"
+        component={Tasks}
         options={headerOptions}
       /> 
     </Stack.Navigator>
