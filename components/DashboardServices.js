@@ -267,6 +267,26 @@ export const DashBoardServices = ({ navigation }) => {
       navigation: "ExpenseList",
     },
     {
+      name: "Tasks",
+      icon: BankingIcons.Task,
+      navigation: "Tasks",
+    },
+    {
+      name: "Day Log",
+      icon: BankingIcons.Daylog,
+      navigation: "Visits",
+    },
+    {
+      name: "Request Form",
+      icon: BankingIcons.BeatPlan1,
+      navigation: "Requests",
+    },
+    {
+      name: "Beat Plan",
+      icon: BankingIcons.BeatPlan2,
+      navigation: "Visits",
+    },
+    {
       name: "Deliver",
       icon: BankingIcons.delivery,
       navigation: "DeliverList",
@@ -285,35 +305,7 @@ export const DashBoardServices = ({ navigation }) => {
       name: "Visit Report",
       icon: BankingIcons.visitreport,
       navigation: "Visits",
-    },
-    {
-      name: "Tasks",
-      icon: BankingIcons.Task,
-      navigation: "Tasks",
-    },
-    {
-      name: "Day Log",
-      icon: BankingIcons.Daylog1,
-      navigation: "Visits",
-    },
-    {
-      name: "Beat Plan",
-      icon: BankingIcons.BeatPlan1,
-      navigation: "Visits",
-    },
-    {
-      name: "Beat Plan",
-      icon: BankingIcons.BeatPlan2,
-      navigation: "Visits",
-    },
-
-
-
-    // {
-    //   name: "Interest rate",
-    //   icon: BankingIcons.InterestIcon,
-    //   navigation: "ButwalPowerCompany",
-    // },
+    }
   ];
   var arrServicesMore = [
     {

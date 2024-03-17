@@ -24,64 +24,42 @@ import PageStyle from "../../style/pageStyle";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
-import qs from "qs"; 
+import qs from "qs"
 
 
 
-
-const AddTask = (props) => {
+const AddRequest = (props) => {
     const update = props.route.params?.update;
-    const task = props.route.params?.task;
-    const [title, setTitle] = useState(task?.Title);
-    const [description, setDescription] = useState(task?.Description);
+    const requests = props.route.params?.request;
+    const [title, setTitle] = useState(requests?.ItemName);
+    const [remarks, setRemarks] = useState(requests?.RequestRemarks);
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(task?.EndDate ? new Date(task.EndDate) : new Date());
-      const [showDatePicker, setShowDatePicker] = useState(false);
 
-
-    const goToTasks = () => {
+    const goToRequestsist = () => {
         props.navigation.goBack();
     }
 
-     const onChangeDate = (event, selectDate) => {
-    const currentDate = selectDate || selectedDate;
-    setShowDatePicker(false);
-    setSelectedDate(currentDate);
-  };
 
-  const formattedDate = selectedDate.toDateString("en-NP", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-
-
-    const saveTask = async () => {
+    const saveRequest = async () => {
         let strData = qs.stringify({
-            Id: update ? task.Id : 0,
-            Title: title,
-            Description: description,
-            IsActive: true, 
-            Priority: "H", 
-            // AssignedUserId: 45723, 
-            EndDate: new Date(selectedDate),
-            Tags: "T1, T3", 
-            StartDate: new Date()
+            Id: update ? requests.Id : 0,
+            ItemName: title,
+            RequestRemarks: remarks,
+            IsActive: true,
+            CompanyId: 1, 
+            RequestedBy: requests?.RequestedBy,
         })
-        console.log(strData)
         setIsLoading(true);
         var response = await (await request())
-            .post(Api.Task.Save, strData)
+            .post(Api.Request.Save, strData)
             .catch(function (error) {
                 setIsLoading(false);
                 ToastMessage.Short("Error Occurred Contact Support");
             });
-
-            console.log(response.data)
         if (response != undefined) {
             if (response.data.Code == 200) {
                 setIsLoading(false);
-                goToTasks();
+                goToRequestsist();
                 return response.data.Data;
 
             } else {
@@ -94,7 +72,7 @@ const AddTask = (props) => {
 
     }
 
-    const isFormFilled = title && description;
+    const isFormFilled = title && remarks;
 
     return (
         <ScrollView
@@ -108,7 +86,7 @@ const AddTask = (props) => {
                 <View>
                     <RegularInputText
                         key="title"
-                        placeholder="Title"
+                        placeholder="Item Name"
                         onChangeText={(text) => {
                             setTitle(text)
                         }}
@@ -119,46 +97,23 @@ const AddTask = (props) => {
 
                 <View>
                     <RegularInputText
-                        key="description"
-                        placeholder="Description"
+                        key="remarks"
+                        placeholder="Remarks"
                         onChangeText={(text) => {
-                            setDescription(text)
+                            setRemarks(text)
                         }}
-                        value={description}
+                        value={remarks}
                         multiline={true}
                         numberOfLines={15}
                         style={{ alignItems: 'flex-start', borderWidth: 0, height: 150 }}
                     />
                 </View>
-                <View>
-          <Text style={{ fontFamily: "Medium", marginBottom: 2 }}>
-            Due Date
-          </Text>
-          <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-            <RegularInputText
-              key="date"
-              placeholder="Visited Date"
-              value={formattedDate}
-              editable={false}
-            />
-          </TouchableOpacity>
-
-          {showDatePicker && (
-            <DateTimePicker
-              value={selectedDate}
-              mode="date"
-              is24Hour={true}
-              display="default"
-              onChange={onChangeDate}
-            />
-          )}
-        </View>
 
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
                         onPress={() => {
                             if (isFormFilled) {
-                                saveTask();
+                                saveRequest();
                             }
                         }}
                         disabled={!isFormFilled}
@@ -188,5 +143,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddTask;
+export default AddRequest;
 

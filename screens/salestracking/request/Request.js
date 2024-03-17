@@ -11,14 +11,13 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
-import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 
 
 
-const Task = (props) => {
-  const  task  = props.route.params.item;
+const Request = (props) => {
+  const req = props.route.params.request;
 
-  const [taskDetails, setTaskDetails] = useState();
+  const [requestDetails, setRequestDetails] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [showConfirmDelete, setShowConfirmDelete]= useState(false);
 
@@ -47,49 +46,50 @@ const Task = (props) => {
 
   const getDetail = async () => {
     var response = await (await request())
-      .get(Api.Task.Detail + "?id=" + task.Id)
+      .get(Api.Request.Details + "?id=" + req.Id)
       .catch(function (error) {
         
         ToastMessage.Short("Error! Contact Support");
       });
+      console.log("Requestss", response.data)
     if (response != undefined) {
       if (response.data.Code == 200) {
-        
-        setTaskDetails(response.data.Data);
+        console.log("Request", response.data.Data)
+        setRequestDetails(response.data.Data);
       } else {
-        ToastMessage.Short("Error Loading Note Detail");
+        ToastMessage.Short("Error Loading Request Detail");
       }
     } else {
-      ToastMessage.Short("Error Loading Note Detail");
+      ToastMessage.Short("Error Loading Request Detail");
     }
   };
 
 
-  const deleteTask= async ()=>{
-    let data= qs.stringify({
-      id: task.Id
-    })
-    var response = await (await request())
-    .post(Api.Task.Delete, data)
-    .catch(function (error) {
+//   const deleteRequest= async ()=>{
+//     let data= qs.stringify({
+//       id: req.Id
+//     })
+//     var response = await (await request())
+//     .post(Api.Request.Delete, data)
+//     .catch(function (error) {
       
-      ToastMessage.Short("Error! Contact Support");
-    });
-  if (response != undefined) {
-    if (response.data.Code == 200) {
-      setShowConfirmDelete(false)
-      ToastMessage.Short(response.data.Message);
-      props.navigation.goBack();
-    } else {
-      ToastMessage.Short("Error deleting the note");
-    }
-  } else {
-    ToastMessage.Short("Error deleting the note");
-  }
-  }
+//       ToastMessage.Short("Error! Contact Support");
+//     });
+//   if (response != undefined) {
+//     if (response.data.Code == 200) {
+//       setShowConfirmDelete(false)
+//       ToastMessage.Short(response.data.Message);
+//       props.navigation.goBack();
+//     } else {
+//       ToastMessage.Short("Error deleting the request");
+//     }
+//   } else {
+//     ToastMessage.Short("Error deleting the request");
+//   }
+//   }
 
-  const updateTask=()=>{
-    props.navigation.navigate('AddTask', {update:true, task:taskDetails});
+  const updateRequest=()=>{
+    props.navigation.navigate('AddRequest', {update:true, request:requestDetails});
   }
 
 
@@ -103,7 +103,7 @@ const Task = (props) => {
       style={{ width: "100%", backgroundColor: "#eee" }}
       contentContainerStyle={{ flexGrow: 1 }}>
     
-      {!taskDetails ?
+      {!requestDetails ?
         <Spinner
           color={Colors.primary}
           visible={isLoading}
@@ -111,35 +111,27 @@ const Task = (props) => {
           textStyle={{ color: "#fff", fontFamily: "Light", fontSize: 14 }}
         /> :
         <View style={styles.container}>
-            {taskDetails.IsCompleted?<Text style={{fontSize: 14, color: "green", alignSelf:"flex-end"}}>Completed</Text>
-            :
-            <Text style={{fontSize: 14, color: "red", alignSelf:"flex-end"}}>Due Task</Text>}
-          <Text style={styles.noteHead}>{taskDetails.Title}</Text>
+           <View style={{alignSelf:"flex-end"}}>
+            {requestDetails?.IsCancelled?<Text style={{color:"orange"}}>Cancelled</Text>:requestDetails?.ApprovedOrRejected == true?
+            <Text style={{color:"green"}}>Approved</Text>:requestDetails?.ApprovedOrRejected == false?<Text style={{color:"red"}}>Rejected</Text>:<Text style={{color:"orange"}}>Requested</Text> }
+           </View>
+          <Text style={styles.noteHead}>{requestDetails.ItemName}</Text>
           <View style={styles.noteView}>
-            <Text style={styles.noteText}>{taskDetails.Description}</Text>
+            <Text style={styles.noteText}>{requestDetails.RequestRemarks}</Text>
           </View>
-          <View style={{flexDirection:
-  "row", marginTop: 4}}>
-
-      <BankingIcons.calendar fill={Colors.primary} height={20} width={20} style={{marginRight: 6}}/>
-      <View style={{flexDirection:
-  "row", justifyContent:"space-between", flex:0.7}}>
-          <DateDisplay date={taskDetails?.EndDate} />
-      </View>
-  </View>
         </View>}
     </ScrollView>
         <View style={styles.buttons}>
                 <TouchableOpacity
                     style={[styles.circle,{marginBottom: 8, backgroundColor:Colors.primary}]}
                     onPress={() => {
-                      updateTask()
+                      updateRequest()
                       
                     }}
                 >
                     <BankingIcons.Edit fill={"white"} height={25} width={25}/>
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={[styles.circle, {backgroundColor:"#FF5F7F"}]}
                     onPress={() => {
                       setShowConfirmDelete(true)
@@ -148,20 +140,20 @@ const Task = (props) => {
                 >
                   
                     <BankingIcons.DeleteIcon fill="white" />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                
             </View>
-            {showConfirmDelete && (
+            {/* {showConfirmDelete && (
             <WarningModal
-              text1={"Delete Task?"}
-              text2={"Are you sure you want to delete the task?"}
-              onConfirm={deleteTask}
+              text1={"Delete Request?"}
+              text2={"Are you sure you want to delete the request?"}
+              onConfirm={deleteRequest}
               onCancel={() => {
                 setShowConfirmDelete(false)
               }}
               warning
             />
-          )}
+          )} */}
     </>
   );
 };
@@ -179,7 +171,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   noteView: {
-    marginTop: 8,
+    marginTop: 15,
   },
   noteText: {
     fontSize: 16,
@@ -202,4 +194,4 @@ buttons:{
 }
 });
 
-export default Task;
+export default Request;

@@ -349,10 +349,19 @@ const Fuel={
 }
 
 const Task={
-  Save: "", 
+  Save:BaseUrl + "api/v1/st_tasks/save", 
   List: BaseUrl + "api/v1/st_tasks/list", 
   Complete: BaseUrl + "api/v1/st_tasks/complete", 
-  Detail: BaseUrl +"api/v1/st_tasks/details"
+  Uncomplete: BaseUrl + "api/v1/st_tasks/incomplete", 
+  Detail: BaseUrl +"api/v1/st_tasks/details", 
+  Delete: BaseUrl +"api/v1/st_tasks/delete"
+}
+
+const Request={
+  Save:BaseUrl + "api/v1/st_requisitionform/save", 
+  List: BaseUrl + "api/v1/st_requisitionform/list",  
+  Details: BaseUrl +"api/v1/st_requisitionform/details", 
+  // Delete: BaseUrl +"api/v1/st_tasks/delete"
 }
 
 
@@ -446,7 +455,7 @@ export default {
   Returns,
   ReturnReasons,
   ApplicationSettingsByKey,
-  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException, VisitPurpose, Vehicles, Fuel, Task
+  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException, VisitPurpose, Vehicles, Fuel, Task, Request
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

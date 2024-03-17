@@ -21,6 +21,8 @@ import IMAGES from "../../../constants/newImages";
 import WarningModal from "../../../components/WarningModal";
 import qs from "qs"; 
 import CustomModal from "../../../components/CustomModal";
+import ResizableModal from "../../../components/ResizeableModal";
+import Circle from "../../../components/shapes/Circle";
 
 
 const wait = (timeout) => {
@@ -51,6 +53,7 @@ const Tasks = ({ navigation }) => {
   const [modalVisible, setModalVisible]= useState();
   const [taskDetail, setTaskDetail]= useState();
 
+
   const Task = ({item}) => {
     const [isChecked, setIsChecked] = useState(item.IsActive);
   
@@ -60,17 +63,21 @@ const Tasks = ({ navigation }) => {
   
     return (
         <TouchableOpacity style={styles.noteContainer} onPress={async()=>{
+          
             setSelectedTask(item);
-            await  getTaskDetail(item.Id)
 
-            setModalVisible(true);
+            navigation.navigate("Task", { item });
+            // await  getTaskDetail(item.Id)
+
+            // setModalVisible(true);
         }}>
        
     <View style={{flexDirection:"row"}}>
     <TouchableOpacity
       value={item.IsCompleted}
       onPress={() => {
-        console.log("Item",item)
+        console.log("Item",item);
+        setSelectedTask(item);
         
         setShowWarningModal(true);
         // item.IsCompleted
@@ -138,6 +145,7 @@ const Tasks = ({ navigation }) => {
 
       if (response != undefined) {
         if (response.data.Code == 200) {
+          console.log(response.data.Data[0])
           setTasks(response.data.Data);
         } else {
           ToastMessage.Short(response.data.Message);
@@ -151,8 +159,9 @@ const Tasks = ({ navigation }) => {
   };
   const completeTask = async () => {
     try {
+      let url=!selectedTask?.IsCompleted? Api.Task.Complete:Api.Task.Uncomplete;
       var response = await (await request())
-        .post(Api.Task.Complete, qs.stringify({id: selectedTask.Id}))
+        .post(url, qs.stringify({id: selectedTask.Id}))
         .catch(function (error) {
           setIsLoading(false)
           ToastMessage.Short("Error! Contact Support");
@@ -226,10 +235,10 @@ const Tasks = ({ navigation }) => {
                 <Task item={item}/>
               )})}
             </View>
-            {showWarningModal && (
+            {showWarningModal && selectedTask &&  (
             <WarningModal
-              text1={"Complete the task?"}
-              text2={!selectedTask?.IsCompleted?"Are you sure you want to mark this task as Completed?":"Are you sure you want to mark this task as UnCompleted?"}
+              text1={!selectedTask?.IsCompleted?"Complete the task?":"Uncomplete the task?"}
+              text2={!selectedTask?.IsCompleted?"Are you sure you want to mark this task as Completed?":"Are you sure you want to mark this task as Uncompleted?"}
               onConfirm={completeTask}
               onCancel={() => {
                 setShowWarningModal(false)
@@ -237,7 +246,7 @@ const Tasks = ({ navigation }) => {
               warning
             />
           )}
-           {modalVisible &&
+           {/* {modalVisible &&
         <CustomModal
           visible={modalVisible}
           closeModal={() => setModalVisible(false)}
@@ -250,7 +259,14 @@ const Tasks = ({ navigation }) => {
                                             <Text>{taskDetail?.Title}</Text>
                                         </TouchableOpacity>
                                         </CustomModal>
-           }
+           } */}
+
+{modalVisible && <ResizableModal
+        isVisible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      >
+                                            <SubTask task={taskDetail}/>
+        </ResizableModal>}
           </ScrollView>
         ) : (
           <View style={styles.noDataContainer}>
@@ -274,6 +290,38 @@ const Tasks = ({ navigation }) => {
     </>
   );
 };
+
+const SubTask=({task})=>{
+ // task={"AssignedUserId": 45723, "Description": "Holiday Trip to Chhaimale Resort", "EndDate": "2024-03-15T00:00:00", "Id": 4, 
+ //"IsActive": true, "IsCompleted": true, "ParentId": 0, "Priority": "A", "StartDate": "2024-03-15T00:00:00", "Tags": "T1", "Title": "Holiday Trip Point"}
+
+ 
+ return(
+  <View style={{padding: 10}}>
+    <View style={{flexDirection:"row", alignItems:"center"}}>
+    <Circle backgroundColor={"white"} radius={10} containerStyle={{alignItems:"center", justifyContent:"center",borderColor: "gray", borderWidth: 1}} />
+    <Text style={[styles.noteHead, {marginLeft: 12}]}>{task?.Title}</Text>
+    </View>
+    <View style={{flexDirection:"row", alignItems:"center", marginTop: 8}}>
+   <BankingIcons.Menu fill={"gray"} height={20} width={20} />
+    <Text style={[styles.noteText,{marginLeft: 12}]}>{task?.Description}</Text>
+    </View>
+    <View style={{flexDirection:"row", alignItems:"center", marginTop: 8}}>
+    <BankingIcons.calendar fill={Colors.primary} height={20} width={20} style={{marginRight: 6}}/>
+    <Text style={{marginLeft: 12}}>{task?.Title}</Text>
+    </View>
+   
+
+  </View>
+ )
+
+}
+
+const SubTaskStyle=StyleSheet.create({
+  row:{
+    flexDirection:"row"
+  }
+})
 
 const styles = StyleSheet.create({
   container: {

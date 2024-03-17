@@ -88,6 +88,11 @@ import Profile from "../screens/profile";
 import AddFuel from "../screens/salestracking/fuel/AddFuel"; 
 import FuelList from "../screens/salestracking/fuel/FuelList";
 import Tasks from "../screens/salestracking/task/Tasks";
+import AddTask from "../screens/salestracking/task/AddTask";
+import Task from "../screens/salestracking/task/Task";
+import Requests from "../screens/salestracking/request/Requests";
+import AddRequest from "../screens/salestracking/request/AddRequest";
+import Request from "../screens/salestracking/request/Request";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -549,6 +554,31 @@ function ScreenStack(props) {
       <Stack.Screen
         name="Tasks"
         component={Tasks}
+        options={headerOptions}
+      /> 
+      <Stack.Screen
+        name="AddTask"
+        component={AddTask}
+        options={headerOptions}
+      /> 
+      <Stack.Screen
+        name="Task"
+        component={Task}
+        options={headerOptions}
+      /> 
+       <Stack.Screen
+        name="Requests"
+        component={Requests}
+        options={headerOptions}
+      /> 
+      <Stack.Screen
+        name="AddRequest"
+        component={AddRequest}
+        options={headerOptions}
+      /> 
+      <Stack.Screen
+        name="Request"
+        component={Request}
         options={headerOptions}
       /> 
     </Stack.Navigator>
