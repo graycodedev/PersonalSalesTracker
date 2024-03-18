@@ -908,7 +908,6 @@ export class ScanPayConfirmFonePay extends React.Component {
   MerchantPay = async () => {
     this.setState({ spinner: true });
     let companyId = await helpers.GetCompanyId();
-    console.log("CompanyId", companyId);
     var data = qs.stringify({
       CompanyId: companyId,
       SecretKey: api.SecretKey,

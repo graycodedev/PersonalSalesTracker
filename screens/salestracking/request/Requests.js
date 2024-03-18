@@ -16,6 +16,7 @@ import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
+import { DateDisplay } from "../../../components/DateDisplay";
 
 
 const wait = (timeout) => {
@@ -104,9 +105,17 @@ const Requests = ({ navigation }) => {
             <View style={styles.container}>
               {requests.map((request, index) => (
                 <TouchableOpacity key={index} style={styles.noteContainer} onPress={() => handleReadMore(request)}>
-                  <Text style={styles.noteHead}>{request.ItemName}</Text>
+                    <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+                    <Text style={styles.noteHead}>{request.ItemName}</Text>
+                      {request?.IsCancelled?<Text style={{color:"orange"}}>Cancelled</Text>:request?.ApprovedOrRejected == true?
+                                  <Text style={{color:"green"}}>Approved</Text>:request?.ApprovedOrRejected == false?<Text style={{color:"red"}}>Rejected</Text>:<Text style={{color:"orange"}}>Requested</Text> }
+                    </View>
+                
                   <View style={styles.noteView}>
                     <Text style={styles.noteText} numberOfLines={4}>{request.RequestRemarks}</Text>
+                  </View>
+                  <View style={styles.noteView}>
+                    <Text style={styles.noteText} numberOfLines={4}>Requested On: <DateDisplay date={request?.RequestedOn} /></Text>
                   </View>
                 </TouchableOpacity>
               ))}

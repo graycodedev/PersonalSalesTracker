@@ -243,6 +243,12 @@ this.subscription;
                 fill={Colors.primary}
                 style={{ marginRight: 20 }}
               ></BankingIcons.notificationIcon>
+              {/* <BankingIcons.Announcement
+                fill={Colors.primary}
+                style={{ marginRight: 20 }}
+                height={20}
+                width={20}
+              /> */}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {

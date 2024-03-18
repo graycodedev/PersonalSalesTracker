@@ -133,7 +133,6 @@ const DeliverDetails = ({ navigation, route }) => {
     }
 
     const deliverOrder = async (id) => {
-      console.log("dfd", Api.Deliver.Save + "?id=" + deliverId)
       var response = await (await request())
         .post(Api.Deliver.Save , qs.stringify({id: deliverId}))
         .catch(function (error) {

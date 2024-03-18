@@ -51,7 +51,7 @@ const FuelList = (props ) => {
 
             if (response != undefined) {
                 if (response.data.Code == 200) {
-                    console.log("Fuel", response.data.Data[0])
+                    // console.log("Fuel", response.data.Data[0])
                     setFuels(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Parties");

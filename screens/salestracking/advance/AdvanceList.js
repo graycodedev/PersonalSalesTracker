@@ -90,7 +90,7 @@ const AdvanceList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {advances.map((advance) => {
+                    {advances.length > 0 ? advances.map((advance) => {
                         return (
                             <TouchableOpacity
                                 key={advance.Id}
@@ -108,7 +108,13 @@ const AdvanceList = ({ navigation }) => {
                                 </View>
                             </TouchableOpacity>
                         );
-                    })}
+                    })
+                    :
+                    <View style={{ alignItems: "center", paddingTop: 20 }}>
+              <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+              <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No advances available !!</Text>
+            </View>
+                }
 
 
 

@@ -92,7 +92,6 @@ const DeliverList = ({ navigation }) => {
        
     }
     const deliverOrder = async (id) => {
-        console.log("dfd", Api.Deliver.Save + "?id=" + selectedOrderId)
         var response = await (await request())
           .post(Api.Deliver.Save , qs.stringify({id: selectedOrderId}))
           .catch(function (error) {

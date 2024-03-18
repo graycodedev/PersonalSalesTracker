@@ -120,7 +120,7 @@ const EndTrip = (props) => {
         navigation.goBack();
         return response.data.Data;
       } else {
-        console.log("Server response:", response.data);
+        // console.log("Server response:", response.data);
         ToastMessage.Short(response.data.Message || "An error occurred");
       }
     } else {

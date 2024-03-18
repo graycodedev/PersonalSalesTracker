@@ -92,7 +92,7 @@ const OdometerList = () => {
                     </View>
                 ) : (
                     <View>
-                        {odometers.map((odometer) => (
+                        {odometers.length > 0 ? odometers.map((odometer) => (
                             <TouchableOpacity key={odometer.Id} style={styles.tripItem}
                                 onPress={() =>
                                     navigation.navigate("OdometerDetails", { odometer })
@@ -117,7 +117,12 @@ const OdometerList = () => {
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                        ))}
+                        )): 
+                        <View style={{ alignItems: "center", paddingTop: 20 }}>
+                        <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                        <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No odometers available !!</Text>
+                      </View>
+                    }
                     </View>
                 )}
             </ScrollView>

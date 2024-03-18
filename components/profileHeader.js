@@ -77,7 +77,6 @@ const ProfileHeader = (props) => {
       AttendanceDate: attendanceDate,
       AttendanceTime: attendanceTime,
     };
-    console.log("ll", data)
 
     var response = await (await request()).post(route, qs.stringify(data));
     console.log(response.data)
@@ -92,7 +91,7 @@ const ProfileHeader = (props) => {
         setShowCheckInConfirmation(false);
         ToastMessage.Short(response.data.Message);
       } else {
-        ToastMessage.Short("Error Occurred, Contact Support!!!");
+        ToastMessage.Short(response.data.Message);
       }
     } else {
       ToastMessage.Short("Error Occurred, Contact Support !");

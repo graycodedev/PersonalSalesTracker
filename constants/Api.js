@@ -364,6 +364,15 @@ const Request={
   // Delete: BaseUrl +"api/v1/st_tasks/delete"
 }
 
+const BeatPlan={
+  Save:BaseUrl + "api/v1/st_tasks/save", 
+  List: BaseUrl + "api/v1/st_tasks/list", 
+  Complete: BaseUrl + "api/v1/st_tasks/complete", 
+  Uncomplete: BaseUrl + "api/v1/st_tasks/incomplete", 
+  Detail: BaseUrl +"api/v1/st_tasks/details", 
+  Delete: BaseUrl +"api/v1/st_tasks/delete"
+}
+
 
 const ApplicationSettingsByKey = BaseUrl + "api/v1/applicationsettings/valuebykey";
 const ContactUs = BaseUrl + "api/v1/contactus/save";
@@ -455,7 +464,7 @@ export default {
   Returns,
   ReturnReasons,
   ApplicationSettingsByKey,
-  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException, VisitPurpose, Vehicles, Fuel, Task, Request
+  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException, VisitPurpose, Vehicles, Fuel, Task, Request, BeatPlan
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

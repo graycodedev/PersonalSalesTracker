@@ -20,18 +20,22 @@ import * as Location from "expo-location";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as BankingIcons from "../../../components/BankingIcons";
 import MapView, { Marker } from "react-native-maps";
+import helpers from "../../../constants/Helpers";
 
 const AddParty = (props) => {
   useEffect(() => {
     props.navigation.setOptions({
       title: "Add Party",
     });
+    getLocation();
    
   }, []);
 
   const getMap=()=>{
     openMap({ latitude: 37.865101, longitude: -119.538330 });
   }
+
+ 
 
   const update = props.route.params?.update;
   const party = props.route.params?.party;
@@ -70,22 +74,19 @@ const AddParty = (props) => {
       return;
     }
 
-    let location = await Location.getCurrentPositionAsync({
-      accuracy:
-        Platform.OS == "android"
-          ? Location.Accuracy.Low
-          : Location.Accuracy.Lowest,
-    });
+    let location = await helpers.GetLocation();
 
-    setLatitude(location.coords.latitude);
-    setLongitude(location.coords.longitude);
-    setRegion({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    });
-    setShowMap(!showMap); // Map on/off
+    
+
+    setLatitude(location.lat);
+    setLongitude(location.lng);
+    // setRegion({
+    //   latitude: location.coords.latitude,
+    //   longitude: location.coords.longitude,
+    //   latitudeDelta: 0.0922,
+    //   longitudeDelta: 0.0421,
+    // });
+    // setShowMap(!showMap); // Map on/off
   };
 
   const handleRegionChange = (newRegion) => {
@@ -334,11 +335,11 @@ const AddParty = (props) => {
         )}
 
         <View style={{ margin: 30 }}>
-          <View style={{ marginBottom: 10 }}>
+          {/* <View style={{ marginBottom: 10 }}>
             <TouchableOpacity onPress={getLocation}>
               <ButtonPrimary title="Set Location" />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <View style={{ marginTop: 30 }}>
             <TouchableOpacity
               onPress={() => {

@@ -40,6 +40,10 @@ const AddRequest = (props) => {
     }
 
 
+    useEffect(()=>{
+        props.navigation.setOptions({title: update ? "Update Request" : "Save Request"})
+    })
+
     const saveRequest = async () => {
         let strData = qs.stringify({
             Id: update ? requests.Id : 0,

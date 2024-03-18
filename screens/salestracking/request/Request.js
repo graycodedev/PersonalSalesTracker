@@ -11,6 +11,7 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
+import { DateDisplay } from "../../../components/DateDisplay";
 
 
 
@@ -118,6 +119,9 @@ const Request = (props) => {
           <Text style={styles.noteHead}>{requestDetails.ItemName}</Text>
           <View style={styles.noteView}>
             <Text style={styles.noteText}>{requestDetails.RequestRemarks}</Text>
+          </View>
+          <View style={styles.noteView}>
+          <Text style={styles.noteText} numberOfLines={4}>Requested On: <DateDisplay date={requestDetails?.RequestedOn} /></Text>
           </View>
         </View>}
     </ScrollView>

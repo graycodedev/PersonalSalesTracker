@@ -14,6 +14,7 @@ import Api from "../../../constants/Api";
 import * as BankingIcons from "../../../components/BankingIcons";
 import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
+import AppStyles from "../../../assets/theme/AppStyles";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -90,7 +91,7 @@ const LeaveList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {leaves.map((leave) => {
+                    {leaves.length > 0 ? leaves.map((leave) => {
                         const fromDate = new Date(leave.FromDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                         const toDate = new Date(leave.ToDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -114,7 +115,13 @@ const LeaveList = ({ navigation }) => {
                                 </View>
                             </TouchableOpacity>
                         );
-                    })}
+                    })
+                :
+                <View style={{ alignItems: "center", paddingTop: 20 }}>
+                <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No leaves available !!</Text>
+              </View>
+                }
 
 
                 </ScrollView>

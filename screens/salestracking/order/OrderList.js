@@ -99,7 +99,7 @@ const OrderList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {orders.map((order, index) => (
+                    {orders.length >0 ? orders.map((order, index) => (
                         <TouchableOpacity
                             key={index}
                             style={styles.orderItem}
@@ -126,7 +126,12 @@ const OrderList = ({ navigation }) => {
                                 <Text style={[styles.orderInfo, {color: "green", alignSelf:"flex-end"}]}>Rs. {order?.TotalAmount?.toFixed(2)}</Text>
                             </View>
                         </TouchableOpacity>
-                    ))}
+                    )):
+                    <View style={{ alignItems: "center", paddingTop: 20 }}>
+                    <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                    <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No orders available !!</Text>
+                  </View>
+                    }
                 </ScrollView>
             )}
 

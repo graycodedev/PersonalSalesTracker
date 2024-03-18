@@ -76,7 +76,6 @@ const Tasks = ({ navigation }) => {
     <TouchableOpacity
       value={item.IsCompleted}
       onPress={() => {
-        console.log("Item",item);
         setSelectedTask(item);
         
         setShowWarningModal(true);
@@ -190,10 +189,9 @@ const Tasks = ({ navigation }) => {
           setIsLoading(false)
           ToastMessage.Short("Error! Contact Support");
         });
-        console.log("Taks", response.data)
       if (response != undefined) {
         if (response.data.Code == 200) {
-            console.log("Taks", response.data.Data)
+            // console.log("Taks", response.data.Data)
             setTaskDetail(response.data.Data);
         } else {
           ToastMessage.Short(response.data.Message);

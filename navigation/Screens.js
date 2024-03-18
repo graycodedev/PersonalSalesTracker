@@ -93,6 +93,7 @@ import Task from "../screens/salestracking/task/Task";
 import Requests from "../screens/salestracking/request/Requests";
 import AddRequest from "../screens/salestracking/request/AddRequest";
 import Request from "../screens/salestracking/request/Request";
+import BeatPlans from "../screens/salestracking/beatplan/BeatPlans";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -581,6 +582,11 @@ function ScreenStack(props) {
         component={Request}
         options={headerOptions}
       /> 
+       <Stack.Screen
+        name="BeatPlans"
+        component={BeatPlans}
+        options={headerOptions}
+      />
     </Stack.Navigator>
   );
 }

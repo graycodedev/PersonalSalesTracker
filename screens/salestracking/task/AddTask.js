@@ -40,8 +40,13 @@ const AddTask = (props) => {
 
 
     const goToTasks = () => {
+       
         props.navigation.goBack();
     }
+
+    useEffect(()=>{
+        props.navigation.setOptions({title: "Add Task"})
+    }, [])
 
      const onChangeDate = (event, selectDate) => {
     const currentDate = selectDate || selectedDate;

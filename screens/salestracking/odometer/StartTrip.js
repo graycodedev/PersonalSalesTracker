@@ -28,6 +28,7 @@ import helpers from "../../../constants/Helpers";
 import { Colors } from "../../style/Theme";
 import * as SVG from "../../../components/BankingIcons"
 import { Camera } from "expo-camera";
+import { AutoCompleteList } from "../../../components/AutoCompleteList";
 
 
 const StartTrip = (props) => {
@@ -37,6 +38,8 @@ const StartTrip = (props) => {
   const [startOdometer, setStartOdometer] = useState("");
   const [location, setLocation] = useState(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
+     const [selectedVehicle, setselectedVehicle] = useState();
+        const [showVehiclesList, setshowVehiclesList] = useState(false);
   const [photo, setPhoto] = useState(null);
   const cameraRef = useRef(null);
 
@@ -123,7 +126,7 @@ const StartTrip = (props) => {
         navigation.goBack();
         return response.data.Data;
       } else {
-        console.log("Server response:", response.data);
+        // console.log("Server response:", response.data);
         ToastMessage.Short(response.data.Message || "An error occurred");
       }
     } else {
@@ -134,6 +137,16 @@ const StartTrip = (props) => {
 
   const isFormFilled = startOdometer && location;
 
+  
+    const onClose = () => {
+        setshowVehiclesList(false);
+    }
+
+     const updateselectedVehicle = (item) => {
+        setselectedVehicle(item);
+        setshowVehiclesList(false);
+    }
+
   return (
     <ScrollView
       nestedScrollEnabled={true}
@@ -142,6 +155,32 @@ const StartTrip = (props) => {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View style={styles.container}>
+        <View style={{ marginBottom: 15, zIndex: 99 }}>
+                    <TouchableOpacity onPress={() => setshowVehiclesList(true)} style={{ paddingLeft: 10, paddingVertical: 14, backgroundColor: "white", borderRadius: 5 }}>
+
+                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedVehicle ? "Select Vehicle" : selectedVehicle.VehicleName +" - "+  selectedVehicle.PlateNo}</Text>
+
+                    </TouchableOpacity>
+
+
+                    {showVehiclesList && (
+                        <AutoCompleteList
+                            autocompleteurl={Api.Vehicles.List}
+                            noItemFoundText={"No vehicles found!"}
+                            searchablePlaceholder="Search Vehicle"
+                            itemSelected={updateselectedVehicle}
+                            visible={showVehiclesList}
+                            onClose={() => onClose()}
+                            renderItem={(item) => (
+                                <View style={styles.item}>
+                                    <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>{item.VehicleName}</Text>
+                                    <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>{item.PlateNo}</Text>
+                                    <Text style={{ fontFamily: "Regular", fontSize: 14 }}>{item.FuelType =="p"?"Petrol":item.FuelType =="d"?"Diesel":item.FuelType =="e"?"Electric": item.FuelType}</Text>
+                                </View>
+                            )}
+                        />
+                    )}
+                </View>
         <View>
           <RegularInputText
             key="startOdometer"

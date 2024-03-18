@@ -88,7 +88,7 @@ const ReturnList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {returns.map((returnItem) => {
+                    {returns.lenth > 0 ? returns.map((returnItem) => {
                         return (
                             <TouchableOpacity
                                 key={returnItem.Id}
@@ -102,7 +102,12 @@ const ReturnList = ({ navigation }) => {
                                 </View>
                             </TouchableOpacity>
                         );
-                    })}
+                    }):
+                    <View style={{ alignItems: "center", paddingTop: 20 }}>
+                    <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+                    <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No returns available !!</Text>
+                  </View> 
+                    }
 
 
                 </ScrollView>

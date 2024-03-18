@@ -1033,7 +1033,6 @@ class SignIn extends React.Component {
       Device: this.state.device,
       FcmToken: this.state.fcmToken,
     });
-    console.log("1",data)
     var response = await (await request())
       .post(api.Login, data)
       .catch(function(error) {
@@ -1043,9 +1042,7 @@ class SignIn extends React.Component {
       });
     if (response != undefined && response.data != undefined) {
       if (response.data.Code == 200) {
-        console.log("2")
         var userCache = await helpers.GetUserInfo();
-        console.log("rc", userCache)
         if (userCache != null && userCache.PhoneNumber != this.state.email) {
           DeviceStorage.deleteKey("UserAccountsInfo");
         }

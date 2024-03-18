@@ -182,7 +182,7 @@ const AddCollection = (props) => {
                     )}
                 </View>
 
-                <View>
+                <View style={{marginBottom: 12}}>
                     <DropDownPicker
                         containerStyle={{ height: 50 }}
                         style={{

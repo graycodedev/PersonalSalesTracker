@@ -17,6 +17,7 @@ import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
+import AppStyles from "../../../assets/theme/AppStyles";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -87,7 +88,7 @@ const ExpenseList = (props) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {expenses.map((expense,index) => (
+                    {expenses.length > 0 ?expenses.map((expense,index) => (
                         <TouchableOpacity
                             key={index}
                             style={styles.expenseItem}
@@ -99,7 +100,12 @@ const ExpenseList = (props) => {
                                 <Text style={styles.expenseInfo}>Remarks: {expense.Remarks}</Text>
                             </View>
                         </TouchableOpacity>
-                    ))}
+                    )): 
+                    
+                    <View style={{ alignItems: "center", paddingTop: 20 }}>
+              <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+              <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No expenses available !!</Text>
+            </View>}
                 </ScrollView>
             )}
             <TouchableOpacity

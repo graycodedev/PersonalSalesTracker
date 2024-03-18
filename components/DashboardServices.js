@@ -273,18 +273,18 @@ export const DashBoardServices = ({ navigation }) => {
     },
     {
       name: "Day Log",
-      icon: BankingIcons.Daylog,
+      icon: BankingIcons.Daylog3,
       navigation: "Visits",
     },
     {
       name: "Request Form",
-      icon: BankingIcons.BeatPlan1,
+      icon: BankingIcons.Request,
       navigation: "Requests",
     },
     {
       name: "Beat Plan",
       icon: BankingIcons.BeatPlan2,
-      navigation: "Visits",
+      navigation: "BeatPlans",
     },
     {
       name: "Deliver",
@@ -296,9 +296,14 @@ export const DashBoardServices = ({ navigation }) => {
       icon: BankingIcons.eodreport,
       navigation: "EODReport",
     },
+    // {
+    //   name: "Sales Report",
+    //   icon: BankingIcons.salesreport,
+    //   navigation: "CollectionList",
+    // },
     {
-      name: "Sales Report",
-      icon: BankingIcons.salesreport,
+      name: "Anouncement",
+      icon: BankingIcons.Announcement1,
       navigation: "CollectionList",
     },
     {

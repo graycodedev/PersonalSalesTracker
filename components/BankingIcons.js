@@ -116,6 +116,11 @@ import Daylog1 from "../assets/bankingsvg/daylog1.svg";
 import Task from "../assets/bankingsvg/task.svg"; 
 import BeatPlan1 from "../assets/bankingsvg/beatplan1.svg"; 
 import BeatPlan2 from "../assets/bankingsvg/beatplan2.svg"; 
+import Announcement from "../assets/bankingsvg/announcement.svg"; 
+import Announcement1 from "../assets/bankingsvg/announcement-icon.svg"; 
+import Request from "../assets/bankingsvg/request.svg"; 
+import Daylog3 from "../assets/bankingsvg/log1.svg"; 
+
 
 
 
@@ -224,5 +229,8 @@ addParties,
 fingerPrint, 
 delivery, norecords, Camera, 
 Upload, 
-Gasoline, Menu, BeatPlan, Daylog, Task, Daylog1, BeatPlan1, BeatPlan2
+Gasoline, Menu, BeatPlan, Daylog, Task, Daylog1, BeatPlan1, BeatPlan2, Announcement, 
+Announcement1,
+Request,
+Daylog3
 };

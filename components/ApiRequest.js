@@ -106,7 +106,6 @@ const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
     }
    
         files.forEach((file, index) => {
-          console.log("file 1", file); 
           const fle = {
             uri: file.uri,
             type: "application/octet-stream",

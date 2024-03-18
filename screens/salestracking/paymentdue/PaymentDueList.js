@@ -16,6 +16,7 @@ import Api from "../../../constants/Api";
 import AppStyles from "../../../assets/theme/AppStyles";
 import WarningModal from "../../../components/WarningModal";
 import { Contact } from "../../../constants/Contact";
+import * as BankingIcons from "../../../components/BankingIcons";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -88,7 +89,7 @@ const PaymentDueList = ({ navigation }) => {
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                     }
                 >
-                    {paymentsDue.map((paymentDue, index) => (
+                    {paymentsDue.length>0 ? paymentsDue.map((paymentDue, index) => (
                         <TouchableOpacity
                             key={index}
                             style={styles.paymentDueItem}
@@ -129,7 +130,12 @@ const PaymentDueList = ({ navigation }) => {
                                 </View>
                             </View>
                         </TouchableOpacity>
-                    ))}
+                    )): 
+                    <View style={styles.noDataContainer}>
+            <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+            <Text style={[styles.noDataText, { fontSize: 20 }]}>No dues remaining</Text>
+          </View>
+                    }
                 </ScrollView>
             )}
         </View>
@@ -164,6 +170,13 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         padding: 10,
     },
+     noDataText: {
+    fontSize: 20,
+  },
+   noDataContainer: {
+    alignItems: "center",
+    marginTop: 20,
+  },
 });
 
 export default PaymentDueList;

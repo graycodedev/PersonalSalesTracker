@@ -86,7 +86,7 @@ const Products = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {products.map((product, index) => (
+                    {products.length > 0 ? products.map((product, index) => (
                         <TouchableOpacity
                             key={index}
                             style={styles.productItem}
@@ -100,7 +100,12 @@ const Products = ({ navigation }) => {
                                 <Text style={styles.productInfo}>Selling Price: Rs.{product.PreferedSellingPrice}</Text>
                             </View>
                         </TouchableOpacity>
-                    ))}
+                    )): 
+                     <View style={{ alignItems: "center", paddingTop: 20 }}>
+              <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
+              <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No products available !!</Text>
+            </View>
+                }
                 </ScrollView>
             )}
 

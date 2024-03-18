@@ -81,6 +81,8 @@ const MainScreen = (props) => {
         await DeviceStorage.saveKey("UserInfo", JSON.stringify(userInfo));
         props.navigation.navigate("Home");
       } else {
+        setIsLoading(false); 
+        props.navigation.navigate("SignIn");
       }
     } else {
       ToastMessage.Short("Error Ocurred Contact Support");
