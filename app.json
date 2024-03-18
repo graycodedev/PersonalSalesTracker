@@ -35,7 +35,7 @@
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
       ],
-      "versionCode": 19,
+      "versionCode": 20,
       "googleServicesFile": "./google-services.json"
     },
     "plugins": [
@@ -50,13 +50,13 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
-      ], 
+      ],
       [
         "expo-document-picker",
         {
           "iCloudContainerEnvironment": "Production"
         }
-      ], 
+      ],
       [
         "expo-image-picker",
         {
