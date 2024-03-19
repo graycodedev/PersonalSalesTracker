@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Image,
   TextInput,
+  BackHandler
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import qs from "qs";
@@ -94,6 +95,20 @@ class Register extends React.Component {
       phoneNumber: this.state.phoneNumber,
     });
   }
+
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  handleBackButton = async () => {
+    this.props.navigation.navigate("SignIn");
+  };
+
+
 
   render() {
     return (

@@ -28,8 +28,10 @@ import { Colors } from "../../style/Theme";
 import ToastMessage from "../../../components/Toast/Toast";
 import * as SVG from "../../../components/BankingIcons"
 import { Camera } from "expo-camera";
+import { AutoCompleteList } from "../../../components/AutoCompleteList";
 
 const EndTrip = (props) => {
+  const odometer= props.route.params.odometer;
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -38,6 +40,8 @@ const EndTrip = (props) => {
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [photo, setPhoto] = useState(null);
   const cameraRef = useRef(null);
+  const [selectedVehicle, setselectedVehicle] = useState();
+        const [showVehiclesList, setshowVehiclesList] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({
@@ -98,14 +102,13 @@ const EndTrip = (props) => {
     }
 
     let strData = qs.stringify({
-      Id: 0,
-      SalesPersonUserId: 1,
-      VehicleNo: 1,
+      Id: odometer.Id,
+      VehicleId: odometer.VehicleId,
       EndLatitude: location.lat,
       EndLongitude: location.lng,
       EndOdometer: endOdometer,
       EndDate: new Date(),
-      EndOdometerImage: selectedImage,
+      EndOdometerFile: selectedImage,
     });
     setIsLoading(true);
     var response = await (await request())
@@ -129,6 +132,16 @@ const EndTrip = (props) => {
     setIsLoading(false);
   };
 
+  const updateselectedVehicle = (item) => {
+    setselectedVehicle(item);
+    setshowVehiclesList(false);
+}
+
+
+const onClose = () => {
+    setshowVehiclesList(false);
+}
+
   return (
     <ScrollView
       nestedScrollEnabled={true}
@@ -137,6 +150,32 @@ const EndTrip = (props) => {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       <View style={styles.container}>
+        <View style={{ marginBottom: 15, zIndex: 99 }}>
+                    <TouchableOpacity onPress={() => setshowVehiclesList(true)} style={{ paddingLeft: 10, paddingVertical: 14, backgroundColor: "white", borderRadius: 5 }}>
+
+                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>{odometer.VehicleName + " - " + odometer.VehiclePlateNo}</Text>
+
+                    </TouchableOpacity>
+
+
+                    {showVehiclesList && (
+                        <AutoCompleteList
+                            autocompleteurl={Api.Vehicles.List}
+                            noItemFoundText={"No vehicles found!"}
+                            searchablePlaceholder="Search Vehicle"
+                            itemSelected={updateselectedVehicle}
+                            visible={showVehiclesList}
+                            onClose={() => onClose()}
+                            renderItem={(item) => (
+                                <View style={styles.item}>
+                                    <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>{item.VehicleName}</Text>
+                                    <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>{item.PlateNo}</Text>
+                                    <Text style={{ fontFamily: "Regular", fontSize: 14 }}>{item.FuelType =="p"?"Petrol":item.FuelType =="d"?"Diesel":item.FuelType =="e"?"Electric": item.FuelType}</Text>
+                                </View>
+                            )}
+                        />
+                    )}
+                </View>
         <View>
           <RegularInputText
             key="endOdometer"
@@ -290,6 +329,14 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     backgroundColor: "white",
   },
+  item: {
+    padding: 8,
+    borderBottomColor: "#e2e2e2",
+    borderBottomWidth: 1,
+    marginBottom: 5,
+    backgroundColor: "#fff",
+    paddingLeft: 18
+},
 });
 
 export default EndTrip;

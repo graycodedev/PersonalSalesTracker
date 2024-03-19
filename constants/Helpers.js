@@ -452,7 +452,6 @@ const helpers = {
   GetLocation: async function GetLocation(){
     try{
     let location=  await Location.getCurrentPositionAsync();
-    console.log("locate",location);
     if(location!=null){
       return {
         lat: location.coords.latitude,

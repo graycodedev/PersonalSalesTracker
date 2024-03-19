@@ -57,6 +57,7 @@ const ApiRequestGet = async (route, data) => {
 };
 
 const ApiRequestWithImage = async (route, data, imageData) => {
+  try{
   await TokenManager.restoreNewToken();
   const access_token = await DeviceStorage.getKey("token");
 
@@ -75,14 +76,37 @@ const ApiRequestWithImage = async (route, data, imageData) => {
       });
     }
   }
-  var res= await axios.post(route, formData, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        "Content-Type": "multipart/form-data",
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-    return await res;
+//   console.log("Form ", formData, route)
+//  await  axios.post(route, formData, {
+//     headers: {
+//       Authorization: `Bearer ${access_token}`,
+//       "Content-Type": "multipart/form-data",
+//       "Access-Control-Allow-Origin": "*",
+//     },
+//   })
+//   .then(response => {
+//     return response
+//   })
+//   .catch(error => {
+//     // Handle error
+//     console.log("Error",error);
+//   });
+
+  const response = await axios.post(route, formData, {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+      "Content-Type": "multipart/form-data",
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+
+  // return response; // Return the response if successful
+  }
+  catch(error){
+    await helpers.PostException("while sending images"+ error); 
+    ToastMessage.Short(error);
+    throw error;
+  }
 };
 const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
   try{
@@ -108,7 +132,7 @@ const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
         files.forEach((file, index) => {
           const fle = {
             uri: file.uri,
-            type: "application/octet-stream",
+            type: file.mimeType,
             name: file.name,
           };
           formData.append("Files", fle);

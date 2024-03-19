@@ -402,7 +402,7 @@ const AddVisit = (props, route) => {
 
         {renderAdditionalComponent()}
 
-        <View>
+        {/* <View>
           <Text style={{ fontFamily: "Medium", color: "#9A9A9A" }}>
             Visited Date
           </Text>
@@ -424,7 +424,7 @@ const AddVisit = (props, route) => {
               onChange={onChangeDate}
             />
           )}
-        </View>
+        </View> */}
         <View style={{ marginBottom: 10, marginTop: 10, zIndex: 99 }}>
           <DropDownPicker
             containerStyle={{ height: 50 }}

@@ -66,12 +66,17 @@ this.subscription;
   }
 
   componentDidMount() {
+ this.getToken()
     this.props.navigation.setOptions({
       title: "",
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
  this.subscription=  AppState.addEventListener("change", this._handleAppStateChange);
 
+  }
+
+  getToken=async()=>{
+    console.log( await DeviceStorage.getKey("token"));
   }
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);

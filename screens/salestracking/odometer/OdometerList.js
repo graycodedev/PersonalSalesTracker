@@ -18,6 +18,8 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
 import AppStyles from "../../../assets/theme/AppStyles";
+import { useFocusEffect } from "@react-navigation/native";
+
 
 const OdometerList = () => {
     const navigation = useNavigation();
@@ -65,6 +67,7 @@ const OdometerList = () => {
 
             if (response != undefined) {
                 if (response.data.Code == 200) {
+                    console.log(response.data.Data[0]);
                     setOdometers(response.data.Data);
                     
                 } else {
@@ -77,6 +80,17 @@ const OdometerList = () => {
             setIsLoading(false);
         }
     };
+
+    useFocusEffect(
+    React.useCallback(() => {
+      setIsLoading(true);
+      getList();
+      return () => {
+        // Cleanup function (optional)
+        // Additional cleanup logic (if needed)
+      };
+    }, [])
+  );
 
     return (
         <View style={[styles.container]}>
@@ -100,11 +114,12 @@ const OdometerList = () => {
                             >
                                 <View>
                                     <Text style={AppStyles.Text.BoldTitle}>{ new Date(odometer.StartDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
+                                    <Text style={AppStyles.Text.Regular}>{odometer?.VehicleName+ " - " + odometer?.VehiclePlateNo}</Text>
                                     <Text style={styles.tripInfo}>Start Odometer: {odometer.StartOdometer}</Text>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <Text style={styles.tripInfo}>End Odometer: {odometer.EndOdometer || ''}</Text>
+                                     <Text style={styles.tripInfo}>End Odometer: {odometer?.EndOdometer || ''}</Text>
                                         {odometer.EndOdometer == undefined && (
-                                            <TouchableOpacity style={{flexDirection:'row', alignItems:'center', borderColor: Colors.primary, borderWidth: 1, justifyContent:"center", borderRadius: 4, padding: 4, paddingVertical: 2}}    onPress={() => navigation.navigate('EndTrip')}>
+                                            <TouchableOpacity style={{flexDirection:'row', alignItems:'center', borderColor: Colors.primary, borderWidth: 1, justifyContent:"center", borderRadius: 4, padding: 4, paddingVertical: 2}}    onPress={() => navigation.navigate('EndTrip', {odometer: odometer})}>
                                                     <Text style={[ {color: "#040273", fontFamily:"SemiBold", fontSize: 16}]}>end trip</Text>
                                                 </TouchableOpacity>
                                             // <TouchableOpacity

@@ -104,7 +104,7 @@ const StartTrip = (props) => {
 
     let data = {
       Id: 0,
-      VehicleNo: 1,
+      VehicleId: selectedVehicle.Id,
       StartLatitude: location.lat,
       StartLongitude: location.lng,
       StartOdometer: startOdometer,
@@ -120,11 +120,13 @@ const StartTrip = (props) => {
       imageData
     );
 
+    console.log("Response", response)
+
     if (response != undefined) {
       if (response.data.Code == 200) {
         setIsLoading(false);
-        navigation.goBack();
-        return response.data.Data;
+        props.navigation.navigate("OdometerList");
+        // return response.data.Data;
       } else {
         // console.log("Server response:", response.data);
         ToastMessage.Short(response.data.Message || "An error occurred");
@@ -338,6 +340,14 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     backgroundColor: "white",
   },
+  item: {
+    padding: 8,
+    borderBottomColor: "#e2e2e2",
+    borderBottomWidth: 1,
+    marginBottom: 5,
+    backgroundColor: "#fff",
+    paddingLeft: 18
+},
 });
 
 export default StartTrip;

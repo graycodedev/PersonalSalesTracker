@@ -14,6 +14,7 @@ import DetailCard from "../../../components/DetailCard";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AppStyles from "../../../assets/theme/AppStyles";
 import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
+import DeviceStorage from "../../../config/DeviceStorage";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -21,7 +22,36 @@ const wait = (timeout) => {
 
 const Tab = createMaterialTopTabNavigator();
 
-const OverviewScreen = ({ partyDetails }) => {
+const OverviewScreen = () => {
+    const [partyDetails, setPartyDetails] = useState();
+
+
+    useEffect(() => {
+        getDetail();
+    }, []);
+
+    const getDetail = async () => {
+        let partyId= await DeviceStorage.getKey("selectedParty");
+        var response = await (await request())
+            .get(Api.Parties.Details + "?id=" + partyId)
+            .catch(function (error) {
+                ToastMessage.Short("Error! Contact Support");
+            });
+        if (response != undefined) {
+            if (response.data.Code == 200) {
+                setPartyDetails(response.data.Data);
+
+                // props.navigation.setOptions({
+                //     title: response.data.Data.PartyName,
+                // });
+
+            } else {
+                ToastMessage.Short("Error Loading Party Detail");
+            }
+        } else {
+            ToastMessage.Short("Error Loading Party Detail");
+        }
+    };
     return (
         <ScrollView
             nestedScrollEnabled={true}
@@ -53,8 +83,7 @@ const OverviewScreen = ({ partyDetails }) => {
     );
 };
 
-const OrdersScreen = ({ partyId }) => {
-    const partyid= partyId; 
+const OrdersScreen = () => {
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -69,6 +98,7 @@ const OrdersScreen = ({ partyId }) => {
 
     const getList = async () => {
         try {
+            let partyId=  await DeviceStorage.getKey("selectedParty");
             var response = await (await request())
                 .get(Api.Orders.ListByParty + "?partyId=" + partyId)
                 .catch(function (error) {
@@ -93,7 +123,7 @@ const OrdersScreen = ({ partyId }) => {
 
     useEffect(() => {
         getList();
-    }, [partyid]);
+    }, []);
 
     return (
         <ScrollView
@@ -109,7 +139,7 @@ const OrdersScreen = ({ partyId }) => {
                 </View>
             ) : (
                 <View>
-                    {console.log("order log:", orders)}
+                    {/* {console.log("order log:", orders)} */}
                     {orders.length > 0 ? (
                         orders.map((order, index) => (
                             <TouchableOpacity
@@ -152,8 +182,7 @@ const OrdersScreen = ({ partyId }) => {
 };
 
 
-const CollectionsScreen = ({ partyId }) => {
-    const partyid= partyId; 
+const CollectionsScreen = () => {
     const [collections, setCollections] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -168,6 +197,7 @@ const CollectionsScreen = ({ partyId }) => {
 
     const getList = async () => {
         try {
+            let partyId=  await DeviceStorage.getKey("selectedParty");
             var response = await (await request())
                 .get(Api.Collections.ListByParty + "?partyId=" + partyId)
                 .catch(function (error) {
@@ -193,7 +223,7 @@ const CollectionsScreen = ({ partyId }) => {
 
     useEffect(() => {
         getList();
-    }, [partyid]);
+    }, []);
 
     return (
         <ScrollView
@@ -209,7 +239,7 @@ const CollectionsScreen = ({ partyId }) => {
                 </View>
             ) : (
                 <View>
-                    {console.log("collection log:", collections)}
+                    {/* {console.log("collection log:", collections)} */}
                     {collections.length > 0 ? (
                         collections.map((collection, index) => (
                             <TouchableOpacity
@@ -240,8 +270,7 @@ const CollectionsScreen = ({ partyId }) => {
 
 
 
-const VisitsScreen = ({ partyId }) => {
-    const partyid= partyId; 
+const VisitsScreen = () => {
     const [visits, setVisits] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -256,6 +285,7 @@ const VisitsScreen = ({ partyId }) => {
 
     const getList = async () => {
         try {
+            let partyId=  await DeviceStorage.getKey("selectedParty");
             var response = await (await request())
                 .get(Api.Visits.ListByParty + "?partyId=" + partyId)
                 .catch(function (error) {
@@ -282,7 +312,7 @@ const VisitsScreen = ({ partyId }) => {
 
     useEffect(() => {
         getList();
-    }, [partyid]);
+    }, []);
 
     return (
         <ScrollView
@@ -298,7 +328,7 @@ const VisitsScreen = ({ partyId }) => {
                 </View>
             ) : (
                 <View>
-                    {console.log("visits log:", visits)}
+                    {/* {console.log("visits log:", visits)} */}
                     {visits.length > 0 ? (
                         visits.map((visit) => (
                             <TouchableOpacity
@@ -348,6 +378,7 @@ const PartyDetails = (props) => {
     }, []);
 
     const getDetail = async () => {
+       await DeviceStorage.saveKey("selectedParty", party.Id.toString());
         var response = await (await request())
             .get(Api.Parties.Details + "?id=" + party.Id)
             .catch(function (error) {
@@ -404,10 +435,10 @@ const PartyDetails = (props) => {
                     tabBarPressColor: Colors.primary,
                 }}
             >
-                <Tab.Screen name="Overview" component={() => <OverviewScreen partyDetails={partyDetails} />}/>
-                <Tab.Screen name="Orders" component={() => <OrdersScreen partyId={party.Id} />} />
-                <Tab.Screen name="Collections" component={() => <CollectionsScreen partyId={party.Id} />} />
-                <Tab.Screen name="Visits" component={() => <VisitsScreen partyId={party.Id} />} />
+                <Tab.Screen name="Overview" component={OverviewScreen}/>
+                <Tab.Screen name="Orders" component={OrdersScreen} />
+                <Tab.Screen name="Collections" component={CollectionsScreen} />
+                <Tab.Screen name="Visits" component={VisitsScreen} />
             </Tab.Navigator>
 
             <View style={styles.buttons}>
