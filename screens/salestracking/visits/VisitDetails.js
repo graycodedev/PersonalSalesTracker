@@ -34,7 +34,7 @@ const VisitDetails = (props) => {
     };
 
     const updateVisit = () => {
-        props.navigation.navigate('AddVisit', { update: true, visit });
+        props.navigation.navigate('UpdateVisit', {visit });
     };
 
     const visitDetails = [

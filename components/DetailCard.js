@@ -5,7 +5,7 @@ import AppStyles from '../assets/theme/AppStyles'
 const DetailCard = (props) => {
     
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,props?.containerStyle]}>
 
     <View style={styles.itemContainer}>
         {props.details.map((detail, index)=>(

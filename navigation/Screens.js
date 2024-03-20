@@ -94,6 +94,9 @@ import Requests from "../screens/salestracking/request/Requests";
 import AddRequest from "../screens/salestracking/request/AddRequest";
 import Request from "../screens/salestracking/request/Request";
 import BeatPlans from "../screens/salestracking/beatplan/BeatPlans";
+import UpdateVisit from "../screens/salestracking/visits/UpdateVisit";
+import Announcements from "../screens/salestracking/announcement/Announcements";
+import DayLogs from "../screens/salestracking/daylog/DayLogs";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -241,6 +244,12 @@ function ScreenStack(props) {
        {...props}
         name="AddVisit"
         component={AddVisit}
+        options={headerOptions}
+      />
+        <Stack.Screen
+       {...props}
+        name="UpdateVisit"
+        component={UpdateVisit}
         options={headerOptions}
       />
         <Stack.Screen
@@ -466,6 +475,16 @@ function ScreenStack(props) {
       <Stack.Screen
         name="Notifications"
         component={Notifications}
+        options={headerOptions}
+      ></Stack.Screen>
+      <Stack.Screen
+        name="Announcements"
+        component={Announcements}
+        options={headerOptions}
+      ></Stack.Screen>
+      <Stack.Screen
+        name="DayLogs"
+        component={DayLogs}
         options={headerOptions}
       ></Stack.Screen>
       <Stack.Screen

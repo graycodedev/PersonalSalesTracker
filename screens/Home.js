@@ -62,7 +62,7 @@ this.subscription;
     this.handleIos();
     this.GetUserInfo();
     this.getLogoPathHeader();
-    this.getOffers();
+    // this.getOffers();
   }
 
   componentDidMount() {
@@ -284,14 +284,14 @@ this.subscription;
          <DashBoardServices navigation={this.props.navigation} />  
 
    
-        <View style={{ paddingBottom: 20 }}>
+        {/* <View style={{ paddingBottom: 20 }}>
           {this.state.offers && this.state.offers.length > 0 && (
             <ImgSlider
               navigation={this.props.navigation}
               data={this.state.offers}
             />
           )}
-        </View>  
+        </View>   */}
       
       </ScrollView>
     );

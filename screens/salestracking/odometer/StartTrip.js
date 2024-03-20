@@ -108,11 +108,15 @@ const StartTrip = (props) => {
       StartLatitude: location.lat,
       StartLongitude: location.lng,
       StartOdometer: startOdometer,
-      StartDate: new Date(),
     };
+    let checkNull= Object.keys(data).filter(key => data[key] === null || data[key] === undefined);
+      if(checkNull.length>0){
+        alert(checkNull); 
+        return;
+      }
 
     let imageData = {
-      StartOdometerFile: photo.uri,
+      ImageFile: photo.uri,
     };
     var response = await ApiRequestWithImage(
       Api.Odometers.Start,
@@ -120,7 +124,6 @@ const StartTrip = (props) => {
       imageData
     );
 
-    console.log("Response", response)
 
     if (response != undefined) {
       if (response.data.Code == 200) {

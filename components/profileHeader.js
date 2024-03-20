@@ -79,7 +79,6 @@ const ProfileHeader = (props) => {
     };
 
     var response = await (await request()).post(route, qs.stringify(data));
-    console.log(response.data)
     if (response != undefined) {
       if (response.data.Code == 200) {
         if (checkedIn) {

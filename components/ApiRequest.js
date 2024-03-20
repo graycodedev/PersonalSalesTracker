@@ -58,6 +58,7 @@ const ApiRequestGet = async (route, data) => {
 
 const ApiRequestWithImage = async (route, data, imageData) => {
   try{
+  console.log(route, data, imageData);
   await TokenManager.restoreNewToken();
   const access_token = await DeviceStorage.getKey("token");
 
@@ -91,6 +92,7 @@ const ApiRequestWithImage = async (route, data, imageData) => {
 //     // Handle error
 //     console.log("Error",error);
 //   });
+console.log("Response1", formData);
 
   const response = await axios.post(route, formData, {
     headers: {
@@ -100,11 +102,13 @@ const ApiRequestWithImage = async (route, data, imageData) => {
     },
   });
 
-  // return response; // Return the response if successful
+  console.log("Response",response);
+  return response; // Return the response if successful
   }
   catch(error){
-    await helpers.PostException("while sending images"+ error); 
-    ToastMessage.Short(error);
+    console.log("Error", error)
+    // await helpers.PostException("while sending images"+ error); 
+    // ToastMessage.Short(error);
     throw error;
   }
 };
@@ -119,6 +123,7 @@ const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
         formData.append(key, data[key]);
       }
     }
+    if(Object.keys(imageData).length >0){
     for (const key in imageData) {
       if (imageData.hasOwnProperty(key)) {
         formData.append(key, {
@@ -128,6 +133,7 @@ const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
         });
       }
     }
+  }
    
         files.forEach((file, index) => {
           const fle = {
@@ -137,6 +143,8 @@ const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
           };
           formData.append("Files", fle);
         })
+
+        console.log("Visiti", formData)
      
     var res= await axios.post(route, formData, {
         headers: {

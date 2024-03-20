@@ -373,6 +373,13 @@ const BeatPlan={
   Delete: BaseUrl +"api/v1/st_tasks/delete"
 }
 
+const Announcement={
+  List:BaseUrl + "api/v1/pushNotifications/announcement", 
+}
+
+const DayLog={
+  List:BaseUrl + "api/v1/st_daylog/list/byUser", 
+}
 
 const ApplicationSettingsByKey = BaseUrl + "api/v1/applicationsettings/valuebykey";
 const ContactUs = BaseUrl + "api/v1/contactus/save";
@@ -464,7 +471,7 @@ export default {
   Returns,
   ReturnReasons,
   ApplicationSettingsByKey,
-  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException, VisitPurpose, Vehicles, Fuel, Task, Request, BeatPlan
+  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException, VisitPurpose, Vehicles, Fuel, Task, Request, BeatPlan, Announcement, DayLog
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

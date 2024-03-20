@@ -76,7 +76,8 @@ const OverviewScreen = () => {
                         { Label: "Address", Value: partyDetails.Address },
                         { Label: "Email", Value: partyDetails.Email },
                         { Label: "Website", Value: partyDetails.Website },
-                    ]} />
+                    ]} containerStyle={{marginHorizontal: 0}}
+                        />
                 </View>
             )}
         </ScrollView>
@@ -138,7 +139,7 @@ const OrdersScreen = () => {
                     <ActivityIndicator size="large" color={Colors.primary} />
                 </View>
             ) : (
-                <View>
+                <View style={{marginHorizontal: 8, marginTop: 8}}>
                     {/* {console.log("order log:", orders)} */}
                     {orders.length > 0 ? (
                         orders.map((order, index) => (
@@ -238,7 +239,7 @@ const CollectionsScreen = () => {
                     <ActivityIndicator size="large" color={Colors.primary} />
                 </View>
             ) : (
-                <View>
+                <View style={{marginHorizontal: 8, marginTop: 8}}>
                     {/* {console.log("collection log:", collections)} */}
                     {collections.length > 0 ? (
                         collections.map((collection, index) => (
@@ -327,7 +328,7 @@ const VisitsScreen = () => {
                     <ActivityIndicator size="large" color={Colors.primary} />
                 </View>
             ) : (
-                <View>
+                <View style={{marginHorizontal: 8, marginTop: 8}}>
                     {/* {console.log("visits log:", visits)} */}
                     {visits.length > 0 ? (
                         visits.map((visit) => (

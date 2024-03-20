@@ -274,7 +274,7 @@ export const DashBoardServices = ({ navigation }) => {
     {
       name: "Day Log",
       icon: BankingIcons.Daylog3,
-      navigation: "Visits",
+      navigation: "DayLogs",
     },
     {
       name: "Request Form",
@@ -304,7 +304,7 @@ export const DashBoardServices = ({ navigation }) => {
     {
       name: "Anouncement",
       icon: BankingIcons.Announcement1,
-      navigation: "CollectionList",
+      navigation: "Announcements",
     },
     {
       name: "Visit Report",
