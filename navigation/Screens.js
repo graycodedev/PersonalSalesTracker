@@ -97,6 +97,8 @@ import BeatPlans from "../screens/salestracking/beatplan/BeatPlans";
 import UpdateVisit from "../screens/salestracking/visits/UpdateVisit";
 import Announcements from "../screens/salestracking/announcement/Announcements";
 import DayLogs from "../screens/salestracking/daylog/DayLogs";
+import DayLog from "../screens/salestracking/daylog/DayLog";
+import AddDayLog from "../screens/salestracking/daylog/AddDayLog";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -604,6 +606,16 @@ function ScreenStack(props) {
        <Stack.Screen
         name="BeatPlans"
         component={BeatPlans}
+        options={headerOptions}
+      />
+       <Stack.Screen
+        name="DayLog"
+        component={DayLog}
+        options={headerOptions}
+      />
+      <Stack.Screen
+        name="AddDayLog"
+        component={AddDayLog}
         options={headerOptions}
       />
     </Stack.Navigator>

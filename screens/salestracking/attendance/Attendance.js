@@ -90,7 +90,7 @@ const Attendance = () => {
                     markedDates={markedDates}
                     markingType={"multi-dot"}
                     onDayPress={(day) => {
-                        console.log("Selected day:", day);
+                        // console.log("Selected day:", day);
                     }}
                     dayComponent={({ date }) => renderDay(date)}
                     hideExtraDays={true}

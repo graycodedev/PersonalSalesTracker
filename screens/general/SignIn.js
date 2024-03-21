@@ -525,10 +525,10 @@ class SignIn extends React.Component {
             </View>
 
             <View style={{ marginHorizontal: 24 }}>
-              <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
+              <Text style={{ fontSize: 13, fontFamily: "SemiBold", marginBottom: 2}}>
                 Company Code
               </Text>
-              <View>
+              <View style={{marginBottom: 6}}>
                 <TextInput
                   placeholder=""
                   style={styles.input}
@@ -537,10 +537,10 @@ class SignIn extends React.Component {
                   value={this.state.companyCode}
                 />
               </View>
-              <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
+              <Text style={{ fontSize: 13, fontFamily: "SemiBold",marginBottom: 2 }}>
                 Mobile No
               </Text>
-              <View>
+              <View style={{marginBottom: 6}}>
                 <TextInput
                   placeholder=""
                   style={styles.input}
@@ -553,7 +553,7 @@ class SignIn extends React.Component {
               {this.state.emailError != "" && (
                 <Text style={{ color: "red" }}>{this.state.emailError}</Text>
               )}
-              <Text style={{ fontSize: 13, fontFamily: "SemiBold" }}>
+              <Text style={{ fontSize: 13, fontFamily: "SemiBold",marginBottom: 2 }}>
                 Password/MPIN
               </Text>
               {!this.state.showPassword && (
@@ -1024,10 +1024,7 @@ class SignIn extends React.Component {
     var data;
 
     data = qs.stringify({
-      clientId: api.CompanyId,
-      CompanyId: api.CompanyId,
       CompanyCode: this.state.companyCode,
-      SecretKey: api.SecretKey,
       Username: this.state.email,
       Password: this.state.password,
       Device: this.state.device,
@@ -1042,6 +1039,7 @@ class SignIn extends React.Component {
       });
     if (response != undefined && response.data != undefined) {
       if (response.data.Code == 200) {
+        
         var userCache = await helpers.GetUserInfo();
         if (userCache != null && userCache.PhoneNumber != this.state.email) {
           DeviceStorage.deleteKey("UserAccountsInfo");

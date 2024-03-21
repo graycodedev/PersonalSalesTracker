@@ -57,15 +57,20 @@ class Home extends React.Component {
       IosAppstoreUrl: "",
       IosPrimaryColor: "",
       compInfo: null,
+      company: null
     };
 this.subscription;
-    this.handleIos();
+    // this.handleIos();
     this.GetUserInfo();
+
+   
     this.getLogoPathHeader();
+  
     // this.getOffers();
   }
 
   componentDidMount() {
+    this.GetCompanyInfo();
  this.getToken()
     this.props.navigation.setOptions({
       title: "",
@@ -138,8 +143,9 @@ this.subscription;
 
   };
   GetCompanyInfo = async () => {
-    let compInfo = await helpers.GetCompanyDetails();
-    this.setState({ compInfo: compInfo });
+    let companyId= (await helpers.GetUserInfo()).CompanyId;
+    let compInfo = await helpers.GetCompanyDetails(companyId);
+    this.setState({ company: compInfo });
   };
   GetUserInfo = async () => {
     const u = await helpers.GetUserInfo();
@@ -162,16 +168,6 @@ this.subscription;
  
   
  
-
-  handleIos = async () => {
-    let CompanyDetail = await helpers.GetCompanyInfoIOS();
-    this.setState({
-      IosCompanyId: CompanyDetail.CompanyId,
-      IosWalletName: CompanyDetail.Name,
-      IosAppstoreUrl: CompanyDetail.AppStoreUrl,
-      IosPrimaryColor: CompanyDetail.PrimaryColor,
-    });
-  };
 
   _onRefresh = async () => {
     await this.GetUserInfo();
@@ -231,12 +227,12 @@ this.subscription;
             <Text style={{ fontSize: 16, color: "white", fontFamily: "Bold" }}>
               Hi, {this.state.fullName}
             </Text>
-            <Text
+           {this.state.company &&  <Text
               style={{ fontSize: 12, color: "white", fontFamily: "Regular" }}
             >
               WELCOME TO{" "}
-              {api.CompanyName}
-            </Text>
+              {this.state.company.Name}
+            </Text>}
           </View> 
            <View style={styles.notificationAndProfile}>
             <TouchableOpacity

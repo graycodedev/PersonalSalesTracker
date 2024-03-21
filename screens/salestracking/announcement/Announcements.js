@@ -101,7 +101,7 @@ export default Announcements;
 
 const styles = StyleSheet.create({
   notification: {
-    backgroundColor: "#e2e2e2",
+    backgroundColor: "#e5e5e5",
     width: Dimensions.get("screen").width - 30,
     marginLeft: "auto",
     marginRight: "auto",
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   notificationIcon: {
     width: "14%",
-    color: "green",
+    color: Colors.primary,
   },
   date: {
     fontSize: 14,

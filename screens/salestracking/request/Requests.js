@@ -107,8 +107,8 @@ const Requests = ({ navigation }) => {
                 <TouchableOpacity key={index} style={styles.noteContainer} onPress={() => handleReadMore(request)}>
                     <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                     <Text style={styles.noteHead}>{request.ItemName}</Text>
-                      {request?.IsCancelled?<Text style={{color:"orange"}}>Cancelled</Text>:request?.ApprovedOrRejected == true?
-                                  <Text style={{color:"green"}}>Approved</Text>:request?.ApprovedOrRejected == false?<Text style={{color:"red"}}>Rejected</Text>:<Text style={{color:"orange"}}>Requested</Text> }
+                      {request?.IsCancelled?<Text style={{color:"orange"}}>Cancelled</Text>:request?.ApprovedOrRejected == "A"?
+                                  <Text style={{color:"green"}}>Approved</Text>:request?.ApprovedOrRejected == "R"?<Text style={{color:"red"}}>Rejected</Text>:<Text style={{color:"orange"}}>Requested</Text> }
                     </View>
                 
                   <View style={styles.noteView}>

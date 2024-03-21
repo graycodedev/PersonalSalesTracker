@@ -41,13 +41,13 @@ const ReturnList = ({ navigation }) => {
     const getList = async () => {
         try {
             var response = await (await request())
-                .get(Api.Returns.List)
+                .get(Api.Returns.ListByUser+"?pageNo=1&pageSize=20")
                 .catch(function (error) {
                     ToastMessage.Short("Error! Contact Support");
                 });
-
             if (response != undefined) {
                 if (response.data.Code == 200) {
+                   
                     setReturns(response.data.Data);
                 } else {
                     ToastMessage.Short("Error Loading Returns");
@@ -88,7 +88,7 @@ const ReturnList = ({ navigation }) => {
                     contentContainerStyle={{ flexGrow: 1 }}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 >
-                    {returns.lenth > 0 ? returns.map((returnItem) => {
+                    {returns.length > 0 ? returns.map((returnItem) => {
                         return (
                             <TouchableOpacity
                                 key={returnItem.Id}

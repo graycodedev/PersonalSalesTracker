@@ -21,9 +21,9 @@ const VisitDetails = (props) => {
     // );
 
     useEffect(() => {
-        // props.navigation.setOptions({
-        //     title: "Visit Details",
-        // });
+        props.navigation.setOptions({
+            title: "Visit Detail",
+        });
     }, []);
 
     const deleteVisit = async () => {
@@ -38,8 +38,9 @@ const VisitDetails = (props) => {
     };
 
     const visitDetails = [
-        { Label: "Name", Value: visit.PartyName ? visit.PartyName : visit.LocationName },
+        { Label: "Location", Value: visit.PartyName ? visit.PartyName : visit.LocationName },
         { Label: "Visit Date", Value: <DateDisplay date={visit.VisitDate} /> },
+        { Label: "Purpose", Value: visit?.PurposeName},
         { Label: "Remarks", Value: visit.Remarks },
     ];
 

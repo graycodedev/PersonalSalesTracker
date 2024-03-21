@@ -42,93 +42,23 @@ class ForgotPassword extends React.Component {
       phoneNumberError: "",
     };
   }
-  // componentDidMount = async () => {
-  //   // this.props.navigation.setOptions({
-  //   //   title: "",
-  //   // });
-  // };
+  componentDidMount = async () => {
+    this.props.navigation.setOptions({
+      title: "Forgot Password",
+    });
+  };
   validateForm() {
     let isvalid = true;
     if (this.state.phoneNumber.trim() === "") {
       isvalid = false;
-      this.setState(() => ({ phoneNumberError: "Phone number is required !" }));
-    } else {
-      if (this.state.phoneNumber.length != 10) {
-        isvalid = false;
-        this.setState(() => ({ phoneNumberError: "Invalid Phone Number." }));
-      } else {
-        this.setState(() => ({ phoneNumberError: "" }));
-      }
-    }
+      this.setState(() => ({ phoneNumberError: "Username is required !" }));
+    } 
 
     return isvalid;
   }
 
   render() {
     return (
-      // <ScrollView style={{ width: "100%", backgroundColor: "#fff" }}>
-      //   <View>
-      //     {/* <TopBackgroundIcon
-      //       style={{ position: "absolute" }}
-      //       preserveAspectRatio="none"
-      //       width="100%"
-      //     /> */}
-      //   </View>
-      //   <Text
-      //     style={[
-      //       TextViewStyle.PageHeader,
-      //       {
-      //         marginLeft: 30,
-      //         marginTop: 110,
-      //         fontSize: 20,
-      //         fontFamily: "Bold",
-      //       },
-      //     ]}
-      //   >
-      //     Forgot Password
-      //   </Text>
-      //   <View style={{ marginTop: 60, margin: 30, flexDirection: "column" }}>
-      //     <KeyboardAvoidingView>
-      //       <View style={{ marginBottom: 2 }}>
-      //         <InputText
-      //           keyboardType="numeric"
-      //           placeholder="phone number"
-      //           onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
-      //           value={this.state.phoneNumber}
-      //           iconContent={
-      //             <Icon size={16} name="phone" style={styles.inputIcons} />
-      //           }
-      //         />
-      //         <Text style={{ color: "red" }}>
-      //           {this.state.phoneNumberError}
-      //         </Text>
-      //       </View>
-      //       <TouchableOpacity
-      //         color="primary"
-      //         onPress={() => {
-      //           if (this.validateForm()) {
-      //             this.setState({ isLoading: true });
-      //             this.ResetPassword();
-      //           }
-      //         }}
-      //       >
-      //         <ButtonPrimary title="Submit" />
-      //         {
-      //           <ActivityIndicator
-      //             animating={this.state.isLoading}
-      //             color="#ffa500"
-      //             style={styles.activityIndicator}
-      //           ></ActivityIndicator>
-      //         }
-      //       </TouchableOpacity>
-      //       <TouchableOpacity >
-      //       <View style={styles.submitButton}>
-      //           <Text style={styles.submit}>Submit</Text>
-      //       </View>
-      //       </TouchableOpacity>
-      //     </KeyboardAvoidingView>
-      //   </View>
-      // </ScrollView>
       <View style={styles.container}>
         <Spinner
           color={Colors.primary}
@@ -136,8 +66,6 @@ class ForgotPassword extends React.Component {
           textContent={"Please Wait..."}
           textStyle={{ color: "#fff", fontFamily: "Light", fontSize: 14 }}
         />
-        {/* <Image source={IMAGES.registerEllipse} style={{ width: "100%" }} /> */}
-        {/* <BankingIcons.ScreenHeaderRegisterIcon fill={Colors.primary} width='100%' /> */}
         <View style={styles.headerBackGround} />
         <View style={styles.box}>
           <View style={styles.registerText}>
@@ -156,14 +84,12 @@ class ForgotPassword extends React.Component {
               justifyContent: "center",
             }}
           >
-            <Text style={{ fontSize: 14 }}>Input your mobile number</Text>
-            <Text>here.</Text>
+            <Text style={{ fontSize: 14 }}>Input your username</Text>
           </View>
           <View style={{ marginBottom: 2 }}>
             <InputText
               style={styles.inputNumber}
-              keyboardType="numeric"
-              placeholder="Mobile Number"
+              placeholder="Username"
               onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
               value={this.state.phoneNumber}
             />
@@ -185,23 +111,10 @@ class ForgotPassword extends React.Component {
     );
   }
   ResetPassword = async () => {
-    let companyId = await helpers.GetCompanyId();
-    let companyCode = await helpers.GetCompanyCode();
-    var data = qs.stringify({
-      ClientId: companyId,
-      CompanyId: companyId,
-      CompanyCode: companyCode,
-      SecretKey: api.SecretKey,
-      PhoneNumber: this.state.phoneNumber,
-    });
     var url =
       api.ForgotPassword +
-      "?phoneNumber=" +
-      this.state.phoneNumber +
-      "&CompanyId=" +
-      companyId +
-      "&CompanyCode=" +
-      companyCode;
+      "?userName=" +
+      this.state.phoneNumber;
     var response = await (await request()).post(url).catch(function(error) {
       ToastMessage.Short("Error Ocurred Contact Support");
     });
@@ -281,7 +194,7 @@ const styles = StyleSheet.create({
   },
   inputNumber: {
     width: 272,
-    height: 36,
+    height: 48,
     borderRadius: 4,
     borderColor: "#EEEEEE",
     borderWidth: 2,

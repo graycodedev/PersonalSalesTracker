@@ -16,6 +16,7 @@ import qs from "qs";
 import Api from "../../../constants/Api";
 import ToastMessage from "../../../components/Toast/Toast";
 import request from "../../../config/RequestManager";
+import { AutoCompleteList } from "../../../components/AutoCompleteList";
 
 const ReturnOrder = (props) => {
     const update = props.route.params?.update;
@@ -27,6 +28,8 @@ const ReturnOrder = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [returnReasons, setReturnReasons] = useState([]);
     const [productNames, setProductNames] = useState([]);
+    const [showPartiesList, setShowPartiesList] = useState(false);
+    const [selectedParty, setSelectedParty] = useState();
 
     const navigation = useNavigation();
     useEffect(() => {
@@ -54,6 +57,15 @@ const ReturnOrder = (props) => {
         }
     };
 
+    const updateSelectedParty = (item) => {
+        setSelectedParty(item);
+        setShowPartiesList(false);
+      };
+    
+      const onClose = () => {
+        setShowPartiesList(false);
+      };
+
     const fetchProductNames = async () => {
         var response = await (await request())
             .get(Api.Products.List)
@@ -79,6 +91,7 @@ const ReturnOrder = (props) => {
             ProductId: productName,
             Quantity: quantity,
             Remarks: remark,
+            PartyId: selectedParty.Id
         })
         console.log("Str", strData)
         setIsLoading(true);
@@ -112,6 +125,45 @@ const ReturnOrder = (props) => {
             contentContainerStyle={{ flexGrow: 1 }}
         >
             <View style={styles.container}>
+            <View style={{ marginBottom: 15, zIndex: 98 }}>
+          <TouchableOpacity
+            onPress={() => setShowPartiesList(true)}
+            style={{
+              paddingLeft: 10,
+              paddingVertical: 14,
+              backgroundColor: "white",
+              borderRadius: 5,
+            }}
+          >
+            <Text style={{ fontFamily: "Regular", fontSize: 14 }}>
+              {" "}
+              {!selectedParty ? "Add Party" : selectedParty.PartyName}
+            </Text>
+          </TouchableOpacity>
+          {showPartiesList && (
+            <AutoCompleteList
+              autocompleteurl={Api.Parties.List}
+              noItemFoundText={"No parties found!"}
+              searchablePlaceholder="Search Party"
+              itemSelected={updateSelectedParty}
+              visible={showPartiesList}
+              onClose={() => onClose()}
+              renderItem={(item) => (
+                <View style={styles.item}>
+                  <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>
+                    {item.PartyName}
+                  </Text>
+                  <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>
+                    {item.ContactPersonName}
+                  </Text>
+                  <Text style={{ fontFamily: "Regular", fontSize: 14 }}>
+                    {item.Email}
+                  </Text>
+                </View>
+              )}
+            />
+          )}
+        </View>
                 <View style={{ marginBottom: 10 }}>
                     <DropDownPicker
                         containerStyle={{ height: 50 }}
@@ -229,6 +281,14 @@ const styles = StyleSheet.create({
         alignContent: "center",
         justifyContent: "flex-start",
     },
+    item: {
+        padding: 8,
+        borderBottomColor: "#e2e2e2",
+        borderBottomWidth: 1,
+        marginBottom: 5,
+        backgroundColor: "#fff",
+        paddingLeft: 18,
+      },
 });
 
 export default ReturnOrder;

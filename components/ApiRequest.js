@@ -8,11 +8,9 @@ import axios from "axios";
 import helpers from "../constants/Helpers";
 const ApiRequestPost = async (route, data) => {
   let strData = qs.stringify(data);
-  // console.log("Request of " + route + "with data " + strData);
   var response = await (await request())
     .post(route, strData)
     .catch(function (error) {
-      console.log("error");
       ToastMessage.Short("Error Ocurred Contact Support");
       return false;
     });
@@ -58,7 +56,7 @@ const ApiRequestGet = async (route, data) => {
 
 const ApiRequestWithImage = async (route, data, imageData) => {
   try{
-  console.log(route, data, imageData);
+    
   await TokenManager.restoreNewToken();
   const access_token = await DeviceStorage.getKey("token");
 
@@ -92,7 +90,6 @@ const ApiRequestWithImage = async (route, data, imageData) => {
 //     // Handle error
 //     console.log("Error",error);
 //   });
-console.log("Response1", formData);
 
   const response = await axios.post(route, formData, {
     headers: {
@@ -102,11 +99,9 @@ console.log("Response1", formData);
     },
   });
 
-  console.log("Response",response);
   return response; // Return the response if successful
   }
   catch(error){
-    console.log("Error", error)
     // await helpers.PostException("while sending images"+ error); 
     // ToastMessage.Short(error);
     throw error;
@@ -144,7 +139,6 @@ const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
           formData.append("Files", fle);
         })
 
-        console.log("Visiti", formData)
      
     var res= await axios.post(route, formData, {
         headers: {
@@ -157,7 +151,6 @@ const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
   }
   catch(error){
     await helpers.PostException("while sending images"+ error); 
-    console.log(error)
     ToastMessage.Short(error)
   }
  

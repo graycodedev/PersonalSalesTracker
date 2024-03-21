@@ -57,7 +57,7 @@ export const AccountCard = ({ data, navigation,  balanceError }) => {
             <View>
               <View style={{ flexDirection: "row", justifyContent:"space-between", alignItems:"center" }}>
               
-                {!reports || !visible ? <Text style={[styles.accountInfoText]}>Collection: Rs. XXXXXX</Text>: <Text style={styles.accountInfoText}>Collection: Rs. {reports?.OrderAmount}</Text>}
+                {!reports || !visible ? <Text style={[styles.accountInfoText]}>Order Amount: Rs. XXXXXX</Text>: <Text style={styles.accountInfoText}>Order Amount: Rs. {reports?.OrderAmount}</Text>}
                 <View style={{marginLeft: 8}}>
                   {visible ? (
                     <TouchableOpacity onPress={() => setVisible(!visible)}>

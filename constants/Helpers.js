@@ -20,6 +20,11 @@ const helpers = {
     } else {
     }
   },
+  GetUserId: async function GetUserId() {
+   let user= await this.GetUserInfo(); 
+   return user.Id;
+   
+  },
   uploadFileToServer: async function uploadFileToServer(photo) {
     const data = new FormData();
 
@@ -198,50 +203,41 @@ const helpers = {
     var commissionAmount = await (await request()).get(commissionRateUrl);
     return commissionAmount;
   },
-  GetCompanyDetails: async function GetCompanyDetails() {
-    let CompanyDetail = await this.GetCompanyInfoIOS();
-    let companyId = api.IsAppForMultiple
-      ? CompanyDetail.CompanyId
-      : api.CompanyId;
-    // console.log("cmpI", companyId);
+  GetCompanyDetails: async function GetCompanyDetails(id) {
     var response = await (await request())
-      .get(api.GetCompanyInfo + companyId)
-      .catch(function(error) {});
-    if (response != undefined) {
-      if (response.data.Code == 200) {
-        if (response.data.Data != null) {
-          if (api.IsAppForMultiple) {
-            return response.data;
-          }
-          await DeviceStorage.saveKey("LogoPath", response.data.Data.LogoPath);
-          await DeviceStorage.saveKey(
-            "LogoHeaderPath",
-            response.data.Data.LogoHeaderPath
-          );
-        }
+    .get(api.CompanyDetail+"?id="+id)
+    .catch(function(error) {});
+  if (response != undefined) {
+    if (response.data.Code == 200) {
+      if (response.data.Data != null) {
+        return response.data.Data;
+      } else {
+        ToastMessage.Short("Error Loading Company");
       }
+    } else {
+      ToastMessage.Short("Error Loading Company");
     }
-    return response.data;
+  } else {
+    ToastMessage.Short("Error! Contact Support");
+  }
   },
   GetCompanyInfoIOS: async function GetCompanyInfoIOS() {
-    // debugger;
-    let cmpInfo = {
-      CompanyId: -1,
-      Name: "Company Name",
-      PrimaryColor: "#009D4B",
-      AppStoreUrl: null,
-      CompanyCode: "Company Code",
-    };
-    let savedCompanyDetail =
-      (await DeviceStorage.getKey("SavedCompanyDetail")) == "true";
-    if (!savedCompanyDetail) {
-      return cmpInfo;
-    }
-    var companyInfo = await DeviceStorage.getKey("CompanyDetail");
-    if (companyInfo != null) {
-      return JSON.parse(companyInfo);
+    var response = await (await request())
+    .get(api.GetCompaniesDetails)
+    .catch(function(error) {});
+  if (response != undefined) {
+    if (response.data.Code == 200) {
+      if (response.data.Data != null) {
+        return response.data.Data;
+      } else {
+        ToastMessage.Short("Error Loading Cooperatives");
+      }
     } else {
+      ToastMessage.Short("Error Loading Cooperatives");
     }
+  } else {
+    ToastMessage.Short("Error! Contact Support");
+  }
   },
   GetCompaniesDetails: async function GetCompaniesDetails() {
     var response = await (await request())

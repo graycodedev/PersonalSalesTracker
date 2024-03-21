@@ -22,7 +22,7 @@ const wait = (timeout) => {
 
 const Tab = createMaterialTopTabNavigator();
 
-const OverviewScreen = () => {
+const OverviewScreen = (props) => {
     const [partyDetails, setPartyDetails] = useState();
 
 
@@ -84,7 +84,7 @@ const OverviewScreen = () => {
     );
 };
 
-const OrdersScreen = () => {
+const OrdersScreen = (props) => {
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -100,8 +100,9 @@ const OrdersScreen = () => {
     const getList = async () => {
         try {
             let partyId=  await DeviceStorage.getKey("selectedParty");
+            console.log("PartyId", partyId, Api.Orders.ListByParty + "?PartyId=" + partyId+"&pageNo="+1+"&pageSize="+20)
             var response = await (await request())
-                .get(Api.Orders.ListByParty + "?partyId=" + partyId)
+                .get(Api.Orders.ListByParty + "?PartyId=" + partyId+"&pageNo="+1+"&pageSize="+20)
                 .catch(function (error) {
                     console.error("Error fetching orders:", error.message, error.response);
                     ToastMessage.Short("Error! Contact Support");
@@ -109,6 +110,7 @@ const OrdersScreen = () => {
 
             if (response != undefined) {
                 if (response.data.Code === 200) {
+                    console.log("Orders",response.data.Data)
                     setOrders(response.data.Data);
                 } else {
                     ToastMessage.Short(response.data.Message);
@@ -146,7 +148,7 @@ const OrdersScreen = () => {
                             <TouchableOpacity
                                 key={index}
                                 style={styles.listItem}
-                                onPress={() => navigation.navigate("OrderDetails", { orderId: order.Id })}
+                                onPress={() => props.navigation.navigate("OrderDetails", { orderId: order.Id })}
                             >
                                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                                     <View>
@@ -183,7 +185,7 @@ const OrdersScreen = () => {
 };
 
 
-const CollectionsScreen = () => {
+const CollectionsScreen = (props) => {
     const [collections, setCollections] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -246,11 +248,13 @@ const CollectionsScreen = () => {
                             <TouchableOpacity
                                 key={index}
                                 style={styles.listItem}
-                                onPress={() => navigation.navigate("CollectionDetails", { collection })}
+                                onPress={() =>
+                                    props.navigation.navigate("CollectionDetails", { collection })
+                                  }
                             >
                                 <View>
                                     <Text style={AppStyles.Text.BoldTitle}>{collection.PartyName}</Text>
-                                    <Text style={AppStyles.Text.Regular}>{`Payment Amount: Rs.${collection.Amount}`}</Text>
+                                    <Text style={AppStyles.Text.Regular}>{`Received Amount: Rs.${collection.Amount}`}</Text>
                                     <Text style={AppStyles.Text.Regular}>
                                         Recieved Date: <DateDisplay date={collection.PaymentDate} />
                                     </Text>
@@ -271,7 +275,7 @@ const CollectionsScreen = () => {
 
 
 
-const VisitsScreen = () => {
+const VisitsScreen = (props) => {
     const [visits, setVisits] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -335,7 +339,7 @@ const VisitsScreen = () => {
                             <TouchableOpacity
                                 key={visit.Id}
                                 style={styles.listItem}
-                                onPress={() => navigation.navigate("VisitDetails", { visit })}
+                                onPress={() => props.navigation.navigate("VisitDetails", { visit })}
                             >
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <View>
@@ -442,7 +446,7 @@ const PartyDetails = (props) => {
                 <Tab.Screen name="Visits" component={VisitsScreen} />
             </Tab.Navigator>
 
-            <View style={styles.buttons}>
+            {/* <View style={styles.buttons}>
                 <TouchableOpacity
                     style={[styles.circle, { marginBottom: 8, backgroundColor: Colors.primary }]}
                     onPress={() => {
@@ -451,15 +455,8 @@ const PartyDetails = (props) => {
                 >
                     <BankingIcons.Edit fill={"white"} height={25} width={25} />
                 </TouchableOpacity>
-                {/* <TouchableOpacity
-                    style={[styles.circle, { backgroundColor: "#FF5F7F" }]}
-                    onPress={() => {
-                        setShowConfirmDelete(true);
-                    }}
-                >
-                    <BankingIcons.DeleteIcon fill="white" />
-                </TouchableOpacity> */}
-            </View>
+              
+            </View> */}
             {showConfirmDelete && (
                 <WarningModal
                     text1={"Delete Party?"}

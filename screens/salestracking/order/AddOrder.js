@@ -203,7 +203,6 @@ setIsLoading(true)
         PartyId: selectedParty.Id,
         CustomerNote:notes==""?"Order for "+selectedParty?.PartyName: notes, 
         EstimatedDeliveryDate: deliveryDate, 
-        SalesPersonIdentityUserId: 1, 
         OrderDetailInputVM: selectedProducts, 
     }
     var response = await (await request())

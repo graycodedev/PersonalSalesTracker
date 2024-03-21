@@ -13,7 +13,7 @@ const MobileBankingActivation =
   BaseUrl + "api/v1/mobilebankingactivationrequest/register";
 const MobileBankingVerification = BaseUrl + "api/v1/otp/verifyotp";
 const ResendOtp = BaseUrl + "api/v1/user/otp/resendotp";
-const ForgotPassword = BaseUrl + "api/v1/mobilebanking/user/forgotpassword";
+const ForgotPassword = BaseUrl + "api/v1/user/forgotpassword";
 const ResetPassword = BaseUrl + "api/v1/mobilebanking/user/resetpassword";
 const ChequeRequest = [
   BaseUrl + "api/v1/chequerequest/register",
@@ -188,7 +188,7 @@ const ServerImages = {
   },
 };
 
-
+const CompanyDetail= BaseUrl + "api/v1/st_company/info";
 const PostException = BaseUrl + "api/v1/exception/log";
 const Notes = {
   List: BaseUrl + "api/v1/st_notes/list",
@@ -296,7 +296,7 @@ const Orders = {
   ListByParty: BaseUrl + "api/v1/st_order/list/byParty",
   Cancel: BaseUrl + "api/v1/st_order/cancel",
   Details: BaseUrl + "api/v1/st_order/details",
-  Save: BaseUrl + "api/v1/st_order/save",
+  Save: BaseUrl + "api/v1/st_order/save/byUser",
   Delete: BaseUrl + "api/v1/st_order/delete"
 }
 const Returns = {
@@ -359,7 +359,7 @@ const Task={
 
 const Request={
   Save:BaseUrl + "api/v1/st_requisitionform/save", 
-  List: BaseUrl + "api/v1/st_requisitionform/list",  
+  List: BaseUrl + "api/v1/st_requisitionform/list/byUser",  
   Details: BaseUrl +"api/v1/st_requisitionform/details", 
   // Delete: BaseUrl +"api/v1/st_tasks/delete"
 }
@@ -379,6 +379,8 @@ const Announcement={
 
 const DayLog={
   List:BaseUrl + "api/v1/st_daylog/list/byUser", 
+  Details: BaseUrl + "api/v1/st_daylog/details", 
+  Save: BaseUrl+ "api/v1/st_daylog/save"
 }
 
 const ApplicationSettingsByKey = BaseUrl + "api/v1/applicationsettings/valuebykey";
@@ -471,7 +473,7 @@ export default {
   Returns,
   ReturnReasons,
   ApplicationSettingsByKey,
-  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException, VisitPurpose, Vehicles, Fuel, Task, Request, BeatPlan, Announcement, DayLog
+  ContactUs, Reports, Deliver, Dispatch, PaymentDue, PostException, VisitPurpose, Vehicles, Fuel, Task, Request, BeatPlan, Announcement, DayLog, CompanyDetail
 };
 export const endPoints = {
   GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN

@@ -113,8 +113,8 @@ const Request = (props) => {
         /> :
         <View style={styles.container}>
            <View style={{alignSelf:"flex-end"}}>
-            {requestDetails?.IsCancelled?<Text style={{color:"orange"}}>Cancelled</Text>:requestDetails?.ApprovedOrRejected == true?
-            <Text style={{color:"green"}}>Approved</Text>:requestDetails?.ApprovedOrRejected == false?<Text style={{color:"red"}}>Rejected</Text>:<Text style={{color:"orange"}}>Requested</Text> }
+            {requestDetails?.IsCancelled?<Text style={{color:"orange"}}>Cancelled</Text>:requestDetails?.ApprovedOrRejected == "A"?
+            <Text style={{color:"green"}}>Approved</Text>:requestDetails?.ApprovedOrRejected == "R"?<Text style={{color:"red"}}>Rejected</Text>:<Text style={{color:"orange"}}>Requested</Text> }
            </View>
           <Text style={styles.noteHead}>{requestDetails.ItemName}</Text>
           <View style={styles.noteView}>
@@ -126,7 +126,7 @@ const Request = (props) => {
         </View>}
     </ScrollView>
         <View style={styles.buttons}>
-                <TouchableOpacity
+              { !(requestDetails?.ApprovedOrRejected == "A" || requestDetails?.ApprovedOrRejected == "R") && <TouchableOpacity
                     style={[styles.circle,{marginBottom: 8, backgroundColor:Colors.primary}]}
                     onPress={() => {
                       updateRequest()
@@ -134,7 +134,7 @@ const Request = (props) => {
                     }}
                 >
                     <BankingIcons.Edit fill={"white"} height={25} width={25}/>
-                </TouchableOpacity>
+                </TouchableOpacity>}
                 {/* <TouchableOpacity
                     style={[styles.circle, {backgroundColor:"#FF5F7F"}]}
                     onPress={() => {

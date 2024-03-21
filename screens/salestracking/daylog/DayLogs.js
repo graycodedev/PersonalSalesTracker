@@ -36,9 +36,12 @@ const DayLogs = ({ navigation }) => {
   };
 
   const handleReadMore = (note) => {
-    navigation.navigate("NoteInfo", { note });
+    navigation.navigate("DayLog", { note });
   };
   useEffect(() => {
+    navigation.setOptions({
+      title:"Day Logs"
+    });
     getList();
   }, [])
 
@@ -95,12 +98,12 @@ const DayLogs = ({ navigation }) => {
                     
                   <Text style={styles.noteText} numberOfLines={4}>{note.Content} </Text> 
                   </View>
-                  {/* <TouchableOpacity
+                  <TouchableOpacity
                     style={{ marginTop: 10, }}
                     onPress={() => handleReadMore(note)}
                   >
                     <Text style={{ fontSize: 16, fontWeight: '500', color: "#AE529B" }}>Read More ➔</Text>
-                  </TouchableOpacity> */}
+                  </TouchableOpacity>
                 </View>
               ))}
             </View>
@@ -108,17 +111,17 @@ const DayLogs = ({ navigation }) => {
         ) : (
           <View style={styles.noDataContainer}>
             <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
-            <Text style={[styles.noDataText, { fontSize: 20 }]}>No notes available</Text>
+            <Text style={[styles.noDataText, { fontSize: 20 }]}>No day logs available</Text>
           </View>
         )}
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={styles.circle}
             onPress={() => {
-              navigation.navigate('AddNote');
+              navigation.navigate('AddDayLog');
             }}
           >
             <BankingIcons.plus fill="white" />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
       </View> :
 
         <View style={styles.spinnercontainer}>

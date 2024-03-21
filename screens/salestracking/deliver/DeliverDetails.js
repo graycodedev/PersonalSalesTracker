@@ -25,6 +25,7 @@ import request from "../../../config/RequestManager";
 import qs from "qs"
 import Warning from "../../../components/Warning";
 import Spinner from "react-native-loading-spinner-overlay";
+import helpers from "../../../constants/Helpers";
 
 const DeliverDetails = ({ navigation, route }) => {
     const [deliver,setDeliver]= useState();
@@ -64,6 +65,7 @@ const DeliverDetails = ({ navigation, route }) => {
     const [quantityError, setQuantityError]= useState("");
     const [productError, setProductError]= useState("");
     const [partyError, setPartyError]= useState("");
+    const [userId, setUserId]= useState(0)
 
     useEffect(()=>{
      navigation.setOptions({
@@ -85,11 +87,13 @@ const DeliverDetails = ({ navigation, route }) => {
           setIsLoading(false);
 
 
-       
+    
 
     }, [])
 
     const getDetail = async () => {
+      let userId=  await helpers.GetUserId();
+      setUserId(userId)
         console.log('del', deliverId)
         var response = await (await request())
           .get(Api.Orders.Details + "?id=" + deliverId)
@@ -270,12 +274,12 @@ const DeliverDetails = ({ navigation, route }) => {
                         editable={false}
                     />
 
-<TouchableOpacity  onPress={()=>{
+{(deliver?.IsDispatched && !deliver?.IsCancelled && !deliver?.IsDelivered && userId !=0 && userId==deliver?.DeliveryPersonUserId) &&<TouchableOpacity  onPress={()=>{
                                 setShowConfirmDelivery(true);
                             }}>
                               <ButtonPrimary title={"CONFIRM DELIVERY"} />
                             </TouchableOpacity>
-                                
+                                }
 
 
             </View>

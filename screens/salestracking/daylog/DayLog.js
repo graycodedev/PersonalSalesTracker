@@ -11,6 +11,7 @@ import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import * as BankingIcons from "../../../components/BankingIcons";
 import WarningModal from "../../../components/WarningModal";
+import { DateDisplay } from "../../../components/DateDisplay";
 
 
 
@@ -20,13 +21,6 @@ const DayLog = (props) => {
   const [noteDetails, setNoteDetails] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [showConfirmDelete, setShowConfirmDelete]= useState(false);
-
-
-
-
-
- 
-
   useFocusEffect(
     React.useCallback(() => {
       getDetail();
@@ -39,6 +33,9 @@ const DayLog = (props) => {
   );
 
   useEffect(() => {
+    props.navigation.setOptions({
+      title:"Day Log"
+    });
     getDetail();
     setIsLoading(false);
   }, [])
@@ -46,7 +43,7 @@ const DayLog = (props) => {
 
   const getDetail = async () => {
     var response = await (await request())
-      .get(Api.Notes.Details + "?id=" + note.Id)
+      .get(Api.DayLog.Details + "?id=" + note.Id)
       .catch(function (error) {
         
         ToastMessage.Short("Error! Contact Support");
@@ -88,7 +85,7 @@ const DayLog = (props) => {
   }
 
   const updateNote=()=>{
-    props.navigation.navigate('AddNote', {update:true, note:noteDetails});
+    props.navigation.navigate('AddDayLog', {update:true, note:noteDetails});
   }
 
 
@@ -110,9 +107,9 @@ const DayLog = (props) => {
           textStyle={{ color: "#fff", fontFamily: "Light", fontSize: 14 }}
         /> :
         <View style={styles.container}>
-          <Text style={styles.noteHead}>{noteDetails.NoteTitle}</Text>
+          <Text style={styles.noteHead}><DateDisplay date={noteDetails.LogDate}/></Text>
           <View style={styles.noteView}>
-            <Text style={styles.noteText}>{noteDetails.Note}</Text>
+            <Text style={styles.noteText}>{noteDetails.Content}</Text>
           </View>
         </View>}
     </ScrollView>
