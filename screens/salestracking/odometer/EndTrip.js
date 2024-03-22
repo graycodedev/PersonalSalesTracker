@@ -8,7 +8,8 @@ import {
   ActivityIndicator,
   Text,
   Platform,
-  ImageBackground, Modal
+  ImageBackground,
+  Modal,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -26,12 +27,12 @@ import { ApiRequestWithImage } from "../../../components/ApiRequest";
 import helpers from "../../../constants/Helpers";
 import { Colors } from "../../style/Theme";
 import ToastMessage from "../../../components/Toast/Toast";
-import * as SVG from "../../../components/BankingIcons"
+import * as SVG from "../../../components/BankingIcons";
 import { Camera } from "expo-camera";
 import { AutoCompleteList } from "../../../components/AutoCompleteList";
 
 const EndTrip = (props) => {
-  const odometer= props.route.params.odometer;
+  const odometer = props.route.params.odometer;
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -41,7 +42,7 @@ const EndTrip = (props) => {
   const [photo, setPhoto] = useState(null);
   const cameraRef = useRef(null);
   const [selectedVehicle, setselectedVehicle] = useState();
-        const [showVehiclesList, setshowVehiclesList] = useState(false);
+  const [showVehiclesList, setshowVehiclesList] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({
@@ -51,7 +52,7 @@ const EndTrip = (props) => {
     (async () => {
       let { status } = await Camera.getCameraPermissionsAsync();
       if (status !== "granted") {
-        props.navigation.navigate("PermissionScreen", {type:"camera"});
+        props.navigation.navigate("PermissionScreen", { type: "camera" });
         return;
       }
     })();
@@ -87,7 +88,7 @@ const EndTrip = (props) => {
   const getLocation = async () => {
     let { status } = await Location.getForegroundPermissionsAsync();
     if (status !== "granted") {
-      props.navigation.navigate("PermissionScreen", {type:"location"});
+      props.navigation.navigate("PermissionScreen", { type: "location" });
       return;
     }
 
@@ -113,11 +114,11 @@ const EndTrip = (props) => {
     setIsLoading(true);
     var response = await (await request())
       .post(Api.Odometers.End, strData)
-      .catch(function(error) {
+      .catch(function (error) {
         setIsLoading(false);
         ToastMessage.Short("Error Occurred Contact Support");
       });
-      console.log(response.data)
+    // console.log(response.data)
     if (response != undefined) {
       if (response.data.Code == 200) {
         setIsLoading(false);
@@ -136,12 +137,11 @@ const EndTrip = (props) => {
   const updateselectedVehicle = (item) => {
     setselectedVehicle(item);
     setshowVehiclesList(false);
-}
+  };
 
-
-const onClose = () => {
+  const onClose = () => {
     setshowVehiclesList(false);
-}
+  };
 
   return (
     <ScrollView
@@ -152,31 +152,50 @@ const onClose = () => {
     >
       <View style={styles.container}>
         <View style={{ marginBottom: 15, zIndex: 99 }}>
-                    <TouchableOpacity onPress={() => setshowVehiclesList(true)} style={{ paddingLeft: 10, paddingVertical: 14, backgroundColor: "white", borderRadius: 5 }}>
+          <TouchableOpacity
+            onPress={() => setshowVehiclesList(true)}
+            style={{
+              paddingLeft: 10,
+              paddingVertical: 14,
+              backgroundColor: "white",
+              borderRadius: 5,
+            }}
+          >
+            <Text style={{ fontFamily: "Regular", fontSize: 14 }}>
+              {odometer.VehicleName + " - " + odometer.VehiclePlateNo}
+            </Text>
+          </TouchableOpacity>
 
-                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>{odometer.VehicleName + " - " + odometer.VehiclePlateNo}</Text>
-
-                    </TouchableOpacity>
-
-
-                    {showVehiclesList && (
-                        <AutoCompleteList
-                            autocompleteurl={Api.Vehicles.List}
-                            noItemFoundText={"No vehicles found!"}
-                            searchablePlaceholder="Search Vehicle"
-                            itemSelected={updateselectedVehicle}
-                            visible={showVehiclesList}
-                            onClose={() => onClose()}
-                            renderItem={(item) => (
-                                <View style={styles.item}>
-                                    <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>{item.VehicleName}</Text>
-                                    <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>{item.PlateNo}</Text>
-                                    <Text style={{ fontFamily: "Regular", fontSize: 14 }}>{item.FuelType =="p"?"Petrol":item.FuelType =="d"?"Diesel":item.FuelType =="e"?"Electric": item.FuelType}</Text>
-                                </View>
-                            )}
-                        />
-                    )}
+          {showVehiclesList && (
+            <AutoCompleteList
+              autocompleteurl={Api.Vehicles.List}
+              noItemFoundText={"No vehicles found!"}
+              searchablePlaceholder="Search Vehicle"
+              itemSelected={updateselectedVehicle}
+              visible={showVehiclesList}
+              onClose={() => onClose()}
+              renderItem={(item) => (
+                <View style={styles.item}>
+                  <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>
+                    {item.VehicleName}
+                  </Text>
+                  <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>
+                    {item.PlateNo}
+                  </Text>
+                  <Text style={{ fontFamily: "Regular", fontSize: 14 }}>
+                    {item.FuelType == "p"
+                      ? "Petrol"
+                      : item.FuelType == "d"
+                      ? "Diesel"
+                      : item.FuelType == "e"
+                      ? "Electric"
+                      : item.FuelType}
+                  </Text>
                 </View>
+              )}
+            />
+          )}
+        </View>
         <View>
           <RegularInputText
             key="endOdometer"
@@ -189,60 +208,73 @@ const onClose = () => {
           />
         </View>
 
-        <View style={{flexDirection:"row",  backgroundColor: "#e5e5e5", marginTop: 4}}>
-          <View style={{flex:5, padding: 12 }}>
-            <Text style={{fontFamily:"Regular"}}>{location ?location.lat + ", " + location.lng:"Fetch Location Failed !!"}</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            backgroundColor: "#e5e5e5",
+            marginTop: 4,
+          }}
+        >
+          <View style={{ flex: 5, padding: 12 }}>
+            <Text style={{ fontFamily: "Regular" }}>
+              {location
+                ? location.lat + ", " + location.lng
+                : "Fetch Location Failed !!"}
+            </Text>
           </View>
-          <TouchableOpacity style={{flex: 2, backgroundColor: Colors.primary, padding: 12}} onPress={async()=>await getLocation()}><Text style={{color: "white", alignSelf:"center"}}>Get Location</Text></TouchableOpacity>
+          <TouchableOpacity
+            style={{ flex: 2, backgroundColor: Colors.primary, padding: 12 }}
+            onPress={async () => await getLocation()}
+          >
+            <Text style={{ color: "white", alignSelf: "center" }}>
+              Get Location
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View style={{ marginTop: 20 }}>
-          {!photo ?  <View style={{ marginTop: 20 }}>
-          <Text style={{ fontFamily: "Medium", marginBottom: 20 }}>
-            Odometer Image
-          </Text>
-          <TouchableOpacity
-            style={{ justifyContent: "center", alignItems: "center" }}
-            onPress={handlePhotoUpload}
-          >
-            <View style={styles.ImagePicker}>
-             <SVG.Camera  fill={Colors.primary}  height={60} width={60} />
-            </View>
-          </TouchableOpacity>
-        </View>:
-          <View
-                  style={{
-                    height: 300,
-                    width: "100%",
-                     marginTop: 20
-                  }}
-                >
-                  <ImageBackground
-                    source={{
-                      uri: photo.uri,
-                    }}
-                  
-                    resizeMode="cover"
-                    style={{
-                      backgroundColor: "yellow",
-                      flex: 1,
-                      justifyContent: "center",
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={handlePhotoUpload}
-                      style={{ alignItems: "center" }}
-                    >
-                      <SVG.Camera
-                        height={50}
-                        width={50}
-                        fill={Colors.primary}
-                      />
-                    </TouchableOpacity>
-                  </ImageBackground>
+          {!photo ? (
+            <View style={{ marginTop: 20 }}>
+              <Text style={{ fontFamily: "Medium", marginBottom: 20 }}>
+                Odometer Image
+              </Text>
+              <TouchableOpacity
+                style={{ justifyContent: "center", alignItems: "center" }}
+                onPress={handlePhotoUpload}
+              >
+                <View style={styles.ImagePicker}>
+                  <SVG.Camera fill={Colors.primary} height={60} width={60} />
                 </View>
-        }
-
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View
+              style={{
+                height: 300,
+                width: "100%",
+                marginTop: 20,
+              }}
+            >
+              <ImageBackground
+                source={{
+                  uri: photo.uri,
+                }}
+                resizeMode="cover"
+                style={{
+                  backgroundColor: "yellow",
+                  flex: 1,
+                  justifyContent: "center",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={handlePhotoUpload}
+                  style={{ alignItems: "center" }}
+                >
+                  <SVG.Camera height={50} width={50} fill={Colors.primary} />
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+          )}
         </View>
 
         <View style={{ margin: 30 }}>
@@ -258,28 +290,33 @@ const onClose = () => {
       </View>
       {isCameraReady && (
         <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isCameraReady}
-        style={{flex: 1}}
+          animationType="slide"
+          transparent={true}
+          visible={isCameraReady}
+          style={{ flex: 1 }}
         >
-                <Camera
-                  ref={cameraRef}
-                  isCameraReady={isCameraReady}
-                  focusMode="continuous"
-                  style={{ flex: 1,zIndex: 999, justifyContent:"flex-end", alignItems:"center"}}
-                  ratio="16:9"
-                >
-                  {/* <Text> HI</Text> */}
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => takePhoto()}
-                    ></TouchableOpacity>
-                  </View>
-                </Camera>
-                </Modal>
-              )}
+          <Camera
+            ref={cameraRef}
+            isCameraReady={isCameraReady}
+            focusMode="continuous"
+            style={{
+              flex: 1,
+              zIndex: 999,
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+            ratio="16:9"
+          >
+            {/* <Text> HI</Text> */}
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => takePhoto()}
+              ></TouchableOpacity>
+            </View>
+          </Camera>
+        </Modal>
+      )}
     </ScrollView>
   );
 };
@@ -322,7 +359,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: "center",
     alignItems: "center",
-    bottom: 10
+    bottom: 10,
   },
   button: {
     height: 80,
@@ -336,8 +373,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginBottom: 5,
     backgroundColor: "#fff",
-    paddingLeft: 18
-},
+    paddingLeft: 18,
+  },
 });
 
 export default EndTrip;

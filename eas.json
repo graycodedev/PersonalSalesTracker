@@ -18,5 +18,12 @@
     "production": {}
   },
   "submit": {
+    "production": {
+      "ios": {
+        "appleId": "graycode.dev@gmail.com",
+        "ascAppId": "6479909950",
+        "appleTeamId": "6479909950"
+      }
+    }
   }
 }

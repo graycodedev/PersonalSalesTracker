@@ -8,7 +8,9 @@ import {
   ActivityIndicator,
   Text,
   Platform,
-  ImageBackground, Modal, BackHandler
+  ImageBackground,
+  Modal,
+  BackHandler,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -26,10 +28,9 @@ import ToastMessage from "../../../components/Toast/Toast";
 import { ApiRequestWithImage } from "../../../components/ApiRequest";
 import helpers from "../../../constants/Helpers";
 import { Colors } from "../../style/Theme";
-import * as SVG from "../../../components/BankingIcons"
+import * as SVG from "../../../components/BankingIcons";
 import { Camera } from "expo-camera";
 import { AutoCompleteList } from "../../../components/AutoCompleteList";
-
 
 const StartTrip = (props) => {
   const navigation = useNavigation();
@@ -38,24 +39,22 @@ const StartTrip = (props) => {
   const [startOdometer, setStartOdometer] = useState("");
   const [location, setLocation] = useState(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
-     const [selectedVehicle, setselectedVehicle] = useState();
-        const [showVehiclesList, setshowVehiclesList] = useState(false);
+  const [selectedVehicle, setselectedVehicle] = useState();
+  const [showVehiclesList, setshowVehiclesList] = useState(false);
   const [photo, setPhoto] = useState(null);
   const cameraRef = useRef(null);
-
-
 
   useEffect(() => {
     navigation.setOptions({
       title: "Start Trip",
     });
     BackHandler.addEventListener("hardwareBackPress", handleBackButton);
-   
+
     getLocation();
     (async () => {
       let { status } = await Camera.getCameraPermissionsAsync();
       if (status !== "granted") {
-        props.navigation.navigate("PermissionScreen", {type:"camera"});
+        props.navigation.navigate("PermissionScreen", { type: "camera" });
         return;
       }
     })();
@@ -64,12 +63,9 @@ const StartTrip = (props) => {
     };
   }, []);
 
-   const handleBackButton = async () => {
-    console.log("Back click", isCameraReady)
-    if (isCameraReady){
-      console.log("Back Clicked")
+  const handleBackButton = async () => {
+    if (isCameraReady) {
       setIsCameraReady(false);
-
     }
   };
 
@@ -125,11 +121,13 @@ const StartTrip = (props) => {
       StartLongitude: location.lng,
       StartOdometer: startOdometer,
     };
-    let checkNull= Object.keys(data).filter(key => data[key] === null || data[key] === undefined);
-      if(checkNull.length>0){
-        alert(checkNull); 
-        return;
-      }
+    let checkNull = Object.keys(data).filter(
+      (key) => data[key] === null || data[key] === undefined
+    );
+    if (checkNull.length > 0) {
+      alert(checkNull);
+      return;
+    }
 
     let imageData = {
       ImageFile: photo.uri,
@@ -139,7 +137,6 @@ const StartTrip = (props) => {
       data,
       imageData
     );
-
 
     if (response != undefined) {
       if (response.data.Code == 200) {
@@ -158,15 +155,14 @@ const StartTrip = (props) => {
 
   const isFormFilled = startOdometer && location;
 
-  
-    const onClose = () => {
-        setshowVehiclesList(false);
-    }
+  const onClose = () => {
+    setshowVehiclesList(false);
+  };
 
-     const updateselectedVehicle = (item) => {
-        setselectedVehicle(item);
-        setshowVehiclesList(false);
-    }
+  const updateselectedVehicle = (item) => {
+    setselectedVehicle(item);
+    setshowVehiclesList(false);
+  };
 
   return (
     <ScrollView
@@ -177,31 +173,53 @@ const StartTrip = (props) => {
     >
       <View style={styles.container}>
         <View style={{ marginBottom: 15, zIndex: 99 }}>
-                    <TouchableOpacity onPress={() => setshowVehiclesList(true)} style={{ paddingLeft: 10, paddingVertical: 14, backgroundColor: "white", borderRadius: 5 }}>
+          <TouchableOpacity
+            onPress={() => setshowVehiclesList(true)}
+            style={{
+              paddingLeft: 10,
+              paddingVertical: 14,
+              backgroundColor: "white",
+              borderRadius: 5,
+            }}
+          >
+            <Text style={{ fontFamily: "Regular", fontSize: 14 }}>
+              {" "}
+              {!selectedVehicle
+                ? "Select Vehicle"
+                : selectedVehicle.VehicleName + " - " + selectedVehicle.PlateNo}
+            </Text>
+          </TouchableOpacity>
 
-                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedVehicle ? "Select Vehicle" : selectedVehicle.VehicleName +" - "+  selectedVehicle.PlateNo}</Text>
-
-                    </TouchableOpacity>
-
-
-                    {showVehiclesList && (
-                        <AutoCompleteList
-                            autocompleteurl={Api.Vehicles.List}
-                            noItemFoundText={"No vehicles found!"}
-                            searchablePlaceholder="Search Vehicle"
-                            itemSelected={updateselectedVehicle}
-                            visible={showVehiclesList}
-                            onClose={() => onClose()}
-                            renderItem={(item) => (
-                                <View style={styles.item}>
-                                    <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>{item.VehicleName}</Text>
-                                    <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>{item.PlateNo}</Text>
-                                    <Text style={{ fontFamily: "Regular", fontSize: 14 }}>{item.FuelType =="p"?"Petrol":item.FuelType =="d"?"Diesel":item.FuelType =="e"?"Electric": item.FuelType}</Text>
-                                </View>
-                            )}
-                        />
-                    )}
+          {showVehiclesList && (
+            <AutoCompleteList
+              autocompleteurl={Api.Vehicles.List}
+              noItemFoundText={"No vehicles found!"}
+              searchablePlaceholder="Search Vehicle"
+              itemSelected={updateselectedVehicle}
+              visible={showVehiclesList}
+              onClose={() => onClose()}
+              renderItem={(item) => (
+                <View style={styles.item}>
+                  <Text style={{ fontFamily: "SemiBold", fontSize: 16 }}>
+                    {item.VehicleName}
+                  </Text>
+                  <Text style={{ fontFamily: "SemiBold", fontSize: 14 }}>
+                    {item.PlateNo}
+                  </Text>
+                  <Text style={{ fontFamily: "Regular", fontSize: 14 }}>
+                    {item.FuelType == "p"
+                      ? "Petrol"
+                      : item.FuelType == "d"
+                      ? "Diesel"
+                      : item.FuelType == "e"
+                      ? "Electric"
+                      : item.FuelType}
+                  </Text>
                 </View>
+              )}
+            />
+          )}
+        </View>
         <View>
           <RegularInputText
             key="startOdometer"
@@ -213,58 +231,72 @@ const StartTrip = (props) => {
             keyboardType="numeric"
           />
         </View>
-        <View style={{flexDirection:"row",  backgroundColor: "#e5e5e5", marginTop: 4}}>
-          <View style={{flex:5, padding: 12 }}>
-            <Text style={{fontFamily:"Regular"}}>{location ?location.lat + ", " + location.lng:"Fetch Location Failed !!"}</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            backgroundColor: "#e5e5e5",
+            marginTop: 4,
+          }}
+        >
+          <View style={{ flex: 5, padding: 12 }}>
+            <Text style={{ fontFamily: "Regular" }}>
+              {location
+                ? location.lat + ", " + location.lng
+                : "Fetch Location Failed !!"}
+            </Text>
           </View>
-          <TouchableOpacity style={{flex: 2, backgroundColor: Colors.primary, padding: 12}} onPress={async()=>await getLocation()}><Text style={{color: "white", alignSelf:"center"}}>Get Location</Text></TouchableOpacity>
+          <TouchableOpacity
+            style={{ flex: 2, backgroundColor: Colors.primary, padding: 12 }}
+            onPress={async () => await getLocation()}
+          >
+            <Text style={{ color: "white", alignSelf: "center" }}>
+              Get Location
+            </Text>
+          </TouchableOpacity>
         </View>
 
-      {!photo ?  <View style={{ marginTop: 20 }}>
-          <Text style={{ fontFamily: "Medium", marginBottom: 20 }}>
-            Odometer Image
-          </Text>
-          <TouchableOpacity
-            style={{ justifyContent: "center", alignItems: "center" }}
-            onPress={handlePhotoUpload}
-          >
-            <View style={styles.ImagePicker}>
-             <SVG.Camera  fill={Colors.primary}  height={60} width={60} />
-            </View>
-          </TouchableOpacity>
-        </View>:
+        {!photo ? (
+          <View style={{ marginTop: 20 }}>
+            <Text style={{ fontFamily: "Medium", marginBottom: 20 }}>
+              Odometer Image
+            </Text>
+            <TouchableOpacity
+              style={{ justifyContent: "center", alignItems: "center" }}
+              onPress={handlePhotoUpload}
+            >
+              <View style={styles.ImagePicker}>
+                <SVG.Camera fill={Colors.primary} height={60} width={60} />
+              </View>
+            </TouchableOpacity>
+          </View>
+        ) : (
           <View
-                  style={{
-                    height: 300,
-                    width: "100%",
-                     marginTop: 20
-                  }}
-                >
-                  <ImageBackground
-                    source={{
-                      uri: photo.uri,
-                    }}
-                  
-                    resizeMode="cover"
-                    style={{
-                      backgroundColor: "yellow",
-                      flex: 1,
-                      justifyContent: "center",
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={handlePhotoUpload}
-                      style={{ alignItems: "center" }}
-                    >
-                      <SVG.Camera
-                        height={50}
-                        width={50}
-                        fill={Colors.primary}
-                      />
-                    </TouchableOpacity>
-                  </ImageBackground>
-                </View>
-        }
+            style={{
+              height: 300,
+              width: "100%",
+              marginTop: 20,
+            }}
+          >
+            <ImageBackground
+              source={{
+                uri: photo.uri,
+              }}
+              resizeMode="cover"
+              style={{
+                backgroundColor: "yellow",
+                flex: 1,
+                justifyContent: "center",
+              }}
+            >
+              <TouchableOpacity
+                onPress={handlePhotoUpload}
+                style={{ alignItems: "center" }}
+              >
+                <SVG.Camera height={50} width={50} fill={Colors.primary} />
+              </TouchableOpacity>
+            </ImageBackground>
+          </View>
+        )}
 
         <View style={{ margin: 30 }}>
           <TouchableOpacity
@@ -286,28 +318,33 @@ const StartTrip = (props) => {
       </View>
       {isCameraReady && (
         <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isCameraReady}
-        style={{flex: 1}}
+          animationType="slide"
+          transparent={true}
+          visible={isCameraReady}
+          style={{ flex: 1 }}
         >
-                <Camera
-                  ref={cameraRef}
-                  isCameraReady={isCameraReady}
-                  focusMode="continuous"
-                  style={{ flex: 1,zIndex: 999, justifyContent:"flex-end", alignItems:"center"}}
-                  ratio="16:9"
-                >
-                  {/* <Text> HI</Text> */}
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => takePhoto()}
-                    ></TouchableOpacity>
-                  </View>
-                </Camera>
-                </Modal>
-              )}
+          <Camera
+            ref={cameraRef}
+            isCameraReady={isCameraReady}
+            focusMode="continuous"
+            style={{
+              flex: 1,
+              zIndex: 999,
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+            ratio="16:9"
+          >
+            {/* <Text> HI</Text> */}
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => takePhoto()}
+              ></TouchableOpacity>
+            </View>
+          </Camera>
+        </Modal>
+      )}
     </ScrollView>
   );
 };
@@ -335,7 +372,6 @@ const styles = StyleSheet.create({
     borderColor: "#9A9A9A",
     justifyContent: "center",
     alignItems: "center",
-
   },
   image: {
     width: "100%",
@@ -351,7 +387,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: "center",
     alignItems: "center",
-    bottom: 10
+    bottom: 10,
   },
   button: {
     height: 80,
@@ -365,8 +401,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginBottom: 5,
     backgroundColor: "#fff",
-    paddingLeft: 18
-},
+    paddingLeft: 18,
+  },
 });
 
 export default StartTrip;

@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import * as BankingIcons from "../../../components/BankingIcons";
@@ -14,7 +14,7 @@ import { Colors } from "../../style/Theme";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
 import Api from "../../../constants/Api";
-import {DateDisplay} from "../../../components/DateDisplay";
+import { DateDisplay } from "../../../components/DateDisplay";
 import AppStyles from "../../../assets/theme/AppStyles";
 
 const wait = (timeout) => {
@@ -45,7 +45,7 @@ const CollectionList = ({ navigation }) => {
       if (response != undefined) {
         if (response.data.Code == 200) {
           setCollections(response.data.Data);
-          console.log(response.data.Data[0])
+          // console.log(response.data.Data[0])
         } else {
           ToastMessage.Short("Error Loading Collections");
         }
@@ -86,13 +86,29 @@ const CollectionList = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           style={{ width: "100%", backgroundColor: "#eee" }}
           contentContainerStyle={{ flexGrow: 1 }}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           <TouchableOpacity
             onPress={() => navigation.navigate("PaymentDueList")}
-            style={{ flexDirection: "row", justifyContent: "flex-end", paddingTop: 8, right: 25 }}
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              paddingTop: 8,
+              right: 25,
+            }}
           >
-            <Text style={{ fontSize: 14, fontFamily: "Regular", color: Colors.primary, textDecorationLine: "underline" }}>view dues</Text>
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: "Regular",
+                color: Colors.primary,
+                textDecorationLine: "underline",
+              }}
+            >
+              view dues
+            </Text>
           </TouchableOpacity>
 
           {collections.length > 0 ? (
@@ -125,7 +141,9 @@ const CollectionList = ({ navigation }) => {
           ) : (
             <View style={{ alignItems: "center", paddingTop: 20 }}>
               <BankingIcons.norecords height={60} width={60} fill={"#FFD21E"} />
-              <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>No collections available !!</Text>
+              <Text style={[AppStyles.Text.BoldTitle, { fontSize: 20 }]}>
+                No collections available !!
+              </Text>
             </View>
           )}
         </ScrollView>

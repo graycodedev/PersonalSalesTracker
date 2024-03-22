@@ -9,8 +9,9 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
-  Text, 
-  Alert, BackHandler
+  Text,
+  Alert,
+  BackHandler,
 } from "react-native";
 import { CommonActions } from "@react-navigation/native";
 import api, { endPoints } from "../constants/Api";
@@ -57,35 +58,36 @@ class Home extends React.Component {
       IosAppstoreUrl: "",
       IosPrimaryColor: "",
       compInfo: null,
-      company: null
+      company: null,
     };
-this.subscription;
+    this.subscription;
     // this.handleIos();
     this.GetUserInfo();
 
-   
     this.getLogoPathHeader();
-  
+
     // this.getOffers();
   }
 
   componentDidMount() {
     this.GetCompanyInfo();
- this.getToken()
+    //  this.getToken()
     this.props.navigation.setOptions({
       title: "",
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
- this.subscription=  AppState.addEventListener("change", this._handleAppStateChange);
-
+    this.subscription = AppState.addEventListener(
+      "change",
+      this._handleAppStateChange
+    );
   }
 
-  getToken=async()=>{
-    console.log( await DeviceStorage.getKey("token"));
-  }
+  getToken = async () => {
+    console.log(await DeviceStorage.getKey("token"));
+  };
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
-   this.subscription.remove();
+    this.subscription.remove();
   }
   _handleAppStateChange = async (nextAppState) => {
     if (
@@ -93,14 +95,14 @@ this.subscription;
       nextAppState === "active"
     ) {
       //app forground dont call on mount;
-     await DeviceStorage.getKey("refreshtoken").then((t) => {
+      await DeviceStorage.getKey("refreshtoken").then((t) => {
         if (t == null || t == "") {
           this.props.navigation.navigate("SignIn");
         }
       });
     }
     this.setState({ appState: nextAppState });
-  }
+  };
 
   handleBackButton = async () => {
     var currentScreen = await DeviceStorage.getKey("currentScreen");
@@ -138,12 +140,10 @@ this.subscription;
 
         return true;
       }
-
     }
-
   };
   GetCompanyInfo = async () => {
-    let companyId= (await helpers.GetUserInfo()).CompanyId;
+    let companyId = (await helpers.GetUserInfo()).CompanyId;
     let compInfo = await helpers.GetCompanyDetails(companyId);
     this.setState({ company: compInfo });
   };
@@ -165,9 +165,6 @@ this.subscription;
       }
     }
   };
- 
-  
- 
 
   _onRefresh = async () => {
     await this.GetUserInfo();
@@ -185,7 +182,7 @@ this.subscription;
       : api.CompanyId;
     var response = await (await request())
       .get(api.Offers.Home + companyId)
-      .catch(function(error) {
+      .catch(function (error) {
         ToastMessage.Short("Error! Contact Support");
       });
     if (response != undefined) {
@@ -215,26 +212,27 @@ this.subscription;
           />
         }
       >
-         <View style={styles.headerAndCard}>
-         <View style={styles.headContainer} />
+        <View style={styles.headerAndCard}>
+          <View style={styles.headContainer} />
           <BankingIcons.ScreenheaderEllipse
             width="100%"
             fill="white"
             style={styles.ellipse}
             resizeMode="cover"
           />
-           <View style={styles.accountAndBankName}>
+          <View style={styles.accountAndBankName}>
             <Text style={{ fontSize: 16, color: "white", fontFamily: "Bold" }}>
               Hi, {this.state.fullName}
             </Text>
-           {this.state.company &&  <Text
-              style={{ fontSize: 12, color: "white", fontFamily: "Regular" }}
-            >
-              WELCOME TO{" "}
-              {this.state.company.Name}
-            </Text>}
-          </View> 
-           <View style={styles.notificationAndProfile}>
+            {this.state.company && (
+              <Text
+                style={{ fontSize: 12, color: "white", fontFamily: "Regular" }}
+              >
+                WELCOME TO {this.state.company.Name}
+              </Text>
+            )}
+          </View>
+          <View style={styles.notificationAndProfile}>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("Notifications");
@@ -262,24 +260,18 @@ this.subscription;
                 />
               ) : (
                 <View>
-                <ProfileIcon height={25} width={25} fill={"white"} />
+                  <ProfileIcon height={25} width={25} fill={"white"} />
                 </View>
               )}
             </TouchableOpacity>
-          </View> 
-             <View style={styles.swiper}>
-                        <AccountCard
-                          navigation={this.props.navigation}
-                          data={"blank"}
-                        />
-            
-            
-            </View>  
-        </View> 
+          </View>
+          <View style={styles.swiper}>
+            <AccountCard navigation={this.props.navigation} data={"blank"} />
+          </View>
+        </View>
 
-         <DashBoardServices navigation={this.props.navigation} />  
+        <DashBoardServices navigation={this.props.navigation} />
 
-   
         {/* <View style={{ paddingBottom: 20 }}>
           {this.state.offers && this.state.offers.length > 0 && (
             <ImgSlider
@@ -288,7 +280,6 @@ this.subscription;
             />
           )}
         </View>   */}
-      
       </ScrollView>
     );
   }
@@ -437,5 +428,3 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
-
-

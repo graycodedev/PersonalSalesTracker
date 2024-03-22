@@ -55,61 +55,7 @@ const ApiRequestGet = async (route, data) => {
 };
 
 const ApiRequestWithImage = async (route, data, imageData) => {
-  try{
-    
-  await TokenManager.restoreNewToken();
-  const access_token = await DeviceStorage.getKey("token");
-
-  const formData = new FormData();
-  for (const key in data) {
-    if (data.hasOwnProperty(key)) {
-      formData.append(key, data[key]);
-    }
-  }
-  for (const key in imageData) {
-    if (imageData.hasOwnProperty(key)) {
-      formData.append(key, {
-        uri: imageData[key],
-        type: "image/png",
-        name: "photo",
-      });
-    }
-  }
-//   console.log("Form ", formData, route)
-//  await  axios.post(route, formData, {
-//     headers: {
-//       Authorization: `Bearer ${access_token}`,
-//       "Content-Type": "multipart/form-data",
-//       "Access-Control-Allow-Origin": "*",
-//     },
-//   })
-//   .then(response => {
-//     return response
-//   })
-//   .catch(error => {
-//     // Handle error
-//     console.log("Error",error);
-//   });
-
-  const response = await axios.post(route, formData, {
-    headers: {
-      Authorization: `Bearer ${access_token}`,
-      "Content-Type": "multipart/form-data",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
-
-  return response; // Return the response if successful
-  }
-  catch(error){
-    // await helpers.PostException("while sending images"+ error); 
-    // ToastMessage.Short(error);
-    throw error;
-  }
-};
-const ApiRequestWithImageAndFiles = async ({route, data, imageData=null,files=null}) => {
-  try{
-    console.log("Filesss", files)
+  try {
     await TokenManager.restoreNewToken();
     const access_token = await DeviceStorage.getKey("token");
 
@@ -119,7 +65,6 @@ const ApiRequestWithImageAndFiles = async ({route, data, imageData=null,files=nu
         formData.append(key, data[key]);
       }
     }
-    if(imageData != null && Object.keys(imageData).length >0){
     for (const key in imageData) {
       if (imageData.hasOwnProperty(key)) {
         formData.append(key, {
@@ -129,36 +74,88 @@ const ApiRequestWithImageAndFiles = async ({route, data, imageData=null,files=nu
         });
       }
     }
-  }
+    //   console.log("Form ", formData, route)
+    //  await  axios.post(route, formData, {
+    //     headers: {
+    //       Authorization: `Bearer ${access_token}`,
+    //       "Content-Type": "multipart/form-data",
+    //       "Access-Control-Allow-Origin": "*",
+    //     },
+    //   })
+    //   .then(response => {
+    //     return response
+    //   })
+    //   .catch(error => {
+    //     // Handle error
+    //     console.log("Error",error);
+    //   });
 
-  if(files != null && files.length >0){
-    console.log("Files", files)
-        files.forEach((file, index) => {
-          const fle = {
-            uri: file.uri,
-            type: file.mimeType,
-            name: file.name,
-          };
-          formData.append("Files", fle);
-        })
+    const response = await axios.post(route, formData, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        "Content-Type": "multipart/form-data",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+
+    return response; // Return the response if successful
+  } catch (error) {
+    // await helpers.PostException("while sending images"+ error);
+    // ToastMessage.Short(error);
+    throw error;
+  }
+};
+const ApiRequestWithImageAndFiles = async ({
+  route,
+  data,
+  imageData = null,
+  files = null,
+}) => {
+  try {
+    await TokenManager.restoreNewToken();
+    const access_token = await DeviceStorage.getKey("token");
+
+    const formData = new FormData();
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        formData.append(key, data[key]);
       }
+    }
+    if (imageData != null && Object.keys(imageData).length > 0) {
+      for (const key in imageData) {
+        if (imageData.hasOwnProperty(key)) {
+          formData.append(key, {
+            uri: imageData[key],
+            type: "image/png",
+            name: "photo",
+          });
+        }
+      }
+    }
 
-     
-    var res= await axios.post(route, formData, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-          "Content-Type": "multipart/form-data",
-          "Access-Control-Allow-Origin": "*",
-        },
+    if (files != null && files.length > 0) {
+      files.forEach((file, index) => {
+        const fle = {
+          uri: file.uri,
+          type: file.mimeType,
+          name: file.name,
+        };
+        formData.append("Files", fle);
       });
-      return await res;
+    }
+
+    var res = await axios.post(route, formData, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        "Content-Type": "multipart/form-data",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    return await res;
+  } catch (error) {
+    await helpers.PostException("while sending images" + error);
+    ToastMessage.Short(error);
   }
-  catch(error){
-    await helpers.PostException("while sending images"+ error); 
-    ToastMessage.Short(error)
-  }
- 
- 
 };
 
 function createQueryString(data) {
@@ -177,4 +174,9 @@ function createQueryString(data) {
   return params;
 }
 
-export { ApiRequestGet, ApiRequestPost, ApiRequestWithImage, ApiRequestWithImageAndFiles };
+export {
+  ApiRequestGet,
+  ApiRequestPost,
+  ApiRequestWithImage,
+  ApiRequestWithImageAndFiles,
+};
