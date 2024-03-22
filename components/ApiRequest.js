@@ -107,8 +107,9 @@ const ApiRequestWithImage = async (route, data, imageData) => {
     throw error;
   }
 };
-const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
+const ApiRequestWithImageAndFiles = async ({route, data, imageData=null,files=null}) => {
   try{
+    console.log("Filesss", files)
     await TokenManager.restoreNewToken();
     const access_token = await DeviceStorage.getKey("token");
 
@@ -118,7 +119,7 @@ const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
         formData.append(key, data[key]);
       }
     }
-    if(Object.keys(imageData).length >0){
+    if(imageData != null && Object.keys(imageData).length >0){
     for (const key in imageData) {
       if (imageData.hasOwnProperty(key)) {
         formData.append(key, {
@@ -129,7 +130,9 @@ const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
       }
     }
   }
-   
+
+  if(files != null && files.length >0){
+    console.log("Files", files)
         files.forEach((file, index) => {
           const fle = {
             uri: file.uri,
@@ -138,6 +141,7 @@ const ApiRequestWithImageAndFiles = async (route, data, imageData,files) => {
           };
           formData.append("Files", fle);
         })
+      }
 
      
     var res= await axios.post(route, formData, {

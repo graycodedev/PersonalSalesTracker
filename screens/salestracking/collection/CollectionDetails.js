@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Text } from "react-native";
 import DetailCard from "../../../components/DetailCard";
 import {DateDisplay} from "../../../components/DateDisplay";
+import ImageCard from "../../../components/ImageCard";
+import Api from "../../../constants/Api";
 
 const CollectionDetails = ({ navigation, route }) => {
     useEffect(() => {
-        const { collection } = route.params;
         navigation.setOptions({
-            title: collection ? `Collection Details - ${collection.PartyName}` : "Collection Details",
+            title: "Collection Details"
         });
     }, [route.params]);
 
@@ -41,9 +42,10 @@ const CollectionDetails = ({ navigation, route }) => {
             nestedScrollEnabled={true}
             showsVerticalScrollIndicator={false}
             style={{ width: "100%", backgroundColor: "#eee" }}
-            contentContainerStyle={{ flexGrow: 1 }}
         >
             <DetailCard details={collectionDetails} />
+            {collection?.Image && <ImageCard containerStyle={{
+      width: "100%", paddingHorizontal: 20}} uri={Api.BaseUrl + collection.Image.slice(1)}/>}
         </ScrollView>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
     View,
     Image,
@@ -8,8 +8,8 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     Text,
+    Modal, ImageBackground
 } from "react-native";
-import { Modal } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { ButtonPrimary } from "../../../components/Button";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -23,6 +23,10 @@ import Api from "../../../constants/Api";
 import qs from "qs";
 import request from "../../../config/RequestManager";
 import ToastMessage from "../../../components/Toast/Toast";
+import * as SVG from "../../../components/BankingIcons"
+import { Camera } from "expo-camera";
+import { Colors } from "../../style/Theme";
+import { ApiRequestWithImage } from "../../../components/ApiRequest";
 
 
 const AddCollection = (props) => {
@@ -33,6 +37,9 @@ const AddCollection = (props) => {
     const [amount, setAmount] = useState("");
     const [mode, setMode] = useState("");
     const [note, setNote] = useState("");
+      const [photo, setPhoto] = useState(null);
+  const cameraRef = useRef(null);
+    const [isCameraReady, setIsCameraReady] = useState(false);
 
 
     const [showPartiesList, setShowPartiesList] = useState(false);
@@ -87,28 +94,27 @@ const AddCollection = (props) => {
     }
 
     const saveCollection = async () => {
-        console.log('Selected Image:', selectedImage);
-        console.log('Selected Party:', selectedParty);
+        
 
-        let strData = qs.stringify({
+        let strData = {
             Id: 0,
             PartyId: selectedParty.Id,  // Make sure PartyId is present
             PaymentDate: formattedDate,
             PaymentMode: mode,
             Remarks: note,
-            Amount: amount,
-        });
+            Amount: amount, 
+        };
 
-        console.log('Data being sent to API:', strData);
+        let imageData={
+            ImageFile: photo.uri
+        }
+        
 
 
         setIsLoading(true);
-        var response = await (await request())
-            .post(Api.Collections.Save, strData)
-            .catch(function (error) {
-                setIsLoading(false);
-                ToastMessage.Short("Error Occurred Contact Support");
-            });
+
+        var response= await ApiRequestWithImage(Api.Collections.Save,strData,imageData)
+        
         if (response != undefined) {
             if (response.data.Code == 200) {
                 setIsLoading(false);
@@ -124,6 +130,20 @@ const AddCollection = (props) => {
         setIsLoading(false);
 
     }
+
+    const handlePhotoUpload = async () => {
+    setIsCameraReady(true);
+    if (!cameraRef.current) {
+      return;
+    }
+  };
+
+  const takePhoto = async () => {
+    const options = { quality: 1, base64: true };
+    var photo = await cameraRef.current.takePictureAsync(options);
+    setPhoto(photo);
+    setIsCameraReady(false);
+  };
     return (
         <ScrollView
             nestedScrollEnabled={true}
@@ -240,18 +260,51 @@ const AddCollection = (props) => {
                     />
                 </View>
 
-                <View style={{ marginTop: 20 }}>
-                    <Text style={{ fontFamily: "Medium", color: "#9A9A9A", marginBottom: 20 }}>Select Image (Optional)</Text>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={pickImage}>
-                        <View style={styles.ImagePicker}>
-                            {selectedImage ? (
-                                <Image style={styles.image} source={{ uri: selectedImage }} />
-                            ) : (
-                                <Image style={styles.defaultImage} source={require('../../../assets/newImg/plus.png')} />
-                            )}
-                        </View>
+                {!photo ?  <View style={{ marginTop: 20 }}>
+          <Text style={{ fontFamily: "Medium", marginBottom: 20 }}>
+            Collection Image
+          </Text>
+          <TouchableOpacity
+            style={{ justifyContent: "center", alignItems: "center" }}
+            onPress={handlePhotoUpload}
+          >
+            <View style={styles.ImagePicker}>
+             <SVG.Camera  fill={Colors.primary}  height={60} width={60} />
+            </View>
+          </TouchableOpacity>
+        </View>:
+          <View
+                  style={{
+                    height: 300,
+                    width: "100%",
+                     marginTop: 20
+                  }}
+                >
+                  <ImageBackground
+                    source={{
+                      uri: photo.uri,
+                    }}
+                  
+                    resizeMode="cover"
+                    style={{
+                      backgroundColor: "yellow",
+                      flex: 1,
+                      justifyContent: "center",
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={handlePhotoUpload}
+                      style={{ alignItems: "center" }}
+                    >
+                      <SVG.Camera
+                        height={50}
+                        width={50}
+                        fill={Colors.primary}
+                      />
                     </TouchableOpacity>
+                  </ImageBackground>
                 </View>
+        }
 
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
@@ -270,6 +323,30 @@ const AddCollection = (props) => {
 
 
             </View>
+             {isCameraReady && (
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isCameraReady}
+        style={{flex: 1}}
+        >
+                <Camera
+                  ref={cameraRef}
+                  isCameraReady={isCameraReady}
+                  focusMode="continuous"
+                  style={{ flex: 1,zIndex: 999, justifyContent:"flex-end", alignItems:"center"}}
+                  ratio="16:9"
+                >
+                  {/* <Text> HI</Text> */}
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => takePhoto()}
+                    ></TouchableOpacity>
+                  </View>
+                </Camera>
+                </Modal>
+              )}
         </ScrollView >
     )
 };
@@ -310,6 +387,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         paddingLeft: 18
     },
+    button: {
+        height: 80,
+        width: 80,
+        borderRadius: 40,
+        backgroundColor: "white",
+      },
 });
 
 export default AddCollection;

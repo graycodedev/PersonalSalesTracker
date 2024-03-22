@@ -17,25 +17,32 @@ import Api from "../../../constants/Api";
 import ToastMessage from "../../../components/Toast/Toast";
 import request from "../../../config/RequestManager";
 import { AutoCompleteList } from "../../../components/AutoCompleteList";
+import Toast from "../../../components/Toast";
 
 const ReturnOrder = (props) => {
     const update = props.route.params?.update;
     const returnItem = props.route.params?.returnItem;
+    console.log("item",returnItem)
     const [remark, setRemark] = useState(returnItem?.Remarks);
-    const [returnReason, setReturnReason] = useState(returnItem?.ReturnReasonTitle);
-    const [productName, setProductName] = useState(returnItem?.ProductName);
+    const [returnReason, setReturnReason] = useState();
+    const [productName, setProductName] = useState();
     const [quantity, setQuantity] = useState(returnItem?.Quantity);
     const [isLoading, setIsLoading] = useState(false);
     const [returnReasons, setReturnReasons] = useState([]);
     const [productNames, setProductNames] = useState([]);
     const [showPartiesList, setShowPartiesList] = useState(false);
     const [selectedParty, setSelectedParty] = useState();
+    const [toastMessage, setToastMessage]= useState("");
 
     const navigation = useNavigation();
     useEffect(() => {
         navigation.setOptions({
             title: update ? "Update Order Return" : "Return Order",
         });
+        if(update){
+            setReturnReason({value: returnItem?.OrderReturnReasonId, label: returnItem?.ReturnReasonTitle});
+            setProductName({value: returnItem?.ProductId, label: returnItem?.ProductName});
+        }
         fetchReturnReasons();
         fetchProductNames();
     }, []);
@@ -84,22 +91,22 @@ const ReturnOrder = (props) => {
     };
 
     const saveReturn = async () => {
+        console.log("REason",returnReason)
         let strData = qs.stringify({
             Id: update ? returnItem.Id : 0,
-            CompanyId: 1,
-            OrderReturnReasonId: returnReason,
-            ProductId: productName,
+            OrderReturnReasonId: returnReason.value,
+            ProductId: productName.value,
             Quantity: quantity,
             Remarks: remark,
-            PartyId: selectedParty.Id
-        })
-        console.log("Str", strData)
+            PartyId: update?returnItem?.PartyId:selectedParty.Id, 
+        }); 
+        console.log(strData);
         setIsLoading(true);
         var response = await (await request())
             .post(Api.Returns.Save, strData)
             .catch(function (error) {
                 setIsLoading(false);
-                ToastMessage.Short("Error! Contact Support");
+                setToastMessage("Error! Contact Support");
             });
         if (response != undefined) {
             if (response.data.Code == 200) {
@@ -107,10 +114,10 @@ const ReturnOrder = (props) => {
                 navigation.goBack();
                 return response.data.Data;
             } else {
-                ToastMessage.Short(response.data.Message);
+                setToastMessage(response.data.Message);
             }
         } else {
-            ToastMessage.Short("Error! Contact Support");
+            setToastMessage("Error! Contact Support");
         }
         setIsLoading(false);
     }
@@ -137,7 +144,7 @@ const ReturnOrder = (props) => {
           >
             <Text style={{ fontFamily: "Regular", fontSize: 14 }}>
               {" "}
-              {!selectedParty ? "Add Party" : selectedParty.PartyName}
+              {!selectedParty ? update?returnItem?.PartyName??"No Party Name":"Add Party" : selectedParty.PartyName}
             </Text>
           </TouchableOpacity>
           {showPartiesList && (
@@ -184,13 +191,13 @@ const ReturnOrder = (props) => {
                             color: "#9A9A9A",
                         }}
                         arrowColor={"#9A9A9A"}
-                        placeholder="Return Reason"
+                        placeholder={update?returnReason?.label:"Return Reason"}
                         label="Return Reason"
                         items={returnReasons.map((returnReason) => ({
                             label: returnReason.ReturnReasonTitle,
                             value: returnReason.Id,
                         }))}
-                        onChangeItem={item => setReturnReason(item.value)}
+                        onChangeItem={item => setReturnReason(item)}
                     />
                 </View>
 
@@ -214,20 +221,20 @@ const ReturnOrder = (props) => {
                             color: "#9A9A9A",
                         }}
                         arrowColor={"#9A9A9A"}
-                        placeholder="Product Name"
+                        placeholder={update?productName?.label:"Product Name"}
                         label="Product Name"
                         items={productNames.map((product) => ({
                             label: product.ProductName,
                             value: product.Id,
                         }))}
-                        onChangeItem={item => setProductName(item.value)}
+                        onChangeItem={item => setProductName(item)}
                     />
                 </View>
 
                 <View>
                     <RegularInputText
                         key="quantity"
-                        placeholder="Quantity"
+                        placeholder={update?quantity.toString():"Quantity"}
                         onChangeText={(text) => {
                             setQuantity(text)
                         }}
@@ -269,6 +276,7 @@ const ReturnOrder = (props) => {
                 </View>
 
             </View>
+            {toastMessage.length>0  && <Toast message={toastMessage} isVisible={toastMessage.length>0} />}
         </ScrollView>
     );
 };

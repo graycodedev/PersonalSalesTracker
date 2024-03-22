@@ -55,7 +55,7 @@ const EODReport = ({ navigation }) => {
                     <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.order fill={"#007BA7"}/></View>} title={"Orders"} subtitle={reports?.NewOrder?.toString() || 'N/A'} style={{ margin: 10, marginBottom: 0, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.collection fill={"#DC143C"}/></View>} title={"Collections"} subtitle={reports?.OrderAmount?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.collection fill={"#DC143C"}/></View>} title={"Order Amount"} subtitle={reports?.OrderAmount?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
                     <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.profile1 fill={"#50C878"}/></View>} title={"New Customers"} subtitle={reports?.NewCustomer?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>

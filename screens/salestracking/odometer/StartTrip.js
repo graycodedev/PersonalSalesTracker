@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   Text,
   Platform,
-  ImageBackground, Modal
+  ImageBackground, Modal, BackHandler
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -43,10 +43,14 @@ const StartTrip = (props) => {
   const [photo, setPhoto] = useState(null);
   const cameraRef = useRef(null);
 
+
+
   useEffect(() => {
     navigation.setOptions({
       title: "Start Trip",
     });
+    BackHandler.addEventListener("hardwareBackPress", handleBackButton);
+   
     getLocation();
     (async () => {
       let { status } = await Camera.getCameraPermissionsAsync();
@@ -55,7 +59,19 @@ const StartTrip = (props) => {
         return;
       }
     })();
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", handleBackButton);
+    };
   }, []);
+
+   const handleBackButton = async () => {
+    console.log("Back click", isCameraReady)
+    if (isCameraReady){
+      console.log("Back Clicked")
+      setIsCameraReady(false);
+
+    }
+  };
 
   const handlePhotoUpload = async () => {
     setIsCameraReady(true);

@@ -36,7 +36,9 @@ const AddTask = (props) => {
     const [description, setDescription] = useState(task?.Description);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedDate, setSelectedDate] = useState(task?.EndDate ? new Date(task.EndDate) : new Date());
+    const [startDate, setStartDate] = useState(task?.StartDate ? new Date(task.StartDate) : new Date());
       const [showDatePicker, setShowDatePicker] = useState(false);
+      const [showStartDatePicker,setShowStartDatePicker]= useState(false)
 
 
     const goToTasks = () => {
@@ -48,13 +50,25 @@ const AddTask = (props) => {
         props.navigation.setOptions({title: "Add Task"})
     }, [])
 
-     const onChangeDate = (event, selectDate) => {
+     const onChangeDate = (ref,selectDate) => {
     const currentDate = selectDate || selectedDate;
-    setShowDatePicker(false);
-    setSelectedDate(currentDate);
+    if(ref== "startdate"){
+        setStartDate(currentDate);
+        setShowStartDatePicker(false);
+    }
+    else{
+        setSelectedDate(currentDate);
+        setShowDatePicker(false);
+
+    }
   };
 
   const formattedDate = selectedDate.toDateString("en-NP", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const formattedStartDate = startDate.toDateString("en-NP", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -71,7 +85,7 @@ const AddTask = (props) => {
             // AssignedUserId: 45723, 
             EndDate: new Date(selectedDate),
             Tags: "T1, T3", 
-            StartDate: new Date()
+            StartDate: new Date(startDate)
         })
         console.log(strData)
         setIsLoading(true);
@@ -137,12 +151,35 @@ const AddTask = (props) => {
                 </View>
                 <View>
           <Text style={{ fontFamily: "Medium", marginBottom: 2 }}>
+            Start Date
+          </Text>
+          <TouchableOpacity onPress={() => setShowStartDatePicker(true)}>
+            <RegularInputText
+              key="date"
+              placeholder="Due Date"
+              value={formattedStartDate}
+              editable={false}
+            />
+          </TouchableOpacity>
+
+          {showStartDatePicker && (
+            <DateTimePicker
+              value={startDate}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={(event,Date)=>onChangeDate("startdate", Date)}
+            />
+          )}
+        </View>
+                <View>
+          <Text style={{ fontFamily: "Medium", marginBottom: 2 }}>
             Due Date
           </Text>
           <TouchableOpacity onPress={() => setShowDatePicker(true)}>
             <RegularInputText
               key="date"
-              placeholder="Visited Date"
+              placeholder="Due Date"
               value={formattedDate}
               editable={false}
             />
@@ -154,10 +191,11 @@ const AddTask = (props) => {
               mode="date"
               is24Hour={true}
               display="default"
-              onChange={onChangeDate}
+              onChange={(event,Date)=>onChangeDate("duedate", Date)}
             />
           )}
         </View>
+               
 
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity

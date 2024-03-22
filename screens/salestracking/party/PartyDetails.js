@@ -100,7 +100,6 @@ const OrdersScreen = (props) => {
     const getList = async () => {
         try {
             let partyId=  await DeviceStorage.getKey("selectedParty");
-            console.log("PartyId", partyId, Api.Orders.ListByParty + "?PartyId=" + partyId+"&pageNo="+1+"&pageSize="+20)
             var response = await (await request())
                 .get(Api.Orders.ListByParty + "?PartyId=" + partyId+"&pageNo="+1+"&pageSize="+20)
                 .catch(function (error) {
@@ -110,7 +109,6 @@ const OrdersScreen = (props) => {
 
             if (response != undefined) {
                 if (response.data.Code === 200) {
-                    console.log("Orders",response.data.Data)
                     setOrders(response.data.Data);
                 } else {
                     ToastMessage.Short(response.data.Message);
@@ -142,7 +140,6 @@ const OrdersScreen = (props) => {
                 </View>
             ) : (
                 <View style={{marginHorizontal: 8, marginTop: 8}}>
-                    {/* {console.log("order log:", orders)} */}
                     {orders.length > 0 ? (
                         orders.map((order, index) => (
                             <TouchableOpacity
@@ -365,109 +362,49 @@ const VisitsScreen = (props) => {
 };
 
 const PartyDetails = (props) => {
+    const { party } = props.route.params;
+
     useEffect(() => {
         props.navigation.setOptions({
-            title: partyDetails ? partyDetails.PartyName : party.partyName,
+            title: party.partyName,
         });
-    }, [partyDetails]);
+    }, []);
 
-    const { party } = props.route.params;
-    const [partyDetails, setPartyDetails] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
 
     useEffect(() => {
-        getDetail();
-        setIsLoading(false);
+        setPartyId();
     }, []);
 
-    const getDetail = async () => {
+    const setPartyId = async () => {
        await DeviceStorage.saveKey("selectedParty", party.Id.toString());
-        var response = await (await request())
-            .get(Api.Parties.Details + "?id=" + party.Id)
-            .catch(function (error) {
-                ToastMessage.Short("Error! Contact Support");
-            });
-        if (response != undefined) {
-            if (response.data.Code == 200) {
-                setPartyDetails(response.data.Data);
-
-                props.navigation.setOptions({
-                    title: response.data.Data.PartyName,
-                });
-
-            } else {
-                ToastMessage.Short("Error Loading Party Detail");
-            }
-        } else {
-            ToastMessage.Short("Error Loading Party Detail");
-        }
+       setIsLoading(false);
     };
 
-    const deleteParty = async () => {
-        let data = qs.stringify({
-            id: party.Id,
-        });
-        var response = await (await request())
-            .post(Api.Parties.Delete, data)
-            .catch(function (error) {
-                ToastMessage.Short("Error! Contact Support");
-            });
-        if (response != undefined) {
-            if (response.data.Code == 200) {
-                setShowConfirmDelete(false);
-                ToastMessage.Short(response.data.Message);
-                props.navigation.goBack();
-            } else {
-                ToastMessage.Short("Error deleting the party");
-            }
-        } else {
-            ToastMessage.Short("Error deleting the party");
-        }
-    };
-
-    const updateParty = () => {
-        props.navigation.navigate("AddParty", { update: true, party: partyDetails });
-    };
+  
 
     return (
         <>
-            <Tab.Navigator
-                screenOptions={{
-                    tabBarScrollEnabled: true,
-                    tabBarIndicatorStyle: { color: "red" },
-                    tabBarPressColor: Colors.primary,
-                }}
-            >
-                <Tab.Screen name="Overview" component={OverviewScreen}/>
-                <Tab.Screen name="Orders" component={OrdersScreen} />
-                <Tab.Screen name="Collections" component={CollectionsScreen} />
-                <Tab.Screen name="Visits" component={VisitsScreen} />
-            </Tab.Navigator>
-
-            {/* <View style={styles.buttons}>
-                <TouchableOpacity
-                    style={[styles.circle, { marginBottom: 8, backgroundColor: Colors.primary }]}
-                    onPress={() => {
-                        updateParty();
+            {isLoading ? 
+            (
+                <View style={styles.spinnerContainer}>
+                    <ActivityIndicator size="large" color={Colors.primary} />
+                </View>
+            ):
+               ( <Tab.Navigator
+                    screenOptions={{
+                        tabBarScrollEnabled: true,
+                        tabBarIndicatorStyle: { color: "red" },
+                        tabBarPressColor: Colors.primary,
                     }}
                 >
-                    <BankingIcons.Edit fill={"white"} height={25} width={25} />
-                </TouchableOpacity>
-              
-            </View> */}
-            {showConfirmDelete && (
-                <WarningModal
-                    text1={"Delete Party?"}
-                    text2={"Are you sure you want to delete the party?"}
-                    onConfirm={deleteParty}
-                    onCancel={() => {
-                        setShowConfirmDelete(false);
-                    }}
-                    warning
-                />
-            )}
+                    <Tab.Screen name="Overview" component={OverviewScreen}/>
+                    <Tab.Screen name="Orders" component={OrdersScreen} />
+                    <Tab.Screen name="Collections" component={CollectionsScreen} />
+                    <Tab.Screen name="Visits" component={VisitsScreen} />
+                </Tab.Navigator>)}
+           
         </>
     );
 };
@@ -511,6 +448,14 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         marginRight: 10,
+    },
+     spinnerContainer: {
+        flex: 1,
+        justifyContent: "center",
+        margin: 20,
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10,
     },
 });
 

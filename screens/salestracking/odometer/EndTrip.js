@@ -117,6 +117,7 @@ const EndTrip = (props) => {
         setIsLoading(false);
         ToastMessage.Short("Error Occurred Contact Support");
       });
+      console.log(response.data)
     if (response != undefined) {
       if (response.data.Code == 200) {
         setIsLoading(false);

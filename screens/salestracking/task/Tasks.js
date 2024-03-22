@@ -54,7 +54,7 @@ const Tasks = ({ navigation }) => {
   const [taskDetail, setTaskDetail]= useState();
 
 
-  const Task = ({item, keyNum}) => {
+  const Task = ({item}) => {
     const [isChecked, setIsChecked] = useState(item.IsActive);
   
     const toggleSelection = () => {
@@ -70,7 +70,7 @@ const Tasks = ({ navigation }) => {
             // await  getTaskDetail(item.Id)
 
             // setModalVisible(true);
-        }} key={keyNum}>
+        }}>
        
     <View style={{flexDirection:"row"}}>
     <TouchableOpacity
@@ -230,7 +230,7 @@ const Tasks = ({ navigation }) => {
               {tasks.map((item, index) =>{
                 // coinst [isChecked, setIsChecked]= useState(false)
                 return(
-                <Task item={item} keyNum={index}/>
+                <Task item={item} key={index}/>
               )})}
             </View>
             {showWarningModal && selectedTask &&  (

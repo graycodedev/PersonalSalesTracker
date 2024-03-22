@@ -280,10 +280,10 @@ const UpdateVisit = (props, route) => {
    
     
       var response = await ApiRequestWithImageAndFiles(
-        Api.Visits.SaveByUser,
-        visitData,
-        imageData, 
-        files
+        {route:Api.Visits.SaveByUser,
+        data:visitData,
+        imageData:Object.keys(imageData).length>0? imageData:null, 
+        files:files.length==0?null:files}
       );
 
 

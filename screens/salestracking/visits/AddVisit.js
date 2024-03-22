@@ -82,6 +82,7 @@ const AddVisit = (props, route) => {
             });
         if (response != undefined) {
             if (response.data.Code == 200) {
+              console.log("Purposes", response.data.Data)
               let purposesArr= []
               if(response.data.Data.length == 0){
                 return
@@ -320,18 +321,47 @@ const AddVisit = (props, route) => {
       Object.keys(visitData).forEach(
         (key) => visitData[key] === null && delete visitData[key]
       );
+
+
+     
       let imageData = {
-        ImageFile: photo.uri,
+        ImageFile: photo?.uri,
       }; 
    
+    var response;
+    if(selectedPurpose?.IsImageRequired && selectedPurpose?.IsReportRequired){
+      response = await ApiRequestWithImageAndFiles(
+       { route: Api.Visits.SaveByUser,
+        data: visitData,
+         imageData: imageData, 
+         files: files}
+       );
+    }
+    else{
+      if(selectedPurpose?.IsImageRequired){
+        response = await ApiRequestWithImageAndFiles(
+          {route: Api.Visits.SaveByUser,
+          data: visitData,
+           imageData: imageData, }
+         );
+      }
+      else if(selectedPurpose?.IsReportRequired){
+        response = await ApiRequestWithImageAndFiles(
+         { route: Api.Visits.SaveByUser,
+          data: visitData,
+          files: files}
+         );
+      }
+      else{
+        response = await ApiRequestWithImageAndFiles(
+         { route: Api.Visits.SaveByUser,
+          data: visitData,}
+         );
+      }
+    }
     
-      var response = await ApiRequestWithImageAndFiles(
-        Api.Visits.SaveByUser,
-        visitData,
-        imageData, 
-        files
-      );
-
+      
+     console.log(response.data);
 
       if (response != undefined) {
         if (response.data.Code == 200) {
@@ -488,7 +518,7 @@ const AddVisit = (props, route) => {
               })
             }
           </View>}
-         { selectedPurpose?.IsReportRequired && <View style={{alignItems: "center"}}>
+         { selectedPurpose?.IsImageRequired && <View style={{alignItems: "center"}}>
            {!photo && <>
               <TouchableOpacity style={{height: 50, width: 50,borderRadius: 25, alignItems:"center", justifyContent:"center", backgroundColor:Colors.primary}} onPress={handlePhotoUpload}>
               <SVG.Camera height={25} width= {25} fill={"#ffffff"}/>
