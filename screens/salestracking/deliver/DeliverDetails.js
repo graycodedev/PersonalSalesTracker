@@ -51,7 +51,6 @@ const DeliverDetails = ({ navigation, route }) => {
   const getDetail = async () => {
     let userId = await helpers.GetUserId();
     setUserId(userId);
-    // console.log('del', deliverId)
     var response = await (await request())
       .get(Api.Orders.Details + "?id=" + deliverId)
       .catch(function (error) {

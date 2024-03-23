@@ -118,14 +118,12 @@ const EndTrip = (props) => {
         setIsLoading(false);
         ToastMessage.Short("Error Occurred Contact Support");
       });
-    // console.log(response.data)
     if (response != undefined) {
       if (response.data.Code == 200) {
         setIsLoading(false);
         navigation.goBack();
         return response.data.Data;
       } else {
-        // console.log("Server response:", response.data);
         ToastMessage.Short(response.data.Message || "An error occurred");
       }
     } else {

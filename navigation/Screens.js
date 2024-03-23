@@ -135,7 +135,6 @@ const headerOptions = {
   //       .get(api.BaseUrl + "api/v1/information/getbykey?key=" + sendKey)
   //       .catch(function(error) {
   //         ToastMessage.Short("Error Ocurred Contact Support");
-  //         console.log(error);
   //       });
   //     if (response != undefined) {
   //       if (response.data.Code == 200) {

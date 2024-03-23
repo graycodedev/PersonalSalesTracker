@@ -107,8 +107,6 @@ const BeatPlans = (props) => {
       });
     if (response != undefined) {
       if (response.data.Code == 200) {
-        // console.log(response.data.Data[0]);
-        // console.log(response.data.Data.length)
         setOptions(response.data.Data);
       } else {
         ToastMessage.Long(response.data.Message);

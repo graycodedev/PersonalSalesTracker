@@ -11,10 +11,7 @@ const OdometerDetails = ({ navigation, route }) => {
             title: odometer.VehiclePlateNo,
         });
     }, [])
-
     const { odometer } = route.params;
-
-console.log("odometer11",odometer)
     const odometerDetails=[
         {
          Label:"Start Odometer",

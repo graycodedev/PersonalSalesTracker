@@ -16,7 +16,6 @@ const IdleTimer = ({ timeout, onTimeout }) => {
       ) {
 
         let api= await helpers.GetPaymentMethods(); 
-        console.log(api);
         // App has become inactive or moved to the background
         // Clear existing timeout if any and set a new one
         clearTimeout(timeoutRef.current);
@@ -29,10 +28,7 @@ const IdleTimer = ({ timeout, onTimeout }) => {
 
       }
       appState.current = nextAppState;
-      console.log("hello")
     };
-    console.log("hi")
-
     const subscription=AppState.addEventListener("change", handleAppStateChange);
     return () => {
       clearTimeout(timeoutRef.current);

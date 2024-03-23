@@ -15,7 +15,6 @@ const Attendance = () => {
         var response = await (await request())
             .get(Api.Attendances.List)
             .catch(function (error) {
-                console.log("Error! Contact Support");
             });
 
         if (response != undefined) {
@@ -59,10 +58,8 @@ const Attendance = () => {
 
                 setMarkedDates(newMarkedDates);
             } else {
-                console.log(response.data.Message);
             }
         } else {
-            console.log("Error Loading Attendance");
         }
     };
 
@@ -90,7 +87,6 @@ const Attendance = () => {
                     markedDates={markedDates}
                     markingType={"multi-dot"}
                     onDayPress={(day) => {
-                        // console.log("Selected day:", day);
                     }}
                     dayComponent={({ date }) => renderDay(date)}
                     hideExtraDays={true}

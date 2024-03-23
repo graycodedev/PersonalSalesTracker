@@ -96,7 +96,6 @@
 //           onPress={() => {
 //             if (title == "Getting Started") {
 //               Linking.openURL("https://www.graycode.com.np").catch((err) =>
-//                 console.error("An error occurred", err)
 //               );
 //             } else if (title == "9851181209") {
 //               Linking.openURL("tel:" + title);

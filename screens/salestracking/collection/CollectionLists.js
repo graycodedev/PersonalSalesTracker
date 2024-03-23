@@ -45,7 +45,6 @@ const CollectionList = ({ navigation }) => {
       if (response != undefined) {
         if (response.data.Code == 200) {
           setCollections(response.data.Data);
-          // console.log(response.data.Data[0])
         } else {
           ToastMessage.Short("Error Loading Collections");
         }

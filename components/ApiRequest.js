@@ -36,7 +36,6 @@ const ApiRequestGet = async (route, data) => {
     query = createQueryString(data);
   }
   let url = route + query;
-  // console.log("url", url);
   var response = await (await request()).get(url).catch(function (error) {
     ToastMessage.Short("Error Ocurred Contact Support");
     return false;
@@ -74,7 +73,6 @@ const ApiRequestWithImage = async (route, data, imageData) => {
         });
       }
     }
-    //   console.log("Form ", formData, route)
     //  await  axios.post(route, formData, {
     //     headers: {
     //       Authorization: `Bearer ${access_token}`,
@@ -87,7 +85,6 @@ const ApiRequestWithImage = async (route, data, imageData) => {
     //   })
     //   .catch(error => {
     //     // Handle error
-    //     console.log("Error",error);
     //   });
 
     const response = await axios.post(route, formData, {

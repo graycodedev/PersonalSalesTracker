@@ -303,10 +303,8 @@ const helpers = {
 
   //   try {
   //     const { uri } = await downloadResumable.downloadAsync();
-  //     console.log("Finished downloading to ", uri);
   //     document = uri;
   //   } catch (e) {
-  //     console.error(e);
   //   }
   //   if (!(await Sharing.isAvailableAsync())) {
   //     alert(`Uh oh, sharing isn't available on your platform`);
@@ -368,7 +366,6 @@ const helpers = {
   },
   GetCompanyId: async function GetCompanyId() {
     let CompanyDetail = await this.GetCompanyInfoIOS();
-    // console.log("Frpm api", api.IsAppForMultiple, api.CompanyId);
     let companyId = api.IsAppForMultiple
       ? CompanyDetail.CompanyId
       : api.CompanyId;

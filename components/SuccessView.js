@@ -41,7 +41,6 @@ export const SuccessView = ({
 
   const getLogDetail = async () => {
     var detail = await helpers.GetTransactionDetailByUniqueId(logId);
-    // console.log("Details", detail.TranDate);
     setLogDetail(detail);
   };
 
@@ -57,7 +56,6 @@ export const SuccessView = ({
 
   const downloadFile = async () => {
     let fileUrl = await helpers.GetFileUrlById(logId);
-    // console.log("AVC", fileUrl);
     await helpers.DownloadFile(fileUrl);
   };
 

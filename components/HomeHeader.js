@@ -26,7 +26,6 @@ const HomeHeader = () => {
 
   const GetBankName = async () => {
     let compInfo = await helpers.GetCompanyDetails();
-    // console.log(compInfo);
     setBankName(compInfo.Name);
   };
   const GetUserInfo = async () => {

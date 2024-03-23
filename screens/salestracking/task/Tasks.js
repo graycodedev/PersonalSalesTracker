@@ -199,7 +199,6 @@ const Tasks = ({ navigation }) => {
         });
       if (response != undefined) {
         if (response.data.Code == 200) {
-          // console.log("Taks", response.data.Data)
           setTaskDetail(response.data.Data);
         } else {
           ToastMessage.Short(response.data.Message);

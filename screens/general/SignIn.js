@@ -256,7 +256,6 @@ class SignIn extends React.Component {
     //   await SecureStore.deleteItemAsync('mbuser');
     //   this.setState({ email: '', password: '' });
     // } catch (e) {
-    //   console.log(e);
     // }
   };
   handleBackButton = async () => {
@@ -287,10 +286,8 @@ class SignIn extends React.Component {
       );
       return true;
     } else {
-      // console.error(this.props.navigation, this.props)
       if (this.props.navigation.canGoBack()) {
         this.props.navigation.dispatch(CommonActions.goBack());
-        // this.props.navigation.goBack(null);
         return true;
       }
     }
@@ -1033,7 +1030,6 @@ class SignIn extends React.Component {
     var response = await (await request())
       .post(api.Login, data)
       .catch(function(error) {
-        console.log(error)
         this.setState({ isLoading: false });
         ToastMessage.Short("Error Ocurred Contact Support");
       });

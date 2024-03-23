@@ -23,13 +23,12 @@ const FAQ = () => {
     var response = await (await request())
       .get(api.ListFAQ)
       .catch(function(error) {
-        // console.log(error);
+
         ToastMessage.Short("Error! Contact Support");
       });
     if (response != undefined) {
       if (response.data.Code == 200) {
         setList(response.data.Data);
-        // console.log(response.data.Data);
       } else {
         ToastMessage.Short("Error Loading FAQ");
       }

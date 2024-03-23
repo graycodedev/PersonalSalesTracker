@@ -28,7 +28,6 @@ const ChangeProfile = () => {
 
   const GetUserInfo = async () => {
     const u = await helpers.GetUserInfo();
-    console.log(u);
     if (u != null) {
       setPhoneNumber(u.PhoneNumber);
       setEmail(u.Email);
@@ -38,25 +37,6 @@ const ChangeProfile = () => {
       );
     }
   };
-
-  // const imagePicker = async () => {
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //     quality: 1,
-  //   });
-
-  //   if (!result.cancelled) {
-  //     setImageChanged(true);
-  //     setProfilePicture(result.uri);
-  //     uploadFileToServer(result);
-  //   }
-  // };
-  // const uploadFileToServer = async (photo) => {
-  //   await helpers.uploadFileToServer(photo);
-  // };
-
   useEffect(() => {
     GetUserInfo();
   }, []);
@@ -84,11 +64,6 @@ const ChangeProfile = () => {
             />
           )}
         </View>
-
-        {/* <TouchableOpacity onPress={imagePicker}>
-          <Text>Edit Image</Text>
-        </TouchableOpacity> */}
-
         <Text
           style={{
             fontSize: 20,
@@ -128,37 +103,6 @@ const ChangeProfile = () => {
     </View>
   );
 };
-
-//   ChangeProfile = async () => {
-//     const userId = (await helpers.GetUserInfo()).Id;
-//     var data = qs.stringify({
-//       clientId: api.CompanyId,
-//       CompanyId: api.CompanyId,
-//       SecretKey: api.SecretKey,
-//       UserId: userId,
-//       OldPassword: this.state.oldPassword,
-//       NewPassword: this.state.newPassword,
-//       ConfirmPassword: this.state.confirmPassowrd,
-//       DeviceId: 1,
-//       // Expo.Constants.deviceId,
-//     });
-
-//     var response = await (await request())
-//       .post(api.ChangePassword, data)
-//       .catch(function(error) {
-//         console.log(error);
-//         ToastMessage.Short("Error Contact Support");
-//       });
-//     if (response.data.Code == 200) {
-//       this.setState({ isLoading: false });
-//       ToastMessage.Short(response.data.Message);
-//       this.props.navigation.navigate("Home");
-//     } else {
-//       ToastMessage.Short(response.data.Message);
-//     }
-//     this.setState({ isLoading: false });
-//   };
-// }
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",

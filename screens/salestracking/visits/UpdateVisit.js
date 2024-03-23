@@ -236,7 +236,6 @@ const UpdateVisit = (props, route) => {
     let selectedFiles= await MediaServices.PickFiles();
     let allFiles= selectedFiles.concat(files); 
     setFiles(allFiles); 
-    // console.log(allFiles)
   }
 
   const saveVisit = async () => {
@@ -264,7 +263,6 @@ const UpdateVisit = (props, route) => {
       };
       let checkNull= Object.keys(visitData).filter(key => visitData[key] === null || visitData[key] === undefined);
       if(checkNull.length>0){
-        // console.log("ccc", checkNull)
         // alert(checkNull); 
         // return;
       }

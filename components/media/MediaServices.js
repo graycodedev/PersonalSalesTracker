@@ -14,13 +14,11 @@ const MediaServices = {
 
       return base64;
     } catch (error) {
-      console.error(error);
     }
   },
   GetImageUriFromPicker: async function GetImageUriFromPicker() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
-      console.log("Permission denied");
       return;
     }
 
@@ -45,7 +43,6 @@ const MediaServices = {
         return file;
       }
     } catch (error) {
-      console.error('Error picking file:', error);
     }
   },
   PickFiles: async function PickFiles() {
@@ -59,7 +56,6 @@ const MediaServices = {
       }
       
     } catch (error) {
-      console.error('Error picking files:', error);
     }
   },
  

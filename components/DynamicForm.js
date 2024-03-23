@@ -106,7 +106,6 @@ export class DynamicForm extends React.Component {
     var apiResponse = await (await request()).get(
       Api.BaseUrl + element.apiEndpoint
     );
-    // console.log("dropdown", apiResponse)
     if (apiResponse.data != null && apiResponse.data.Code == 200) {
       const { forms } = this.state;
       let indexNo = 0;
@@ -130,7 +129,6 @@ export class DynamicForm extends React.Component {
 
   handleOnChangeValue = async (key, val) => {
     this.formValues[key] = val;
-    // console.log(this.formValues);
   };
 
   resetForm = () => {};
@@ -229,7 +227,6 @@ export class DynamicForm extends React.Component {
     return errors;
   };
   render() {
-    //console.log("form here", this.props.forms)
     if (this.props.forms.length > 0 && this.props.forms != this.state.forms) {
       this.setState({ forms: this.props.forms });
     }

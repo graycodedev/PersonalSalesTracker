@@ -54,7 +54,6 @@ export default function App() {
     await loadFonts();
 
      registerForPushNotificationsAsync().then(([deviceToken]) => {
-      console.log("devicetoken",devicePushToken);
        setDevicePushToken(deviceToken);
        DeviceStorage.saveKey("FcmToken", deviceToken);
      });
@@ -67,7 +66,6 @@ export default function App() {
       .then(() => {
       })
       .catch((error) => {
-        console.error("An error occurred:", error);
       });
     const notificationListener = Notifications.addNotificationReceivedListener(
       (notification) => {

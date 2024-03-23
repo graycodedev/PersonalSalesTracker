@@ -46,7 +46,6 @@ const PaymentDueList = ({ navigation }) => {
             var response = await (await request())
                 .get(Api.PaymentDue.ListByParty)
                 .catch(function (error) {
-                    console.error("Error fetching Payment Due data:", error);
                     ToastMessage.Short("Error! Contact Support");
                 });
 
@@ -54,11 +53,9 @@ const PaymentDueList = ({ navigation }) => {
                 if (response.data.Code === 200) {
                     setPaymentsDue(response.data.Data.PaymentDueReportDetail);
                 } else {
-                    console.error("Error Loading Payment Due. Response:", response);
                     ToastMessage.Short("Error Loading Payment Due");
                 }
             } else {
-                console.error("Undefined response while fetching Payment Due data");
                 ToastMessage.Short("Error Loading Payment Due");
             }
         } finally {

@@ -94,7 +94,6 @@ import request from "../../config/RequestManager";
       });
     if (response != undefined) {
       if (response.data.Code == 200) {
-        console.log(Api.BaseUrl + response.data.Data.Value)
         setQrUrl(Api.BaseUrl + response.data.Data.Value);
 
       } else {

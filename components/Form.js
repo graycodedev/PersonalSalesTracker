@@ -27,10 +27,7 @@ const Form = ({ inputs }) => {
 
     const handleSubmit = () => {
         if (validateForm()) {
-            // Handle form submission
-            console.log("Form submitted with data:", formData);
         } else {
-            console.log("Form validation failed!");
         }
     };
 

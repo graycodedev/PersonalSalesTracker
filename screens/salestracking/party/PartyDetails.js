@@ -103,7 +103,6 @@ const OrdersScreen = (props) => {
             var response = await (await request())
                 .get(Api.Orders.ListByParty + "?PartyId=" + partyId+"&pageNo="+1+"&pageSize="+20)
                 .catch(function (error) {
-                    console.error("Error fetching orders:", error.message, error.response);
                     ToastMessage.Short("Error! Contact Support");
                 });
 
@@ -114,7 +113,6 @@ const OrdersScreen = (props) => {
                     ToastMessage.Short(response.data.Message);
                 }
             } else {
-                console.error("Undefined response from API");
                 ToastMessage.Short("Error Loading Orders");
             }
         } finally {
@@ -201,7 +199,6 @@ const CollectionsScreen = (props) => {
             var response = await (await request())
                 .get(Api.Collections.ListByParty + "?partyId=" + partyId)
                 .catch(function (error) {
-                    console.error("Error fetching collections:", error.message, error.response);
                     ToastMessage.Short("Error! Contact Support");
                 });
 
@@ -209,11 +206,9 @@ const CollectionsScreen = (props) => {
                 if (response.data.Code === 200) {
                     setCollections(response.data.Data);
                 } else {
-                    console.error("Error loading collections:", response.data.Message);
                     ToastMessage.Short("Error Loading Collections");
                 }
             } else {
-                console.error("Undefined response from API");
                 ToastMessage.Short("Error Loading Collections");
             }
         } finally {
@@ -239,7 +234,6 @@ const CollectionsScreen = (props) => {
                 </View>
             ) : (
                 <View style={{marginHorizontal: 8, marginTop: 8}}>
-                    {/* {console.log("collection log:", collections)} */}
                     {collections.length > 0 ? (
                         collections.map((collection, index) => (
                             <TouchableOpacity
@@ -291,7 +285,6 @@ const VisitsScreen = (props) => {
             var response = await (await request())
                 .get(Api.Visits.ListByParty + "?partyId=" + partyId)
                 .catch(function (error) {
-                    console.error("Error fetching visits:", error.message, error.response);
                     ToastMessage.Short("Error! Contact Support");
                 });
 
@@ -299,11 +292,9 @@ const VisitsScreen = (props) => {
                 if (response.data.Code == 200) {
                     setVisits(response.data.Data);
                 } else {
-                    console.error("Error loading visits:", response.data.Message);
                     ToastMessage.Short("Error Loading Visits");
                 }
             } else {
-                console.error("Undefined response from API");
                 ToastMessage.Short("Error Loading Visits");
             }
         } finally {
@@ -330,7 +321,6 @@ const VisitsScreen = (props) => {
                 </View>
             ) : (
                 <View style={{marginHorizontal: 8, marginTop: 8}}>
-                    {/* {console.log("visits log:", visits)} */}
                     {visits.length > 0 ? (
                         visits.map((visit) => (
                             <TouchableOpacity

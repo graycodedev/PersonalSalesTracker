@@ -103,7 +103,6 @@ const ScanPay = (props) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    // console.log("Hello")
     const getCameraPermission = async () => {
 
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -434,7 +433,6 @@ export class ShareQR extends React.Component {
     var accList = await helpers.GetSavingAccounts();
     this.setState({ accountList: accList });
     this.setState({ isLoading: false });
-    // console.log(accList)
     // if (accList.length > 0) {
     //   let qr = {
     //     AccountNumber: accList[0].AccNum,
