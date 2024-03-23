@@ -1,54 +1,45 @@
 import React, { useEffect } from "react";
 import {
-    View,
-    Text,
     StyleSheet,
     ScrollView,
-    TouchableOpacity,
-    ActivityIndicator
 } from "react-native";
-import PageStyle from "../../style/pageStyle";
-import { ButtonPrimary } from "../../../components/Button";
-import * as BankingIcons from "../../../components/BankingIcons";
-import { Colors } from "../../style/Theme";
-import AppStyles from "../../../assets/theme/AppStyles";
 import DetailCard from "../../../components/DetailCard";
 
 const OdometerDetails = ({ navigation, route }) => {
     useEffect(() => {
         navigation.setOptions({
-            title: odometer.StartOdometer,
+            title: odometer.VehiclePlateNo,
         });
     }, [])
 
     const { odometer } = route.params;
 
-
+console.log("odometer11",odometer)
     const odometerDetails=[
         {
          Label:"Start Odometer",
-          Value:odometer.StartOdometer
+          Value:odometer.StartOdometer??''
         },
         {
          Label:"End Odometer",
-          Value:odometer.EndOdometer
+          Value:odometer.EndOdometer??''
         },
         {
          Label:"Start Date",
-          Value:new Date(odometer.StartDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) +", "+ new Date(odometer.StartDate).toLocaleDateString('en-US', {  month:'short', day: 'numeric' })
+          Value:odometer.StartDate?new Date(odometer.StartDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }):''
         },
         {
          Label:"End Date",
-         Value:new Date(odometer.EndDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) +", "+ new Date(odometer.EndDate).toLocaleDateString('en-US', {  month:'short', day: 'numeric' })
+         Value:odometer.EndDate?new Date(odometer.EndDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }):''
 
         },
         {
          Label:"Remarks",
-          Value:odometer.Remarks
+          Value:odometer.Remarks??''
         },
         {
          Label:"Admin Remarks",
-          Value:odometer.AdminRemarks
+          Value:odometer.AdminRemarks??''
         },
     ]
 
