@@ -8,7 +8,6 @@ import {
     Modal,
     TextInput,
 } from "react-native";
-import { CustomDropdown } from "../../../components/CustomDropdown";
 import { ButtonPrimary } from "../../../components/Button";
 import { ActivityIndicator } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -18,7 +17,6 @@ import { AutoCompleteList } from "../../../components/AutoCompleteList";
 import Api from "../../../constants/Api";
 import CustomModal from "../../../components/CustomModal";
 import * as BankingIcons from "../../../components/BankingIcons"; 
-import Circle from "../../../components/shapes/Circle"; 
 import WarningModal from "../../../components/WarningModal";
 import ToastMessage from "../../../components/Toast/Toast";
 import request from "../../../config/RequestManager";

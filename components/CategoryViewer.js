@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableWithoutFeedback, ScrollView, ToastAndroid } from 'react-native';
 import {
   LoanIcon, LineupIcon,

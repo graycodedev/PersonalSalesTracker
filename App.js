@@ -14,13 +14,7 @@ import * as Font from "expo-font";
 import Screens from "./navigation/Screens";
 import DeviceStorage from "./config/DeviceStorage";
 import * as Notifications from "expo-notifications";
-import { Notification } from "expo-notifications";
 import Constants from "expo-constants";
-import IdleTimer from "./components/IdleTimer";
-import IdleTimerPopUP from "./components/IdleTimerPopUp";
-import helpers from "./constants/Helpers";
-import { registerRootComponent } from 'expo';
-
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -59,10 +53,11 @@ export default function App() {
   const runOperationsInOrder = async () => {
     await loadFonts();
 
-    // registerForPushNotificationsAsync().then(([token, deviceToken]) => {
-    //   setDevicePushToken(deviceToken);
-    //   DeviceStorage.saveKey("FcmToken", deviceToken);
-    // });
+     registerForPushNotificationsAsync().then(([deviceToken]) => {
+      console.log("devicetoken",devicePushToken);
+       setDevicePushToken(deviceToken);
+       DeviceStorage.saveKey("FcmToken", deviceToken);
+     });
     setNavigation(routeNameRef.current);
     
   };
@@ -133,7 +128,7 @@ export default function App() {
   ) : (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       {/* <ActivityIndicator size={"large"} /> */}
-      <Text style={{ marginTop: 10 }}>Please Wait ...</Text>
+      {/* <Text style={{ marginTop: 10 }}>Please Wait ...</Text> */}
     </View>
   );
 }

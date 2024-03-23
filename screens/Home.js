@@ -28,7 +28,6 @@ import ImgSlider from "../components/ImgSlider";
 import IMAGES from "../constants/newImages";
 import * as BankingIcons from "../components/BankingIcons";
 import { ProfileIcon } from "../components/IconsAll";
-import * as SVG from "../components/BankingIcons";
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -39,7 +38,6 @@ class Home extends React.Component {
       memberId: "",
       phoneNumber: "",
       accountList: [],
-      recentTransactions: [],
       showmerchantModal: false,
       categories: [],
       pinSetup: false,
@@ -63,9 +61,7 @@ class Home extends React.Component {
     this.subscription;
     // this.handleIos();
     this.GetUserInfo();
-
     this.getLogoPathHeader();
-
     // this.getOffers();
   }
 
@@ -133,11 +129,9 @@ class Home extends React.Component {
 
       return true;
     } else {
-      // console.error(this.props.navigation, this.props)
       if (this.props.navigation.canGoBack()) {
         this.props.navigation.dispatch(CommonActions.goBack());
         // this.props.navigation.goBack(null);
-
         return true;
       }
     }
@@ -300,21 +294,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 20,
   },
-  header: {
-    flexDirection: "row",
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    justifyContent: "space-around",
-    marginBottom: 10,
-    backgroundColor: "#ecf0f1",
-    alignItems: "center",
-  },
-  headerImage: {
-    height: 60,
-    width: "80%",
-    resizeMode: "contain",
-  },
+  // header: {
+  //   flexDirection: "row",
+  //   paddingTop: 5,
+  //   paddingBottom: 5,
+  //   paddingLeft: 10,
+  //   justifyContent: "space-around",
+  //   marginBottom: 10,
+  //   backgroundColor: "#ecf0f1",
+  //   alignItems: "center",
+  // },
+  // headerImage: {
+  //   height: 60,
+  //   width: "80%",
+  //   resizeMode: "contain",
+  // },
   swiperView: {
     alignItems: "center",
     marginLeft: 30,
@@ -331,69 +325,27 @@ const styles = StyleSheet.create({
   },
 
   servicesHeading: { fontSize: 16, fontFamily: "Regular", fontWeight: "bold" },
-  transactionHeading: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#eee",
-    marginLeft: 15,
-    marginRight: 15,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  transactionBackground: {
-    marginLeft: 10,
-    marginRight: 10,
-    backgroundColor: "#F7F7F7",
-  },
-  transactions: {
-    height: 50,
-    backgroundColor: "#fff",
-    borderRadius: 15,
-    margin: 5,
-    flex: 1,
-  },
-  transactionText: {
-    fontFamily: "Regular",
-    color: "rgba(54,71,93,1)",
-    fontSize: 14,
-    marginTop: 7,
-    marginLeft: 11,
-  },
-  recentTransactionsBackground: {
-    marginLeft: 10,
-    marginRight: 10,
-    backgroundColor: "#F7F7F7",
-  },
-  merchantHeading: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "#eee",
-    marginLeft: 15,
-    marginRight: 15,
-    marginTop: 10,
-  },
-  merchantHeadingText: { fontSize: 16, fontFamily: "Regular" },
   profile: {
     marginTop: Platform.OS === "android" ? -HeaderHeight : 0,
     // marginBottom: -HeaderHeight * 2,
     flex: 1,
   },
-  IconMore: {
-    width: 25,
-    height: 25,
-    backgroundColor: Colors.primary,
-    borderRadius: 40,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  // IconMore: {
+  //   width: 25,
+  //   height: 25,
+  //   backgroundColor: Colors.primary,
+  //   borderRadius: 40,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // },
 
-  UserBlock: {
-    backgroundColor: "#1194F4",
-    height: 70,
-    paddingBottom: 10,
-    borderBottomLeftRadius: 100,
-    borderBottomRightRadius: 100,
-  },
+  // UserBlock: {
+  //   backgroundColor: "#1194F4",
+  //   height: 70,
+  //   paddingBottom: 10,
+  //   borderBottomLeftRadius: 100,
+  //   borderBottomRightRadius: 100,
+  // },
   iconStyle: {
     color: Colors.primary,
   },

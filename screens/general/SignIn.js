@@ -1081,6 +1081,7 @@ class SignIn extends React.Component {
         this.props.navigation.replace("Home");
       } else {
         this.setState({ alertMessage: response.data.Message });
+        ToastMessage.Short(response.data.Message);
       }
     } else {
       ToastMessage.Short("Error Ocurred Contact Support");

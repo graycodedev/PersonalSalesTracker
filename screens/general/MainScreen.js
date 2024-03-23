@@ -46,8 +46,8 @@ const MainScreen = (props) => {
       }
     } catch (error) {
       await DeviceStorage.saveKey("enableRememberMe", "false");
-      props.navigation.navigate("SignIn");
       await helpers.PostException(error);
+      props.navigation.navigate("SignIn");
       ToastMessage.Short("Error Occurred. Contact Support");
     }
   };

@@ -51,16 +51,16 @@ const EODReport = ({ navigation }) => {
 
             {reports && !isLoading && <>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.visits fill={"#FFBF00"}/></View>} title={"Visits"} subtitle={reports?.Visit?.toString() || 'N/A'} style={{ margin: 10, marginBottom: 0, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.order fill={"#007BA7"}/></View>} title={"Orders"} subtitle={reports?.NewOrder?.toString() || 'N/A'} style={{ margin: 10, marginBottom: 0, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer]}><SVG.visits fill={"#FFBF00"}/></View>} title={"Visits"} subtitle={reports?.Visit?.toString() || 'N/A'} style={styles.tile} />
+                    <ReportCard icon={<View style={[styles.iconContainer]}><SVG.order fill={"#007BA7"}/></View>} title={"Orders"} subtitle={reports?.NewOrder?.toString() || 'N/A'} style={styles.tile} />
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.collection fill={"#DC143C"}/></View>} title={"Order Amount"} subtitle={reports?.OrderAmount?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.profile1 fill={"#50C878"}/></View>} title={"New Customers"} subtitle={reports?.NewCustomer?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer, ]}><SVG.collection fill={"#DC143C"}/></View>} title={"Order Amount"} subtitle={reports?.OrderAmount?.toString() || 'N/A'} style={styles.tile} />
+                    <ReportCard icon={<View style={[styles.iconContainer]}><SVG.profile1 fill={"#50C878"}/></View>} title={"New Customers"} subtitle={reports?.NewCustomer?.toString() || 'N/A'} style={styles.tile} />
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.delivery fill={"#9966CC"}/></View>} title={"Orders Delivered"} subtitle={reports?.TotalOrderDelivered?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
-                    <ReportCard icon={<View style={[styles.iconContainer, { borderWidth: 0, borderColor: Colors.primary }]}><SVG.odometer fill={"#40E0D0"}/></View>} title={"Distance Travelled"} subtitle={reports?.TravelledDistance?.toString() || 'N/A'} style={{ margin: 10, height: 160, width: "45%", backgroundColor: "#ffffff" }} />
+                    <ReportCard icon={<View style={[styles.iconContainer]}><SVG.delivery fill={"#9966CC"}/></View>} title={"Orders Delivered"} subtitle={reports?.TotalOrderDelivered?.toString() || 'N/A'} style={styles.tile} />
+                    <ReportCard icon={<View style={[styles.iconContainer]}><SVG.odometer fill={"#40E0D0"}/></View>} title={"Distance Travelled"} subtitle={reports?.TravelledDistance?.toString() || 'N/A'} style={styles.tile} />
                 </View>
             </>}
         </ScrollView>
@@ -72,6 +72,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#eee',
         padding: 10,
+    },
+    tile: {
+        margin: 10,
+        marginBottom: 0,
+        height: 160,
+        width: "45%",
+        backgroundColor: "#ffffff" 
     },
     title: {
         fontSize: 24,
@@ -89,6 +96,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         height: 60,
         width: 60,
+        borderWidth: 0, borderColor: Colors.primary 
     },
 });
 

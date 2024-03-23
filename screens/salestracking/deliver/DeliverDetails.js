@@ -8,61 +8,27 @@ import {
   Modal,
   TextInput,
 } from "react-native";
-import { CustomDropdown } from "../../../components/CustomDropdown";
 import { ButtonPrimary } from "../../../components/Button";
-import { ActivityIndicator } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { RegularInputText } from "../../../components/Input";
 import { Colors } from "../../style/Theme";
-import { AutoCompleteList } from "../../../components/AutoCompleteList";
 import Api from "../../../constants/Api";
-import CustomModal from "../../../components/CustomModal";
-import * as BankingIcons from "../../../components/BankingIcons";
-import Circle from "../../../components/shapes/Circle";
 import WarningModal from "../../../components/WarningModal";
 import ToastMessage from "../../../components/Toast/Toast";
 import request from "../../../config/RequestManager";
 import qs from "qs";
-import Warning from "../../../components/Warning";
 import Spinner from "react-native-loading-spinner-overlay";
 import helpers from "../../../constants/Helpers";
 
 const DeliverDetails = ({ navigation, route }) => {
   const [deliver, setDeliver] = useState();
-  const { selectedOrder, orders } = route.params || {};
   const deliverId = route?.params?.deliverId;
-  const { name, price, type, image } = selectedOrder || {};
-
-  const [selectedParty, setSelectedParty] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
   const [deliveryDate, setDeliveryDate] = useState(new Date());
-
-  const [showDeliveryDatePicker, setShowDeliveryDatePicker] = useState(false);
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedProductName, setSelectedProductName] = useState(null);
-  const [selectedProductPrice, setSelectedProductPrice] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-
-  const [selectedProducts, setSelectedProducts] = useState([]);
-
-  const [selectedDiscount, setSelectedDiscount] = useState(null);
-  const [applyVAT, setApplyVAT] = useState(false);
   const [showPartiesList, setShowPartiesList] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [showProducts, setShowProducts] = useState(false);
   const [showConfirmDelivery, setShowConfirmDelivery] = useState(false);
-  const [deleteIndex, setDeleteIndex] = useState(-1);
-  const [updateIndex, setUpdateIndex] = useState(-1);
   const [notes, setNotes] = useState("");
-
-  const [quantityError, setQuantityError] = useState("");
-  const [productError, setProductError] = useState("");
-  const [partyError, setPartyError] = useState("");
   const [userId, setUserId] = useState(0);
 
   useEffect(() => {
