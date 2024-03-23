@@ -88,15 +88,11 @@ class SignIn extends React.Component {
       showdropDown: false,
       selectedCooperativeDetail: null,
       savedCompanyDetail: false,
-      IosCompanyId: 0,
-      IosCompanyCode: "Company Code",
-      IosWalletName: "",
-      IosAppstoreUrl: "",
-      IosPrimaryColor: "#009D4B",
       companyChooseError: "",
       dropDownCompanySelected: false,
       alertMessage: "",
       companyCode: "",
+      companyCodeError:"",
       loggingIn: true,
     };
   }
@@ -345,16 +341,13 @@ class SignIn extends React.Component {
   };
   validateForm() {
     let isvalid = true;
+    if (this.state.companyCode.trim() === "") {
+      isvalid = false;
+      this.setState(() => ({ companyCodeError: "Company Code is required !" }));
+    }
     if (this.state.email.trim() === "") {
       isvalid = false;
-      this.setState(() => ({ emailError: "Mobile no is required !" }));
-    } else {
-      if (this.state.email.length != 10) {
-        isvalid = false;
-        this.setState(() => ({ phoneNumberError: "Invalid Phone Number." }));
-      } else {
-        this.setState({ emailError: "" });
-      }
+      this.setState(() => ({ emailError: "Username is required !" }));
     }
     if (this.state.password.trim() === "") {
       isvalid = false;
@@ -534,8 +527,11 @@ class SignIn extends React.Component {
                   value={this.state.companyCode}
                 />
               </View>
+              {this.state.companyCodeError != "" && (
+                <Text style={{ color: "red" }}>{this.state.companyCodeError}</Text>
+              )}
               <Text style={{ fontSize: 13, fontFamily: "SemiBold",marginBottom: 2 }}>
-                Mobile No
+                Username
               </Text>
               <View style={{marginBottom: 6}}>
                 <TextInput
@@ -551,7 +547,7 @@ class SignIn extends React.Component {
                 <Text style={{ color: "red" }}>{this.state.emailError}</Text>
               )}
               <Text style={{ fontSize: 13, fontFamily: "SemiBold",marginBottom: 2 }}>
-                Password/MPIN
+                Password
               </Text>
               {!this.state.showPassword && (
                 <View>
@@ -596,13 +592,6 @@ class SignIn extends React.Component {
                     style={styles.input}
                     autoCapitalize="none"
                     placeholder="Password"
-                    // iconContent={
-                    //   <Icon
-                    //     size={16}
-                    //     name="lock"
-                    //     style={styles.inputIcons}
-                    //   />
-                    // }
                     onChangeText={(password) => this.setState({ password })}
                     value={this.state.password}
                   />
@@ -746,54 +735,6 @@ class SignIn extends React.Component {
                 </Text>
               )}
             </View>
-            {/* <ModalPopUp
-              visible={this.state.modalVisible}
-              onRequestClose={() =>
-                this.setModalVisible(!this.state.modalVisible)
-              }
-              onShow={this.scanFingerPrint}
-            >
-              <View style={styles.modal}>
-                <View style={{ margin: 20 }}>
-                  <Text
-                    style={{
-                      fontFamily: "Bold",
-                      fontSize: 22,
-                      color: Colors.HeadingColor,
-                    }}
-                  >
-                    Login with fingerprint
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: "Regular",
-                      fontSize: 18,
-                      color: Colors.SubtitleColor,
-                      textAlign: "center",
-                    }}
-                  >
-                    Please put your finger on your fingerprint sensor in order
-                    to validate
-                  </Text>
-
-                  <View style={{ alignItems: "center", margin: 20 }}>
-                    <FingerPrint />
-                  </View>
-                  {this.state.failedCount > 0 && (
-                    <Text
-                      style={{
-                        color: "red",
-                        fontSize: 14,
-                        fontFamily: "Regular",
-                      }}
-                    >
-                      Failed to authenticate, press cancel and try again.
-                    </Text>
-                  )}
-                </View>
-              </View>
-            </ModalPopUp> */}
-
             <View>
               <View style={{ alignSelf: "center" }}>
                 <TouchableOpacity
@@ -853,14 +794,6 @@ class SignIn extends React.Component {
                   maxHeight: Dimensions.get("window").height - 10,
                 }}
               >
-                {this.state.IosCompanyId > 0 && (
-                  <Image
-                    style={{ height: "100%", width: "100%", borderRadius: 10 }}
-                    source={{
-                      uri: api.BaseUrl + this.state.noticeImage?.ImageUrl,
-                    }}
-                  />
-                )}
                 <TouchableOpacity
                   onPress={() => this.setState({ noticeModal: false })}
                   style={{
@@ -1017,9 +950,7 @@ class SignIn extends React.Component {
 
   SignIn = async () => {
     this.setState({ isLoading: true });
-
     var data;
-
     data = qs.stringify({
       CompanyCode: this.state.companyCode,
       Username: this.state.email,
@@ -1035,9 +966,8 @@ class SignIn extends React.Component {
       });
     if (response != undefined && response.data != undefined) {
       if (response.data.Code == 200) {
-        
         var userCache = await helpers.GetUserInfo();
-        if (userCache != null && userCache.PhoneNumber != this.state.email) {
+        if (userCache != null && userCache.UserName != this.state.email) {
           DeviceStorage.deleteKey("UserAccountsInfo");
         }
         this.secureStoreSave();
@@ -1046,10 +976,7 @@ class SignIn extends React.Component {
           Email: response.data.Data.User.Email,
           UserName: response.data.Data.User.UserName,
           PhoneNumber: this.state.email,
-          FullName:
-            response.data.Data.User.FirstName +
-            " " +
-            response.data.Data.User.LastName,
+          FullName: response.data.Data.User.FirstName +" " +response.data.Data.User.LastName,
           BranchId: response.data.Data.User.BranchId,
           CompanyId: response.data.Data.User.CompanyId,
           ProfilePicture: response.data.Data.User.ProfilePicture,
