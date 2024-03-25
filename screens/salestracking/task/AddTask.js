@@ -51,6 +51,14 @@ const AddTask = (props) => {
 
   const onChangeDate = (ref, selectDate) => {
     const currentDate = selectDate || selectedDate;
+    console.log("SelData", selectDate,selectedDate)
+    console.log("Current", currentDate)
+   let dt= new Date(currentDate.toDateString('en-NP', {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  })); 
+   console.log("DAte", dt)
     if (ref == "startdate") {
       setStartDate(currentDate);
       setShowStartDatePicker(false);
@@ -142,6 +150,9 @@ const AddTask = (props) => {
         <View>
           <Text style={{ fontFamily: "Medium", marginBottom: 2 }}>
             Start Date
+          </Text>
+          <Text style={{ fontFamily: "Medium", marginBottom: 2 }}>
+          {formattedStartDate}
           </Text>
           <TouchableOpacity onPress={() => setShowStartDatePicker(true)}>
             <RegularInputText

@@ -67,7 +67,7 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.GetCompanyInfo();
-    //  this.getToken()
+     this.getToken()
     this.props.navigation.setOptions({
       title: "",
     });
@@ -79,6 +79,7 @@ class Home extends React.Component {
   }
 
   getToken = async () => {
+    console.log(await DeviceStorage.getKey("token"));
   };
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);

@@ -193,7 +193,7 @@ const Fuel={
 
 const Task={
   Save:BaseUrl + "api/v1/st_tasks/save", 
-  List: BaseUrl + "api/v1/st_tasks/byuser", 
+  List: BaseUrl + "api/v1/st_tasks/list/task/byUser", 
   Complete: BaseUrl + "api/v1/st_tasks/complete", 
   Uncomplete: BaseUrl + "api/v1/st_tasks/incomplete", 
   Detail: BaseUrl +"api/v1/st_tasks/details", 
