@@ -213,15 +213,15 @@ const ScanPay = (props) => {
       setUserId(user.Id);
       setPhoneNumber(user.PhoneNumber);
       () => {
-        getAccountList();
+        // getAccountList();
       };
     }
   };
 
-  const getAccountList = async () => {
-    var accList = await helpers.GetSavingAccounts();
-    setAccountList(accList);
-  };
+  // const getAccountList = async () => {
+  //   var accList = await helpers.GetSavingAccounts();
+  //   setAccountList(accList);
+  // };
 
   return (
     <>
@@ -430,8 +430,8 @@ export class ShareQR extends React.Component {
   };
   getAccountList = async () => {
     this.setState({ isLoading: true });
-    var accList = await helpers.GetSavingAccounts();
-    this.setState({ accountList: accList });
+    // var accList = await helpers.GetSavingAccounts();
+    // this.setState({ accountList: accList });
     this.setState({ isLoading: false });
     // if (accList.length > 0) {
     //   let qr = {

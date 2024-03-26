@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   notificationIcon: {
     width: "14%",
-    color: "green",
+    color: Colors.primary,
   },
   date: {
     fontSize: 14,

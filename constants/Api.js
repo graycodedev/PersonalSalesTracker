@@ -16,7 +16,7 @@ const ResendOtp = BaseUrl + "api/v1/user/otp/resendotp";
 const ForgotPassword = BaseUrl + "api/v1/user/forgotpassword";
 const ResetPassword = BaseUrl + "api/v1/mobilebanking/user/resetpassword";
 const Pages = [(AboutUs = ""), (privacy = "")];
-const ChangePassword = BaseUrl + "api/v1/account/changepassword";
+const ChangePassword = BaseUrl + "api/v1/user/changepassword";
 const GetNotifications = BaseUrl + "api/v1/notification/ListByUser";
 const TermsOfServices = "https://thefinmax.com/salesapp-privacypolicy";
 const GetCompanyInfo = BaseUrl + "api/v1/mobilebanking/company/GetCompanyInfo?companyId=";

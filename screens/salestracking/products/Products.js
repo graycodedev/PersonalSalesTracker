@@ -92,7 +92,7 @@ const Products = ({ navigation }) => {
                             style={styles.productItem}
                             onPress={() => navigation.navigate("ProductDetails", { product })}
                         >
-                            <Image source={Api.BaseUrl+product.productImagePath} style={styles.productImage} />
+                            <Image source={{uri: Api.BaseUrl+product?.ProductImagePath?.slice(1)}} style={styles.productImage} />
                             <View>
                                 <Text style={AppStyles.Text.BoldTitle}>{product.ProductName}</Text>
                                 <Text style={styles.productInfo}>Product Code: {product.ProductCode}</Text>
@@ -132,7 +132,8 @@ const styles = StyleSheet.create({
     },
     productImage: {
         height: 60,
-        width: 60,
+        resizeMode:"center",
+        aspectRatio: 1
     },
     productName: {
         fontSize: 20,

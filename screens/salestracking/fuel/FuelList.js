@@ -92,7 +92,15 @@ const FuelList = (props ) => {
                             key={index}
                             style={styles.partyItem}
                         >
-                            <Text style={[AppStyles.Text.BoldTitle, {marginBottom: 4}]}>{fuelVehicle.VehicleName}</Text>
+                            <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+                                <Text style={[AppStyles.Text.BoldTitle, {marginBottom: 4}]}>{fuelVehicle.VehicleName}</Text>
+                               {new Date().toDateString() === new Date(fuelVehicle?.FuelDate)?.toDateString() && <TouchableOpacity onPress={()=>{
+                                        props.navigation.navigate("AddFuel", {fuelVehicle: fuelVehicle})
+                                    }}>
+                                    <BankingIcons.Edit  height={18} width={18} fill={Colors.primary} style={{marginRight: 8}}/>
+
+                                    </TouchableOpacity>}
+                            </View>
                             <Text style={styles.partyInfo}>{`${fuelVehicle.PlateNo}`}</Text>
                             <View style={{flexDirection:"row"}}>
                       <DateDisplay date={fuelVehicle?.FuelDate} />
@@ -104,7 +112,7 @@ const FuelList = (props ) => {
                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                             </View>
                             <View style={{flexDirection:"row", justifyContent:"space-between"}}>
-                            <Text style={styles.partyInfo}>{`${fuelVehicle.FuelUnit} liters`}</Text>
+                            <Text style={styles.partyInfo}>{`${fuelVehicle.FuelUnit.toFixed(2)} liters`}</Text>
                             <Text style={styles.partyInfo}>{`Rs: ${fuelVehicle.FuelAmount}`}</Text></View>
                              
                         </TouchableOpacity>

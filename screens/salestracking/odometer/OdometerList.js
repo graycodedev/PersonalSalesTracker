@@ -68,7 +68,7 @@ const OdometerList = () => {
         if (response.data.Code == 200) {
           setOdometers(response.data.Data);
         } else {
-          ToastMessage.Short("Error Loading Odometers");
+          ToastMessage.Short(response.data.Message);
         }
       } else {
         ToastMessage.Short("Error Loading Odometers");

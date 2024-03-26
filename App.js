@@ -15,6 +15,7 @@ import Screens from "./navigation/Screens";
 import DeviceStorage from "./config/DeviceStorage";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
+import ToastMessage from "./components/Toast/Toast";
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -52,10 +53,9 @@ export default function App() {
 
   const runOperationsInOrder = async () => {
     await loadFonts();
-
      registerForPushNotificationsAsync().then(([deviceToken]) => {
        setDevicePushToken(deviceToken);
-       DeviceStorage.saveKey("FcmToken", deviceToken);
+        DeviceStorage.saveKey("FcmToken", deviceToken);
      });
     setNavigation(routeNameRef.current);
     
@@ -70,7 +70,7 @@ export default function App() {
     const notificationListener = Notifications.addNotificationReceivedListener(
       (notification) => {
         setNotification(notification);
-        // navigationRef.current.navigate("Notifications");
+        navigationRef.current.navigate("Notifications");
       }
     );
 
@@ -141,6 +141,8 @@ const styles = StyleSheet.create({
 
 
 const registerForPushNotificationsAsync = async () => {
+
+  try{
   let token;
   let deviceToken;
   if (Constants.isDevice) {
@@ -149,6 +151,7 @@ const registerForPushNotificationsAsync = async () => {
     let finalStatus = existingStatus;
     if (existingStatus !== "granted") {
       const { status } = await Notifications.requestPermissionsAsync();
+      
       finalStatus = status;
     }
     if (finalStatus !== "granted") {
@@ -169,7 +172,10 @@ const registerForPushNotificationsAsync = async () => {
       lightColor: "#FF231F7C",
     });
   }
-
-  return [token, deviceToken];
+  return [token, deviceToken];}
+  catch(error){
+    
+    ToastMessage.Short(error)
+  }
 };
 

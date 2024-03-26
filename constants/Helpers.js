@@ -25,6 +25,11 @@ const helpers = {
    return user.Id;
    
   },
+  GetCompanyId: async function GetCompanyId() {
+    let user= await this.GetUserInfo(); 
+    return user.CompanyId;
+    
+   },
   uploadFileToServer: async function uploadFileToServer(photo) {
     const data = new FormData();
 
@@ -42,203 +47,7 @@ const helpers = {
       .then((res) => {})
       .catch((err) => {});
   },
-  //use this to show accounts in drop down list
-  GetBankAccoutList: async function GetBankAccoutListArray() {
-    var arr = [];
-    var userAccounts = await DeviceStorage.getKey("UserAccountsInfo");
-    if (userAccounts != null) {
-      var acc = JSON.parse(userAccounts);
-      if (acc != null) {
-        if (acc.length > 0) {
-          for (let a of acc) {
-            if (
-              a.AccType.toLowerCase() == "saving" &&
-              (a.IsAllowMobileBankingTransaction == undefined ||
-                a.IsAllowMobileBankingTransaction == true ||
-                a.IsAllowMobileBankingTransaction == "True")
-            ) {
-              const obj = { label: "Account - " + a.AccNum, value: a.AccNum };
-              arr.push(obj);
-            }
-          }
-        }
-      }
-    }
-    return arr;
-  },
-  GetCreditableBankAccoutList: async function GetCreditableBankAccoutList() {
-    var arr = [];
-    var userAccounts = await DeviceStorage.getKey("UserAccountsInfo");
-    if (userAccounts != null) {
-      var acc = JSON.parse(userAccounts);
-      if (acc != null) {
-        if (acc.length > 0) {
-          for (let a of acc) {
-            if (a.AccType.toLowerCase() == "saving") {
-              const obj = { label: "Account - " + a.AccNum, value: a.AccNum };
-              arr.push(obj);
-            }
-          }
-        }
-      }
-    }
-    return arr;
-  },
-  CheckAmount: async function CheckAmount({
-    accountNumber,
-    amount,
-    isCheckCompanyBalance = false,
-    isCheckUtilityBalance = true, // assign false if banktransfer balance is required
-  }) {
-    var message = "";
-    var accounts = await this.GetBankAccountWithBal();
-    var accountBalance;
-    // var hasEnoughBalance;
-    accounts.map((account) => {
-      if (account.AccNum === accountNumber) {
-        accountBalance = account.AvlBalance
-          ? account.AvlBalance
-          : account.Balance;
-      }
-    });
-
-    if (parseFloat(accountBalance) < parseFloat(amount)) {
-      message = "Insufficient Balance!";
-    } else {
-      if (isCheckCompanyBalance == true) {
-        var enoughCompanyBalance = await this.CheckCooperativeBalance(
-          amount,
-          isCheckUtilityBalance
-        );
-        if (enoughCompanyBalance == false) {
-          message = "Insufficient Cooperative Balance!";
-        }
-      }
-    }
-    return message;
-  },
-  CheckCooperativeBalance: async function CheckCooperativeBalance(
-    amount,
-    isCheckUtilityBalance
-  ) {
-    var balance = await this.GetCooperativeBalance();
-    if (isCheckUtilityBalance) {
-      if (parseFloat(balance.Balance) >= parseFloat(amount)) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      if (parseFloat(balance.BankTransferBalance) >= parseFloat(amount)) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  },
-  // array of accounts is returned (not for dropdown)
-  GetSavingAccounts: async function GetSavingAccounts() {
-    var arr = [];
-    var userAccounts = await DeviceStorage.getKey("UserAccountsInfo");
-    if (userAccounts != null) {
-      var acc = JSON.parse(userAccounts);
-      if (acc != null) {
-        if (acc.length > 0) {
-          for (let a of acc) {
-            if (
-              a.AccType.toLowerCase() == "saving" &&
-              (a.IsAllowMobileBankingTransaction == undefined ||
-                a.IsAllowMobileBankingTransaction == true ||
-                a.IsAllowMobileBankingTransaction == "True")
-            ) {
-              arr.push(a);
-            }
-          }
-        }
-      }
-    }
-    return arr;
-  },
-  //account list with balance and other general info
-  GetBankAccountWithBal: async function GetAccountWithBal() {
-    var data = await DeviceStorage.getKey("UserAccountsInfo");
-    if (data != null && data != undefined) {
-      return JSON.parse(data);
-    } else {
-      return null;
-    }
-  },
-  GetCooperativeBalance: async function GetCooperativeBalance() {
-    var data = await DeviceStorage.getKey("CooperativeBalance");
-    if (data != null && data != undefined) {
-      return JSON.parse(data);
-    } else {
-      return null;
-    }
-  },
-  ListAllAccountsWithBal: async function ListAllAccountsWithBal() {
-    var data = await DeviceStorage.getKey("UserAccountsInfo");
-    if (data != null && data != undefined) {
-      return JSON.parse(data);
-    } else {
-      return null;
-    }
-  },
-  GetCommissionByKey: async function GetCommissionForServie(
-    amount,
-    serviceKey
-  ) {
-    let CompanyDetail = await this.GetCompanyInfoIOS();
-    let companyId = api.IsAppForMultiple
-      ? CompanyDetail.CompanyId
-      : api.CompanyId;
-    var commissionRateUrl =
-      api.UserCommissionRateApi +
-      "/" +
-      serviceKey +
-      "?companyId=" +
-      companyId +
-      "&amount=" +
-      amount;
-    var commissionAmount = await (await request()).get(commissionRateUrl);
-    return commissionAmount;
-  },
-  GetCompanyDetails: async function GetCompanyDetails(id) {
-    var response = await (await request())
-    .get(api.CompanyDetail+"?id="+id)
-    .catch(function(error) {});
-  if (response != undefined) {
-    if (response.data.Code == 200) {
-      if (response.data.Data != null) {
-        return response.data.Data;
-      } else {
-        ToastMessage.Short("Error Loading Company");
-      }
-    } else {
-      ToastMessage.Short("Error Loading Company");
-    }
-  } else {
-    ToastMessage.Short("Error! Contact Support");
-  }
-  },
-  GetCompanyInfoIOS: async function GetCompanyInfoIOS() {
-    var response = await (await request())
-    .get(api.GetCompaniesDetails)
-    .catch(function(error) {});
-  if (response != undefined) {
-    if (response.data.Code == 200) {
-      if (response.data.Data != null) {
-        return response.data.Data;
-      } else {
-        ToastMessage.Short("Error Loading Cooperatives");
-      }
-    } else {
-      ToastMessage.Short("Error Loading Cooperatives");
-    }
-  } else {
-    ToastMessage.Short("Error! Contact Support");
-  }
-  },
+ 
   GetCompaniesDetails: async function GetCompaniesDetails() {
     var response = await (await request())
       .get(api.GetCompaniesDetails)
@@ -256,27 +65,6 @@ const helpers = {
     } else {
       ToastMessage.Short("Error! Contact Support");
     }
-    // const companiesDetails = [
-    //   {
-    //     CompanyId: 2,
-    //     CompanyCode: "Aabhas",
-    //     CompanyName: "Aabhas Cooperative",
-    //     WalletName: "Aabhas Saving",
-    //     BaseUrl: "https://finmanv4.graycode.com.np/",
-    //     AppstoreUrl: "",
-    //     PrimaryColor: "blue",
-    //   },
-    //   {
-    //     CompanyId: 5,
-    //     CompanyCode: "Aarthik Bikash",
-    //     CompanyName: "Aarthik Bikash",
-    //     WalletName: "Wallate Name",
-    //     BaseUrl: "https://finmanv4.graycode.com.np/",
-    //     AppstoreUrl: "",
-    //     PrimaryColor: "blue",
-    //   },
-    // ];
-    // return companiesDetails;
   },
   GetCompanyLogoPath: async function getCompanyLogoPath() {
     return await DeviceStorage.getKey("LogoPath");
@@ -327,63 +115,12 @@ const helpers = {
       ToastMessage.Short("Error Loading Pdf Url");
     }
   },
-  GetTransactionDetailByUniqueId: async function GetTransactionDetailByUniqueId(
-    uniqueId
-  ) {
-    var url = api.TransactionDetailByUniqueId + "?uniqueid=" + uniqueId;
-    var response = await (await request()).get(url).catch(function(error) {
-      ToastMessage.Short("Error Occurred Contact Support");
-    });
-    if (response != undefined) {
-      if (response.data.Code == 200) {
-        return response.data.Data;
-      } else {
-        ToastMessage.Short(response.data.Message);
-      }
-    } else {
-      ToastMessage.Short("Error Loading Transaction Detail");
-    }
-  },
-  RemoveFromSaved: async function RemveFromSaved(id) {
-    var data = qs.stringify({
-      id: id,
-    });
-    var url = api.UnFavourite + "?id=" + id;
-    var response = await (await request())
-      .post(url, data)
-      .catch(function(error) {
-        ToastMessage.Short("Error Occurred Contact Support");
-      });
-    if (response != undefined) {
-      if (response.data.Code == 200) {
-        return response.data.Data;
-      } else {
-        ToastMessage.Short(response.data.Message);
-      }
-    } else {
-      ToastMessage.Short("Error Occurred Contact Support");
-    }
-  },
-  GetCompanyId: async function GetCompanyId() {
-    let CompanyDetail = await this.GetCompanyInfoIOS();
-    let companyId = api.IsAppForMultiple
-      ? CompanyDetail.CompanyId
-      : api.CompanyId;
-    return companyId;
-  },
   GetCompanyCode: async function GetCompanyCode() {
     let CompanyDetail = await this.GetCompanyInfoIOS();
     let companyCode = api.IsAppForMultiple
       ? CompanyDetail.CompanyCode
       : api.CompanyCode;
     return companyCode;
-  },
-  GetPrimaryColor: async function GetPrimaryColor() {
-    let CompanyDetail = await this.GetCompanyInfoIOS();
-    let primaryColor = api.IsAppForMultiple
-      ? CompanyDetail.PrimaryColor
-      : AppConfig.ThemeConfig.primaryColor;
-    return primaryColor;
   },
   GetPaymentMethods: async function getPaymentMethods() {
     var response = await (await request())
@@ -455,24 +192,6 @@ const helpers = {
       ToastMessage.Long("Unable to give location"+error);
       this.PostException(error);
     }
-    // this.PostException("1")
-    // await Location.getCurrentPositionAsync().then((location)=>{
-    //   this.PostException("2")
-    //   return {
-    //     lat: location.coords.latitude, 
-    //     lng: location.coords.longitude
-    //   }
-    // }).catch((error)=>{
-    //   this.PostException(error)
-    // })
-    
-// let res= await axios.post("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBW_OsuOXYLzHZGFvZEomhbGDewfSZoJYk", {}, {
-//   headers: {
-//     'Content-Type': 'application/json'
-//   }
-// })
-
-// return res.data.location
   }
 };
 

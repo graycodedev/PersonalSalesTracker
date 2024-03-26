@@ -38,7 +38,7 @@ const BeatPlans = (props) => {
       RouteName: "Kupandole to Lagankhel Route",
     },
     {
-      RouteName: "Baneshwor to Jaudbuti Route",
+      RouteName: "Baneshwor to Jadibuti Route",
     },
     {
       RouteName: "South Lalitpur Route",

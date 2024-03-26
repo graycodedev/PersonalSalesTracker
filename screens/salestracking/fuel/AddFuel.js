@@ -26,19 +26,20 @@ import ToastMessage from "../../../components/Toast/Toast";
 
 
 const AddFuel = (props) => {
-
+    const fuelVehicle= props.route.params?.fuelVehicle;
     const [selectedImage, setSelectedImage] = useState(null);
-    const [fuelUnit, setFuelUnit] = useState();
+    const [fuelUnit, setFuelUnit] = useState(fuelVehicle?.FuelUnit?.toString());
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [amount, setAmount] = useState("");
+    const [amount, setAmount] = useState(fuelVehicle?.FuelAmount?.toString());
     const [mode, setMode] = useState("");
-    const [note, setNote] = useState("");
-
-
+    const [note, setNote] = useState(fuelVehicle?.Remarks);
+    const [odometer, setOdometer]= useState(fuelVehicle?.Odometer?.toString());
     const [showVehiclesList, setshowVehiclesList] = useState(false);
-
     const [isLoading, setIsLoading] = useState(false);
     const [selectedVehicle, setselectedVehicle] = useState();
+    const [fuelUniterror, setFuelUnitError]= useState("");
+    const [amountError, setAmountError]= useState(""); 
+    
 
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || selectedDate;
@@ -86,21 +87,51 @@ const AddFuel = (props) => {
         setshowVehiclesList(false);
     }
 
+    const validateForm=()=>{
+        let isValid= true;
+        if(!fuelUnit){
+            isValid= false;
+            setFuelUnitError("Fuel Unit is required!!")
+        }
+        else{
+            setFuelUnitError("")
+        }
+        if(!amount){
+            isValid= false;
+            setAmountError("Fuel Unit is required!!")
+        }
+        else{
+            setAmountError("")
+        }
+        return isValid;
+
+    }
     const saveFuel = async () => {
 
-        let strData = qs.stringify({
-            Id: 0,
-            VehicleId: selectedVehicle.VehicleId, 
+        let data = {
+            Id: fuelVehicle? fuelVehicle.Id:0,
+            VehicleId: selectedVehicle?selectedVehicle.VehicleId:fuelVehicle?fuelVehicle.VehicleId:0, 
             FuelUnit: fuelUnit,
             Remarks: note,
-            FuelAmount: amount
-        });
+            FuelAmount: amount, 
+            Odometer: odometer
+        };
+
+        if(fuelVehicle?.UserId){
+            data.UserId= fuelVehicle.UserId
+        }
+
+        if(data.VehicleId == 0){
+            ToastMessage.Short("Select the vehicle")
+            return
+        }
+
 
 
 
         setIsLoading(true);
         var response = await (await request())
-            .post(Api.Fuel.Save, strData)
+            .post(Api.Fuel.Save, qs.stringify(data))
             .catch(function (error) {
                 setIsLoading(false);
                 ToastMessage.Short("Error Occurred Contact Support");
@@ -132,7 +163,7 @@ const AddFuel = (props) => {
                 <View style={{ marginBottom: 15, zIndex: 99 }}>
                     <TouchableOpacity onPress={() => setshowVehiclesList(true)} style={{ paddingLeft: 10, paddingVertical: 14, backgroundColor: "white", borderRadius: 5 }}>
 
-                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedVehicle ? "Select Vehicle" : selectedVehicle.VehicleName +" - "+  selectedVehicle.PlateNo}</Text>
+                        <Text style={{ fontFamily: "Regular", fontSize: 14 }}>  {!selectedVehicle ? fuelVehicle? fuelVehicle.VehicleName: "Select Vehicle" : selectedVehicle.VehicleName +" - "+  selectedVehicle.PlateNo}</Text>
 
                     </TouchableOpacity>
 
@@ -159,11 +190,13 @@ const AddFuel = (props) => {
                 <View>
                     <RegularInputText
                         key="fuelUnit"
+                        placeholder="fuel unit"
                         onChangeText={(text) => {
                             setFuelUnit(text)
                         }}
                         value={fuelUnit}
                         keyboardType="numeric"
+                        error={fuelUniterror}
                     />
                 </View>
 
@@ -175,14 +208,30 @@ const AddFuel = (props) => {
                             setAmount(text)
                         }}
                         value={amount}
+                        placeholder="amount"
+                        keyboardType="numeric"
+                        error={amountError}
+                    />
+                </View>
+
+                <Text style={{fontFamily:"SemiBold", marginBottom: 4}}>Odometer {"(Kms.)"}</Text>
+                <View>
+                    <RegularInputText
+                        key="odometer"
+                        onChangeText={(text) => {
+                            setOdometer(text)
+                        }}
+                        value={odometer}
+                        placeholder="odometer"
                         keyboardType="numeric"
                     />
                 </View>
 
+                <Text style={{fontFamily:"SemiBold", marginBottom: 4}}>Remarks</Text>
                 <View>
                     <RegularInputText
                         key="note"
-                        placeholder="Note"
+                        placeholder="Remarks"
                         onChangeText={(text) => {
                             setNote(text)
                         }}
@@ -197,11 +246,14 @@ const AddFuel = (props) => {
 
                 <View style={{ margin: 30 }}>
                     <TouchableOpacity
-                        onPress={() => {
-                            saveFuel()
+                        onPress={async() => {
+                            if(validateForm()){
+                                await saveFuel()
+                            }
+                           
                         }}
                     >
-                        <ButtonPrimary title={"Save"} />
+                        <ButtonPrimary title={fuelVehicle?"Update":"Save"} />
                         <ActivityIndicator
                             animating={isLoading}
                             color="#ffa500"

@@ -19,6 +19,7 @@ import {
   Pressable,
   TouchableOpacity,
   Text, 
+  Keyboard
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native-stack";
@@ -94,6 +95,7 @@ class SignIn extends React.Component {
       companyCode: "",
       companyCodeError:"",
       loggingIn: true,
+      keyboardVisible:false,
     };
   }
   getAppVersion = async () => {
@@ -138,6 +140,7 @@ class SignIn extends React.Component {
     this.props.navigation.setOptions({
       title: "",
     });
+    this.getDeviceToken();
     let status = await AsyncStorage.getItem("WalkThrough");
     if (status === "done") {
       this.setState({ showRealApp: true });
@@ -164,6 +167,24 @@ class SignIn extends React.Component {
         isChecked: true,
       });
     }
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        this.setState({keyboardVisible: true});
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        this.setState({keyboardVisible: false});
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
   };
 
   getLocationPermission = async () => {
@@ -469,14 +490,19 @@ class SignIn extends React.Component {
     if (this.state.showRealApp) {
       //Real Application
       return (
-        <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView
+      style={[{flex: 1, backgroundColor:"#ffffff"}, { top: this.state.keyboardVisible ? -120 : 0 }]}
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
+      enabled={Platform.OS === "ios" ? true : false}
+    >
           <Spinner
             color={Colors.primary}
             visible={this.state.isLoading}
             textContent={"Signing In..."}
             textStyle={{ color: "#fff", fontFamily: "Light", fontSize: 14 }}
           />
-          <ScrollView
+          <View
             style={{
               width: "100%",
               backgroundColor: "#fff",
@@ -764,7 +790,7 @@ class SignIn extends React.Component {
                 </Text>
               </View>
             </View>
-          </ScrollView>
+          </View>
 
           <Modal visible={this.state.noticeModal} transparent>
             <Pressable
@@ -813,7 +839,7 @@ class SignIn extends React.Component {
               </Pressable>
             </Pressable>
           </Modal>
-        </SafeAreaView>
+        </KeyboardAvoidingView>
       );
     } else {
       //Intro slides
@@ -958,6 +984,7 @@ class SignIn extends React.Component {
       Device: this.state.device,
       FcmToken: this.state.fcmToken,
     });
+  
     var response = await (await request())
       .post(api.Login, data)
       .catch(function(error) {

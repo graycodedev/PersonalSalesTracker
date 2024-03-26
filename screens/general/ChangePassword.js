@@ -10,6 +10,9 @@ import {
   TextInput,
   ActivityIndicator,
   Image,
+  Platform, 
+  Keyboard, 
+  BackHandler
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import qs from "qs";
@@ -40,8 +43,38 @@ class ChangePassword extends React.Component {
       oldPasswordShown: false,
       newPasswordShown: false,
       confirmPasswordShown: false,
+      keyboardVisible:false,
     };
   }
+
+  componentDidMount(){
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        this.setState({keyboardVisible: true});
+      }
+    );
+
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        this.setState({keyboardVisible: false});
+      }
+    );
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+      BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+    };
+  }
+
+handleBackButton = async () => {
+    this.props.navigation.navigate("Profile")
+  };
+
   validateForm() {
     let isvalid = true;
     if (this.state.oldPassword.trim() === "") {
@@ -76,10 +109,16 @@ class ChangePassword extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+      style={[{flex: 1}, { top: this.state.keyboardVisible ? -120 : 0 }]}
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS == "ios" ? 0 : 20}
+      enabled={Platform.OS === "ios" ? true : false}
+    >
         {/* <Image source={IMAGES.registerEllipse} style={{ width: "100%" }} /> */}
         {/* <BankingIcons.ScreenHeaderRegisterIcon fill= {Colors.primary} width="100%" /> */}
         <View style={styles.headerBackGround} />
+
         <View style={styles.box}>
           <View style={styles.topText}>
             <Text style={{ fontSize: 24 }}>Change password</Text>
@@ -109,13 +148,13 @@ class ChangePassword extends React.Component {
               >
                 {this.state.oldPasswordShown == true ? (
                   <Ionicons
-                    name="ios-eye"
+                    name="eye-outline"
                     size={20}
                     style={styles.iconStyles}
                   />
                 ) : (
                   <Ionicons
-                    name="ios-eye-off"
+                    name="eye-off-outline"
                     size={20}
                     style={styles.iconStyles}
                   />
@@ -143,13 +182,13 @@ class ChangePassword extends React.Component {
               >
                 {this.state.newPasswordShown == true ? (
                   <Ionicons
-                    name="ios-eye"
+                    name="eye-outline"
                     size={20}
                     style={styles.iconStyles}
                   />
                 ) : (
                   <Ionicons
-                    name="ios-eye-off"
+                    name="eye-off-outline"
                     size={20}
                     style={styles.iconStyles}
                   />
@@ -179,13 +218,13 @@ class ChangePassword extends React.Component {
               >
                 {this.state.confirmPasswordShown == true ? (
                   <Ionicons
-                    name="ios-eye"
+                  name="eye-outline"
                     size={20}
                     style={styles.iconStyles}
                   />
                 ) : (
                   <Ionicons
-                    name="ios-eye-off"
+                  name="eye-off-outline"
                     size={20}
                     style={styles.iconStyles}
                   />
@@ -211,7 +250,7 @@ class ChangePassword extends React.Component {
             style={styles.activityIndicator}
           ></ActivityIndicator>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -221,13 +260,11 @@ class ChangePassword extends React.Component {
     var data = qs.stringify({
       clientId: companyId,
       CompanyId: companyId,
-      SecretKey: api.SecretKey,
       UserId: userId,
       OldPassword: this.state.oldPassword,
       NewPassword: this.state.newPassword,
       ConfirmPassword: this.state.confirmPassowrd,
       DeviceId: 1,
-      // Expo.Constants.deviceId,
     });
 
     var response = await (await request())
@@ -246,9 +283,6 @@ class ChangePassword extends React.Component {
   };
 }
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-  },
   headerBackGround: {
     width: "100%",
     height: "45%",
@@ -263,6 +297,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     shadowColor: "red",
     shadowRadius: 5,
+    alignSelf:"center"
   },
   topText: {
     marginTop: 36,

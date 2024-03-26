@@ -59,15 +59,12 @@ class Home extends React.Component {
       company: null,
     };
     this.subscription;
-    // this.handleIos();
     this.GetUserInfo();
     this.getLogoPathHeader();
-    // this.getOffers();
   }
 
   componentDidMount() {
-    this.GetCompanyInfo();
-     this.getToken()
+    //  this.getToken()
     this.props.navigation.setOptions({
       title: "",
     });
@@ -136,14 +133,9 @@ class Home extends React.Component {
       }
     }
   };
-  GetCompanyInfo = async () => {
-    let companyId = (await helpers.GetUserInfo()).CompanyId;
-    let compInfo = await helpers.GetCompanyDetails(companyId);
-    this.setState({ company: compInfo });
-  };
+ 
   GetUserInfo = async () => {
     const u = await helpers.GetUserInfo();
-    var accList = await helpers.GetSavingAccounts();
     if (u != null) {
       this.setState({
         fullName: u.FullName,
@@ -152,11 +144,7 @@ class Home extends React.Component {
         PhoneNumber: u.PhoneNumber,
         ProfilePicture: u.ProfilePicture,
       });
-      if (accList != null && accList.length > 0) {
-        if (accList[0].Mobile == u.PhoneNumber) {
-          this.setState({ accountList: accList });
-        }
-      }
+     
     }
   };
 

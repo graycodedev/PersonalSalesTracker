@@ -509,18 +509,7 @@ function ScreenStack(props) {
       <Stack.Screen
         name="ChangePassword"
         component={ChangePassword}
-        options={{
-          headerShown: true,
-          headerTitleStyle: {
-            color: "#fff",
-            fontFamily: "Medium",
-          },
-          headerTintColor: "#fff",
-          headerStyle: {
-            backgroundColor: Colors.primary,
-          },
-          headerTitle: "",
-        }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ChangePin"
