@@ -35,7 +35,7 @@
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
       ],
-      "versionCode": 23,
+      "versionCode": 26,
       "googleServicesFile": "./google-services.json"
     },
     "plugins": [

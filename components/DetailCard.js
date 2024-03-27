@@ -12,7 +12,7 @@ const DetailCard = (props) => {
             <View style={styles.item} key={index}>
                         <Text style={AppStyles.DetailText.KeyText}>{detail.Label}</Text>
                         <View style={styles.dataView}>
-                            <Text style={styles.odometerData}>{detail.Value}</Text>
+                            <Text style={styles.odometerData}>{detail?.Value}</Text>
                         </View>
                     </View>
         ))}

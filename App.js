@@ -16,6 +16,7 @@ import DeviceStorage from "./config/DeviceStorage";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import ToastMessage from "./components/Toast/Toast";
+import helpers from "./constants/Helpers";
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -53,10 +54,10 @@ export default function App() {
 
   const runOperationsInOrder = async () => {
     await loadFonts();
-     registerForPushNotificationsAsync().then(([deviceToken]) => {
-       setDevicePushToken(deviceToken);
-        DeviceStorage.saveKey("FcmToken", deviceToken);
-     });
+    //  registerForPushNotificationsAsync().then(async([deviceToken]) => {
+    //    setDevicePushToken(deviceToken);
+    //     await DeviceStorage.saveKey("FcmToken", deviceToken);
+    //  });
     setNavigation(routeNameRef.current);
     
   };
@@ -174,7 +175,7 @@ const registerForPushNotificationsAsync = async () => {
   }
   return [token, deviceToken];}
   catch(error){
-    
+    await helpers.PostException(error)
     ToastMessage.Short(error)
   }
 };

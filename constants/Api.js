@@ -58,7 +58,7 @@ const Visits = {
   Delete: BaseUrl + "api/v1/st_visits/delete"
 }
 const Collections = {
-  List: BaseUrl + "api/v1/st_collection/list",
+  List: BaseUrl + "api/v1/st_collection/list/byuser",
   ListByParty: BaseUrl + "api/v1/st_collection/list/byPartyId/byuserId",
   Details: BaseUrl + "api/v1/st_collection/details",
   Save: BaseUrl + "api/v1/st_collection/save",
@@ -126,7 +126,7 @@ const Odometers = {
   Save: BaseUrl + "api/v1/st_odometer/save",
 }
 const Attendances = {
-  List: BaseUrl + "api/v1/st_attendance/list",
+  List: BaseUrl + "api/v1/st_attendance/list/byuser",
   MonthlyList: BaseUrl + "api/v1/st_attendance/list/monthly",
   Save: BaseUrl + "api/v1/st_attendance/save",
   Details: BaseUrl + "api/v1/st_attendance/details",
@@ -168,7 +168,8 @@ const Deliver = {
 }
 
 const Dispatch = {
-  DispatchedList: BaseUrl + "api/v1/st_order/list/dispatched"
+  DispatchedList: BaseUrl + "api/v1/st_order/list/readytobedelivered/byuserid", 
+
 
 }
 

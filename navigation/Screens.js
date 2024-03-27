@@ -613,7 +613,7 @@ function ScreenStack(props) {
 function BottomTabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeTab"
       screenOptions={{
         headerShown: true,
         headerTitleStyle: {
@@ -637,13 +637,11 @@ function BottomTabNavigator() {
             },
           }),
         },
-      }}
-      tabBarOptions={{
-        showLabel: false,
+        tabBarShowLabel:false
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="HomeTab"
         component={Home}
         options={{
           headerShown: false,

@@ -20,23 +20,21 @@ const MainScreen = (props) => {
     let data = {};
     try {
       var user = await helpers.GetUserInfo();
-      let signedOut = await DeviceStorage.getKey("SignedOut");
+      
+      var isChecked = await DeviceStorage.getKey("enableRememberMe");
+      if (isChecked == "true" && user != undefined && user != null) {
+        let signedOut = await DeviceStorage.getKey("SignedOut");
       if (signedOut == "true") {
         props.navigation.navigate("SignIn");
         return;
       }
-      var isChecked = await DeviceStorage.getKey("enableRememberMe");
-      if (isChecked == "true" && user != undefined && user != null) {
         await tokenManager.clearAndRestoreNewToken();
         var userData = await secureStoreGet();
         if (!("companyCode" in userData)) {
           props.navigation.navigate("SignIn");
         }
         data = {
-          clientId: 1,
-          CompanyId: 1,
           CompanyCode: userData.companyCode,
-          SecretKey: 1,
           Username: userData.email,
           Password: userData.password,
         };

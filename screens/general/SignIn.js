@@ -140,7 +140,7 @@ class SignIn extends React.Component {
     this.props.navigation.setOptions({
       title: "",
     });
-    this.getDeviceToken();
+    // this.getDeviceToken();
     let status = await AsyncStorage.getItem("WalkThrough");
     if (status === "done") {
       this.setState({ showRealApp: true });
@@ -198,15 +198,13 @@ class SignIn extends React.Component {
   getDeviceToken = async () => {
     var deviceToken = await DeviceStorage.getKey("FcmToken");
     var deviceInfo =
-      Device.brand +
+      Device?.brand +
       "-" +
-      Device.designName +
+      Device?.designName +
       "-" +
-      Device.deviceName +
+      Device?.manufacturer +
       "-" +
-      Device.manufacturer +
-      "-" +
-      Device.modelName;
+      Device?.modelName;
     this.setState({ device: deviceInfo, fcmToken: deviceToken });
   };
   getOffers = async () => {

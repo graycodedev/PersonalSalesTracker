@@ -18,6 +18,7 @@ const helpers = {
     if (userInfo != null) {
       return JSON.parse(userInfo);
     } else {
+      return null;
     }
   },
   GetUserId: async function GetUserId() {
@@ -192,7 +193,25 @@ const helpers = {
       ToastMessage.Long("Unable to give location"+error);
       this.PostException(error);
     }
+  }, 
+  GetCompanyDetails: async function GetCompanyDetails(id) {
+    var response = await (await request())
+    .get(api.CompanyDetail+"?id="+id)
+    .catch(function(error) {});
+  if (response != undefined) {
+    if (response.data.Code == 200) {
+      if (response.data.Data != null) {
+        return response.data.Data;
+      } else {
+        ToastMessage.Short("Error Loading Company");
+      }
+    } else {
+      ToastMessage.Short(response.data.Message);
+    }
+  } else {
+    ToastMessage.Short("Error! Contact Support");
   }
+  },
 };
 
 export default helpers;

@@ -61,10 +61,11 @@ class Home extends React.Component {
     this.subscription;
     this.GetUserInfo();
     this.getLogoPathHeader();
+   
   }
 
   componentDidMount() {
-    //  this.getToken()
+     this.getToken()
     this.props.navigation.setOptions({
       title: "",
     });
@@ -73,8 +74,16 @@ class Home extends React.Component {
       "change",
       this._handleAppStateChange
     );
+    this.GetCompanyInfo();
+    
   }
 
+
+  GetCompanyInfo = async () => {
+    let companyId = (await helpers.GetUserInfo()).CompanyId;
+    let compInfo = await helpers.GetCompanyDetails(companyId);
+    this.setState({ company: compInfo });
+  };
   getToken = async () => {
     console.log(await DeviceStorage.getKey("token"));
   };

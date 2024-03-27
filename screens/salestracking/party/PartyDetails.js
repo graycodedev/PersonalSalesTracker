@@ -15,6 +15,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import AppStyles from "../../../assets/theme/AppStyles";
 import { DateDisplay, TimeDisplay } from "../../../components/DateDisplay";
 import DeviceStorage from "../../../config/DeviceStorage";
+import helpers from "../../../constants/Helpers";
 
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -32,6 +33,7 @@ const OverviewScreen = (props) => {
 
     const getDetail = async () => {
         let partyId= await DeviceStorage.getKey("selectedParty");
+        if(partyId>0 || partyId != null || partyId != undefined){
         var response = await (await request())
             .get(Api.Parties.Details + "?id=" + partyId)
             .catch(function (error) {
@@ -41,15 +43,14 @@ const OverviewScreen = (props) => {
             if (response.data.Code == 200) {
                 setPartyDetails(response.data.Data);
 
-                // props.navigation.setOptions({
-                //     title: response.data.Data.PartyName,
-                // });
-
             } else {
-                ToastMessage.Short("Error Loading Party Detail");
+                ToastMessage.Short(response.data.Message);
             }
         } else {
             ToastMessage.Short("Error Loading Party Detail");
+        }}
+        else{
+            await helpers.PostException("Errors while saving the partyid in async strorage in party details screen, partyId:"+partyId);
         }
     };
     return (
@@ -69,13 +70,13 @@ const OverviewScreen = (props) => {
             ) : (
                 <View style={styles.container}>
                     <DetailCard details={[
-                        { Label: "Party Name", Value: partyDetails.PartyName },
-                        { Label: "Contact Person", Value: partyDetails.ContactPersonName },
-                        { Label: "Mobile Number", Value: partyDetails.MobileNumber },
-                        { Label: "Party Code", Value: partyDetails.PartyCode },
-                        { Label: "Address", Value: partyDetails.Address },
-                        { Label: "Email", Value: partyDetails.Email },
-                        { Label: "Website", Value: partyDetails.Website },
+                        { Label: "Party Name", Value: partyDetails?.PartyName },
+                        { Label: "Contact Person", Value: partyDetails?.ContactPersonName },
+                        { Label: "Mobile Number", Value: partyDetails?.MobileNumber },
+                        { Label: "Party Code", Value: partyDetails?.PartyCode },
+                        { Label: "Address", Value: partyDetails?.Address },
+                        { Label: "Email", Value: partyDetails?.Email },
+                        { Label: "Website", Value: partyDetails?.Website },
                     ]} containerStyle={{marginHorizontal: 0}}
                         />
                 </View>
@@ -353,17 +354,13 @@ const VisitsScreen = (props) => {
 
 const PartyDetails = (props) => {
     const { party } = props.route.params;
-
-    useEffect(() => {
-        props.navigation.setOptions({
-            title: party.partyName,
-        });
-    }, []);
-
     const [isLoading, setIsLoading] = useState(true);
 
 
     useEffect(() => {
+        props.navigation.setOptions({
+            title: party.PartyName,
+        });
         setPartyId();
     }, []);
 
@@ -381,7 +378,7 @@ const PartyDetails = (props) => {
                 <View style={styles.spinnerContainer}>
                     <ActivityIndicator size="large" color={Colors.primary} />
                 </View>
-            ):
+            )  :
                ( <Tab.Navigator
                     screenOptions={{
                         tabBarScrollEnabled: true,

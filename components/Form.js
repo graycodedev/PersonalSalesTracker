@@ -42,11 +42,10 @@ const Form = ({ inputs,onSubmit, buttonText }) => {
 
     return (
         <View style={styles.container}>
-            {inputs.map(input => (
-                <>
+            {inputs.map((input, index) => (
+                <View key={index}>
                    {input.type == "input" &&  <>
                         <RegularInputText
-                        key={input.key}
                                     placeholder={input.placeholder}
                                     onChangeText={value => handleInputChange(input.key, value)}
                                     boxStyle={{borderColor: errors[input.key] == true?"red":"white", borderWidth: 1}}
@@ -85,7 +84,7 @@ const Form = ({ inputs,onSubmit, buttonText }) => {
                     </>}
 
                     
-                </>
+                </View>
             ))}
             <View style={{ marginTop: 30 }}>
             <TouchableOpacity
