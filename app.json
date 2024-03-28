@@ -2,7 +2,7 @@
   "expo": {
     "name": "FINMAX Sales App",
     "slug": "finmax-sales-app",
-    "version": "1.2.0",
+    "version": "1.4.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -24,7 +24,7 @@
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to let user put a photo in his profile page."
       },
-      "buildNumber": "9"
+      "buildNumber": "11"
     },
     "android": {
       "package": "com.graycode.finmaxsales",
@@ -35,7 +35,7 @@
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
       ],
-      "versionCode": 26,
+      "versionCode": 31,
       "googleServicesFile": "./google-services.json"
     },
     "plugins": [

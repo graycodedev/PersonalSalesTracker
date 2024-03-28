@@ -140,7 +140,7 @@ class SignIn extends React.Component {
     this.props.navigation.setOptions({
       title: "",
     });
-    // this.getDeviceToken();
+    this.getDeviceToken();
     let status = await AsyncStorage.getItem("WalkThrough");
     if (status === "done") {
       this.setState({ showRealApp: true });
@@ -784,7 +784,7 @@ class SignIn extends React.Component {
                 }}
               >
                 <Text style={{ fontSize: 12, marginRight: 5 }}>
-                  version: {info.expo.version}
+                  version: {info.expo.version + " (" + info.expo.android.versionCode + ")"}
                 </Text>
               </View>
             </View>
@@ -979,7 +979,7 @@ class SignIn extends React.Component {
       CompanyCode: this.state.companyCode,
       Username: this.state.email,
       Password: this.state.password,
-      Device: this.state.device,
+      DeviceId: this.state.device,
       FcmToken: this.state.fcmToken,
     });
   

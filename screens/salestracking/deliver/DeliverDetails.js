@@ -8,6 +8,7 @@ import {
   Modal,
   TextInput,
 } from "react-native";
+import * as BankingIcons from "../../../components/BankingIcons";
 import { ButtonPrimary } from "../../../components/Button";
 import { RegularInputText } from "../../../components/Input";
 import { Colors } from "../../style/Theme";
@@ -91,11 +92,10 @@ const DeliverDetails = ({ navigation, route }) => {
       });
     if (response != undefined) {
       if (response.data.Code == 200) {
-        ToastMessage.Short(response.data.Message);
         setShowConfirmDelivery(false);
         navigation.goBack();
       } else {
-        ToastMessage.Short("Error delivering the order");
+        ToastMessage.Short(response.data.Message);
       }
     } else {
       ToastMessage.Short("Error delivering the order");
@@ -286,6 +286,19 @@ const DeliverDetails = ({ navigation, route }) => {
                   <ButtonPrimary title={"CONFIRM DELIVERY"} />
                 </TouchableOpacity>
               )}
+
+<View style={styles.buttons}>
+                <TouchableOpacity
+                    style={[styles.circle, {backgroundColor:Colors.primary}]}
+                    onPress={()=>{
+                      navigation.navigate("AddOrder", {orderId:deliverId})
+                  }}
+                >
+                  
+                    <BankingIcons.Edit fill="white" height={25} width={25}/>
+                </TouchableOpacity>
+               
+            </View>
           </View>
 
           {showConfirmDelivery && (
@@ -375,6 +388,21 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderStyle: "dashed",
   },
+  buttons:{
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    zIndex: 1,
+  
+  }, 
+  circle: {
+    backgroundColor: "white",
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    justifyContent:"center",
+    alignItems:"center", 
+}, 
 });
 
 export default DeliverDetails;

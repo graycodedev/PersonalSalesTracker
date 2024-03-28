@@ -54,10 +54,10 @@ export default function App() {
 
   const runOperationsInOrder = async () => {
     await loadFonts();
-    //  registerForPushNotificationsAsync().then(async([deviceToken]) => {
-    //    setDevicePushToken(deviceToken);
-    //     await DeviceStorage.saveKey("FcmToken", deviceToken);
-    //  });
+     registerForPushNotificationsAsync().then(async([token, deviceToken]) => {
+       setDevicePushToken(deviceToken);
+        await DeviceStorage.saveKey("FcmToken", deviceToken);
+     });
     setNavigation(routeNameRef.current);
     
   };
@@ -159,8 +159,8 @@ const registerForPushNotificationsAsync = async () => {
       // alert("Failed to get push token for push notification!");
       return [undefined, undefined];
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    deviceToken = (await Notifications.getDevicePushTokenAsync()).data;
+    token = (await Notifications.getExpoPushTokenAsync({ projectId: Constants.expoConfig.extra.eas.projectId }))?.data;
+    deviceToken = (await Notifications.getDevicePushTokenAsync())?.data;
   } else {
     alert("Must use physical device for Push Notifications");
   }
